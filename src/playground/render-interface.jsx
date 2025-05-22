@@ -125,7 +125,7 @@ const Footer = () => (
                             id="tw.footer.credits"
                         />
                     </a>
-                    <a href="https://github.com/sponsors/GarboMuffin">
+                    <a href="https://github.com/sponsors/DBDev-git">
                         <FormattedMessage
                             defaultMessage="Donate"
                             description="Donation link in footer"
@@ -165,7 +165,7 @@ const Footer = () => (
                     </a>
                 </div>
                 <div className={styles.footerSection}>
-                    <a href="https://scratch.mit.edu/users/GarboMuffin/#comments">
+                    <a href="https://scratch.mit.edu/users/damir2809/#comments">
                         <FormattedMessage
                             defaultMessage="Feedback & Bugs"
                             description="Link to feedback/bugs page"

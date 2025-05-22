@@ -35,11 +35,11 @@ const InvalidEmbed = () => (
         <p>
             {'If you are seeing this page even though you aren\'t embedding anything, let us know on '}
             <a
-                href="https://scratch.mit.edu/users/GarboMuffin/#comments"
+                href="https://scratch.mit.edu/users/damir2809/#comments"
                 target="_blank"
                 rel="noreferrer"
             >
-                {'scratch.mit.edu/users/GarboMuffin'}
+                {'scratch.mit.edu/users/damir2809'}
             </a>
             {'.'}
         </p>

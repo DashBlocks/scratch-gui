@@ -166,14 +166,6 @@ const looks = function (isInitialSetup, isStage, targetId, costumeName, backdrop
     // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
     <category name="%{BKY_CATEGORY_LOOKS}" id="looks" colour="${colors.primary}" secondaryColour="${colors.tertiary}">
-        <block type="looks_tutorialmod_alert">
-            <value name="MESSAGE">
-                <shadow type="text">
-                    <field name="TEXT">${hello}</field>
-                </shadow>
-            </value>
-        </block>
-        ${blockSeparator}
         ${isStage ? '' : `
         <block type="looks_sayforsecs">
             <value name="MESSAGE">

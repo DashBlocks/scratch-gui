@@ -6,6 +6,11 @@ export default defineMessages({
         description: 'Tag for filtering a library for everything',
         id: 'gui.libraryTags.all'
     },
+    dash: {
+        defaultMessage: 'Dash',
+        description: 'Tag for filtering a library for Dash-created backdrops',
+        id: 'gui.libraryTags.dash'
+    },
     animals: {
         defaultMessage: 'Animals',
         description: 'Tag for filtering a library for animals',

@@ -1,5 +1,18 @@
 [
     {
+        "name": "game-backdrop",
+        "tags": [
+            "Dash",
+            "Game",
+        ],
+        "assetId": "c07740df11c8ab0ecee78da794098d4f",
+        "bitmapResolution": 2,
+        "dataFormat": "svg",
+        "md5ext": "c07740df11c8ab0ecee78da794098d4f.svg",
+        "rotationCenterX": 70,
+        "rotationCenterY": 50
+    },
+    {
         "name": "Arctic",
         "tags": [
             "outdoors",

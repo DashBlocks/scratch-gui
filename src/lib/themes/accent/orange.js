@@ -1,11 +1,11 @@
 const guiColors = {
-    'motion-primary': ' #ff8e4c',
-    'motion-primary-transparent': 'rgba(255, 139, 76, 0.3)',
+    'motion-primary': '#ff8e4c',
+    'motion-primary-transparent': 'rgba(255, 139, 76, 0.9)',
     'motion-tertiary': 'rgb(204, 156, 51)',
 
     'looks-secondary': '#ff884c',
     'looks-transparent': 'rgba(255, 190, 77, 0.35)',
-    'looks-light-transparent': ' #ff4d4d26',
+    'looks-light-transparent': '#ff4d4d26',
     'looks-secondary-dark': 'hsla(0, 42%, 51%, 1)',
 
     'extensions-primary': 'hsla(10, 85%, 65%, 1)',
@@ -13,7 +13,7 @@ const guiColors = {
     'extensions-transparent': 'hsla(10, 85%, 65%, 0.35)',
     'extensions-light': 'hsla(10, 57%, 85%, 1)',
 
-    'drop-highlight': ' #ff8c8c'
+    'drop-highlight': '#ff8c8c'
 };
 
 const blockColors = {

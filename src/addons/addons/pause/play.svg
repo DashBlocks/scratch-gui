@@ -1,3 +1,53 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:0f6d469f9e3a9d5fe8f0d792df2d9dbd2c7c76c0b1a7e5d5d4061cee31f50132
-size 278
+<svg
+   width="20"
+   height="20"
+   viewBox="0 0 20 20"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="g4"
+     transform="translate(-20)">
+    <rect
+       style="fill:#ff4d4d;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       id="rect3"
+       width="7"
+       height="20"
+       x="0"
+       y="0" />
+    <rect
+       style="fill:#ff4d4d;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       id="rect4"
+       width="7"
+       height="20"
+       x="13"
+       y="0" />
+  </g>
+  <g
+     id="g6">
+    <rect
+       style="fill:#ff4d4d;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5"
+       width="7"
+       height="20"
+       x="0"
+       y="0" />
+    <path
+       style="fill:#ff4d4d;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       id="path6"
+       d="M 16.028651,3.6928799 H 3.2361401 L 9.6323958,-7.3857598 Z"
+       transform="matrix(0,1.5634147,-0.90263789,0,13.333333,-5.0594289)" />
+  </g>
+  <g
+     id="g7"
+     transform="translate(20)">
+    <path
+       style="fill:#ff4d4d;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       id="path7"
+       d="M 83.628796,0.5837816 77.643687,15.033113 63.194355,21.018222 48.745023,15.033113 42.759914,0.5837816 48.745023,-13.86555 l 14.449332,-5.985109 14.449332,5.985109 z"
+       transform="matrix(-0.48936989,-0.20270364,0.20270364,-0.48936989,40.80708,23.095411)" />
+  </g>
+</svg>

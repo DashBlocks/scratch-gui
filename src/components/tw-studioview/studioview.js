@@ -306,7 +306,7 @@ StudioView.THUMBNAIL_SRC = 'https://trampoline.turbowarp.org/thumbnails/$id?widt
 
 // The URL for project pages.
 // $id is replaced with the project ID.
-StudioView.PROJECT_PAGE = 'https://turbowarp.org/$id';
+StudioView.PROJECT_PAGE = 'https://dashblocks.github.io/#$id';
 
 // The URL for studio pages.
 // $id is replaced with the studio ID.

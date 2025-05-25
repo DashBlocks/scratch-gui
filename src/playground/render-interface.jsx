@@ -56,7 +56,7 @@ const handleClickAddonSettings = addonId => {
 
 const messages = defineMessages({
     defaultTitle: {
-        defaultMessage: 'Run Scratch projects faster',
+        defaultMessage: 'More Blocks, Extensions, and other',
         description: 'Title of homepage',
         id: 'tw.guiDefaultTitle'
     }
@@ -172,7 +172,7 @@ const Footer = () => (
                             id="tw.feedback"
                         />
                     </a>
-                    <a href="https://github.com/TurboWarp/">
+                    <a href="https://github.com/DashBlocks/">
                         <FormattedMessage
                             defaultMessage="Source Code"
                             description="Link to source code"
@@ -346,7 +346,7 @@ class Interface extends React.Component {
                                 </p>
                             </div>
                             <div className={styles.section}>
-                                <FeaturedProjects studio="27205657" />
+                                <FeaturedProjects studio="37103090" />
                             </div>
                         </React.Fragment>
                     ) : null}

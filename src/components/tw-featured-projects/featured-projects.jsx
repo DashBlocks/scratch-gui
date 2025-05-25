@@ -78,7 +78,7 @@ class FeaturedProjects extends React.Component {
                     >
                         <FormattedMessage
                             defaultMessage="View studio on Scratch."
-                            description="Link to turbowarp featured projects studio"
+                            description="Link to dash featured projects studio"
                             id="tw.featuredProjectsStudio"
                         />
                     </a>

@@ -56,7 +56,7 @@ const handleClickAddonSettings = addonId => {
 
 const messages = defineMessages({
     defaultTitle: {
-        defaultMessage: 'More Blocks, Extensions, and other',
+        defaultMessage: 'Run Scratch projects faster',
         description: 'Title of homepage',
         id: 'tw.guiDefaultTitle'
     }
@@ -172,7 +172,7 @@ const Footer = () => (
                             id="tw.feedback"
                         />
                     </a>
-                    <a href="https://github.com/DashBlocks/">
+                    <a href="https://github.com/TurboWarp/">
                         <FormattedMessage
                             defaultMessage="Source Code"
                             description="Link to source code"
@@ -238,115 +238,116 @@ class Interface extends React.Component {
                 dir={isRtl ? 'rtl' : 'ltr'}
             >
                 {isHomepage ? (
-                    <div className={styles.menu}>
-                        <WrappedMenuBar
-                            canChangeLanguage
-                            canManageFiles
-                            canChangeTheme
-                            enableSeeInside
+                    <WrappedMenuBar
+                        canChangeLanguage
+                        canManageFiles
+                        canChangeTheme
+                        enableSeeInside
+                        onClickAddonSettings={handleClickAddonSettings}
+                    />
+                ) : null}
+                <div className={styles.center}>
+                    <div
+                        className={styles.wrapperRegulator}
+                        style={isHomepage ? ({
+                            width: `${Math.max(480, props.customStageSize.width) + 2}px`
+                        }) : null}
+                    >
+                        <GUI
                             onClickAddonSettings={handleClickAddonSettings}
+                            onUpdateProjectTitle={this.handleUpdateProjectTitle}
+                            backpackVisible
+                            backpackHost="_local_"
+                            {...props}
                         />
                     </div>
-                ) : null}
-                <div
-                    className={styles.center}
-                    style={isPlayerOnly ? ({
-                        // + 2 accounts for 1px border on each side of the stage
-                        width: `${Math.max(480, props.customStageSize.width) + 2}px`
-                    }) : null}
-                >
-                    <GUI
-                        onClickAddonSettings={handleClickAddonSettings}
-                        onUpdateProjectTitle={this.handleUpdateProjectTitle}
-                        backpackVisible
-                        backpackHost="_local_"
-                        {...props}
-                    />
                     {isHomepage ? (
                         <React.Fragment>
                             {isBrowserSupported() ? null : (
                                 <BrowserModal isRtl={isRtl} />
                             )}
-                            <div className={styles.section}>
-                                <ProjectInput />
-                            </div>
-                            {(
-                                // eslint-disable-next-line max-len
-                                description.instructions === 'unshared' || description.credits === 'unshared'
-                            ) && (
-                                <div className={classNames(styles.infobox, styles.unsharedUpdate)}>
-                                    <p>
-                                        <FormattedMessage
-                                            defaultMessage="Unshared projects are no longer visible."
-                                            description="Appears on unshared projects"
-                                            id="tw.unshared2.1"
+                            <div className={styles.mainSection}>
+                                <div className={styles.section}>
+                                    <ProjectInput />
+                                </div>
+                                <div
+                                    className={styles.section}
+                                    style={{
+                                        overflowY: "auto",
+                                        maxHeight: "520px",
+                                    }}
+                                >
+                                    {(
+                                        // eslint-disable-next-line max-len
+                                        description.instructions === 'unshared' || description.credits === 'unshared'
+                                    ) && (
+                                        <div className={classNames(styles.infobox, styles.unsharedUpdate)}>
+                                            <p>
+                                                <FormattedMessage
+                                                    defaultMessage="Unshared projects are no longer visible."
+                                                    description="Appears on unshared projects"
+                                                    id="tw.unshared2.1"
+                                                />
+                                            </p>
+                                            <p>
+                                                <FormattedMessage
+                                                    defaultMessage="For more information, visit: {link}"
+                                                    description="Appears on unshared projects"
+                                                    id="tw.unshared.2"
+                                                    values={{
+                                                        link: (
+                                                            <a
+                                                                href="https://docs.turbowarp.org/unshared-projects"
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                            >
+                                                                {'https://docs.turbowarp.org/unshared-projects'}
+                                                            </a>
+                                                        )
+                                                    }}
+                                                />
+                                            </p>
+                                            <p>
+                                                <FormattedMessage
+                                                    // eslint-disable-next-line max-len
+                                                    defaultMessage="If the project was shared recently, this message may appear incorrectly for a few minutes."
+                                                    description="Appears on unshared projects"
+                                                    id="tw.unshared.cache"
+                                                />
+                                            </p>
+                                            <p>
+                                                <FormattedMessage
+                                                    // eslint-disable-next-line max-len
+                                                    defaultMessage="If this project is actually shared, please report a bug."
+                                                    description="Appears on unshared projects"
+                                                    id="tw.unshared.bug"
+                                                />
+                                            </p>
+                                        </div>
+                                    )}
+                                    {hasCloudVariables && projectId !== '0' && (
+                                        <CloudVariableBadge />
+                                    )}
+                                    {description.instructions || description.credits ? (
+                                        <Description
+                                            instructions={description.instructions}
+                                            credits={description.credits}
+                                            projectId={projectId}
                                         />
-                                    </p>
+                                    ) : null}
                                     <p>
                                         <FormattedMessage
-                                            defaultMessage="For more information, visit: {link}"
-                                            description="Appears on unshared projects"
-                                            id="tw.unshared.2"
+                                            // eslint-disable-next-line max-len
+                                            defaultMessage="{APP_NAME} is a Scratch mod that compiles projects to JavaScript to make them run really fast. Try it out by inputting a project ID or URL above or choosing a featured project below."
+                                            description="Description of TurboWarp on the homepage"
+                                            id="tw.home.description"
                                             values={{
-                                                link: (
-                                                    <a
-                                                        href="https://docs.turbowarp.org/unshared-projects"
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                    >
-                                                        {'https://docs.turbowarp.org/unshared-projects'}
-                                                    </a>
-                                                )
+                                                APP_NAME
                                             }}
                                         />
                                     </p>
-                                    <p>
-                                        <FormattedMessage
-                                            // eslint-disable-next-line max-len
-                                            defaultMessage="If the project was shared recently, this message may appear incorrectly for a few minutes."
-                                            description="Appears on unshared projects"
-                                            id="tw.unshared.cache"
-                                        />
-                                    </p>
-                                    <p>
-                                        <FormattedMessage
-                                            // eslint-disable-next-line max-len
-                                            defaultMessage="If this project is actually shared, please report a bug."
-                                            description="Appears on unshared projects"
-                                            id="tw.unshared.bug"
-                                        />
-                                    </p>
+                                    <FeaturedProjects studio="37103090" />
                                 </div>
-                            )}
-                            {hasCloudVariables && projectId !== '0' && (
-                                <div className={styles.section}>
-                                    <CloudVariableBadge />
-                                </div>
-                            )}
-                            {description.instructions || description.credits ? (
-                                <div className={styles.section}>
-                                    <Description
-                                        instructions={description.instructions}
-                                        credits={description.credits}
-                                        projectId={projectId}
-                                    />
-                                </div>
-                            ) : null}
-                            <div className={styles.section}>
-                                <p>
-                                    <FormattedMessage
-                                        // eslint-disable-next-line max-len
-                                        defaultMessage="{APP_NAME} is a Scratch mod that compiles projects to JavaScript to make them run really fast. Try it out by inputting a project ID or URL above or choosing a featured project below."
-                                        description="Description of TurboWarp on the homepage"
-                                        id="tw.home.description"
-                                        values={{
-                                            APP_NAME
-                                        }}
-                                    />
-                                </p>
-                            </div>
-                            <div className={styles.section}>
-                                <FeaturedProjects studio="37103090" />
                             </div>
                         </React.Fragment>
                     ) : null}

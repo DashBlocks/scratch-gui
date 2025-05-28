@@ -51,20 +51,37 @@ a {
 .editor .center {
     height: 100%;
 }
+.editor .wrapper-regulator {
+    height: 100%;
+}
 
 .player-only .center {
-    margin: auto;
+    margin: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    background: $ui-primary;
+    margin: 0px;
+    padding: 0.5rem;
+    min-width: calc(100% - 1rem);
 }
-.menu {
-    margin-bottom: 8px;
+.main-section {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 .section {
-    margin: 8px 0 8px 0;
+    width: 480px;
+    background: $ui-white;
+    margin: 0px;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 0.0625rem solid $ui-black-transparent;
 }
 
 .footer {
     padding: 10px 0;
-    margin-top: 10px;
     border-top: 2px solid $ui-black-transparent;
 }
 .footer a {

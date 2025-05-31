@@ -10,7 +10,11 @@ const manifest = {
     },
     {
       "name": "GarboMuffin"
-    }
+    },
+    {
+      "name": "Maximouse",
+      "link": "https://scratch.mit.edu/users/Maximouse/"
+    },
   ],
   "userstyles": [
     {

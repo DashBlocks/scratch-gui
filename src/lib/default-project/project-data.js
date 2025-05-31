@@ -226,20 +226,6 @@ const projectData = translateFunction => {
     ],
     monitors: [],
     extensions: [],
-    customFonts: [
-        {
-            system: false,
-            family: "Lilita One Regular",
-            fallback: "Sans Serif",
-            md5ext: "934f0d7318898b570690f221ce9b6326.ttf"
-        },
-        {
-            system: false,
-            family: "obelix_pro",
-            fallback: "Sans Serif",
-            md5ext: "56a04aac7858fdfde34e867cf5e9b140.ttf"
-        }
-    ],
     meta: {
         semver: "3.0.0",
         vm: "0.2.0",

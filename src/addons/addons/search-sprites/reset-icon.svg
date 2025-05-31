@@ -1,0 +1,19 @@
+<svg
+   width="9"
+   height="8"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <path
+     fill="none"
+     stroke="#4C97FF"
+     stroke-width="2"
+     d="M 1,7.333 7.333,1 M 1,1 7.333,7.333"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     id="path1"
+     style="stroke:#575e75;stroke-opacity:1" />
+</svg>

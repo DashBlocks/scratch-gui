@@ -1,3 +1,19 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:14dbe468bc2a02ead3614b319c1e908c5b8dda399dba5f5af05ebc010453a1f5
-size 779
+<svg
+   width="20"
+   height="20"
+   viewBox="0 0 20 20.000001"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="g7">
+    <path
+       style="fill:#855cd6;fill-opacity:1;stroke:none;stroke-width:0;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1"
+       id="path7"
+       d="M 83.628796,0.5837816 77.643687,15.033113 63.194355,21.018222 48.745023,15.033113 42.759914,0.5837816 48.745023,-13.86555 l 14.449332,-5.985109 14.449332,5.985109 z"
+       transform="matrix(-0.48936989,-0.20270364,0.20270364,-0.48936989,40.80708,23.095411)" />
+  </g>
+</svg>

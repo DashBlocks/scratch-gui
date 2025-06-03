@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import greenFlagIcon from './icon--green-flag.svg';
+import greenFlagIcon from '!../../lib/tw-recolor/build!./icon--green-flag.svg';
 import styles from './green-flag.css';
 
 const GreenFlagComponent = function (props) {
@@ -23,7 +23,7 @@ const GreenFlagComponent = function (props) {
                 }
             )}
             draggable={false}
-            src={greenFlagIcon}
+            src={greenFlagIcon()}
             title={title}
             onClick={onClick}
             // tw: also fire click when opening context menu (right click on all systems and alt+click on chromebooks)

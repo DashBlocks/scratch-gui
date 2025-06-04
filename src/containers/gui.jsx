@@ -234,8 +234,12 @@ export default WrappedGui;
             box.append(header);
             header.classList.add(confirmStyles.header);
             header.innerHTML = titlehtml;
-            box.innerHTML += `<div>${html}</div>`;
-            box.classList.add(confirmStyles.text)
+            // Dash
+            const content = document.createElement("div");
+            content.innerHTML = html;
+            content.classList.add(confirmStyles.content);
+            box.append(content);
+            // ---
             const buttonRow = document.createElement("div");
             box.append(buttonRow);
             buttonRow.classList.add(confirmStyles.buttonRow);

@@ -1,0 +1,100 @@
+.base {
+    background-color: hsla(36, 100%, 50%, 0.5);
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 999999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.text {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: black;
+    margin: 16px;
+    text-align: center;
+    line-height: 1.5;
+    max-width: 500px;
+    word-break: break-word;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    padding: 0 16px;
+    box-sizing: border-box;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    letter-spacing: 0.02em;
+}
+
+.promptBox {
+    width: 540px;
+    height: 380px;
+    background-color: white;
+    border-radius: 8px;
+    outline-color: hsla(0, 0%, 100%, 0.25);
+    outline-width: 4px;
+    outline-style: solid;
+    overflow: hidden;
+    position: relative;
+    color: black;
+}
+
+.header {
+    width: 100%;
+    height: 3.125em;
+    background-color: rgb(255, 166, 0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
+.buttonRow {
+    height: 2.125em;
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    margin: 16px;
+}
+
+.promptButton {
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border: 0px;
+    border-radius: 4px;
+}
+
+.promptButton:focus {
+    outline-color: hsla(42, 100%, 50%, 0.35);
+    outline-width: 4px;
+    outline-style: solid;
+}
+
+.accept {
+    background-color: rgb(255, 166, 0);
+    color: white;
+}
+
+.deny {
+    background-color: white;
+    outline-width: 1px;
+    outline-style: solid;
+    outline-color: rgba(0, 0, 0, 0.15);
+    color: black;
+}
+
+.filePicker {
+    border: 0;
+    background-color: rgb(255, 149, 0);
+    border-radius: 4px;
+    font-weight: 600;
+    color: white;
+    font-size: 0.85rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+}

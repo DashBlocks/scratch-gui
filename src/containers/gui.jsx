@@ -40,6 +40,7 @@ import GUIComponent from '../components/gui/gui.jsx';
 import {setIsScratchDesktop} from '../lib/isScratchDesktop.js';
 import TWFullScreenResizerHOC from '../lib/tw-fullscreen-resizer-hoc.jsx';
 import TWThemeManagerHOC from './tw-theme-manager-hoc.jsx';
+import confirmStyles from './confirmation.css';
 
 const {RequestMetadata, setMetadata, unsetMetadata} = storage.scratchFetch;
 
@@ -217,3 +218,38 @@ const WrappedGui = compose(
 
 WrappedGui.setAppElement = ReactModal.setAppElement;
 export default WrappedGui;
+
+    function showPopup (titlehtml, html, acceptInstantlyIfTrue) {
+        return new Promise((resolve, reject) => {
+            if (acceptInstantlyIfTrue === true) {
+                return resolve(true);
+            }
+            const div = document.createElement("div");
+            document.body.append(div);
+            div.classList.add(confirmStyles.base);
+            const box = document.createElement("div");
+            div.append(box);
+            box.classList.add(confirmStyles.promptBox);
+            const header = document.createElement("div");
+            box.append(header);
+            header.classList.add(confirmStyles.header);
+            header.innerHTML = titlehtml;
+            box.innerHTML += `<div>${html}</div>`;
+            box.classList.add(confirmStyles.text)
+            const buttonRow = document.createElement("div");
+            box.append(buttonRow);
+            buttonRow.classList.add(confirmStyles.buttonRow);
+            const accept = document.createElement("button");
+            buttonRow.append(accept);
+            accept.classList.add(confirmStyles.promptButton);
+            accept.classList.add(confirmStyles.accept);
+            accept.innerHTML = "Close";
+            accept.onclick = () => {
+                div.remove();
+                resolve(true);
+            }
+        })
+    }
+
+// Вызов функции при загрузке редактора
+console.log(showPopup("<b>Welcome to Dash!</b>", "Hello, <b>welcome to the Dash!</b><br><br><i>Dash</i> is a <i>TurboWarp</i> and <i>PenguinMod</i> mod with <b>new features</b>.<br>Don't wait, <b>start creating right now!</b><br><br><b>It's recommended to switch language to English (if you didn't already)</b> because some texts aren't translated or translated wrong<br><br><i>Welcome!</i>", false));

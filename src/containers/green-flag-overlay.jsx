@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import VM from 'scratch-vm';
 import Box from '../components/box/box.jsx';
-import greenFlag from '../components/green-flag/icon--green-flag.svg';
+import greenFlag from '!../lib/tw-recolor/build!../components/green-flag/icon--green-flag.svg';
 import {setStartedState} from '../reducers/vm-status.js';
 
 class GreenFlagOverlay extends React.Component {

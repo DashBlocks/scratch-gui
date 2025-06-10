@@ -219,41 +219,38 @@ const WrappedGui = compose(
 WrappedGui.setAppElement = ReactModal.setAppElement;
 export default WrappedGui;
 
-    function showPopup (titlehtml, html, acceptInstantlyIfTrue) {
-        return new Promise((resolve, reject) => {
-            if (acceptInstantlyIfTrue === true) {
-                return resolve(true);
-            }
-            const div = document.createElement("div");
-            document.body.append(div);
-            div.classList.add(confirmStyles.base);
-            const box = document.createElement("div");
-            div.append(box);
-            box.classList.add(confirmStyles.promptBox);
-            const header = document.createElement("div");
-            box.append(header);
-            header.classList.add(confirmStyles.header);
-            header.innerHTML = titlehtml;
-            // Dash
-            const content = document.createElement("div");
-            content.innerHTML = html;
-            content.classList.add(confirmStyles.content);
-            box.append(content);
-            // ---
-            const buttonRow = document.createElement("div");
-            box.append(buttonRow);
-            buttonRow.classList.add(confirmStyles.buttonRow);
-            const accept = document.createElement("button");
-            buttonRow.append(accept);
-            accept.classList.add(confirmStyles.promptButton);
-            accept.classList.add(confirmStyles.accept);
-            accept.innerHTML = "Close";
-            accept.onclick = () => {
-                div.remove();
-                resolve(true);
-            }
-        })
-    }
+function showPopup (titlehtml, html) {
+    return new Promise((resolve) => {
+        const div = document.createElement("div");
+        document.body.append(div);
+        div.classList.add(confirmStyles.base);
+        const box = document.createElement("div");
+        div.append(box);
+        box.classList.add(confirmStyles.promptBox);
+        const header = document.createElement("div");
+        box.append(header);
+        header.classList.add(confirmStyles.header);
+        header.innerHTML = titlehtml;
+        // Dash
+        const content = document.createElement("div");
+        content.innerHTML = html;
+        content.classList.add(confirmStyles.content);
+        box.append(content);
+        // ---
+        const buttonRow = document.createElement("div");
+        box.append(buttonRow);
+        buttonRow.classList.add(confirmStyles.buttonRow);
+        const close = document.createElement("button");
+        buttonRow.append(close);
+        close.classList.add(confirmStyles.promptButton);
+        close.classList.add(confirmStyles.close);
+        close.innerHTML = "Close";
+        close.onclick = () => {
+            div.remove();
+            resolve();
+        }
+    })
+}
 
-// Вызов функции при загрузке редактора
-console.log(showPopup("<b>Welcome to Dash!</b>", "Hello, <b>welcome to the Dash!</b><br><br><i>Dash</i> is a <i>TurboWarp</i> and <i>PenguinMod</i> mod with <b>new features</b>.<br>Don't wait, <b>start creating right now!</b><br><br><b>It's recommended to switch language to English (if you didn't already)</b> because some texts aren't translated or translated wrong<br><br><i>Welcome!</i>", false));
+// TODO: Add a checkbox "Don't show this again" and make indents for readability ...or remake popup realization
+showPopup("<b>Welcome to Dash!</b>", "Hello, <b>welcome to the Dash!</b><br><br><i>Dash</i> is a <i>TurboWarp</i> and <i>PenguinMod</i> mod with <b>new features</b>.<br>Don't wait, <b>start creating right now!</b><br><br><b>It's recommended to switch language to English (if you didn't already)</b> because some texts aren't translated or translated wrong.<br><br><i>Welcome!</i>");

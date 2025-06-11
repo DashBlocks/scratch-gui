@@ -35,7 +35,7 @@ class GreenFlagOverlay extends React.Component {
                 <div className={this.props.className}>
                     <img
                         draggable={false}
-                        src={greenFlag}
+                        src={greenFlag()}
                     />
                 </div>
             </Box>

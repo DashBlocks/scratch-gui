@@ -408,13 +408,14 @@ export const galleryLoading = {
     name: (
         <FormattedMessage
             defaultMessage="{APP_NAME} Extension Gallery"
-            description="Name of extensions.turbowarp.org in extension library"
+            description="Name of Mod's extension gallery in extension library"
             id="tw.extensionGallery.name"
             values={{
                 APP_NAME
             }}
         />
     ),
+    // TODO: Make an Extension Gallery for Dash
     href: 'https://extensions.turbowarp.org/',
     extensionId: 'gallery',
     iconURL: galleryIcon,
@@ -434,13 +435,14 @@ export const galleryMore = {
     name: (
         <FormattedMessage
             defaultMessage="{APP_NAME} Extension Gallery"
-            description="Name of extensions.turbowarp.org in extension library"
+            description="Name of Mod's extension gallery in extension library"
             id="tw.extensionGallery.name"
             values={{
                 APP_NAME
             }}
         />
     ),
+    // TODO: Make an Extension Gallery for Dash
     href: 'https://extensions.turbowarp.org/',
     extensionId: 'gallery',
     iconURL: galleryIcon,
@@ -460,13 +462,14 @@ export const galleryError = {
     name: (
         <FormattedMessage
             defaultMessage="{APP_NAME} Extension Gallery"
-            description="Name of extensions.turbowarp.org in extension library"
+            description="Name of Mod's extension gallery in extension library"
             id="tw.extensionGallery.name"
             values={{
                 APP_NAME
             }}
         />
     ),
+    // TODO: Make an Extension Gallery for Dash
     href: 'https://extensions.turbowarp.org/',
     extensionId: 'gallery',
     iconURL: galleryIcon,

@@ -24,11 +24,14 @@ const manuallyTrustExtension = url => {
  * @returns {boolean} True if the extension can is trusted
  */
 const isTrustedExtension = url => (
-    // Always trust our official extension repostiory.
-    url.startsWith('https://extensions.turbowarp.org/') ||
+    // Always trust our official extension repository.
+    url.toLowerCase().startsWith('https://dashblocks.github.io/') || url.toLowerCase().startsWith('https://github.com/dashblocks/') ||
+
+    // Always trust official galleries.
+    url.toLowerCase().startsWith('https://extensions.turbowarp.org/') ||
 
     // For development.
-    url.startsWith('http://localhost:8000/') ||
+    url.toLowerCase().startsWith('http://localhost:') ||
 
     extensionsTrustedByUser.has(url)
 );

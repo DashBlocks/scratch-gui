@@ -56,9 +56,9 @@ const fetchLibrary = async () => {
         tags: ['tw'],
         credits: [
             ...(typeof extension.creator == 'object' ? extension.creator : [extension.creator] || []),
-            ...([extension.notes] || [])
+            ...(extension.notes ? [extension.notes] : [])
         ].map(credit => {
-            if (extension.notes && extension.notes.includes(credit)) return credit;
+            if (extension.notes && credit == extension.notes) return credit;
             return (
                 <a
                     href={extension.isGitHub ? `https://github.com/${credit}` : `https://scratch.mit.edu/users/${credit}`}

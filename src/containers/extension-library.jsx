@@ -96,7 +96,7 @@ const fetchLibrary = async () => {
         extensionId: extension.id,
         extensionURL: `https://dashblocks.github.io/extensions/static/extensions/${extension.code}`,
         iconURL: `https://dashblocks.github.io/extensions/static/images/${extension.banner || 'unknown.svg'}`,
-        tags: ['tw'],
+        tags: ['dash'],
         credits: [
             ...(typeof extension.creator == 'object' ? extension.creator : [extension.creator] || []),
             ...(extension.notes ? [extension.notes] : [])

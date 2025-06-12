@@ -55,7 +55,7 @@ const fetchLibrary = async () => {
         iconURL: `https://dashblocks.github.io/extensions/static/images/${extension.banner || 'unknown.svg'}`,
         tags: ['tw'],
         credits: [
-            ...([extension.creator] || []),
+            ...(typeof extension.creator == 'object' ? extension.creator : [extension.creator] || []),
             ...([extension.notes] || [])
         ].map((credit, index) => {
             if (index == 1) return credit;

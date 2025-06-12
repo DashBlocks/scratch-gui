@@ -42,8 +42,51 @@ const translateGalleryItem = (extension, locale) => ({
     description: extension.descriptionTranslations[locale] || extension.description
 });
 
+let cachedTwGallery = null;
 let cachedGallery = null;
 
+const fetchTwLibrary = async () => {
+    const res = await fetch('https://extensions.turbowarp.org/generated-metadata/extensions-v0.json');
+    if (!res.ok) {
+        throw new Error(`HTTP status ${res.status}`);
+    }
+    const data = await res.json();
+    return data.extensions.map(extension => ({
+        name: extension.name,
+        nameTranslations: extension.nameTranslations || {},
+        description: extension.description,
+        descriptionTranslations: extension.descriptionTranslations || {},
+        extensionId: extension.id,
+        extensionURL: `https://extensions.turbowarp.org/${extension.slug}.js`,
+        iconURL: `https://extensions.turbowarp.org/${extension.image || 'images/unknown.svg'}`,
+        tags: ['tw'],
+        credits: [
+            ...(extension.original || []),
+            ...(extension.by || [])
+        ].map(credit => {
+            if (credit.link) {
+                return (
+                    <a
+                        href={credit.link}
+                        target="_blank"
+                        rel="noreferrer"
+                        key={credit.name}
+                    >
+                        {credit.name}
+                    </a>
+                );
+            }
+            return credit.name;
+        }),
+        docsURI: extension.docs ? `https://extensions.turbowarp.org/${extension.slug}` : null,
+        samples: extension.samples ? extension.samples.map(sample => ({
+            href: `${process.env.ROOT}editor?project_url=https://extensions.turbowarp.org/samples/${encodeURIComponent(sample)}.sb3`,
+            text: sample
+        })) : null,
+        incompatibleWithScratch: !extension.scratchCompatible,
+        featured: true
+    }));
+};
 const fetchLibrary = async () => {
     return extensions.map(extension => ({
         name: extension.name,
@@ -87,6 +130,7 @@ class ExtensionLibrary extends React.PureComponent {
             'handleItemSelect'
         ]);
         this.state = {
+            twGallery: cachedTwGallery,
             gallery: cachedGallery,
             galleryError: null,
             galleryTimedOut: false
@@ -100,6 +144,21 @@ class ExtensionLibrary extends React.PureComponent {
                 });
             }, 750);
 
+            fetchTwLibrary()
+                .then(gallery => {
+                    cachedTwGallery = gallery;
+                    this.setState({
+                        twGallery: gallery
+                    });
+                    clearTimeout(timeout);
+                })
+                .catch(error => {
+                    log.error(error);
+                    this.setState({
+                        galleryError: error
+                    });
+                    clearTimeout(timeout);
+                });
             fetchLibrary()
                 .then(gallery => {
                     cachedGallery = gallery;
@@ -154,14 +213,14 @@ class ExtensionLibrary extends React.PureComponent {
     }
     render () {
         let library = null;
-        if (this.state.gallery || this.state.galleryError || this.state.galleryTimedOut) {
+        if (this.state.twGallery || this.state.galleryError || this.state.galleryTimedOut) {
             library = extensionLibraryContent.map(toLibraryItem);
             library.push('---');
-            if (this.state.gallery) {
+            if (this.state.twGallery) {
                 library.push(toLibraryItem(galleryMore));
                 const locale = this.props.intl.locale;
                 library.push(
-                    ...this.state.gallery
+                    ...this.state.twGallery
                         .map(i => translateGalleryItem(i, locale))
                         .map(toLibraryItem)
                 );
@@ -170,6 +229,17 @@ class ExtensionLibrary extends React.PureComponent {
             } else {
                 library.push(toLibraryItem(galleryLoading));
             }
+        }
+        if (this.state.gallery) {
+            library = extensionLibraryContent.map(toLibraryItem);
+            library.push('---');
+            library.push(toLibraryItem(galleryMore));
+            const locale = this.props.intl.locale;
+            library.push(
+                ...this.state.gallery
+                    .map(i => translateGalleryItem(i, locale))
+                    .map(toLibraryItem)
+            );
         }
 
         return (

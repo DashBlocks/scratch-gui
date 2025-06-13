@@ -178,6 +178,7 @@ const mapStateToProps = state => {
         fontsModalVisible: state.scratchGui.modals.fontsModal,
         unknownPlatformModalVisible: state.scratchGui.modals.unknownPlatformModal,
         invalidProjectModalVisible: state.scratchGui.modals.invalidProjectModal,
+        welcomeModalVisible: state.scratchGui.modals.welcomeModal,
         vm: state.scratchGui.vm
     };
 };
@@ -219,6 +220,7 @@ const WrappedGui = compose(
 WrappedGui.setAppElement = ReactModal.setAppElement;
 export default WrappedGui;
 
+/**
 function showPopup (titlehtml, html) {
     return new Promise((resolve) => {
         const div = document.createElement("div");
@@ -254,3 +256,4 @@ function showPopup (titlehtml, html) {
 
 // TODO: Add a checkbox "Don't show this again" and make indents for readability ...or remake popup realization
 showPopup("<b>Welcome to Dash!</b>", "Hello, <b>welcome to the Dash!</b><br><br><i>Dash</i> is a <i>TurboWarp</i> and <i>PenguinMod</i> mod with <b>new features</b>.<br>Don't wait, <b>start creating right now!</b><br><br><b>It's recommended to switch language to English (if you didn't already)</b> because some texts aren't translated or translated wrong.<br><br><i>Welcome!</i>");
+**/

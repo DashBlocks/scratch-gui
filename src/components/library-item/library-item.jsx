@@ -129,31 +129,10 @@ class LibraryItemComponent extends React.PureComponent {
                     </div>
                 )}
 
-                {this.props.credits && this.props.credits.length > 0 && (
-                    <div className={styles.extensionLinks}>
-                        <div>
-                            <FormattedMessage
-                                defaultMessage="Created by:"
-                                description="Appears in the extension list. Followed by a list of names."
-                                id="tw.createdBy"
-                            />
-                            {' '}
-                            {this.props.credits.map((credit, index) => (
-                                <React.Fragment key={index}>
-                                    {credit}
-                                    {index !== this.props.credits.length - 1 && (
-                                        ', '
-                                    )}
-                                </React.Fragment>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                {this.props.bluetoothRequired || this.props.internetConnectionRequired || this.props.collaborator ? (
+                {this.props.bluetoothRequired || this.props.internetConnectionRequired || this.props.collaborator || (this.props.credits && this.props.credits.length > 0) ? (
                     <div className={styles.featuredExtensionMetadata}>
-                        <div className={styles.featuredExtensionRequirement}>
-                            {this.props.bluetoothRequired || this.props.internetConnectionRequired ? (
+                        {this.props.bluetoothRequired || this.props.internetConnectionRequired ? (
+                            <div className={styles.featuredExtensionMetadataSection}>
                                 <div>
                                     <div>
                                         <FormattedMessage
@@ -179,10 +158,10 @@ class LibraryItemComponent extends React.PureComponent {
                                         ) : null}
                                     </div>
                                 </div>
-                            ) : null}
-                        </div>
-                        <div className={styles.featuredExtensionCollaboration}>
-                            {this.props.collaborator ? (
+                            </div>
+                        ) : null}
+                        {this.props.collaborator ? (
+                            <div className={styles.featuredExtensionMetadataSection}>
                                 <div>
                                     <div>
                                         <FormattedMessage
@@ -197,8 +176,33 @@ class LibraryItemComponent extends React.PureComponent {
                                         {this.props.collaborator}
                                     </div>
                                 </div>
-                            ) : null}
-                        </div>
+                            </div>
+                        ) : null}
+                        {this.props.credits && this.props.credits.length > 0 ? (
+                            <div className={styles.featuredExtensionMetadataSection}>
+                                <div>
+                                    <div>
+                                        <FormattedMessage
+                                            defaultMessage="Created by:"
+                                            description="Appears in the extension list. Followed by a list of names."
+                                            id="tw.createdBy"
+                                        />
+                                    </div>
+                                    <div
+                                        className={styles.featuredExtensionMetadataDetail}
+                                    >
+                                        {this.props.credits.map((credit, index) => (
+                                            <React.Fragment key={index}>
+                                                {credit}
+                                                {index !== this.props.credits.length - 1 && (
+                                                    ', '
+                                                )}
+                                            </React.Fragment>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        ) : null}
                     </div>
                 ) : null}
 

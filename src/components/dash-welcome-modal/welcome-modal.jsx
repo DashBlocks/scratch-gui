@@ -15,7 +15,7 @@ const WelcomeModalComponent = props => (
         id="welcomeModal"
     >
         <Box className={styles.body}>
-            <p className={styles.helpText}>
+            <p className={styles.text}>
                 Hello, <b>welcome to the Dash!</b>
                 <br>
                 <br>
@@ -28,7 +28,7 @@ const WelcomeModalComponent = props => (
             </p>
             <Box className={styles.buttonRow}>
                 <button
-                    className={styles.okButton}
+                    className={styles.closeButton}
                     onClick={props.onClose}
                 >Close</button>
             </Box>

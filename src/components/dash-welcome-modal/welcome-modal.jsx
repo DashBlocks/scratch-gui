@@ -41,4 +41,4 @@ WelcomeModalComponent.propTypes = {
     onClose: PropTypes.func.isRequired
 };
 
-export default injectIntl(UsernameModalComponent);
+export default injectIntl(WelcomeModalComponent);

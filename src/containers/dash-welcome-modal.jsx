@@ -24,7 +24,7 @@ class WelcomeModal extends React.Component {
     }
 }
 
-UsernameModal.propTypes = {
+WelcomeModal.propTypes = {
     onCloseWelcomeModal: PropTypes.func,
 };
 

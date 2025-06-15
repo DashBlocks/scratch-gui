@@ -25,10 +25,12 @@ const manuallyTrustExtension = url => {
  */
 const isTrustedExtension = url => (
     // Always trust our official extension repository.
-    url.toLowerCase().startsWith('https://dashblocks.github.io/') || url.toLowerCase().startsWith('https://github.com/dashblocks/') ||
+    url.toLowerCase().startsWith('https://dashblocks.github.io/') ||
+    url.toLowerCase().startsWith('https://github.com/dashblocks/') ||
 
     // Always trust official galleries.
     url.toLowerCase().startsWith('https://extensions.turbowarp.org/') ||
+    url.toLowerCase().startsWith('https://extensions.penguinmod.com/') ||
 
     // For development.
     url.toLowerCase().startsWith('http://localhost:') ||

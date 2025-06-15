@@ -11,7 +11,7 @@ import log from '../lib/log';
 import extensionLibraryContent, {
     galleryError,
     galleryLoading,
-    galleryMore
+    galleryMore // soon
 } from '../lib/libraries/extensions/index.jsx';
 import extensionTags from '../lib/libraries/tw-extension-tags';
 
@@ -233,6 +233,7 @@ class ExtensionLibrary extends React.PureComponent {
         if (this.state.gallery) {
             library = extensionLibraryContent.map(toLibraryItem);
             library.push('---');
+            library.push(toLibraryItem(galleryMore));
             const locale = this.props.intl.locale;
             library.push(
                 ...this.state.gallery

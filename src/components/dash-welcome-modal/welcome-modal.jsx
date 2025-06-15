@@ -17,13 +17,13 @@ const WelcomeModalComponent = props => (
         <Box className={styles.body}>
             <p className={styles.text}>
                 Hello, <b>welcome to the Dash!</b>
-                <br>
-                <br>
+                <br />
+                <br />
                 <i>Dash</i> is a <i>TurboWarp</i> and <i>PenguinMod</i> mod with <b>new features</b>.
-                <br>
+                <br />
                 Don't wait, <b>start creating right now!</b>
-                <br>
-                <br>
+                <br />
+                <br />
                 <b>It's recommended to switch language to English (if you didn't already)</b> because some texts aren't translated or translated wrong.
             </p>
             <Box className={styles.buttonRow}>

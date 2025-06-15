@@ -46,10 +46,10 @@ import gdxforInsetIconURL from './gdxfor/gdxfor-small.svg';
 import gdxforConnectionIconURL from './gdxfor/gdxfor-illustration.svg';
 import gdxforConnectionSmallIconURL from './gdxfor/gdxfor-small.svg';
 
-import twIcon from './tw/tw.svg';
+import twIcon from './tw/dash.svg';
 import customExtensionIcon from './custom/custom.svg';
 import returnIcon from './custom/return.svg';
-import galleryIcon from './gallery/gallery.svg';
+import galleryIcon from './gallery/gallery.png';
 import {APP_NAME} from '../../brand';
 
 export default [
@@ -361,7 +361,7 @@ export default [
         name: (
             <FormattedMessage
                 defaultMessage="{APP_NAME} Blocks"
-                description="Name of the strange 'TurboWarp Blocks' extension"
+                description="Name of the strange 'Dash Blocks' extension"
                 id="tw.twExtension.name"
                 values={{
                     APP_NAME
@@ -373,12 +373,12 @@ export default [
         description: (
             <FormattedMessage
                 defaultMessage="Weird new blocks."
-                description="Description of the strange 'TurboWarp Blocks' extension"
+                description="Description of the strange 'Dash Blocks' extension"
                 id="tw.twExtension.description"
             />
         ),
         incompatibleWithScratch: true,
-        tags: ['tw'],
+        tags: ['dash'],
         featured: true
     },
     {
@@ -416,7 +416,7 @@ export const galleryLoading = {
         />
     ),
     // TODO: Make an Extension Gallery for Dash
-    href: 'https://extensions.turbowarp.org/',
+    href: 'https://dashblocks.github.io/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
@@ -427,8 +427,9 @@ export const galleryLoading = {
             id="tw.extensionGallery.loading"
         />
     ),
-    tags: ['tw'],
-    featured: true
+    tags: ['dash'],
+    featured: true,
+    disabled: true // soon
 };
 
 export const galleryMore = {
@@ -443,19 +444,20 @@ export const galleryMore = {
         />
     ),
     // TODO: Make an Extension Gallery for Dash
-    href: 'https://extensions.turbowarp.org/',
+    href: 'https://dashblocks.github.io/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
-            defaultMessage="Learn more about extensions at extensions.turbowarp.org."
+            defaultMessage="Learn more about extensions at dashblocks.github.io/extensions."
             description="Appears after the extension list from the gallery was loaded successfully"
             id="tw.extensionGallery.more"
         />
     ),
-    tags: ['tw'],
-    featured: true
+    tags: ['dash'],
+    featured: true,
+    disabled: true // soon
 };
 
 export const galleryError = {
@@ -470,17 +472,18 @@ export const galleryError = {
         />
     ),
     // TODO: Make an Extension Gallery for Dash
-    href: 'https://extensions.turbowarp.org/',
+    href: 'https://dashblocks.github.io/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
-            defaultMessage="Error loading extension gallery. Visit extensions.turbowarp.org to find more extensions."
+            defaultMessage="Error loading extension gallery. Visit dashblocks.github.io/extensions to find more extensions."
             description="Appears when an error occurred loading extension list from the custom extension gallery"
             id="tw.extensionGallery.error"
         />
     ),
-    tags: ['tw'],
-    featured: true
+    tags: ['dash'],
+    featured: true,
+    disabled: true // soon
 };

@@ -96,9 +96,9 @@ const fetchPmLibrary = async () => {
         nameTranslations: extension.nameTranslations || {},
         description: extension.description,
         descriptionTranslations: extension.descriptionTranslations || {},
-        extensionId: extension.id,
-        extensionURL: `https://github.com/PenguinMod/PenguinMod-ExtensionsGallery/tree/main/static/extensions/${extension.code}?raw=true`,
-        iconURL: `https://github.com/PenguinMod/PenguinMod-ExtensionsGallery/tree/main/static/images/${extension.banner || 'unknown.svg'}?raw=true`,
+        extensionId: null,
+        extensionURL: `https://extensions.penguinmod.com/extensions/${extension.code}`,
+        iconURL: `https://extensions.penguinmod.com/images/${extension.banner || 'unknown.svg'}`,
         tags: ['pm'],
         credits: [
             ...(typeof extension.creator == 'object' ? extension.creator : [extension.creator] || []),
@@ -116,11 +116,8 @@ const fetchPmLibrary = async () => {
                 </a>
             );
         }),
-        docsURI: extension.documentation ? `https://dashblocks.github.io/extensions/src/lib/Documentation/${extension.documentation}.md` : null,
-        samples: extension.samples ? extension.samples.map(sample => ({
-            href: `${process.env.ROOT}editor?project_url=https://extensions.turbowarp.org/samples/${encodeURIComponent(sample)}.sb3`,
-            text: sample
-        })) : null,
+        docsURI: extension.documentation ? `https://extensions.penguinmod.com/docs/${extension.documentation}` : null,
+        samples: null,
         incompatibleWithScratch: !extension.scratchCompatible || true,
         featured: true
     }));
@@ -153,10 +150,10 @@ const fetchLibrary = async () => {
             );
         }),
         docsURI: extension.documentation ? `https://dashblocks.github.io/extensions/src/lib/Documentation/${extension.documentation}.md` : null,
-        samples: extension.samples ? extension.samples.map(sample => ({
+        samples: /*extension.samples ? extension.samples.map(sample => ({
             href: `${process.env.ROOT}editor?project_url=https://extensions.turbowarp.org/samples/${encodeURIComponent(sample)}.sb3`,
             text: sample
-        })) : null,
+        })) :*/ null,
         incompatibleWithScratch: !extension.scratchCompatible || true,
         featured: true
     }));

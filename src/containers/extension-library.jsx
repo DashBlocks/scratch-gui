@@ -213,14 +213,25 @@ class ExtensionLibrary extends React.PureComponent {
     }
     render () {
         let library = null;
-        if (this.state.twGallery || this.state.galleryError || this.state.galleryTimedOut) {
+        if (this.state.twGallery) {
             library = extensionLibraryContent.map(toLibraryItem);
             library.push('---');
-            if (this.state.twGallery) {
-                library.push(toLibraryItem(galleryMore));
+            const locale = this.props.intl.locale;
+            library.push(
+                ...this.state.twGallery
+                    .map(i => translateGalleryItem(i, locale))
+                    .map(toLibraryItem)
+            );
+        }
+        if (this.state.gallery || this.state.galleryError || this.state.galleryTimedOut) {
+            library = extensionLibraryContent.map(toLibraryItem);
+            library.push('---');
+            library.push(toLibraryItem(galleryMore));
+            const locale = this.props.intl.locale;
+            if (this.state.gallery) {
                 const locale = this.props.intl.locale;
                 library.push(
-                    ...this.state.twGallery
+                    ...this.state.gallery
                         .map(i => translateGalleryItem(i, locale))
                         .map(toLibraryItem)
                 );
@@ -229,17 +240,6 @@ class ExtensionLibrary extends React.PureComponent {
             } else {
                 library.push(toLibraryItem(galleryLoading));
             }
-        }
-        if (this.state.gallery) {
-            library = extensionLibraryContent.map(toLibraryItem);
-            library.push('---');
-            library.push(toLibraryItem(galleryMore));
-            const locale = this.props.intl.locale;
-            library.push(
-                ...this.state.gallery
-                    .map(i => translateGalleryItem(i, locale))
-                    .map(toLibraryItem)
-            );
         }
 
         return (

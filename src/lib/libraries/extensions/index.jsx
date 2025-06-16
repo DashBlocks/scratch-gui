@@ -49,7 +49,7 @@ import gdxforConnectionSmallIconURL from './gdxfor/gdxfor-small.svg';
 import twIcon from './tw/dash.svg';
 import customExtensionIcon from './custom/custom.svg';
 import returnIcon from './custom/return.svg';
-import galleryIcon from './gallery/gallery.png';
+import galleryIcon from './gallery/gallery.svg';
 import {APP_NAME} from '../../brand';
 
 export default [

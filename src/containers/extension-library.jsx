@@ -96,7 +96,7 @@ const fetchPmLibrary = async () => {
         nameTranslations: extension.nameTranslations || {},
         description: extension.description,
         descriptionTranslations: extension.descriptionTranslations || {},
-        extensionId: null,
+        extensionId: "", // Metadata of PM extensions doesn't have extensions IDs, but we need ID value as string for apply some styles
         extensionURL: `https://extensions.penguinmod.com/extensions/${extension.code}`,
         iconURL: `https://extensions.penguinmod.com/images/${extension.banner || 'unknown.svg'}`,
         tags: ['pm'],

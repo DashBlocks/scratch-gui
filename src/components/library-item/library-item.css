@@ -184,6 +184,20 @@
     height: 20px;
 }
 
+.extension-links {
+    width: 300px;Add commentMore actions
+    padding: 0 1.25rem 1rem 1.25rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    opacity: 0.75;
+    text-align: left;
+}
+.extension-links a {
+    color: inherit !important;
+    text-decoration: underline;
+}
+
 .coming-soon-text {
     position: absolute;
     background-color: $data-primary;

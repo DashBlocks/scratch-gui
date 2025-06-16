@@ -54,7 +54,7 @@ class LibraryItemComponent extends React.PureComponent {
                     {
                         [styles.disabled]: this.props.disabled
                     },
-                    (typeof this.props.extensionId === 'string' || this.props.extensionId === null) ? styles.libraryItemExtension : null,
+                    typeof this.props.extensionId === 'string' ? styles.libraryItemExtension : null,
                     this.props.hidden ? styles.hidden : null
                 )}
                 onClick={this.props.onClick}

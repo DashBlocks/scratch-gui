@@ -91,12 +91,12 @@ const fetchTwLibrary = async () => {
 };
 
 const fetchPmLibrary = async () => {
-    return pmExtensions.map(extension => ({
+    return pmExtensions.map((extension, index) => ({
         name: extension.name,
         nameTranslations: extension.nameTranslations || {},
         description: extension.description,
         descriptionTranslations: extension.descriptionTranslations || {},
-        extensionId: "", // Metadata of PM extensions doesn't have extensions IDs, but we need ID value as string for apply some styles
+        extensionId: `pm_extension_index${index}`, // Metadata of PM extensions doesn't have extensions IDs, but we need ID value as string for apply some styles and Favorite/Unfavorite working
         extensionURL: `https://extensions.penguinmod.com/extensions/${extension.code}`,
         iconURL: `https://extensions.penguinmod.com/images/${extension.banner || 'unknown.svg'}`,
         tags: ['pm'],

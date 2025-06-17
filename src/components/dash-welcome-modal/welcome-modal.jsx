@@ -7,6 +7,7 @@ import classNames from 'classnames';
 
 import poster from './dash-poster.png';
 import styles from './welcome-modal.css';
+import { APP_NAME } from '../../lib/brand.js';
 
 const WelcomeModalComponent = props => (
     <Modal
@@ -34,12 +35,17 @@ const WelcomeModalComponent = props => (
                 src={poster}
                 draggable={false}
             />
-            <Box className={styles.buttonRow}>
-                <button
-                    className={styles.closeButton}
-                    onClick={props.onClose}
-                >Close</button>
-            </Box>
+            <p className={styles.text}>
+                {APP_NAME} was made by <a href="https://scratch.mit.edu/users/damir2809">damir2809</a>, <a href="https://scratch.mit.edu/users/Den4ik-12">Den4ik-12</a>, <a href="https://scratch.mit.edu/users/scratch_craft_2">scratch_craft_2</a>, <a href="https://scratch.mit.edu/users/AnonimKing24">AnonimKing24</a> and other contributors.
+                <br />
+                View all contributors on <a href={`${process.env.ROOT}credits.html`}>credits page</a>.
+            </p>
+        </Box>
+        <Box className={styles.buttonRow}>
+            <button
+                className={styles.closeButton}
+                onClick={props.onClose}
+            >Close</button>
         </Box>
     </Modal>
 );

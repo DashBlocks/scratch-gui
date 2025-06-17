@@ -5,6 +5,7 @@ import Box from '../box/box.jsx';
 import Modal from '../../containers/modal.jsx';
 import classNames from 'classnames';
 
+import poster from './Poster for Dash with Dashy.png';
 import styles from './welcome-modal.css';
 
 const WelcomeModalComponent = props => (
@@ -27,7 +28,7 @@ const WelcomeModalComponent = props => (
                 <b>It's recommended to switch language to English (if you didn't already)</b> because some texts aren't translated or translated wrong.
                 <br />
                 <br />
-                <img src="./Poster for Dash with Dashy.png" />
+                <img src={poster} />
             </p>
             <Box className={styles.buttonRow}>
                 <button

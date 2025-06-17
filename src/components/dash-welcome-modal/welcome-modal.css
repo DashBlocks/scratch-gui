@@ -7,6 +7,8 @@
 .body {
     background: $ui-modal-background;
     padding: 1.5rem 2.25rem;
+    max-height: calc(100vh - 250px);
+    overflow-y: auto;
 }
 
 .body input[type="checkbox"],

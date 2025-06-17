@@ -25,6 +25,9 @@ const WelcomeModalComponent = props => (
                 <br />
                 <br />
                 <b>It's recommended to switch language to English (if you didn't already)</b> because some texts aren't translated or translated wrong.
+                <br />
+                <br />
+                <img src="./Poster for Dash with Dashy.png" />
             </p>
             <Box className={styles.buttonRow}>
                 <button

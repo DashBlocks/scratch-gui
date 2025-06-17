@@ -56,3 +56,6 @@
 .text {
     margin-bottom: 1rem;
 }
+.poster {
+    border-radius: 0.5rem;
+}

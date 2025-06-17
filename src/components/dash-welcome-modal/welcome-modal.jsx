@@ -28,11 +28,11 @@ const WelcomeModalComponent = props => (
                 <b>It's recommended to switch language to English (if you didn't already)</b> because some texts aren't translated or translated wrong.
                 <br />
                 <br />
-                <img
-                    className={styles.poster}
-                    src={poster}
-                />
             </p>
+            <img
+                className={styles.poster}
+                src={poster}
+            />
             <Box className={styles.buttonRow}>
                 <button
                     className={styles.closeButton}

@@ -5,7 +5,7 @@ import Box from '../box/box.jsx';
 import Modal from '../../containers/modal.jsx';
 import classNames from 'classnames';
 
-import poster from './Poster for Dash with Dashy.png';
+import poster from './dash-poster.png';
 import styles from './welcome-modal.css';
 
 const WelcomeModalComponent = props => (

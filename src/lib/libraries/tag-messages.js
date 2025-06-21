@@ -8,7 +8,7 @@ export default defineMessages({
     },
     dash: {
         defaultMessage: 'Dash',
-        description: 'Tag for filtering a library for Dash-created backdrops',
+        description: 'Tag for filtering a library for Dash-created content',
         id: 'gui.libraryTags.dash'
     },
     animals: {

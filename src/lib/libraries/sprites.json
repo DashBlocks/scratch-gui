@@ -1,5 +1,529 @@
 [
     {
+        "isStage": false,
+        "name": "Battery",
+        "tags": [
+            "dash",
+            "battery",
+            "power",
+            "energy",
+            "electricity"
+        ],
+        "variables": {},
+        "lists": {},
+        "broadcasts": {},
+        "blocks": {
+            "F.#E8{l9P8P]AZ`D]Or^": {
+                "opcode": "event_whenflagclicked",
+                "next": "!!r:U3,v}}P1?J$/A^b]",
+                "parent": null,
+                "inputs": {},
+                "fields": {},
+                "shadow": false,
+                "topLevel": true,
+                "x": 0,
+                "y": 0
+            },
+            "25NM/`GEYY1@3%VjwehV": {
+                "opcode": "looks_switchcostumeto",
+                "next": "?G1HQ/[IHqa9,Ze[u5[j",
+                "parent": "7kL}EEljvLg~B@Z=[H6]",
+                "inputs": {
+                    "COSTUME": [
+                        1,
+                        "fmHP8YxI~^yB/Sr=D+.2"
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            "fmHP8YxI~^yB/Sr=D+.2": {
+                "opcode": "looks_costume",
+                "next": null,
+                "parent": "25NM/`GEYY1@3%VjwehV",
+                "inputs": {},
+                "fields": {
+                    "COSTUME": [
+                        "battery-a",
+                        null
+                    ]
+                },
+                "shadow": true,
+                "topLevel": false
+            },
+            "oMs5;R2-bV1ikA~rRDBn": {
+                "opcode": "sound_playuntildone",
+                "next": "}S2zK9P8xRK2@j]pYn0z",
+                "parent": "S9kA|uVdbs$sLq;^$iCx",
+                "inputs": {
+                    "SOUND_MENU": [
+                        1,
+                        "S{l/Y4cJo#eYQGCEL~*s"
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            "S{l/Y4cJo#eYQGCEL~*s": {
+                "opcode": "sound_sounds_menu",
+                "next": null,
+                "parent": "oMs5;R2-bV1ikA~rRDBn",
+                "inputs": {},
+                "fields": {
+                    "SOUND_MENU": [
+                        "Connect",
+                        null
+                    ]
+                },
+                "shadow": true,
+                "topLevel": false
+            },
+            "?G1HQ/[IHqa9,Ze[u5[j": {
+                "opcode": "control_wait",
+                "next": "S9kA|uVdbs$sLq;^$iCx",
+                "parent": "25NM/`GEYY1@3%VjwehV",
+                "inputs": {
+                    "DURATION": [
+                        1,
+                        [
+                            5,
+                            "1"
+                        ]
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            "i5$%8LAE8^O~Mx4=:.!N": {
+                "opcode": "control_wait",
+                "next": "7_TcB=1SvnKG7R9Az%^z",
+                "parent": "}S2zK9P8xRK2@j]pYn0z",
+                "inputs": {
+                    "DURATION": [
+                        1,
+                        [
+                            5,
+                            "1"
+                        ]
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            "S9kA|uVdbs$sLq;^$iCx": {
+                "opcode": "looks_switchcostumeto",
+                "next": "oMs5;R2-bV1ikA~rRDBn",
+                "parent": "?G1HQ/[IHqa9,Ze[u5[j",
+                "inputs": {
+                    "COSTUME": [
+                        1,
+                        "2gLZm^f@$3L~Nj14#Z(O"
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            "2gLZm^f@$3L~Nj14#Z(O": {
+                "opcode": "looks_costume",
+                "next": null,
+                "parent": "S9kA|uVdbs$sLq;^$iCx",
+                "inputs": {},
+                "fields": {
+                    "COSTUME": [
+                        "battery-charge-a",
+                        null
+                    ]
+                },
+                "shadow": true,
+                "topLevel": false
+            },
+            "}S2zK9P8xRK2@j]pYn0z": {
+                "opcode": "looks_switchcostumeto",
+                "next": "i5$%8LAE8^O~Mx4=:.!N",
+                "parent": "oMs5;R2-bV1ikA~rRDBn",
+                "inputs": {
+                    "COSTUME": [
+                        1,
+                        "j;6~Arw+*cLO6;AspE81"
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            "j;6~Arw+*cLO6;AspE81": {
+                "opcode": "looks_costume",
+                "next": null,
+                "parent": "}S2zK9P8xRK2@j]pYn0z",
+                "inputs": {},
+                "fields": {
+                    "COSTUME": [
+                        "battery-a-a",
+                        null
+                    ]
+                },
+                "shadow": true,
+                "topLevel": false
+            },
+            "7_TcB=1SvnKG7R9Az%^z": {
+                "opcode": "looks_switchcostumeto",
+                "next": "Jh1r?k/Y=jZK:%wGbFR;",
+                "parent": "i5$%8LAE8^O~Mx4=:.!N",
+                "inputs": {
+                    "COSTUME": [
+                        1,
+                        "#P%+Sq?^5@J}-yXNbB`9"
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            "#P%+Sq?^5@J}-yXNbB`9": {
+                "opcode": "looks_costume",
+                "next": null,
+                "parent": "7_TcB=1SvnKG7R9Az%^z",
+                "inputs": {},
+                "fields": {
+                    "COSTUME": [
+                        "battery-charge-a",
+                        null
+                    ]
+                },
+                "shadow": true,
+                "topLevel": false
+            },
+            "Jh1r?k/Y=jZK:%wGbFR;": {
+                "opcode": "sound_playuntildone",
+                "next": "j;`p][WQd72/$gKUCwnT",
+                "parent": "7_TcB=1SvnKG7R9Az%^z",
+                "inputs": {
+                    "SOUND_MENU": [
+                        1,
+                        "picXqfY@:5nqE}CI1Ql0"
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            "picXqfY@:5nqE}CI1Ql0": {
+                "opcode": "sound_sounds_menu",
+                "next": null,
+                "parent": "Jh1r?k/Y=jZK:%wGbFR;",
+                "inputs": {},
+                "fields": {
+                    "SOUND_MENU": [
+                        "Connect",
+                        null
+                    ]
+                },
+                "shadow": true,
+                "topLevel": false
+            },
+            "j;`p][WQd72/$gKUCwnT": {
+                "opcode": "looks_switchcostumeto",
+                "next": "(35[o2N{gHubN_P4_Rfq",
+                "parent": "Jh1r?k/Y=jZK:%wGbFR;",
+                "inputs": {
+                    "COSTUME": [
+                        1,
+                        "Stg}`KmQ{B%^kqA$Xf!W"
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            "Stg}`KmQ{B%^kqA$Xf!W": {
+                "opcode": "looks_costume",
+                "next": null,
+                "parent": "j;`p][WQd72/$gKUCwnT",
+                "inputs": {},
+                "fields": {
+                    "COSTUME": [
+                        "battery-a-b",
+                        null
+                    ]
+                },
+                "shadow": true,
+                "topLevel": false
+            },
+            "(35[o2N{gHubN_P4_Rfq": {
+                "opcode": "control_wait",
+                "next": "QUHnLLhB??yn5ZRNSWEa",
+                "parent": "j;`p][WQd72/$gKUCwnT",
+                "inputs": {
+                    "DURATION": [
+                        1,
+                        [
+                            5,
+                            "1"
+                        ]
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            "QUHnLLhB??yn5ZRNSWEa": {
+                "opcode": "looks_switchcostumeto",
+                "next": ":b-_0%*AksJpjAb_~z18",
+                "parent": "(35[o2N{gHubN_P4_Rfq",
+                "inputs": {
+                    "COSTUME": [
+                        1,
+                        "C3%cxl#o+Phs@!r3$nJm"
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            "C3%cxl#o+Phs@!r3$nJm": {
+                "opcode": "looks_costume",
+                "next": null,
+                "parent": "QUHnLLhB??yn5ZRNSWEa",
+                "inputs": {},
+                "fields": {
+                    "COSTUME": [
+                        "battery-charge-a",
+                        null
+                    ]
+                },
+                "shadow": true,
+                "topLevel": false
+            },
+            ":b-_0%*AksJpjAb_~z18": {
+                "opcode": "sound_playuntildone",
+                "next": "4U+c;ur!hD31oABbk5C|",
+                "parent": "QUHnLLhB??yn5ZRNSWEa",
+                "inputs": {
+                    "SOUND_MENU": [
+                        1,
+                        "AFYMP%5M:3/Nb~pD4m/j"
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            "AFYMP%5M:3/Nb~pD4m/j": {
+                "opcode": "sound_sounds_menu",
+                "next": null,
+                "parent": ":b-_0%*AksJpjAb_~z18",
+                "inputs": {},
+                "fields": {
+                    "SOUND_MENU": [
+                        "Connect",
+                        null
+                    ]
+                },
+                "shadow": true,
+                "topLevel": false
+            },
+            "4U+c;ur!hD31oABbk5C|": {
+                "opcode": "looks_switchcostumeto",
+                "next": null,
+                "parent": ":b-_0%*AksJpjAb_~z18",
+                "inputs": {
+                    "COSTUME": [
+                        1,
+                        ";7=pQIH%/w192_4k3A%="
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            ";7=pQIH%/w192_4k3A%=": {
+                "opcode": "looks_costume",
+                "next": null,
+                "parent": "4U+c;ur!hD31oABbk5C|",
+                "inputs": {},
+                "fields": {
+                    "COSTUME": [
+                        "battery-a-c",
+                        null
+                    ]
+                },
+                "shadow": true,
+                "topLevel": false
+            },
+            "!!r:U3,v}}P1?J$/A^b]": {
+                "opcode": "looks_switchcostumeto",
+                "next": "7kL}EEljvLg~B@Z=[H6]",
+                "parent": "F.#E8{l9P8P]AZ`D]Or^",
+                "inputs": {
+                    "COSTUME": [
+                        1,
+                        "u^TcLB*RI9`WfM4@LycP"
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            },
+            "u^TcLB*RI9`WfM4@LycP": {
+                "opcode": "looks_costume",
+                "next": null,
+                "parent": "!!r:U3,v}}P1?J$/A^b]",
+                "inputs": {},
+                "fields": {
+                    "COSTUME": [
+                        "energy",
+                        null
+                    ]
+                },
+                "shadow": true,
+                "topLevel": false
+            },
+            "7kL}EEljvLg~B@Z=[H6]": {
+                "opcode": "control_wait",
+                "next": "25NM/`GEYY1@3%VjwehV",
+                "parent": "!!r:U3,v}}P1?J$/A^b]",
+                "inputs": {
+                    "DURATION": [
+                        1,
+                        [
+                            5,
+                            "1"
+                        ]
+                    ]
+                },
+                "fields": {},
+                "shadow": false,
+                "topLevel": false
+            }
+        },
+        "currentCostume": 4,
+        "costumes": [
+            {
+                "name": "energy",
+                "bitmapResolution": 1,
+                "dataFormat": "svg",
+                "assetId": "e5a9b87bae51fbd020e8c5767ca79799",
+                "url": "",
+                "md5ext": "e5a9b87bae51fbd020e8c5767ca79799.svg",
+                "rotationCenterX": 87.06152867347899,
+                "rotationCenterY": 107.07090043479349
+            },
+            {
+                "name": "battery-charge-a",
+                "bitmapResolution": 1,
+                "dataFormat": "svg",
+                "assetId": "66150f046b0f2e2d7892ac9aeab0cd82",
+                "md5ext": "66150f046b0f2e2d7892ac9aeab0cd82.svg",
+                "rotationCenterX": 165.4620785253303,
+                "rotationCenterY": 134.67843352533023
+            },
+            {
+                "name": "battery-charge-b",
+                "bitmapResolution": 1,
+                "dataFormat": "svg",
+                "assetId": "0288401dcc35e2bc91c9a71d1fa4500b",
+                "md5ext": "0288401dcc35e2bc91c9a71d1fa4500b.svg",
+                "rotationCenterX": 165.44769746437385,
+                "rotationCenterY": 134.66667852355076
+            },
+            {
+                "name": "battery-a",
+                "bitmapResolution": 1,
+                "dataFormat": "svg",
+                "assetId": "ff22571fe3c3caef3c2a5951e631b72f",
+                "md5ext": "ff22571fe3c3caef3c2a5951e631b72f.svg",
+                "rotationCenterX": 165.46207147884485,
+                "rotationCenterY": 134.67843927619901
+            },
+            {
+                "name": "battery-b",
+                "bitmapResolution": 1,
+                "dataFormat": "svg",
+                "assetId": "01dd8d47f14beb00cbefb8dbe4855524",
+                "md5ext": "01dd8d47f14beb00cbefb8dbe4855524.svg",
+                "rotationCenterX": 166.76199750482562,
+                "rotationCenterY": 135.73645849364476
+            },
+            {
+                "name": "battery-a-a",
+                "bitmapResolution": 1,
+                "dataFormat": "svg",
+                "assetId": "64b97db12bd91ab471628d868a8d0855",
+                "md5ext": "64b97db12bd91ab471628d868a8d0855.svg",
+                "rotationCenterX": 165.46206442818436,
+                "rotationCenterY": 134.6784322255385
+            },
+            {
+                "name": "battery-a-b",
+                "bitmapResolution": 1,
+                "dataFormat": "svg",
+                "assetId": "cedcd5003f9c12e195ddd7a99651045c",
+                "md5ext": "cedcd5003f9c12e195ddd7a99651045c.svg",
+                "rotationCenterX": 167.9214971782277,
+                "rotationCenterY": 136.68028483115575
+            },
+            {
+                "name": "battery-a-c",
+                "bitmapResolution": 1,
+                "dataFormat": "svg",
+                "assetId": "8d0f4282544ef414084ab134ec45490e",
+                "md5ext": "8d0f4282544ef414084ab134ec45490e.svg",
+                "rotationCenterX": 169.13334122618744,
+                "rotationCenterY": 137.6666739593519
+            },
+            {
+                "name": "battery-b-a",
+                "bitmapResolution": 1,
+                "dataFormat": "svg",
+                "assetId": "dcc52aea10f471174dee1324413d5b67",
+                "md5ext": "dcc52aea10f471174dee1324413d5b67.svg",
+                "rotationCenterX": 166.7619904852943,
+                "rotationCenterY": 135.73645147411344
+            },
+            {
+                "name": "battery-b-b",
+                "bitmapResolution": 1,
+                "dataFormat": "svg",
+                "assetId": "5f1aa27fd7ad9edbd7adf58fb8b5f52f",
+                "md5ext": "5f1aa27fd7ad9edbd7adf58fb8b5f52f.svg",
+                "rotationCenterX": 160.30484033451842,
+                "rotationCenterY": 130.48062922860217
+            },
+            {
+                "name": "battery-b-c",
+                "bitmapResolution": 1,
+                "dataFormat": "svg",
+                "assetId": "81ebeb0b5f3d54cc6d4e68096f329324",
+                "md5ext": "81ebeb0b5f3d54cc6d4e68096f329324.svg",
+                "rotationCenterX": 171.3334900662507,
+                "rotationCenterY": 139.45743452791612
+            }
+        ],
+        "sounds": [
+            {
+                "name": "Connect",
+                "assetId": "9aad12085708ccd279297d4bea9c5ae0",
+                "dataFormat": "wav",
+                "rate": 22050,
+                "sampleCount": 23369,
+                "md5ext": "9aad12085708ccd279297d4bea9c5ae0.wav"
+            }
+        ],
+        "volume": 100,
+        "visible": true,
+        "x": 0,
+        "y": 0,
+        "size": 100,
+        "direction": 90,
+        "draggable": false,
+        "rotationStyle": "all around"
+    },
+    {
         "name": "Abby",
         "tags": [
             "people",

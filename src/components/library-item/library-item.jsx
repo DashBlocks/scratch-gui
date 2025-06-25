@@ -95,41 +95,14 @@ class LibraryItemComponent extends React.PureComponent {
                     <span className={styles.featuredDescription}>{this.props.description}</span>
                 </div>
 
-                {(this.props.docsURI || this.props.samples) && (
-                    <div className={styles.extensionLinks}>
-                        {this.props.docsURI && (
-                            <a
-                                href={this.props.docsURI}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                <FormattedMessage
-                                    defaultMessage="Documentation"
-                                    // eslint-disable-next-line max-len
-                                    description="Appears in the extension list. Links to additional extension documentation."
-                                    id="tw.documentation"
-                                />
-                            </a>
-                        )}
-
-                        {this.props.samples && (
-                            <a
-                                href={this.props.samples[0].href}
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                <FormattedMessage
-                                    defaultMessage="Sample project"
-                                    // eslint-disable-next-line max-len
-                                    description="Appears in the extension list. Links to a sample project for an extension."
-                                    id="tw.sample"
-                                />
-                            </a>
-                        )}
-                    </div>
-                )}
-
-                {this.props.bluetoothRequired || this.props.internetConnectionRequired || this.props.collaborator || (this.props.credits && this.props.credits.length > 0) ? (
+                {(
+                  this.props.bluetoothRequired ||
+                  this.props.internetConnectionRequired ||
+                  this.props.collaborator ||
+                  (this.props.credits && this.props.credits.length > 0) ||
+                  this.props.docsURI ||
+                  this.props.samples
+                ) ? (
                     <div className={styles.featuredExtensionMetadata}>
                         {this.props.bluetoothRequired || this.props.internetConnectionRequired ? (
                             <div className={styles.featuredExtensionMetadataSection}>
@@ -198,6 +171,45 @@ class LibraryItemComponent extends React.PureComponent {
                                                     ', '
                                                 )}
                                             </React.Fragment>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                        ) : null}
+                        {this.props.docsURI || this.props.samples ? (
+                            <div className={styles.featuredExtensionMetadataSection}>
+                                <div>
+                                    <div>Resources</div>
+                                    <div
+                                        className={styles.featuredExtensionMetadataDetail}
+                                    >
+                                        {this.props.docsURI && (
+                                            <a
+                                                href={this.props.docsURI}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                <FormattedMessage
+                                                    defaultMessage="Documentation"
+                                                    // eslint-disable-next-line max-len
+                                                    description="Appears in the extension list. Links to additional extension documentation."
+                                                    id="tw.documentation"
+                                                />
+                                            </a>
+                                        )}
+                                        {this.props.samples && this.props.samples.map((sample) => (
+                                            <a
+                                                href={sample.href}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
+                                                <FormattedMessage
+                                                    defaultMessage="Sample project"
+                                                    // eslint-disable-next-line max-len
+                                                    description="Appears in the extension list. Links to a sample project for an extension."
+                                                    id="tw.sample"
+                                                />
+                                            </a>
                                         ))}
                                     </div>
                                 </div>

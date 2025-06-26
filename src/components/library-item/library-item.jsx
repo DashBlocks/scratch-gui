@@ -156,7 +156,7 @@ class LibraryItemComponent extends React.PureComponent {
                                 <div>
                                     <div>
                                         <FormattedMessage
-                                            defaultMessage="Created by:"
+                                            defaultMessage="Created by"
                                             description="Appears in the extension list. Followed by a list of names."
                                             id="tw.createdBy"
                                         />
@@ -199,7 +199,9 @@ class LibraryItemComponent extends React.PureComponent {
                                         )}
                                         {this.props.samples && (
                                             <React.Fragment>
-                                                <br />
+                                                {this.props.docsURI && (
+                                                    <br />
+                                                )}
                                                 {this.props.samples.map((sample, index) => (
                                                     <React.Fragment key={index}>
                                                         <a

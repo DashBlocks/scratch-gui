@@ -128,6 +128,35 @@ const Footer = () => (
                 />
             </div>
 
+            <div className={styles.footerText}>
+                <FormattedMessage
+                    // eslint-disable-next-line max-len
+                    defaultMessage="Dash is based on TurboWarp and PenguinMod, but not affiliated with these mods. They are available for free at: TurboWarp: {twDotOrg} PenguinMod: {pmDotCom}"
+                    description="Dash is based on TurboWarp and PenguinMod disclaimer."
+                    id="dash.footer.modBasedDisclaimer"
+                    values={{
+                        twDotOrg: (
+                            <a
+                                href="https://turbowarp.org/"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {'https://turbowarp.org/'}
+                            </a>
+                        ),
+                        pmDotCom: (
+                            <a
+                                href="https://penguinmod.com/"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {'https://penguinmod.com/'}
+                            </a>
+                        )
+                    }}
+                />
+            </div>
+
             <div className={styles.footerColumns}>
                 <div className={styles.footerSection}>
                     <a href="credits.html">

@@ -75,7 +75,7 @@
 }
 
 .tab {
-    height: calc($stage-menu-height * 0.9);
+    height: calc(($stage-menu-height - 0.5rem) * 0.9);
     margin-bottom: 0;
 
     border-radius: 1rem 1rem 0.5rem 0.5rem;
@@ -100,7 +100,7 @@
 }
 
 .tab.is-selected {
-    height: $stage-menu-height;
+    height: calc($stage-menu-height - 0.5rem);
     color: $looks-secondary;
     background-color: $ui-white;
 }

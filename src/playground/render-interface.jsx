@@ -311,7 +311,7 @@ class Interface extends React.PureComponent {
                                     selectedIndex={this.state.activeTabIndex}
                                     selectedTabClassName={tabClassNames.tabSelected}
                                     selectedTabPanelClassName={tabClassNames.tabPanelSelected}
-                                    onSelect={this.onActivateTab}
+                                    onSelect={this.onActivateTab.bind(this)}
                                 >
                                     <TabList className={tabClassNames.tabList}>
                                         <Tab className={tabClassNames.tab}>
@@ -328,7 +328,7 @@ class Interface extends React.PureComponent {
                                             className={classNames(tabClassNames.tab, {
                                                 [tabClassNames.tabDisabled]: !(description.instructions === 'unshared' || description.credits === 'unshared')
                                             })}
-                                            onClick={this.onActivateUnsharedTab}
+                                            onClick={this.onActivateUnsharedTab.bind(this)}
                                         >
                                             <FormattedMessage
                                                 defaultMessage="Unshared project"
@@ -340,7 +340,7 @@ class Interface extends React.PureComponent {
                                             className={classNames(tabClassNames.tab, {
                                                 [tabClassNames.tabDisabled]: !(hasCloudVariables && projectId !== '0')
                                             })}
-                                            onClick={this.onActivateCloudTab}
+                                            onClick={this.onActivateCloudTab.bind(this)}
                                         >
                                             <FormattedMessage
                                                 defaultMessage="Cloud variables"
@@ -352,7 +352,7 @@ class Interface extends React.PureComponent {
                                             className={classNames(tabClassNames.tab, {
                                                 [tabClassNames.tabDisabled]: !(description.instructions || description.credits)
                                             })}
-                                            onClick={this.onActivateDescriptionTab}
+                                            onClick={this.onActivateDescriptionTab.bind(this)}
                                         >
                                             <FormattedMessage
                                                 defaultMessage="Description"

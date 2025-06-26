@@ -442,12 +442,23 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
             </block>
             <block type="control_delete_this_clone"/>
         `}
+        ${blockSeparator}
+        <block type="control_get_error"/>
+        <block type="control_try_catch_error"/>
+        <block type="control_error">
+            <value name="MESSAGE">
+                <shadow type="text">
+                    <field name="TEXT">Error</field>
+                </shadow>
+            </value>
+        </block>
         ${categorySeparator}
     </category>
     `;
 };
 
 const sensing = function (isInitialSetup, isStage, targetId, colors) {
+    const hello = translate('LOOKS_HELLO', 'Hello!');
     const name = translate('SENSING_ASK_TEXT', 'What\'s your name?');
     // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
@@ -483,6 +494,32 @@ const sensing = function (isInitialSetup, isStage, targetId, colors) {
             ${blockSeparator}
         `}
         ${isInitialSetup ? '' : `
+            <block type="sensing_alert">
+                <value name="MESSAGE">
+                    <shadow type="text">
+                        <field name="TEXT">${hello}</field>
+                    </shadow>
+                </value>
+            </block>
+            <block type="sensing_prompt">
+                <value name="MESSAGE">
+                    <shadow type="text">
+                        <field name="TEXT">${name}</field>
+                    </shadow>
+                </value>
+                <value name="VALUE">
+                    <shadow type="text">
+                        <field name="TEXT"/>
+                    </shadow>
+                </value>
+            </block>
+            <block type="sensing_confirm">
+                <value name="MESSAGE">
+                    <shadow type="text">
+                        <field name="TEXT">Did you see that movie?</field>
+                    </shadow>
+                </value>
+            </block>
             <block id="askandwait" type="sensing_askandwait">
                 <value name="QUESTION">
                     <shadow type="text">

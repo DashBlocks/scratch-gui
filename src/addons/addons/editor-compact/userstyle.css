@@ -262,12 +262,15 @@ button[class*="action-menu_more-button"] {
 /* Tabs area */
 [class*="gui_tab-list"] {
   height: 2rem;
-  flex-basis: 2rem;
 }
 [class*="gui_tab_"] {
+  height: calc(1.5rem * 0.9);
   padding-left: 1rem;
   padding-right: 1rem;
   border-radius: 0.5rem 0.5rem 0.25rem 0.25rem;
+}
+[class*="gui_tab_"][class*="gui_is-selected_"] {
+  height: 1.5rem;
 }
 [class*="gui_tab_"] > img {
   display: none;

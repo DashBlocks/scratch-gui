@@ -204,7 +204,7 @@ const Footer = () => (
     </footer>
 );
 
-class Interface extends React.Component {
+class Interface extends React.PureComponent {
     constructor (props) {
         super(props);
         this.handleUpdateProjectTitle = this.handleUpdateProjectTitle.bind(this);

@@ -132,3 +132,107 @@ a {
     border-color: #ff52526e;
     background-color: #ff525240;
 }
+
+.tab-list {
+    height: $stage-menu-height;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    flex-shrink: 0;
+
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: 500;
+    font-size: 0.80rem;
+
+    /* Overrides for react-tabs styling */
+    margin: 0 !important;
+    border-bottom: 0 !important;
+
+    color: $text-primary;
+}
+
+.tab.is-disabled {
+    display: none;
+}
+
+.tab {
+    flex-grow: 1;
+    height: 80%;
+    margin-bottom: 0;
+
+    border-radius: 1rem 1rem 0 0;
+    border: 1px solid $ui-black-transparent;
+
+    padding: 0.125rem 1.25rem 0;
+    font-size: 0.75rem;
+
+    background-color: $ui-tertiary;
+    color: $text-primary-transparent;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    user-select: none;
+    white-space: nowrap;
+}
+
+.tab:hover {
+  background-color: $ui-primary;
+}
+
+.tab.is-selected {
+    height: 90%;
+    color: $looks-secondary;
+    background-color: $ui-white;
+}
+
+.tab img {
+    width: 1.375rem;
+    filter: grayscale(100%);
+}
+
+[dir="ltr"] .tab img {
+    margin-right: 0.125rem;
+}
+
+[dir="rtl"] .tab img {
+    margin-left: 0.125rem;
+}
+
+.tab.is-selected img {
+    filter: none;
+}
+
+/* Tab style overrides from react-tabs */
+.tab.is-selected:after {
+    display: none;
+}
+
+.tab.is-selected:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: $ui-black-transparent;
+}
+
+.tab.is-selected:focus:after {
+    display: none;
+}
+
+/* Body of the tabs */
+.tabs {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-panel {
+    position: relative;
+    flex-grow: 1;
+    display: none;
+}
+
+.tab-panel.is-selected {
+    display: flex;
+}

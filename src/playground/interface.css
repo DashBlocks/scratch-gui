@@ -233,5 +233,5 @@ a {
 }
 
 .tab-panel.is-selected {
-    display: flex;
+    display: block;
 }

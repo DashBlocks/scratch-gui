@@ -134,11 +134,14 @@ a {
 }
 
 .tab-list {
-    height: 2.75rem;
+    flex-basis: 2.75rem;
     width: 100%;
     display: flex;
     align-items: flex-end;
     flex-shrink: 0;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.25rem;
 
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-weight: 500;
@@ -151,15 +154,11 @@ a {
     color: $text-primary;
 }
 
-.tab.is-disabled {
-    display: none;
-}
-
 .tab {
-    height: 80%;
+    height: 90%;
     margin-bottom: 0;
 
-    border-radius: 1rem 1rem 0 0;
+    border-radius: 1rem 1rem 0.5rem 0.5rem;
     border: 1px solid $ui-black-transparent;
 
     padding: 0.125rem 1.25rem 0;
@@ -181,7 +180,7 @@ a {
 }
 
 .tab.is-selected {
-    height: 90%;
+    height: 100%;
     color: $looks-secondary;
     background-color: $ui-white;
 }

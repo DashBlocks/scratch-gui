@@ -218,7 +218,7 @@ class LibraryItemComponent extends React.PureComponent {
                                                             <br />
                                                         )}
                                                     </React.Fragment>
-                                                )}
+                                                ))}
                                             </React.Fragment>
                                         )}
                                     </div>

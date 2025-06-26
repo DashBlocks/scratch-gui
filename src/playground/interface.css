@@ -154,7 +154,7 @@ a {
 }
 
 .tab {
-    height: calc(2.75rem * 0.9);
+    height: calc(2.25rem * 0.9);
     margin-bottom: 0;
 
     border-radius: 1rem 1rem 0.5rem 0.5rem;
@@ -179,7 +179,7 @@ a {
 }
 
 .tab.is-selected {
-    height: 2.75rem;
+    height: 2.25rem;
     color: $looks-secondary;
     background-color: $ui-white;
 }

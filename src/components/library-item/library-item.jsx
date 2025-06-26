@@ -197,20 +197,30 @@ class LibraryItemComponent extends React.PureComponent {
                                                 />
                                             </a>
                                         )}
-                                        {this.props.samples && this.props.samples.map((sample) => (
-                                            <a
-                                                href={sample.href}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                            >
-                                                <FormattedMessage
-                                                    defaultMessage="Sample project"
-                                                    // eslint-disable-next-line max-len
-                                                    description="Appears in the extension list. Links to a sample project for an extension."
-                                                    id="tw.sample"
-                                                />
-                                            </a>
-                                        ))}
+                                        {this.props.samples && (
+                                            <React.Fragment>
+                                                <br />
+                                                {this.props.samples.map((sample, index) => (
+                                                    <React.Fragment key={index}>
+                                                        <a
+                                                            href={sample.href}
+                                                            target="_blank"
+                                                            rel="noreferrer"
+                                                        >
+                                                            <FormattedMessage
+                                                                defaultMessage="Sample project"
+                                                                // eslint-disable-next-line max-len
+                                                                description="Appears in the extension list. Links to a sample project for an extension."
+                                                                id="tw.sample"
+                                                            />
+                                                        </a>
+                                                        {index !== this.props.samples.length - 1 && (
+                                                            <br />
+                                                        )}
+                                                    </React.Fragment>
+                                                )}
+                                            </React.Fragment>
+                                        )}
                                     </div>
                                 </div>
                             </div>

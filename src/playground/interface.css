@@ -134,7 +134,7 @@ a {
 }
 
 .tab-list {
-    height: $stage-menu-height;
+    height: 2.75rem;
     width: 100%;
     display: flex;
     align-items: flex-end;

@@ -98,7 +98,7 @@
         'use strict';
 
         var theme = '';
-        var accent = '#ff4c4c';
+        var accent = '#ff884c';
 
         try {
           var themeSetting = localStorage.getItem('tw:theme');
@@ -112,7 +112,11 @@
         } else if (themeSetting) {
           try {
             var parsed = JSON.parse(themeSetting);
-            if (parsed.accent === 'purple') {
+            if (parsed.accent === 'green') {
+              accent = 'rgb(119, 216, 50)';
+            } else if (parsed.accent === 'red' || parsed.accent === 'rainbow') {
+              accent = '#ff4c4c';
+            } else if (parsed.accent === 'purple') {
               accent = '#855cd6';
             } else if (parsed.accent === 'blue') {
               accent = '#4c97ff';

@@ -42,6 +42,8 @@ import {loadServiceWorker} from './load-service-worker';
 import runAddons from '../addons/entry';
 import InvalidEmbed from '../components/tw-invalid-embed/invalid-embed.jsx';
 import {APP_NAME} from '../lib/brand.js';
+import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
+import tabStyles from 'react-tabs/style/react-tabs.css';
 
 import styles from './interface.css';
 
@@ -61,6 +63,16 @@ const messages = defineMessages({
         id: 'tw.guiDefaultTitle'
     }
 });
+
+const tabClassNames = {
+    tabs: styles.tabs,
+    tab: classNames(tabStyles.reactTabsTab, styles.tab),
+    tabList: classNames(tabStyles.reactTabsTabList, styles.tabList),
+    tabPanel: classNames(tabStyles.reactTabsTabPanel, styles.tabPanel),
+    tabPanelSelected: classNames(tabStyles.reactTabsTabPanelSelected, styles.isSelected),
+    tabSelected: classNames(tabStyles.reactTabsTabSelected, styles.isSelected),
+    tabDisabled: styles.isDisabled
+};
 
 const WrappedMenuBar = compose(
     SBFileUploaderHOC,
@@ -196,6 +208,9 @@ class Interface extends React.Component {
     constructor (props) {
         super(props);
         this.handleUpdateProjectTitle = this.handleUpdateProjectTitle.bind(this);
+        this.state = {
+            activeTabIndex: 0
+        };
     }
     componentDidUpdate (prevProps) {
         if (prevProps.isLoading && !this.props.isLoading) {
@@ -208,6 +223,11 @@ class Interface extends React.Component {
         } else {
             document.title = `${title} - ${APP_NAME}`;
         }
+    }
+    onActivateTab (tab) {
+        this.setState({
+            activeTabIndex: tab
+        });
     }
     render () {
         if (isInvalidEmbed) {
@@ -270,84 +290,163 @@ class Interface extends React.Component {
                                 <div className={styles.section}>
                                     <ProjectInput />
                                 </div>
-                                <div
-                                    className={styles.section}
-                                    style={{
-                                        overflowY: "auto",
-                                        maxHeight: "520px",
-                                    }}
+                                <Tabs
+                                    forceRenderTabPanel
+                                    className={tabClassNames.tabs}
+                                    selectedIndex={this.state.activeTabIndex}
+                                    selectedTabClassName={tabClassNames.tabSelected}
+                                    selectedTabPanelClassName={tabClassNames.tabPanelSelected}
+                                    onSelect={this.onActivateTab}
                                 >
-                                    {(
-                                        // eslint-disable-next-line max-len
-                                        description.instructions === 'unshared' || description.credits === 'unshared'
-                                    ) && (
-                                        <div className={classNames(styles.infobox, styles.unsharedUpdate)}>
+                                    <TabList className={tabClassNames.tabList}>
+                                        <Tab className={tabClassNames.tab}>
+                                            <FormattedMessage
+                                                defaultMessage="About {APP_NAME}"
+                                                description="Button to get to the About Dash panel"
+                                                id="dash.home.tab.about"
+                                                values={{
+                                                    APP_NAME
+                                                }}
+                                            />
+                                        </Tab>
+                                        <Tab className={classNames(tabClassNames.tab, {
+                                            [tabClassNames.tabDisabled]: !(description.instructions === 'unshared' || description.credits === 'unshared')
+                                        })}>
+                                            <FormattedMessage
+                                                defaultMessage="Error"
+                                                description="Button to get to the error panel"
+                                                id="dash.home.tab.error"
+                                            />
+                                        </Tab>
+                                        <Tab className={classNames(tabClassNames.tab, {
+                                            [tabClassNames.tabDisabled]: !(hasCloudVariables && projectId !== '0')
+                                        })}>
+                                            <FormattedMessage
+                                                defaultMessage="Cloud variables"
+                                                description="Button to get to the cloud variables panel"
+                                                id="dash.home.tab.cloud"
+                                            />
+                                        </Tab>
+                                        <Tab className={classNames(tabClassNames.tab, {
+                                            [tabClassNames.tabDisabled]: !(description.instructions === 'unshared' || description.credits === 'unshared')
+                                        })}>
+                                            <FormattedMessage
+                                                defaultMessage="Description"
+                                                description="Button to get to the description panel"
+                                                id="dash.home.tab.description"
+                                            />
+                                        </Tab>
+                                    </TabList>
+                                    <TabPanel className={tabClassNames.tabPanel}>
+                                        <div
+                                            className={styles.section}
+                                            style={{
+                                                overflowY: "auto",
+                                                maxHeight: "520px"
+                                            }}
+                                        >
                                             <p>
                                                 <FormattedMessage
-                                                    defaultMessage="Unshared projects are no longer visible."
-                                                    description="Appears on unshared projects"
-                                                    id="tw.unshared2.1"
-                                                />
-                                            </p>
-                                            <p>
-                                                <FormattedMessage
-                                                    defaultMessage="For more information, visit: {link}"
-                                                    description="Appears on unshared projects"
-                                                    id="tw.unshared.2"
+                                                    // eslint-disable-next-line max-len
+                                                    defaultMessage="{APP_NAME} is a Scratch mod that compiles projects to JavaScript to make them run really fast. Try it out by inputting a project ID or URL above or choosing a featured project below."
+                                                    description="Description of TurboWarp on the homepage"
+                                                    id="tw.home.description"
                                                     values={{
-                                                        link: (
-                                                            <a
-                                                                href="https://docs.turbowarp.org/unshared-projects"
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                            >
-                                                                {'https://docs.turbowarp.org/unshared-projects'}
-                                                            </a>
-                                                        )
+                                                        APP_NAME
                                                     }}
                                                 />
                                             </p>
-                                            <p>
-                                                <FormattedMessage
-                                                    // eslint-disable-next-line max-len
-                                                    defaultMessage="If the project was shared recently, this message may appear incorrectly for a few minutes."
-                                                    description="Appears on unshared projects"
-                                                    id="tw.unshared.cache"
-                                                />
-                                            </p>
-                                            <p>
-                                                <FormattedMessage
-                                                    // eslint-disable-next-line max-len
-                                                    defaultMessage="If this project is actually shared, please report a bug."
-                                                    description="Appears on unshared projects"
-                                                    id="tw.unshared.bug"
-                                                />
-                                            </p>
+                                            <FeaturedProjects studio="37103090" />
                                         </div>
-                                    )}
-                                    {hasCloudVariables && projectId !== '0' && (
-                                        <CloudVariableBadge />
-                                    )}
-                                    {description.instructions || description.credits ? (
-                                        <Description
-                                            instructions={description.instructions}
-                                            credits={description.credits}
-                                            projectId={projectId}
-                                        />
-                                    ) : null}
-                                    <p>
-                                        <FormattedMessage
-                                            // eslint-disable-next-line max-len
-                                            defaultMessage="{APP_NAME} is a Scratch mod that compiles projects to JavaScript to make them run really fast. Try it out by inputting a project ID or URL above or choosing a featured project below."
-                                            description="Description of TurboWarp on the homepage"
-                                            id="tw.home.description"
-                                            values={{
-                                                APP_NAME
-                                            }}
-                                        />
-                                    </p>
-                                    <FeaturedProjects studio="37103090" />
-                                </div>
+                                    </TabPanel>
+                                    <TabPanel className={tabClassNames.tabPanel}>
+                                        {(
+                                            description.instructions === 'unshared' || description.credits === 'unshared'
+                                        ) && (
+                                            <div
+                                                className={styles.section}
+                                                style={{
+                                                    overflowY: "auto",
+                                                    maxHeight: "520px"
+                                                }}
+                                            >
+                                                <div className={classNames(styles.infobox, styles.unsharedUpdate)}>
+                                                    <p>
+                                                        <FormattedMessage
+                                                            defaultMessage="Unshared projects are no longer visible."
+                                                            description="Appears on unshared projects"
+                                                            id="tw.unshared2.1"
+                                                        />
+                                                    </p>
+                                                    <p>
+                                                        <FormattedMessage
+                                                            defaultMessage="For more information, visit: {link}"
+                                                            description="Appears on unshared projects"
+                                                            id="tw.unshared.2"
+                                                            values={{
+                                                                link: (
+                                                                    <a
+                                                                        href="https://docs.turbowarp.org/unshared-projects"
+                                                                        target="_blank"
+                                                                        rel="noopener noreferrer"
+                                                                    >
+                                                                        {'https://docs.turbowarp.org/unshared-projects'}
+                                                                    </a>
+                                                                )
+                                                            }}
+                                                        />
+                                                    </p>
+                                                    <p>
+                                                        <FormattedMessage
+                                                            // eslint-disable-next-line max-len
+                                                            defaultMessage="If the project was shared recently, this message may appear incorrectly for a few minutes."
+                                                            description="Appears on unshared projects"
+                                                            id="tw.unshared.cache"
+                                                        />
+                                                    </p>
+                                                    <p>
+                                                        <FormattedMessage
+                                                            // eslint-disable-next-line max-len
+                                                            defaultMessage="If this project is actually shared, please report a bug."
+                                                            description="Appears on unshared projects"
+                                                            id="tw.unshared.bug"
+                                                        />
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </TabPanel>
+                                    <TabPanel className={tabClassNames.tabPanel}>
+                                        {hasCloudVariables && projectId !== '0' && (
+                                            <div
+                                                className={styles.section}
+                                                style={{
+                                                    overflowY: "auto",
+                                                    maxHeight: "520px"
+                                                }}
+                                            >
+                                                <CloudVariableBadge />
+                                            </div>
+                                        )}
+                                    </TabPanel>
+                                    <TabPanel className={tabClassNames.tabPanel}>
+                                        {description.instructions || description.credits ? (
+                                            <div
+                                                className={styles.section}
+                                                style={{
+                                                    overflowY: "auto",
+                                                    maxHeight: "520px"
+                                                }}
+                                            >
+                                                <Description
+                                                    instructions={description.instructions}
+                                                    credits={description.credits}
+                                                    projectId={projectId}
+                                                />
+                                            </div>
+                                        ) : null}
+                                    </TabPanel>
+                                </Tabs>
                             </div>
                         </React.Fragment>
                     ) : null}

@@ -43,10 +43,10 @@ const projectData = translateFunction => {
                     name: "Dash Backdrop",
                     bitmapResolution: 1,
                     dataFormat: "svg",
-                    assetId: "667148438894e7f6a50bed01885f284a",
-                    md5ext: "667148438894e7f6a50bed01885f284a.svg",
-                    rotationCenterX: 323.57358,
-                    rotationCenterY: 181.68168499999993
+                    assetId: "d7f058f241a41eb562c629571b12254b",
+                    md5ext: "d7f058f241a41eb562c629571b12254b.svg",
+                    rotationCenterX: 290.08191999999997,
+                    rotationCenterY: 165.80746
                 }
             ],
             sounds: [],

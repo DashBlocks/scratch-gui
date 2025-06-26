@@ -229,6 +229,21 @@ class Interface extends React.Component {
             activeTabIndex: tab
         });
     }
+    onActivateUnsharedTab () {
+        this.setState({
+            activeTabIndex: 1
+        });
+    }
+    onActivateCloudTab () {
+        this.setState({
+            activeTabIndex: 2
+        });
+    }
+    onActivateDescriptionTab () {
+        this.setState({
+            activeTabIndex: 3
+        });
+    }
     render () {
         if (isInvalidEmbed) {
             return <InvalidEmbed />;
@@ -309,27 +324,36 @@ class Interface extends React.Component {
                                                 }}
                                             />
                                         </Tab>
-                                        <Tab className={classNames(tabClassNames.tab, {
-                                            [tabClassNames.tabDisabled]: !(description.instructions === 'unshared' || description.credits === 'unshared')
-                                        })}>
+                                        <Tab
+                                            className={classNames(tabClassNames.tab, {
+                                                [tabClassNames.tabDisabled]: !(description.instructions === 'unshared' || description.credits === 'unshared')
+                                            })}
+                                            onClick={this.onActivateUnsharedTab}
+                                        >
                                             <FormattedMessage
-                                                defaultMessage="Error"
-                                                description="Button to get to the error panel"
-                                                id="dash.home.tab.error"
+                                                defaultMessage="Unshared project"
+                                                description="Button to get to the unshared project error panel"
+                                                id="dash.home.tab.unshared"
                                             />
                                         </Tab>
-                                        <Tab className={classNames(tabClassNames.tab, {
-                                            [tabClassNames.tabDisabled]: !(hasCloudVariables && projectId !== '0')
-                                        })}>
+                                        <Tab
+                                            className={classNames(tabClassNames.tab, {
+                                                [tabClassNames.tabDisabled]: !(hasCloudVariables && projectId !== '0')
+                                            })}
+                                            onClick={this.onActivateCloudTab}
+                                        >
                                             <FormattedMessage
                                                 defaultMessage="Cloud variables"
                                                 description="Button to get to the cloud variables panel"
                                                 id="dash.home.tab.cloud"
                                             />
                                         </Tab>
-                                        <Tab className={classNames(tabClassNames.tab, {
-                                            [tabClassNames.tabDisabled]: !(description.instructions === 'unshared' || description.credits === 'unshared')
-                                        })}>
+                                        <Tab
+                                            className={classNames(tabClassNames.tab, {
+                                                [tabClassNames.tabDisabled]: !(description.instructions || description.credits)
+                                            })}
+                                            onClick={this.onActivateDescriptionTab}
+                                        >
                                             <FormattedMessage
                                                 defaultMessage="Description"
                                                 description="Button to get to the description panel"

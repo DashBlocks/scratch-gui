@@ -58,7 +58,7 @@ const handleClickAddonSettings = addonId => {
 
 const messages = defineMessages({
     defaultTitle: {
-        defaultMessage: 'Run Scratch projects faster',
+        defaultMessage: 'More Blocks, Extensions, colors and other for block-based coding',
         description: 'Title of homepage',
         id: 'tw.guiDefaultTitle'
     }
@@ -128,6 +128,36 @@ const Footer = () => (
                 />
             </div>
 
+            <div className={styles.footerText}>
+                <FormattedMessage
+                    // eslint-disable-next-line max-len
+                    defaultMessage="{APP_NAME} is based on TurboWarp and PenguinMod, but not affiliated with these mods. They are available for free at: TurboWarp: {turbowarpDotOrg}. PenguinMod: {penguinmodDotCom}."
+                    description="A disclaimer that Dash is a TurboWarp and PenguinMod mod."
+                    id="tw.footer.basedOnDisclaimer"
+                    values={{
+                        APP_NAME,
+                        turbowarpDotOrg: (
+                            <a
+                                href="https://turbowarp.org/"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {'https://turbowarp.org/'}
+                            </a>
+                        ),
+                        penguinmodDotCom: (
+                            <a
+                                href="https://penguinmod.com/"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {'https://penguinmod.com'}
+                            </a>
+                        )
+                    }}
+                />
+            </div>
+
             <div className={styles.footerColumns}>
                 <div className={styles.footerSection}>
                     <a href="credits.html">
@@ -177,6 +207,13 @@ const Footer = () => (
                     </a>
                 </div>
                 <div className={styles.footerSection}>
+                    <a href="https://scratch.mit.edu/discuss/topic/828107/#post-8609237">
+                        <FormattedMessage
+                            defaultMessage="Our Forum"
+                            description="Link to Dash's forum in Scratch"
+                            id="dash.home.forum"
+                        />
+                    </a>
                     <a href="https://scratch.mit.edu/users/damir2809/#comments">
                         <FormattedMessage
                             defaultMessage="Feedback & Bugs"
@@ -184,7 +221,7 @@ const Footer = () => (
                             id="tw.feedback"
                         />
                     </a>
-                    <a href="https://github.com/TurboWarp/">
+                    <a href="https://github.com/DashBlocks/">
                         <FormattedMessage
                             defaultMessage="Source Code"
                             description="Link to source code"
@@ -372,8 +409,8 @@ class Interface extends React.PureComponent {
                                             <p>
                                                 <FormattedMessage
                                                     // eslint-disable-next-line max-len
-                                                    defaultMessage="{APP_NAME} is a Scratch mod that compiles projects to JavaScript to make them run really fast. Try it out by inputting a project ID or URL above or choosing a featured project below."
-                                                    description="Description of TurboWarp on the homepage"
+                                                    defaultMessage="{APP_NAME} is a TurboWarp and PenguinMod mod that adds more blocks, extensions, colors and other and compiles projects to JavaScript to make them run really fast. Try it out by clicking on 'See inside' button or by inputting a project ID or URL above or choosing a featured project below."
+                                                    description="Description of Dash on the homepage"
                                                     id="tw.home.description"
                                                     values={{
                                                         APP_NAME

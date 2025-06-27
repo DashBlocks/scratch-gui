@@ -58,7 +58,7 @@ const handleClickAddonSettings = addonId => {
 
 const messages = defineMessages({
     defaultTitle: {
-        defaultMessage: 'Mod of Scratch and TurboWarp',
+        defaultMessage: 'More Blocks, Extensions, and other',
         description: 'Title of homepage',
         id: 'tw.guiDefaultTitle'
     }

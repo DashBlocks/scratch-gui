@@ -490,7 +490,28 @@ class MenuBar extends React.Component {
                     styles.menuBar
                 )}
             >
-                <div className={styles.mainMenu}>
+                {(this.props.canChangeTheme || this.props.canChangeLanguage) && (<SettingsMenu
+                    className={styles.fileGroup}
+                    canChangeLanguage={this.props.canChangeLanguage}
+                    canChangeTheme={this.props.canChangeTheme}
+                    isRtl={this.props.isRtl}
+                    onClickDesktopSettings={
+                        this.props.onClickDesktopSettings &&
+                        this.handleClickDesktopSettings
+                    }
+                    // eslint-disable-next-line react/jsx-no-bind
+                    onOpenCustomSettings={
+                        this.props.onClickAddonSettings &&
+                        this.props.onClickAddonSettings.bind(null, 'editor-theme3')
+                    }
+                    onRequestClose={this.props.onRequestCloseSettings}
+                    onRequestOpen={this.props.onClickSettings}
+                    settingsMenuOpen={this.props.settingsMenuOpen}
+                />)}
+                <div className={classNames(
+                    styles.menuBarContent,
+                    {[styles.centered]: this.props.isPlayerOnly}
+                )}>
                     {this.props.isPlayerOnly && <div>
                         <MenuItemLink href={process.env.ROOT}>
                             <img
@@ -555,24 +576,27 @@ class MenuBar extends React.Component {
                                 </MenuBarMenu>
                             </MenuLabel>
                         </div>}
-                        {(this.props.canChangeTheme || this.props.canChangeLanguage) && (<SettingsMenu
-                            canChangeLanguage={this.props.canChangeLanguage}
-                            canChangeTheme={this.props.canChangeTheme}
-                            isRtl={this.props.isRtl}
-                            onClickDesktopSettings={
-                                this.props.onClickDesktopSettings &&
-                                this.handleClickDesktopSettings
-                            }
-                            // eslint-disable-next-line react/jsx-no-bind
-                            onOpenCustomSettings={
-                                this.props.onClickAddonSettings &&
-                                this.props.onClickAddonSettings.bind(null, 'editor-theme3')
-                            }
-                            onRequestClose={this.props.onRequestCloseSettings}
-                            onRequestOpen={this.props.onClickSettings}
-                            settingsMenuOpen={this.props.settingsMenuOpen}
-                        />)}
-                        {(this.props.canManageFiles) && (
+                        {this.props.isPlayerOnly && <div className={styles.menuBarItem}>
+                            <a
+                                className={styles.feedbackLink}
+                                href="https://scratch.mit.edu/discuss/topic/828107/#post-8609237"
+                                rel="noopener noreferrer"
+                                target="_blank"
+                            >
+                                {/* todo: icon */}
+                                <Button className={styles.feedbackButton}>
+                                    <FormattedMessage
+                                        defaultMessage="{APP_NAME} Forum"
+                                        description="Button to give link to forum in the menu bar"
+                                        id="tw.feedbackButton"
+                                        values={{
+                                            APP_NAME
+                                        }}
+                                    />
+                                </Button>
+                            </a>
+                        </div>}
+                        {this.props.isPlayerOnly || (this.props.canManageFiles) && (
                             <MenuLabel
                                 open={this.props.fileMenuOpen}
                                 onOpen={this.props.onClickFile}
@@ -621,7 +645,7 @@ class MenuBar extends React.Component {
                                             />
                                         </MenuItem>
                                     )}
-                                    {(this.props.canSave || this.props.canCreateCopy || this.props.canRemix) && (
+                                    {this.props.isPlayerOnly || (this.props.canSave || this.props.canCreateCopy || this.props.canRemix) && (
                                         <MenuSection>
                                             {this.props.canSave && (
                                                 <MenuItem onClick={this.handleClickSave}>
@@ -896,7 +920,7 @@ class MenuBar extends React.Component {
                             </MenuLabel>
                         )}
 
-                        {this.props.onClickAddonSettings && (
+                        {this.props.isPlayerOnly || this.props.onClickAddonSettings && (
                             <div
                                 className={classNames(styles.menuBarItem, styles.hoverable)}
                                 onClick={this.props.onClickAddonSettings}
@@ -1022,8 +1046,7 @@ class MenuBar extends React.Component {
                             />
                         ) : []))}
                     </div>
-                    {/* tw: add a feedback button */}
-                    <div className={styles.menuBarItem}>
+                    {!this.props.isPlayerOnly && <div className={styles.menuBarItem}>
                         <a
                             className={styles.feedbackLink}
                             href="https://scratch.mit.edu/discuss/topic/828107/#post-8609237"
@@ -1042,7 +1065,7 @@ class MenuBar extends React.Component {
                                 />
                             </Button>
                         </a>
-                    </div>
+                    </div>}
                 </div>
 
                 <div className={styles.accountInfoGroup}>

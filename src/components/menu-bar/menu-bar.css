@@ -33,6 +33,27 @@
     color: $menu-bar-foreground;
 }
 
+.menuBarContent {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    height: $menu-bar-height;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: $menu-bar-standard-font-size;
+    font-weight: bold;
+    background-color: $menu-bar-background;
+    background-image: $menu-bar-background-image;
+    color: $menu-bar-foreground;
+}
+
+.menuBarContent.centered {
+    justify-content: center;
+    gap: 1.5rem;
+}
+
 .main-menu {
     display: flex;
     flex-direction: row;
@@ -47,6 +68,7 @@
 }
 .dashLogo {
     vertical-align: middle;
+    padding: 0.5rem;
 }
 
 .dashLogo.clickable {
@@ -91,6 +113,17 @@
 }
 
 .file-group .menu-bar-item {
+    padding: 0 0.5rem;
+}
+
+.fileGroup {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.fileGroup .menu-bar-item {
     padding: 0 0.5rem;
 }
 

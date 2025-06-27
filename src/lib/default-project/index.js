@@ -35,7 +35,7 @@ const defaultProject = translator => {
         dataFormat: 'JSON',
         data: JSON.stringify(projectJson)
     }, {
-        id: '667148438894e7f6a50bed01885f284a',
+        id: 'd7f058f241a41eb562c629571b12254b',
         assetType: 'ImageVector',
         dataFormat: 'SVG',
         data: encoder.encode(DashBackdrop)

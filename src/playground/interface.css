@@ -153,6 +153,10 @@ a {
     color: $text-primary;
 }
 
+.tab.is-disabled {
+    display: none;
+}
+
 .tab {
     height: calc(2.25rem * 0.9);
     margin-bottom: 0;

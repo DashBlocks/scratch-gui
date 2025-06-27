@@ -185,7 +185,7 @@ module.exports = [
                 chunks: ['editor'],
                 template: 'src/playground/index.ejs',
                 filename: 'editor.html',
-                title: `${APP_NAME} - Mod of Scratch and TurboWarp`,
+                title: `${APP_NAME} - More Blocks, Extensions, and other`,
                 isEditor: true,
                 ...htmlWebpackPluginCommon
             }),
@@ -193,7 +193,7 @@ module.exports = [
                 chunks: ['player'],
                 template: 'src/playground/index.ejs',
                 filename: 'index.html',
-                title: `${APP_NAME} - Mod of Scratch and TurboWarp`,
+                title: `${APP_NAME} - More Blocks, Extensions, and other`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

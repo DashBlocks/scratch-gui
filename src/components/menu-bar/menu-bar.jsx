@@ -95,6 +95,7 @@ import editIcon from './icon--edit.svg';
 import addonsIcon from './addons.svg';
 import errorIcon from './tw-error.svg';
 import advancedIcon from './tw-advanced.svg';
+import dashLogo from './dash.png';
 
 import ninetiesLogo from './nineties_logo.svg';
 import catLogo from './cat_logo.svg';
@@ -490,6 +491,17 @@ class MenuBar extends React.Component {
                 )}
             >
                 <div className={styles.mainMenu}>
+                    {this.props.isPlayerOnly && <div>
+                        <MenuItemLink href={process.env.ROOT}>
+                            <img
+                                className={styles.dashLogo}
+                                src={dashLogo}
+                                draggable={false}
+                                width={100}
+                                height={50}
+                            />
+                        </MenuItemLink>
+                    </div>}
                     <div className={styles.fileGroup}>
                         {this.props.errors.length > 0 && <div>
                             <MenuLabel
@@ -1014,15 +1026,15 @@ class MenuBar extends React.Component {
                     <div className={styles.menuBarItem}>
                         <a
                             className={styles.feedbackLink}
-                            href="https://scratch.mit.edu/users/damir2809/#comments"
+                            href="https://scratch.mit.edu/discuss/topic/828107/#post-8609237"
                             rel="noopener noreferrer"
                             target="_blank"
                         >
                             {/* todo: icon */}
                             <Button className={styles.feedbackButton}>
                                 <FormattedMessage
-                                    defaultMessage="{APP_NAME} Feedback"
-                                    description="Button to give feedback in the menu bar"
+                                    defaultMessage="{APP_NAME} Forum"
+                                    description="Button to give link to forum in the menu bar"
                                     id="tw.feedbackButton"
                                     values={{
                                         APP_NAME

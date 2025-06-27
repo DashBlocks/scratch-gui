@@ -131,8 +131,8 @@ const Footer = () => (
             <div className={styles.footerText}>
                 <FormattedMessage
                     // eslint-disable-next-line max-len
-                    defaultMessage="{APP_NAME} is based on TurboWarp and PenguinMod, but not affiliated with these mods. They are available for free at: TurboWarp: {turbowarpDotOrg}. PenguinMod: {penguinmodDotCom}."
-                    description="A disclaimer that Dash is a TurboWarp and PenguinMod mod."
+                    defaultMessage="{APP_NAME} is based on TurboWarp and one mod of TurboWarp (we can't mention it here), but not affiliated with these mods. TurboWarp is available for free at: {turbowarpDotOrg}."
+                    description="A disclaimer that Dash is a TurboWarp and mod of TurboWarp mod."
                     id="tw.footer.basedOnDisclaimer"
                     values={{
                         APP_NAME,
@@ -409,7 +409,7 @@ class Interface extends React.PureComponent {
                                             <p>
                                                 <FormattedMessage
                                                     // eslint-disable-next-line max-len
-                                                    defaultMessage="{APP_NAME} is a TurboWarp and PenguinMod mod that adds more blocks, extensions, colors and other and compiles projects to JavaScript to make them run really fast. Try it out by clicking on 'See inside' button or by inputting a project ID or URL above or choosing a featured project below."
+                                                    defaultMessage="{APP_NAME} is based on TurboWarp and one of TurboWarp mods mod (we can't mention it here) that adds more blocks, extensions, colors and other and compiles projects to JavaScript to make them run really fast. Try it out by clicking on 'See inside' button or by inputting a project ID or URL above or choosing a featured project below."
                                                     description="Description of Dash on the homepage"
                                                     id="tw.home.description"
                                                     values={{

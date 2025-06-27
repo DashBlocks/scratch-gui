@@ -214,6 +214,32 @@ button[class*="action-menu_more-button"] {
   height: 2rem;
 }
 
+/* search-sprites addon's button */
+.sa-search-sprites-container,
+.sa-search-sprites-icon,
+.sa-search-sprites-reset {
+    width: 2rem;
+    height: 2rem;
+}
+.sa-search-sprites-icon {
+    padding: 0.25rem;
+}
+.sa-search-sprites-container .sa-search-sprites-box {
+    padding-inline-start: 2rem;
+    padding-inline-end: 2rem;
+}
+[dir="ltr"] .sa-search-sprites-container {
+  right: 4rem;
+}
+[dir="rtl"] .sa-search-sprites-container {
+  left: 4rem;
+}
+.sa-search-sprites-container:hover,
+.sa-search-sprites-container:focus-within,
+.sa-search-sprites-container:not(.sa-search-sprites-empty) {
+  width: max(12rem, calc(100% - 5rem));
+}
+
 /* Project player */
 .sa-body-editor [class*="stage-wrapper_stage-canvas-wrapper_"]:not([class*="stage-wrapper_full-screen"] *) {
   padding-top: 2rem;

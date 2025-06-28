@@ -487,33 +487,35 @@ class MenuBar extends React.Component {
             <Box
                 className={classNames(
                     this.props.className,
-                    styles.menuBar
+                    styles.menuBar,
+                    {[styles.centered]: this.props.isPlayerOnly}
                 )}
             >
-                <div className={classNames(
-                    styles.menuBarContent,
-                    {[styles.centered]: this.props.isPlayerOnly}
-                )}>
-                    {this.props.isPlayerOnly && <div className={styles.settingsGroup}>
-                        {(this.props.canChangeTheme || this.props.canChangeLanguage) && <SettingsMenu
-                            className={styles.settingsGroup}
-                            canChangeLanguage={this.props.canChangeLanguage}
-                            canChangeTheme={this.props.canChangeTheme}
-                            isRtl={this.props.isRtl}
-                            onClickDesktopSettings={
-                                this.props.onClickDesktopSettings &&
-                                this.handleClickDesktopSettings
-                            }
-                            // eslint-disable-next-line react/jsx-no-bind
-                            onOpenCustomSettings={
-                                this.props.onClickAddonSettings &&
-                                this.props.onClickAddonSettings.bind(null, 'editor-theme3')
-                            }
-                            onRequestClose={this.props.onRequestCloseSettings}
-                            onRequestOpen={this.props.onClickSettings}
-                            settingsMenuOpen={this.props.settingsMenuOpen}
-                        />}
-                    </div>}
+                {this.props.isPlayerOnly && (
+                    <div className={styles.settingsMenu}>
+                        <div className={styles.settingsGroup}>
+                            {(this.props.canChangeTheme || this.props.canChangeLanguage) && <SettingsMenu
+                                className={styles.settingsGroup}
+                                canChangeLanguage={this.props.canChangeLanguage}
+                                canChangeTheme={this.props.canChangeTheme}
+                                isRtl={this.props.isRtl}
+                                onClickDesktopSettings={
+                                    this.props.onClickDesktopSettings &&
+                                    this.handleClickDesktopSettings
+                                }
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onOpenCustomSettings={
+                                    this.props.onClickAddonSettings &&
+                                    this.props.onClickAddonSettings.bind(null, 'editor-theme3')
+                                }
+                                onRequestClose={this.props.onRequestCloseSettings}
+                                onRequestOpen={this.props.onClickSettings}
+                                settingsMenuOpen={this.props.settingsMenuOpen}
+                            />}
+                        </div>
+                    </div>
+                )}
+                <div className={styles.mainMenu}>
                     <div className={styles.fileGroup}>
                         {this.props.isPlayerOnly && (
                             <a

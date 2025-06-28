@@ -490,40 +490,64 @@ class MenuBar extends React.Component {
                     styles.menuBar
                 )}
             >
-                {(this.props.canChangeTheme || this.props.canChangeLanguage) && (<SettingsMenu
-                    className={styles.fileGroup}
-                    canChangeLanguage={this.props.canChangeLanguage}
-                    canChangeTheme={this.props.canChangeTheme}
-                    isRtl={this.props.isRtl}
-                    onClickDesktopSettings={
-                        this.props.onClickDesktopSettings &&
-                        this.handleClickDesktopSettings
-                    }
-                    // eslint-disable-next-line react/jsx-no-bind
-                    onOpenCustomSettings={
-                        this.props.onClickAddonSettings &&
-                        this.props.onClickAddonSettings.bind(null, 'editor-theme3')
-                    }
-                    onRequestClose={this.props.onRequestCloseSettings}
-                    onRequestOpen={this.props.onClickSettings}
-                    settingsMenuOpen={this.props.settingsMenuOpen}
-                />)}
                 <div className={classNames(
                     styles.menuBarContent,
                     {[styles.centered]: this.props.isPlayerOnly}
                 )}>
-                    {this.props.isPlayerOnly && <div>
-                        <MenuItemLink href={process.env.ROOT}>
-                            <img
-                                className={styles.dashLogo}
-                                src={dashLogo}
-                                draggable={false}
-                                width={100}
-                                height={50}
-                            />
-                        </MenuItemLink>
+                    {this.props.isPlayerOnly && <div className={styles.settingsGroup}>
+                        {(this.props.canChangeTheme || this.props.canChangeLanguage) && <SettingsMenu
+                            className={styles.settingsGroup}
+                            canChangeLanguage={this.props.canChangeLanguage}
+                            canChangeTheme={this.props.canChangeTheme}
+                            isRtl={this.props.isRtl}
+                            onClickDesktopSettings={
+                                this.props.onClickDesktopSettings &&
+                                this.handleClickDesktopSettings
+                            }
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onOpenCustomSettings={
+                                this.props.onClickAddonSettings &&
+                                this.props.onClickAddonSettings.bind(null, 'editor-theme3')
+                            }
+                            onRequestClose={this.props.onRequestCloseSettings}
+                            onRequestOpen={this.props.onClickSettings}
+                            settingsMenuOpen={this.props.settingsMenuOpen}
+                        />}
                     </div>}
                     <div className={styles.fileGroup}>
+                        {this.props.isPlayerOnly && (
+                            <a
+                                href=""
+                                rel="noreferrer"
+                                target="_blank"
+                            >
+                                <div className={classNames(styles.menuBarItem, styles.hoverable)}>
+                                    <img
+                                        className={styles.dashLogo}
+                                        src={dashLogo}
+                                        draggable={false}
+                                    />
+                                </div>
+                            </a>
+                        )}
+                        {!this.props.isPlayerOnly && (this.props.canChangeTheme || this.props.canChangeLanguage) && (<SettingsMenu
+                            className={styles.fileGroup}
+                            canChangeLanguage={this.props.canChangeLanguage}
+                            canChangeTheme={this.props.canChangeTheme}
+                            isRtl={this.props.isRtl}
+                            onClickDesktopSettings={
+                                this.props.onClickDesktopSettings &&
+                                this.handleClickDesktopSettings
+                            }
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onOpenCustomSettings={
+                                this.props.onClickAddonSettings &&
+                                this.props.onClickAddonSettings.bind(null, 'editor-theme3')
+                            }
+                            onRequestClose={this.props.onRequestCloseSettings}
+                            onRequestOpen={this.props.onClickSettings}
+                            settingsMenuOpen={this.props.settingsMenuOpen}
+                        />)}
                         {this.props.errors.length > 0 && <div>
                             <MenuLabel
                                 open={this.props.errorsMenuOpen}

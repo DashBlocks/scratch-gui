@@ -32,26 +32,19 @@
     background-image: $menu-bar-background-image;
     color: $menu-bar-foreground;
 }
-
-.menuBarContent {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    box-sizing: border-box;
-    height: $menu-bar-height;
-    justify-content: flex-start;
-    gap: 0.5rem;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: $menu-bar-standard-font-size;
-    font-weight: bold;
-    background-color: $menu-bar-background;
-    background-image: $menu-bar-background-image;
-    color: $menu-bar-foreground;
+.menu-bar.centered {
+    justify-content: center;
 }
 
-.menuBarContent.centered {
-    justify-content: center;
-    gap: 1.5rem;
+.settings-menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.5rem;
+    position: absolute;
+    left: 0;
 }
 
 .main-menu {
@@ -63,16 +56,15 @@
     flex-grow: 1;
     gap: 0.5rem;
 }
+.menu-bar.centered > .main-menu {
+    flex-grow: 0;
+}
+
 .inactive {
     opacity: 0;
 }
 .dashLogo {
-    vertical-align: middle;
-    padding: 0.5rem;
-}
-
-.dashLogo.clickable {
-    cursor: pointer;
+    height: 2.5rem;
 }
 
 .menu-bar-item {
@@ -105,25 +97,14 @@
     width: 2rem;
 }
 
-.file-group {
+.file-group, .settings-group {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 0.5rem;
 }
 
-.file-group .menu-bar-item {
-    padding: 0 0.5rem;
-}
-
-.fileGroup {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.fileGroup .menu-bar-item {
+.file-group .menu-bar-item, .settings-group .menu-bar-item {
     padding: 0 0.5rem;
 }
 
@@ -172,6 +153,11 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+.menu-bar.centered > .account-info-group {
+    flex-grow: 0;
+    position: absolute;
+    right: 0;
 }
 
 .account-info-group .menu-bar-item {

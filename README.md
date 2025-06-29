@@ -1,4 +1,6 @@
-scratch-gui modified for use in [Dash](https://dashblocks.github.io/)
+# DashBlocks/scratch-gui
+
+@TurboWarp/scratch-gui modified for use in [Dash](https://dashblocks.github.io/) (@DashBlocks/scratch-gui)
 
 ## Setup
 

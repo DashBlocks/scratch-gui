@@ -442,16 +442,6 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
             </block>
             <block type="control_delete_this_clone"/>
         `}
-        <!--${blockSeparator}
-        <block type="control_get_error"/>
-        <block type="control_try_catch_error"/>
-        <block type="control_error">
-            <value name="MESSAGE">
-                <shadow type="text">
-                    <field name="TEXT">Error</field>
-                </shadow>
-            </value>
-        </block>-->
         ${categorySeparator}
     </category>
     `;

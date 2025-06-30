@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import TWRenderRecoloredImage from '../../lib/tw-recolor/render.jsx';
+
 import stopAllIcon from '!../../lib/tw-recolor/build!./icon--stop-all.svg';
 import styles from './stop-all.css';
 
@@ -14,7 +16,7 @@ const StopAllComponent = function (props) {
         ...componentProps
     } = props;
     return (
-        <img
+        <TWRenderRecoloredImage
             className={classNames(
                 className,
                 styles.stopAll,
@@ -23,7 +25,7 @@ const StopAllComponent = function (props) {
                 }
             )}
             draggable={false}
-            src={stopAllIcon()}
+            src={stopAllIcon}
             title={title}
             onClick={onClick}
             {...componentProps}

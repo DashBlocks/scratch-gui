@@ -2,6 +2,8 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import TWRenderRecoloredImage from '../../lib/tw-recolor/render.jsx';
+
 import greenFlagIcon from '!../../lib/tw-recolor/build!./icon--green-flag.svg';
 import styles from './green-flag.css';
 
@@ -14,7 +16,7 @@ const GreenFlagComponent = function (props) {
         ...componentProps
     } = props;
     return (
-        <img
+        <TWRenderRecoloredImage
             className={classNames(
                 className,
                 styles.greenFlag,
@@ -23,7 +25,7 @@ const GreenFlagComponent = function (props) {
                 }
             )}
             draggable={false}
-            src={greenFlagIcon()}
+            src={greenFlagIcon}
             title={title}
             onClick={onClick}
             // tw: also fire click when opening context menu (right click on all systems and alt+click on chromebooks)

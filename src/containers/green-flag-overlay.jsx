@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import VM from 'scratch-vm';
 import Box from '../components/box/box.jsx';
+import TWRenderRecoloredImage from '../lib/tw-recolor/render.jsx';
 import greenFlag from '!../lib/tw-recolor/build!../components/green-flag/icon--green-flag.svg';
 import {setStartedState} from '../reducers/vm-status.js';
 
@@ -33,9 +34,9 @@ class GreenFlagOverlay extends React.Component {
                 onClick={this.handleClick}
             >
                 <div className={this.props.className}>
-                    <img
+                    <TWRenderRecoloredImage
                         draggable={false}
-                        src={greenFlag()}
+                        src={greenFlag}
                     />
                 </div>
             </Box>

@@ -1,13 +1,12 @@
 @import "../../css/colors.css";
 
 .description {
-    max-height: 250px;
+    max-height: calc(520px - 1rem - 0.125rem - 2px);
     overflow: auto;
     white-space: pre-line;
     overflow-wrap: break-word;
     line-height: 1.5em;
     padding: 0.5rem;
-    margin: 5px 0 8px 0;
     border: 1px solid $badge-border;
     background-color: $badge-background;
     border-radius: 0.5rem;

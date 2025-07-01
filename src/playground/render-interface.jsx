@@ -45,6 +45,11 @@ import {APP_NAME} from '../lib/brand.js';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import tabStyles from 'react-tabs/style/react-tabs.css';
 
+import aboutIcon from '!../lib/tw-recolor/build!./icons/icon--about.svg';
+import unsharedIcon from '!../lib/tw-recolor/build!./icons/icon--unshared.svg';
+import cloudIcon from '!../lib/tw-recolor/build!./icons/icon--cloud.svg';
+import descriptionIcon from '!../lib/tw-recolor/build!./icons/icon--description.svg';
+
 import styles from './interface.css';
 
 const isInvalidEmbed = window.parent !== window;
@@ -352,6 +357,10 @@ class Interface extends React.PureComponent {
                                 >
                                     <TabList className={tabClassNames.tabList}>
                                         <Tab className={tabClassNames.tab}>
+                                            <img
+                                                draggable={false}
+                                                src={aboutIcon()}
+                                            />
                                             <FormattedMessage
                                                 defaultMessage="About {APP_NAME}"
                                                 description="Button to get to the About Dash panel"
@@ -367,6 +376,10 @@ class Interface extends React.PureComponent {
                                             })}
                                             onClick={this.onActivateUnsharedTab.bind(this)}
                                         >
+                                            <img
+                                                draggable={false}
+                                                src={unsharedIcon()}
+                                            />
                                             <FormattedMessage
                                                 defaultMessage="Unshared project"
                                                 description="Button to get to the unshared project error panel"
@@ -379,6 +392,10 @@ class Interface extends React.PureComponent {
                                             })}
                                             onClick={this.onActivateCloudTab.bind(this)}
                                         >
+                                            <img
+                                                draggable={false}
+                                                src={cloudIcon()}
+                                            />
                                             <FormattedMessage
                                                 defaultMessage="Cloud variables"
                                                 description="Button to get to the cloud variables panel"
@@ -391,6 +408,10 @@ class Interface extends React.PureComponent {
                                             })}
                                             onClick={this.onActivateDescriptionTab.bind(this)}
                                         >
+                                            <img
+                                                draggable={false}
+                                                src={descriptionIcon()}
+                                            />
                                             <FormattedMessage
                                                 defaultMessage="Description"
                                                 description="Button to get to the description panel"

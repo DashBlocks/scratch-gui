@@ -1,4 +1,41 @@
-[
+[       {
+        "name": "Dashy",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "30912c9a658a14b72af2d6f3eca41daf",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "30912c9a658a14b72af2d6f3eca41daf.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },
+      {
+        "name": "home",
+        "tags": [
+            "dash",
+            "home"
+        ],
+        "assetId": "2d9b44b41f85aced350b87bc21c9c39b",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "2d9b44b41f85aced350b87bc21c9c39b.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },
+       {
+        "name": "home-2",
+        "tags": [
+            "dash",
+            "home"
+        ],
+        "assetId": "f920040d9e13fb50a0c0a63ddb8db381",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "f920040d9e13fb50a0c0a63ddb8db381.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },
     {
         "name": "Abby-a",
         "tags": [

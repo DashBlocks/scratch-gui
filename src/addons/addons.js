@@ -24,6 +24,7 @@ const addons = [
     'block-count',
     'onion-skinning',
     'paint-snap',
+    'paint-gradient-maker',
     'default-costume-editor-color',
     'bitmap-copy',
     '2d-color-picker',
@@ -84,6 +85,7 @@ const addons = [
 ];
 
 const newAddons = [
+    'paint-gradient-maker',
     'expanded-backpack'
 ];
 

@@ -17,7 +17,7 @@ export default async function () {
     let observerUsed = false;
     let modalStorage = {};
 
-    /* Internal Utils */
+    // Internal Utils
     function position2Angle(p1, p2) {
         const dx = p1.x - p2.x;
         const dy = p1.y - p2.y;
@@ -75,7 +75,7 @@ export default async function () {
     }
 
     function setSelected2Grad(settings) {
-        // compile SVG-based gradient
+        // Compile SVG-based gradient
         const sortedParts = [...settings.parts].sort((a, b) => a.p - b.p);
         const gradStops = sortedParts.map(part => new paper.GradientStop(part.c, part.p / 100));
         const gradient = new paper.Gradient(gradStops, settings.type === "Radial");
@@ -95,10 +95,10 @@ export default async function () {
             item[settings.path] = { gradient, origin, destination };
         });
 
-        // update drawing & action
+        // Update drawing & action
         if (paper.tool.onUpdateImage) paper.tool.onUpdateImage();
 
-        // set with html otherwise GUI will crash
+        // Set with HTML otherwise GUI will crash
         const swatch = document.querySelectorAll(
             `div[class^=color-button_color-button_] div[class^=color-button_color-button-swatch_]`
         )[settings.path === "fillColor" ? 0 : 1];
@@ -127,7 +127,7 @@ export default async function () {
         const { gradient, origin, destination } = extractGradient(item[modalStorage.path]);
         if (!gradient || !origin || !destination) return draggableDiv.append(createDraggable(), createDraggable());
 
-        // create draggables
+        // Create draggables
         const newStops = gradient.stops.map((s, i) => {
             // "offset" will be undefined when using Scratch gradients, which dont have set-stops
             const alpha = Math.round(s.color.alpha * 255).toString(16).padStart(2, "0");
@@ -135,7 +135,7 @@ export default async function () {
         });
         draggableDiv.append(...newStops);
 
-        // preset values
+        // Preset values
         const angle = position2Angle(destination, origin);
         settingsDiv.querySelector("select").value = gradient.radial ? "Radial" : "Linear";
         settingsDiv.querySelector("input").value = angle;
@@ -144,14 +144,14 @@ export default async function () {
     }
 
     function decodeFromCache(settings, draggableDiv, settingsDiv) {
-        // create draggables
+        // Create draggables
         const newStops = settings.parts.map((s, i) => {
             // "p" will be NaN when using Scratch gradients, which dont have set-stops
             return createDraggable(s.c, isNaN(s.p) ? i * 100 : s.p)
         });
         draggableDiv.append(...newStops);
 
-        // preset values
+        // Preset values
         settingsDiv.querySelector("select").value = settings.type;
         settingsDiv.querySelector("input").value = settings.dir;
         modalStorage.type = settings.type;
@@ -161,12 +161,12 @@ export default async function () {
     function handleFillEvent(paint) {
         if (!modalStorage._gradCache) return;
 
-        // set the GUI gradient mode to linear so we can position our gradients
+        // Set the GUI gradient mode to linear so we can position our gradients
         paint.fillMode.gradientType = "HORIZONTAL";
         paint.color.fillColor.gradientType = "HORIZONTAL";
         paint.color.strokeColor.gradientType = "HORIZONTAL";
 
-        // set the swatch color in case the GUI resets it
+        // Set the swatch color in case the GUI resets it
         const swatch = document.querySelector(`div[class^=color-button_color-button_] div[class^=color-button_color-button-swatch_]`);
         if (swatch) queueMicrotask(() => {
             if (!modalStorage._gradCache) return;
@@ -200,7 +200,7 @@ export default async function () {
     function handleShapeModeEvent(type) {
         if (!modalStorage._gradCache && type !== "TEXT") return;
 
-        // set the swatch color in case the GUI resets it
+        // Set the swatch color in case the GUI resets it
         const swatch = document.querySelector(`div[class^=color-button_color-button_] div[class^=color-button_color-button-swatch_]`);
         if (swatch) queueMicrotask(() => {
             if (!modalStorage._gradCache) return;
@@ -210,7 +210,7 @@ export default async function () {
         const tool = paper.tool;
         if (typeof tool?._onMouseDrag !== "function") return;
         if (tool[symbolTag]) return;
-        // patch this event, if not already, to run our code
+        // Patch this event, if not already, to run our code
 
         const funcName = type === "TEXT" ? "onKeyDown" : "onMouseDrag";
         const ogOnFunc = tool[funcName];
@@ -218,7 +218,7 @@ export default async function () {
         tool[funcName] = function (...args) {
             ogOnFunc.call(this, ...args);
 
-            // replace the fill with the custom gradient
+            // Replace the fill with the custom gradient
             if (!modalStorage._gradCache) {
                 if (type === "TEXT") {
                     tool.element.style.background = "";
@@ -280,7 +280,7 @@ export default async function () {
         }
     }
 
-    /* GUI Utils */
+    // GUI Utils
     function getButtonURI(name, dontCompile) {
         const themeHex = document.documentElement.style.getPropertyValue("--looks-secondary");
         const guiSVG = guiIMGS[name].replace("red", themeHex);
@@ -303,7 +303,7 @@ export default async function () {
             if (fillCSSGrad) {
                 fillSwatch.style.background = fillCSSGrad;
 
-                // update cache
+                // Update cache
                 const { gradient, destination, origin } = fillGrad;
                 modalStorage._gradCache = {
                     gradient,
@@ -520,7 +520,7 @@ export default async function () {
         display.style.background = encodeGradHTML(modalStorage);
     }
 
-    /* Main GUI */
+    // Main GUI
     function openGradientMaker() {
         const paint = ReduxStore.getState().scratchPaint;
         const oldCache = modalStorage._gradCache;
@@ -584,7 +584,7 @@ export default async function () {
             if (!paint || paint?.format === undefined || paint?.format === null) return;
             const { mode, selectedItems, modals } = paint;
 
-            // no bitmap support :(
+            // No bitmap support
             if (paint.format.startsWith("BITMAP")) {
                 if (customBtn) {
                     customBtn.remove();
@@ -593,7 +593,7 @@ export default async function () {
                 return;
             }
 
-            // run relative tool events
+            // Run relative tool events
             if (mode === "FILL") handleFillEvent(paint);
             else if (paperLinkModes.has(mode)) handleShapeModeEvent(mode);
 
@@ -604,18 +604,18 @@ export default async function () {
             lastSelected = idChain;
             lastModals = modalChain;
 
-            // decode potential custom gradients
+            // Decode potential custom gradients
             if (selectedItems?.length) showSelectedGrad(selectedItems[0]);
             else if (mode === "SELECT" || mode === "RESHAPE") modalStorage._gradCache = undefined;
 
-            // add custom modal
+            // Add custom modal
             if (!modals.strokeColor && !modals.fillColor) return;
             if (observerUsed) return;
             const observer = new MutationObserver(() => {
                 const gradRow = document.querySelector(`div[class^="color-picker_gradient-picker-row_"]`);
                 if (!gradRow || gradRow.lastElementChild.id === customID) return;
 
-                // get the appropriate class names for selected items
+                // Get the appropriate class names for selected items
                 if (!selectedClassName) initGradSelectClasses(gradRow);
                 const children = Array.from(gradRow.children);
 

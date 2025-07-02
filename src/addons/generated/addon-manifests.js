@@ -22,6 +22,7 @@ import _remove_sprite_confirm from "../addons/remove-sprite-confirm/_manifest_en
 import _block_count from "../addons/block-count/_manifest_entry.js";
 import _onion_skinning from "../addons/onion-skinning/_manifest_entry.js";
 import _paint_snap from "../addons/paint-snap/_manifest_entry.js";
+import _paint_gradient_maker from "../addons/paint-gradient-maker/_manifest_entry.js";
 import _default_costume_editor_color from "../addons/default-costume-editor-color/_manifest_entry.js";
 import _bitmap_copy from "../addons/bitmap-copy/_manifest_entry.js";
 import _2d_color_picker from "../addons/2d-color-picker/_manifest_entry.js";
@@ -103,6 +104,7 @@ export default {
   "block-count": _block_count,
   "onion-skinning": _onion_skinning,
   "paint-snap": _paint_snap,
+  "paint-gradient-maker": _paint_gradient_maker,
   "default-costume-editor-color": _default_costume_editor_color,
   "bitmap-copy": _bitmap_copy,
   "2d-color-picker": _2d_color_picker,

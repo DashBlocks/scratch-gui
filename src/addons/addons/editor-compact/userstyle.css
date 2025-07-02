@@ -23,9 +23,9 @@
 }
 
 /* Menu bar */
-[class*="menu-bar_file-group_"] [class*="menu-bar_hoverable_"] > img,
-[class*="menu-bar_divider"],
-[class*="menu-bar_help-icon"] {
+.sa-body-editor [class*="menu-bar_file-group_"] [class*="menu-bar_hoverable_"] > img,
+.sa-body-editor [class*="menu-bar_divider"],
+.sa-body-editor [class*="menu-bar_help-icon"] {
   display: none;
 }
 [class*="menu-bar_collapsible-label_"],
@@ -40,8 +40,8 @@
   }
 }
 
-[class*="gui_menu-bar-position"][class*="menu-bar_menu-bar"][class*="box_box"],
-[class*="menu-bar_menu-bar-item"] {
+.sa-body-editor [class*="gui_menu-bar-position"][class*="menu-bar_menu-bar"][class*="box_box"],
+.sa-body-editor [class*="menu-bar_menu-bar-item"] {
   height: 2rem;
 }
 
@@ -50,7 +50,7 @@
   margin: 0;
   padding: 0 0.5rem;
 }
-[class*="menu-bar_menu-bar-menu"] {
+.sa-body-editor [class*="menu-bar_menu-bar-menu"] {
   margin-top: 2rem;
 }
 [class*="menu_menu-item"] {
@@ -58,8 +58,8 @@
   padding: 0 0.5rem;
 }
 
-[class*="menu-bar_menu-bar-button"],
-[class*="menu-bar_feedback-button_"] {
+.sa-body-editor [class*="menu-bar_menu-bar-button"],
+.sa-body-editor [class*="menu-bar_feedback-button_"] {
   height: 1.5rem;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -218,26 +218,30 @@ button[class*="action-menu_more-button"] {
 .sa-search-sprites-container,
 .sa-search-sprites-icon,
 .sa-search-sprites-reset {
-    width: 2rem;
-    height: 2rem;
+  width: 2rem !important;
+  height: 2rem !important;
 }
 .sa-search-sprites-icon {
-    padding: 0.25rem;
+  padding: 0.25rem !important;
 }
 .sa-search-sprites-container .sa-search-sprites-box {
-    padding-inline-start: 2rem;
-    padding-inline-end: 2rem;
+  padding-inline-start: 2rem !important;
 }
 [dir="ltr"] .sa-search-sprites-container {
-  right: 4rem;
+  right: 4rem !important;
 }
 [dir="rtl"] .sa-search-sprites-container {
-  left: 4rem;
+  left: 4rem !important;
 }
 .sa-search-sprites-container:hover,
 .sa-search-sprites-container:focus-within,
 .sa-search-sprites-container:not(.sa-search-sprites-empty) {
-  width: max(12rem, calc(100% - 5rem));
+  width: max(12rem, calc(100% - 5rem)) !important;
+}
+.sa-search-sprites-container:hover input.sa-search-sprites-box,
+.sa-search-sprites-container:focus-within input.sa-search-sprites-box,
+.sa-search-sprites-container:not(.sa-search-sprites-empty) input.sa-search-sprites-box {
+  padding-inline-end: 2rem !important;
 }
 
 /* Project player */

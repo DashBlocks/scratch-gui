@@ -23,6 +23,7 @@ export default {
   "block-count": () => import(/* webpackChunkName: "addon-entry-block-count" */ "../addons/block-count/_runtime_entry.js"),
   "onion-skinning": () => import(/* webpackChunkName: "addon-default-entry" */ "../addons/onion-skinning/_runtime_entry.js"),
   "paint-snap": () => import(/* webpackChunkName: "addon-entry-paint-snap" */ "../addons/paint-snap/_runtime_entry.js"),
+  "paint-gradient-maker": () => import(/* webpackChunkName: "addon-entry-paint-gradient-maker" */ "../addons/paint-gradient-maker/_runtime_entry.js"),
   "default-costume-editor-color": () => import(/* webpackChunkName: "addon-entry-default-costume-editor-color" */ "../addons/default-costume-editor-color/_runtime_entry.js"),
   "bitmap-copy": () => import(/* webpackChunkName: "addon-default-entry" */ "../addons/bitmap-copy/_runtime_entry.js"),
   "2d-color-picker": () => import(/* webpackChunkName: "addon-entry-2d-color-picker" */ "../addons/2d-color-picker/_runtime_entry.js"),

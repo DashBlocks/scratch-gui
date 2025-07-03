@@ -5,8 +5,6 @@ export default async function ({ addon, console, msg }) {
     const symbolTag = Symbol("custom-gradient-tag");
     const guiIMGS = {
         "select": `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><rect stroke="#000" fill="#fff" x=".5" y=".5" width="19" height="19" rx="4" stroke-opacity=".15"/><path fill="red" d="M13.35 8.8h-2.4V6.4a1.2 1.2 90 0 0-2.4 0l.043 2.4H6.15a1.2 1.2 90 0 0 0 2.4l2.443-.043L8.55 13.6a1.2 1.2 90 0 0 2.4 0v-2.443l2.4.043a1.2 1.2 90 0 0 0-2.4"/></svg>`,
-        "add": `<svg viewBox="2 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="red" d="M18 10h-4V6a2 2 0 0 0-4 0l.071 4H6a2 2 0 0 0 0 4l4.071-.071L10 18a2 2 0 0 0 4 0v-4.071L18 14a2 2 0 0 0 0-4"></path></svg>`,
-        "delete": `<svg viewBox="2 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="red" d="M 18 10 h -4 H 6 a 2 2 0 0 0 0 4 L 18 14 a 2 2 0 0 0 0 -4"></path></svg>`,
     };
 
     const paperLinkModes = new Set([
@@ -280,11 +278,10 @@ export default async function ({ addon, console, msg }) {
     }
 
     // GUI utils
-    function getButtonURI(name, dontCompile) {
+    function getButtonURI(name) {
         const themeHex = document.documentElement.style.getPropertyValue("--looks-secondary");
         const guiSVG = guiIMGS[name].replace("red", themeHex);
-        if (dontCompile) return guiSVG;
-        else return "data:image/svg+xml;base64," + btoa(guiSVG);
+        return "data:image/svg+xml;base64," + btoa(guiSVG);
     }
 
     function showSelectedGrad(item) {
@@ -438,17 +435,20 @@ export default async function ({ addon, console, msg }) {
 
             const createBtn = document.createElement("button");
             createBtn.setAttribute("style", btnStyle);
-            createBtn.innerHTML = getButtonURI("add", true);
             createBtn.addEventListener("click", (e) => {
                 draggables.appendChild(createDraggable());
                 updateDisplay();
                 e.stopPropagation();
             });
 
+            const addIcon = addon.tab.recolorable();
+            addIcon.draggable = false;
+            addIcon.src = addon.self.getResource("/add.svg") /* rewritten by pull.js */;
+            createBtn.appendChild(addIcon);
+
             const deleteBtn = document.createElement("button");
             deleteBtn.setAttribute("style", btnStyle);
             deleteBtn.style.margin = "0px 8px";
-            deleteBtn.innerHTML = getButtonURI("delete", true);
             deleteBtn.addEventListener("click", (e) => {
                 const pointer = modalStorage.selectedPointer;
                 if (pointer) {
@@ -459,6 +459,11 @@ export default async function ({ addon, console, msg }) {
                 }
                 e.stopPropagation();
             });
+
+            const deleteIcon = addon.tab.recolorable();
+            deleteIcon.draggable = false;
+            deleteIcon.src = addon.self.getResource("/delete.svg") /* rewritten by pull.js */;
+            deleteBtn.appendChild(deleteIcon);
 
             const title1 = document.createElement("span");
             title1.textContent = "Gradient Type:";

@@ -514,7 +514,7 @@ export default async function ({ addon, console, msg }) {
             className: addon.tab.scratchClass("prompt_button-row", { others: "paintGradientMakerPopupButtons" }),
         });
         const cancelButton = Object.assign(document.createElement("button"), {
-            textContent: msg("cancel"),
+            textContent: "Cancel",
         });
         cancelButton.addEventListener("click", remove, { once: true });
         buttonRow.appendChild(cancelButton);

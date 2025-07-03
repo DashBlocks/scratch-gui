@@ -1,6 +1,6 @@
 .paintGradientMakerPopup {
   box-sizing: border-box;
-  width: 530px;
+  width: 528px;
   max-height: min(800px, 80vh);
   max-width: 85%;
   margin-top: 12vh;
@@ -11,6 +11,39 @@
 
 .paintGradientMakerPopupContent {
   padding: 1.5rem 2.25rem;
+}
+
+.paintGradientMakerPopupDisplay {
+  width: 420px;
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 15px 0 15px;
+  border: solid 1px var(--ui-black-transparent);
+  border-radius: 5px 5px 0 0;
+}
+
+.paintGradientMakerPopupDraggables {
+  width: 420px;
+  height: 40px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 15px 15px 15px;
+  border: solid 1px var(--ui-black-transparent);
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+  background: var(--ui-tertiary);
+}
+
+.paintGradientMakerPopupSettings {
+  border-top: dashed 2px var(--ui-black-transparent);
+  padding-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .paintGradientMakerPopupButtons {

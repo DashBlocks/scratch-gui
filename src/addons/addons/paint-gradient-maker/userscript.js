@@ -1,11 +1,8 @@
 // Gradient Maker Addon
 // Original by: SharkPool
 export default async function ({ addon, console, msg }) {
-    const customID = "custom-gradient-btn";
+    const customID = "paintGradientMakerSelectButton";
     const symbolTag = Symbol("custom-gradient-tag");
-    const guiIMGS = {
-        "select": `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><rect stroke="#000" fill="#fff" x=".5" y=".5" width="19" height="19" rx="4" stroke-opacity=".15"/><path fill="red" d="M13.35 8.8h-2.4V6.4a1.2 1.2 90 0 0-2.4 0l.043 2.4H6.15a1.2 1.2 90 0 0 0 2.4l2.443-.043L8.55 13.6a1.2 1.2 90 0 0 2.4 0v-2.443l2.4.043a1.2 1.2 90 0 0 0-2.4"/></svg>`,
-    };
 
     const paperLinkModes = new Set([
         "TEXT", "OVAL", "RECT", "ROUNDED_RECT", "TRIANGLE", "SUSSY", "ARROW"
@@ -278,12 +275,6 @@ export default async function ({ addon, console, msg }) {
     }
 
     // GUI utils
-    function getButtonURI(name) {
-        const themeHex = document.documentElement.style.getPropertyValue("--looks-secondary");
-        const guiSVG = guiIMGS[name].replace("red", themeHex);
-        return "data:image/svg+xml;base64," + btoa(guiSVG);
-    }
-
     function showSelectedGrad(item) {
         const [fillSwatch, outlineSwatch] = document.querySelectorAll(`div[class^=color-button_color-button_] div[class^=color-button_color-button-swatch_]`);
         const outCSSGrad = paperGrad2CSS(extractGradient(item.strokeColor));
@@ -343,7 +334,7 @@ export default async function ({ addon, console, msg }) {
         color.setAttribute("style", `width: 25px; height: 25px; border-radius: 4px; background: #fff; display: flex; justify-content: center; align-items: center; flex-direction: column;`);
 
         const colorContainer = document.createElement("div");
-        colorContainer.setAttribute("style", `width: 16px; height: 16px; border-radius: 5px; background: ${rngHex}; border: solid 2px rgba(0,0,0,.2); opacity: ${opacity}; margin-bottom: 2px;`);
+        colorContainer.setAttribute("style", `width: 16px; height: 16px; border-radius: 5px; background: ${rngHex + Math.round(opacity * 2.55).toString(16).padStart(2, "0")}; border: solid 1px var(--ui-black-transparent); margin-bottom: 2px;`);
 
         const colorInput = document.createElement("input");
         colorInput.setAttribute("type", "color");
@@ -355,6 +346,11 @@ export default async function ({ addon, console, msg }) {
         opacityInput.setAttribute("max", "100");
         opacityInput.value = opacity * 100;
         opacityInput.setAttribute("style", `visibility: hidden; background: #fff; border: none; color: #000; text-align: center; position: absolute; pointer-events: auto; width: 45px; height: 25px; padding: 0; margin: 0; border-radius: 0 5px 5px 0; left: 22px;`);
+        if (rngPos > 50) {
+            opacityInput.style.removeProperty("left");
+            opacityInput.style.right = "22px";
+            opacityInput.style.borderRadius = "5px 0 0 5px";
+        }
 
         // Color picker handler
         colorContainer.addEventListener("click", (e) => {
@@ -368,8 +364,9 @@ export default async function ({ addon, console, msg }) {
         });
 
         colorInput.addEventListener("input", (e) => {
-            modalStorage.parts[index].c = e.target.value;
-            colorContainer.style.background = e.target.value;
+            const alpha = modalStorage.parts[index].c.substring(7, 9);
+            modalStorage.parts[index].c = e.target.value + alpha;
+            colorContainer.style.background = e.target.value + alpha;
             updateDisplay();
         });
 
@@ -381,11 +378,11 @@ export default async function ({ addon, console, msg }) {
         opacityInput.addEventListener("input", (e) => {
             const newOpacity = Math.min(100, Math.max(0, e.target.value));
             e.target.value = newOpacity;
-            colorContainer.style.opacity = newOpacity / 100;
 
             const alpha = Math.round(newOpacity * 2.55).toString(16).padStart(2, "0");
             const hex = modalStorage.parts[index].c;
             modalStorage.parts[index].c = hex.substring(0, 7) + alpha;
+            colorContainer.style.background = hex.substring(0, 7) + alpha;
             updateDisplay();
         });
 
@@ -401,6 +398,15 @@ export default async function ({ addon, console, msg }) {
                 const x = moveEvent.clientX - containerRect.left;
                 const percent = Math.min(100, Math.max(0, (x / container.offsetWidth) * 100));
                 draggable.style.left = `${percent}%`;
+                if (percent > 50) {
+                    opacityInput.style.removeProperty("left");
+                    opacityInput.style.right = "22px";
+                    opacityInput.style.borderRadius = "5px 0 0 5px";
+                } else {
+                    opacityInput.style.left = "22px";
+                    opacityInput.style.removeProperty("right");
+                    opacityInput.style.borderRadius = "0 5px 5px 0";
+                }
                 modalStorage.parts[index].p = percent;
                 updateDisplay();
             };
@@ -430,8 +436,8 @@ export default async function ({ addon, console, msg }) {
     function openGradientMaker() {
         function genSettingsTable(div) {
             const btnStyle = `width: 35px; height: 35px; border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; background: var(--paint-input-background, --ui-primary, #fff); transition: transform 0.2s;`;
-            const selectStlye = `cursor: pointer; height: 30px; margin: 5px; border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; background: var(--ui-secondary, #fff);`;
-            const directionStyle = `text-align: center; width: 50px; height: 25px; margin: 5px; border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; background: var(--ui-secondary, #fff);`;
+            const selectStlye = `cursor: pointer; height: 30px; margin: 5px; border: solid 1px var(--ui-black-transparent); border-radius: 5px; background: var(--ui-secondary);`;
+            const directionStyle = `width: 50px; height: 30px; margin: 5px; border: solid 1px var(--ui-black-transparent); border-radius: 5px; background: var(--ui-secondary);`;
 
             const createBtn = document.createElement("button");
             createBtn.setAttribute("style", btnStyle);
@@ -602,8 +608,14 @@ export default async function ({ addon, console, msg }) {
                 if (!selectedClassName) initGradSelectClasses(gradRow);
                 const children = Array.from(gradRow.children);
 
+                let selectIcon = addon.self.getResource("/fill-complex-gradient-enabled.svg") /* rewritten by pull.js */;
+                selectIcon = "data:image/svg+xml;base64," + btoa(selectIcon.replace(
+                    "#855cd6",
+                    document.documentElement.style.getPropertyValue("--looks-secondary"),
+                ));
+  
                 customBtn = children[0].cloneNode(true);
-                customBtn.src = getButtonURI("select");
+                customBtn.src = selectIcon;
                 customBtn.id = customID;
                 customBtn.setAttribute("class", unselectedClassName);
                 gradRow.appendChild(customBtn);

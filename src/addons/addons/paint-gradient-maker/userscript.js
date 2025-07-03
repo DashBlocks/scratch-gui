@@ -279,15 +279,15 @@ export default async function ({ addon, console, msg }) {
         }
     }
 
+    function getButtonURI(name, dontCompile) {
+        const themeHex = document.documentElement.style.getPropertyValue("--looks-secondary");
+        const guiSVG = guiIMGS[name].replace("red", themeHex);
+        if (dontCompile) return guiSVG;
+        else return "data:image/svg+xml;base64," + btoa(guiSVG);
+    }
+
     // Main GUI
     function openGradientMaker() {
-        function getButtonURI(name, dontCompile) {
-            const themeHex = document.documentElement.style.getPropertyValue("--looks-secondary");
-            const guiSVG = guiIMGS[name].replace("red", themeHex);
-            if (dontCompile) return guiSVG;
-            else return "data:image/svg+xml;base64," + btoa(guiSVG);
-        }
-
         function showSelectedGrad(item) {
             const [fillSwatch, outlineSwatch] = document.querySelectorAll(`div[class^=color-button_color-button_] div[class^=color-button_color-button-swatch_]`);
             const outCSSGrad = paperGrad2CSS(extractGradient(item.strokeColor));

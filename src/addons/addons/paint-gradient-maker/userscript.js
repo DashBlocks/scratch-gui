@@ -1,5 +1,5 @@
 // Gradient Maker Addon
-// By: SharkPool
+// Original by: SharkPool
 export default async function ({ addon, console, msg }) {
     const customID = "custom-gradient-btn";
     const symbolTag = Symbol("custom-gradient-tag");
@@ -17,7 +17,7 @@ export default async function ({ addon, console, msg }) {
     let observerUsed = false;
     let modalStorage = {};
 
-    // Internal Utils
+    // Internal utils
     function position2Angle(p1, p2) {
         const dx = p1.x - p2.x;
         const dy = p1.y - p2.y;
@@ -279,6 +279,7 @@ export default async function ({ addon, console, msg }) {
         }
     }
 
+    // GUI utils
     function getButtonURI(name, dontCompile) {
         const themeHex = document.documentElement.style.getPropertyValue("--looks-secondary");
         const guiSVG = guiIMGS[name].replace("red", themeHex);
@@ -318,113 +319,118 @@ export default async function ({ addon, console, msg }) {
         }
     }
 
+    function createDraggable(optC, optP) {
+        const index = modalStorage.parts.length;
+        const rngPos = optP ?? Math.floor(Math.random() * 100);
+        const rngHex = optC ?? `#${Math.floor(Math.random() * Math.pow(2, 24)).toString(16).padStart(6, "0")}`;
+        const opacity = optC ? optC.length === 9 ? parseInt(optC.slice(7, 9), 16) / 255 : 1 : 1;
+
+        const draggable = document.createElement("div");
+        draggable.id = index;
+        draggable.classList.add("pointer");
+        draggable.setAttribute("style", `cursor: pointer; width: 25px; position: absolute; top: -6px; transform: translateX(-50%);`);
+        draggable.style.left = `${rngPos}%`;
+
+        const nub = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        nub.setAttribute("width", "14");
+        nub.setAttribute("height", "7");
+        nub.style.transform = "translateX(45%)";
+
+        const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+        polygon.setAttribute("points", "0,7 7,0 14,7");
+        polygon.setAttribute("stroke", "#fff");
+        polygon.setAttribute("fill", "#fff");
+        nub.appendChild(polygon);
+
+        const color = document.createElement("div");
+        color.setAttribute("style", `width: 25px; height: 25px; border-radius: 4px; background: #fff; display: flex; justify-content: center; align-items: center; flex-direction: column;`);
+
+        const colorContainer = document.createElement("div");
+        colorContainer.setAttribute("style", `width: 16px; height: 16px; border-radius: 5px; background: ${rngHex}; border: solid 2px rgba(0,0,0,.2); opacity: ${opacity}; margin-bottom: 2px;`);
+
+        const colorInput = document.createElement("input");
+        colorInput.setAttribute("type", "color");
+        colorInput.setAttribute("style", `opacity: 0; position: absolute; pointer-events: none;`);
+
+        const opacityInput = document.createElement("input");
+        opacityInput.setAttribute("type", "number");
+        opacityInput.setAttribute("min", "0");
+        opacityInput.setAttribute("max", "100");
+        opacityInput.value = opacity * 100;
+        opacityInput.setAttribute("style", `visibility: hidden; background: #fff; border: none; color: #000; text-align: center; position: absolute; pointer-events: auto; width: 45px; height: 25px; padding: 0; margin: 0; border-radius: 0 5px 5px 0; left: 22px;`);
+
+        // Color picker handler
+        colorContainer.addEventListener("click", (e) => {
+            opacityInput.style.visibility = "visible";
+            colorInput.click();
+            e.stopPropagation();
+        });
+        draggable.addEventListener("mouseleave", (e) => {
+            opacityInput.style.visibility = "hidden";
+            e.stopPropagation();
+        });
+
+        colorInput.addEventListener("input", (e) => {
+            modalStorage.parts[index].c = e.target.value;
+            colorContainer.style.background = e.target.value;
+            updateDisplay();
+        });
+
+        // Opacity slider handler
+        opacityInput.addEventListener("click", (e) => {
+            opacityInput.focus();
+            e.stopPropagation();
+        });
+        opacityInput.addEventListener("input", (e) => {
+            const newOpacity = Math.min(100, Math.max(0, e.target.value));
+            e.target.value = newOpacity;
+            colorContainer.style.opacity = newOpacity / 100;
+
+            const alpha = Math.round(newOpacity * 2.55).toString(16).padStart(2, "0");
+            const hex = modalStorage.parts[index].c;
+            modalStorage.parts[index].c = hex.substring(0, 7) + alpha;
+            updateDisplay();
+        });
+
+        draggable.addEventListener("mousedown", (e) => {
+            e.preventDefault();
+            if (e.target === opacityInput) return;
+
+            modalStorage.selectedPointer = draggable;
+            const container = draggable.parentElement;
+            const containerRect = container.getBoundingClientRect();
+
+            const onMouseMove = (moveEvent) => {
+                const x = moveEvent.clientX - containerRect.left;
+                const percent = Math.min(100, Math.max(0, (x / container.offsetWidth) * 100));
+                draggable.style.left = `${percent}%`;
+                modalStorage.parts[index].p = percent;
+                updateDisplay();
+            };
+
+            const onMouseUp = () => {
+                document.removeEventListener("mousemove", onMouseMove);
+                document.removeEventListener("mouseup", onMouseUp);
+            };
+
+            document.addEventListener("mousemove", onMouseMove);
+            document.addEventListener("mouseup", onMouseUp);
+        });
+
+        color.append(colorContainer, colorInput, opacityInput);
+        draggable.append(nub, color);
+        modalStorage.parts.push({ c: rngHex, p: rngPos });
+        modalStorage.selectedPointer = draggable;
+        return draggable;
+    }
+
+    function updateDisplay() {
+        const display = document.guerySelector(".paintGradientMakerPopupDisplay");
+        if (display) display.style.background = encodeGradHTML(modalStorage);
+    }
+
     // Main GUI
     function openGradientMaker() {
-        function createDraggable(optC, optP) {
-            const index = modalStorage.parts.length;
-            const rngPos = optP ?? Math.floor(Math.random() * 100);
-            const rngHex = optC ?? `#${Math.floor(Math.random() * Math.pow(2, 24)).toString(16).padStart(6, "0")}`;
-            const opacity = optC ? optC.length === 9 ? parseInt(optC.slice(7, 9), 16) / 255 : 1 : 1;
-
-            const draggable = document.createElement("div");
-            draggable.id = index;
-            draggable.classList.add("pointer");
-            draggable.setAttribute("style", `cursor: pointer; width: 25px; position: absolute; top: -6px; transform: translateX(-50%);`);
-            draggable.style.left = `${rngPos}%`;
-
-            const nub = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-            nub.setAttribute("width", "14");
-            nub.setAttribute("height", "7");
-            nub.style.transform = "translateX(45%)";
-
-            const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-            polygon.setAttribute("points", "0,7 7,0 14,7");
-            polygon.setAttribute("stroke", "#fff");
-            polygon.setAttribute("fill", "#fff");
-            nub.appendChild(polygon);
-
-            const color = document.createElement("div");
-            color.setAttribute("style", `width: 25px; height: 25px; border-radius: 4px; background: #fff; display: flex; justify-content: center; align-items: center; flex-direction: column;`);
-
-            const colorContainer = document.createElement("div");
-            colorContainer.setAttribute("style", `width: 16px; height: 16px; border-radius: 5px; background: ${rngHex}; border: solid 2px rgba(0,0,0,.2); opacity: ${opacity}; margin-bottom: 2px;`);
-
-            const colorInput = document.createElement("input");
-            colorInput.setAttribute("type", "color");
-            colorInput.setAttribute("style", `opacity: 0; position: absolute; pointer-events: none;`);
-
-            const opacityInput = document.createElement("input");
-            opacityInput.setAttribute("type", "number");
-            opacityInput.setAttribute("min", "0");
-            opacityInput.setAttribute("max", "100");
-            opacityInput.value = opacity * 100;
-            opacityInput.setAttribute("style", `visibility: hidden; background: #fff; border: none; color: #000; text-align: center; position: absolute; pointer-events: auto; width: 45px; height: 25px; padding: 0; margin: 0; border-radius: 0 5px 5px 0; left: 22px;`);
-
-            // Color picker handler
-            colorContainer.addEventListener("click", (e) => {
-                opacityInput.style.visibility = "visible";
-                colorInput.click();
-                e.stopPropagation();
-            });
-            draggable.addEventListener("mouseleave", (e) => {
-                opacityInput.style.visibility = "hidden";
-                e.stopPropagation();
-            });
-
-            colorInput.addEventListener("input", (e) => {
-                modalStorage.parts[index].c = e.target.value;
-                colorContainer.style.background = e.target.value;
-                updateDisplay();
-            });
-
-            // Opacity slider handler
-            opacityInput.addEventListener("click", (e) => {
-                opacityInput.focus();
-                e.stopPropagation();
-            });
-            opacityInput.addEventListener("input", (e) => {
-                const newOpacity = Math.min(100, Math.max(0, e.target.value));
-                e.target.value = newOpacity;
-                colorContainer.style.opacity = newOpacity / 100;
-
-                const alpha = Math.round(newOpacity * 2.55).toString(16).padStart(2, "0");
-                const hex = modalStorage.parts[index].c;
-                modalStorage.parts[index].c = hex.substring(0, 7) + alpha;
-                updateDisplay();
-            });
-
-            draggable.addEventListener("mousedown", (e) => {
-                e.preventDefault();
-                if (e.target === opacityInput) return;
-
-                modalStorage.selectedPointer = draggable;
-                const container = draggable.parentElement;
-                const containerRect = container.getBoundingClientRect();
-
-                const onMouseMove = (moveEvent) => {
-                    const x = moveEvent.clientX - containerRect.left;
-                    const percent = Math.min(100, Math.max(0, (x / container.offsetWidth) * 100));
-                    draggable.style.left = `${percent}%`;
-                    modalStorage.parts[index].p = percent;
-                    updateDisplay();
-                };
-
-                const onMouseUp = () => {
-                    document.removeEventListener("mousemove", onMouseMove);
-                    document.removeEventListener("mouseup", onMouseUp);
-                };
-
-                document.addEventListener("mousemove", onMouseMove);
-                document.addEventListener("mouseup", onMouseUp);
-            });
-
-            color.append(colorContainer, colorInput, opacityInput);
-            draggable.append(nub, color);
-            modalStorage.parts.push({ c: rngHex, p: rngPos });
-            modalStorage.selectedPointer = draggable;
-            return draggable;
-        }
-
         function genSettingsTable(div) {
             const btnStyle = `width: 35px; height: 35px; border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; background: var(--paint-input-background, --ui-primary, #fff); transition: transform 0.2s;`;
             const selectStlye = `cursor: pointer; height: 30px; margin: 5px; border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; background: var(--ui-secondary, #fff);`;
@@ -487,10 +493,6 @@ export default async function ({ addon, console, msg }) {
             });
 
             div.append(createBtn, deleteBtn, title1, select, title2, dirBtn);
-        }
-
-        function updateDisplay() {
-            display.style.background = encodeGradHTML(modalStorage);
         }
 
         const paint = ReduxStore.getState().scratchPaint;

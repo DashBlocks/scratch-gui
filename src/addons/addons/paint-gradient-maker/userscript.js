@@ -286,40 +286,40 @@ export default async function ({ addon, console, msg }) {
         else return "data:image/svg+xml;base64," + btoa(guiSVG);
     }
 
-    // Main GUI
-    function openGradientMaker() {
-        function showSelectedGrad(item) {
-            const [fillSwatch, outlineSwatch] = document.querySelectorAll(`div[class^=color-button_color-button_] div[class^=color-button_color-button-swatch_]`);
-            const outCSSGrad = paperGrad2CSS(extractGradient(item.strokeColor));
-            if (outlineSwatch) {
-                if (outCSSGrad) outlineSwatch.style.background = outCSSGrad;
-                else if (!item.strokeColor || item.strokeWidth === 0) outlineSwatch.style.background = "#fff";
-            }
-
-            const fillGrad = extractGradient(item.fillColor);
-            const fillCSSGrad = paperGrad2CSS(fillGrad);
-            modalStorage._gradCache = undefined;
-            if (fillSwatch) {
-                if (fillCSSGrad) {
-                    fillSwatch.style.background = fillCSSGrad;
-
-                    // Update cache
-                    const { gradient, destination, origin } = fillGrad;
-                    modalStorage._gradCache = {
-                        gradient,
-                        settings: {
-                            type: gradient.radial ? "Radial" : "Linear",
-                            dir: position2Angle(destination, origin),
-                            parts: gradient.stops.map(s => {
-                                const alpha = Math.round(s.color.alpha * 255).toString(16).padStart(2, "0");
-                                return { c: s.color.toCSS(true) + alpha, p: s.offset * 100 };
-                            })
-                        }
-                    };
-                } else if (!item.fillColor) fillSwatch.style.background = "#fff";
-            }
+    function showSelectedGrad(item) {
+        const [fillSwatch, outlineSwatch] = document.querySelectorAll(`div[class^=color-button_color-button_] div[class^=color-button_color-button-swatch_]`);
+        const outCSSGrad = paperGrad2CSS(extractGradient(item.strokeColor));
+        if (outlineSwatch) {
+            if (outCSSGrad) outlineSwatch.style.background = outCSSGrad;
+            else if (!item.strokeColor || item.strokeWidth === 0) outlineSwatch.style.background = "#fff";
         }
 
+        const fillGrad = extractGradient(item.fillColor);
+        const fillCSSGrad = paperGrad2CSS(fillGrad);
+        modalStorage._gradCache = undefined;
+        if (fillSwatch) {
+            if (fillCSSGrad) {
+                fillSwatch.style.background = fillCSSGrad;
+
+                // Update cache
+                const { gradient, destination, origin } = fillGrad;
+                modalStorage._gradCache = {
+                    gradient,
+                    settings: {
+                        type: gradient.radial ? "Radial" : "Linear",
+                        dir: position2Angle(destination, origin),
+                        parts: gradient.stops.map(s => {
+                            const alpha = Math.round(s.color.alpha * 255).toString(16).padStart(2, "0");
+                            return { c: s.color.toCSS(true) + alpha, p: s.offset * 100 };
+                        })
+                    }
+                };
+            } else if (!item.fillColor) fillSwatch.style.background = "#fff";
+        }
+    }
+
+    // Main GUI
+    function openGradientMaker() {
         function createDraggable(optC, optP) {
             const index = modalStorage.parts.length;
             const rngPos = optP ?? Math.floor(Math.random() * 100);

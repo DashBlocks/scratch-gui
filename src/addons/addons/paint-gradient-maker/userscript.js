@@ -1,6 +1,6 @@
 // Gradient Maker Addon
 // By: SharkPool
-export default async function () {
+export default async function ({ addon, console, msg }) {
     const customID = "custom-gradient-btn";
     const symbolTag = Symbol("custom-gradient-tag");
     const guiIMGS = {
@@ -239,7 +239,6 @@ export default async function () {
                 case "TEXT":
                     item = this.textBox;
                     break;
-                /* PenguinMod shapes */
                 case "ROUNDED_RECT":
                     item = this.rect;
                     break;
@@ -271,7 +270,7 @@ export default async function () {
                 origin, destination
             };
 
-            // text uses HTML elements, so we have to handle that too
+            // Text uses HTML elements, so we have to handle that too
             if (type === "TEXT") {
                 tool.element.style.background = encodeGradHTML(modalStorage._gradCache.settings);
                 tool.element.style.backgroundClip = "text";
@@ -280,296 +279,298 @@ export default async function () {
         }
     }
 
-    // GUI Utils
-    function getButtonURI(name, dontCompile) {
-        const themeHex = document.documentElement.style.getPropertyValue("--looks-secondary");
-        const guiSVG = guiIMGS[name].replace("red", themeHex);
-        if (dontCompile) return guiSVG;
-        else return "data:image/svg+xml;base64," + btoa(guiSVG);
-    }
-
-    function showSelectedGrad(item) {
-        const [fillSwatch, outlineSwatch] = document.querySelectorAll(`div[class^=color-button_color-button_] div[class^=color-button_color-button-swatch_]`);
-        const outCSSGrad = paperGrad2CSS(extractGradient(item.strokeColor));
-        if (outlineSwatch) {
-            if (outCSSGrad) outlineSwatch.style.background = outCSSGrad;
-            else if (!item.strokeColor || item.strokeWidth === 0) outlineSwatch.style.background = "#fff";
-        }
-
-        const fillGrad = extractGradient(item.fillColor);
-        const fillCSSGrad = paperGrad2CSS(fillGrad);
-        modalStorage._gradCache = undefined;
-        if (fillSwatch) {
-            if (fillCSSGrad) {
-                fillSwatch.style.background = fillCSSGrad;
-
-                // Update cache
-                const { gradient, destination, origin } = fillGrad;
-                modalStorage._gradCache = {
-                    gradient,
-                    settings: {
-                        type: gradient.radial ? "Radial" : "Linear",
-                        dir: position2Angle(destination, origin),
-                        parts: gradient.stops.map(s => {
-                            const alpha = Math.round(s.color.alpha * 255).toString(16).padStart(2, "0");
-                            return { c: s.color.toCSS(true) + alpha, p: s.offset * 100 };
-                        })
-                    }
-                };
-            } else if (!item.fillColor) fillSwatch.style.background = "#fff";
-        }
-    }
-
-    function createDraggable(optC, optP) {
-        const index = modalStorage.parts.length;
-        const rngPos = optP ?? Math.floor(Math.random() * 100);
-        const rngHex = optC ?? `#${Math.floor(Math.random() * Math.pow(2, 24)).toString(16).padStart(6, "0")}`;
-        const opacity = optC ? optC.length === 9 ? parseInt(optC.slice(7, 9), 16) / 255 : 1 : 1;
-  
-        const draggable = document.createElement("div");
-        draggable.id = index;
-        draggable.classList.add("pointer");
-        draggable.setAttribute("style", `cursor: pointer; width: 25px; position: absolute; top: -6px; transform: translateX(-50%);`);
-        draggable.style.left = `${rngPos}%`;
-
-        const nub = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-        nub.setAttribute("width", "14");
-        nub.setAttribute("height", "7");
-        nub.style.transform = "translateX(45%)";
-
-        const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-        polygon.setAttribute("points", "0,7 7,0 14,7");
-        polygon.setAttribute("stroke", "#fff");
-        polygon.setAttribute("fill", "#fff");
-        nub.appendChild(polygon);
-
-        const color = document.createElement("div");
-        color.setAttribute("style", `width: 25px; height: 25px; border-radius: 4px; background: #fff; display: flex; justify-content: center; align-items: center; flex-direction: column;`);
-
-        const colorContainer = document.createElement("div");
-        colorContainer.setAttribute("style", `width: 16px; height: 16px; border-radius: 5px; background: ${rngHex}; border: solid 2px rgba(0,0,0,.2); opacity: ${opacity}; margin-bottom: 2px;`);
-
-        const colorInput = document.createElement("input");
-        colorInput.setAttribute("type", "color");
-        colorInput.setAttribute("style", `opacity: 0; position: absolute; pointer-events: none;`);
-
-        const opacityInput = document.createElement("input");
-        opacityInput.setAttribute("type", "number");
-        opacityInput.setAttribute("min", "0");
-        opacityInput.setAttribute("max", "100");
-        opacityInput.value = opacity * 100;
-        opacityInput.setAttribute("style", `visibility: hidden; background: #fff; border: none; color: #000; text-align: center; position: absolute; pointer-events: auto; width: 45px; height: 25px; padding: 0; margin: 0; border-radius: 0 5px 5px 0; left: 22px;`);
-
-        // Color picker handler
-        colorContainer.addEventListener("click", (e) => {
-            opacityInput.style.visibility = "visible";
-            colorInput.click();
-            e.stopPropagation();
-        });
-        draggable.addEventListener("mouseleave", (e) => {
-            opacityInput.style.visibility = "hidden";
-            e.stopPropagation();
-        });
-
-        colorInput.addEventListener("input", (e) => {
-            modalStorage.parts[index].c = e.target.value;
-            colorContainer.style.background = e.target.value;
-            updateDisplay();
-        });
-
-        // Opacity slider handler
-        opacityInput.addEventListener("click", (e) => {
-            opacityInput.focus();
-            e.stopPropagation();
-        });
-        opacityInput.addEventListener("input", (e) => {
-            const newOpacity = Math.min(100, Math.max(0, e.target.value));
-            e.target.value = newOpacity;
-            colorContainer.style.opacity = newOpacity / 100;
-
-            const alpha = Math.round(newOpacity * 2.55).toString(16).padStart(2, "0");
-            const hex = modalStorage.parts[index].c;
-            modalStorage.parts[index].c = hex.substring(0, 7) + alpha;
-            updateDisplay();
-        });
-
-        draggable.addEventListener("mousedown", (e) => {
-            e.preventDefault();
-            if (e.target === opacityInput) return;
-
-            modalStorage.selectedPointer = draggable;
-            const container = draggable.parentElement;
-            const containerRect = container.getBoundingClientRect();
-
-            const onMouseMove = (moveEvent) => {
-                const x = moveEvent.clientX - containerRect.left;
-                const percent = Math.min(100, Math.max(0, (x / container.offsetWidth) * 100));
-                draggable.style.left = `${percent}%`;
-                modalStorage.parts[index].p = percent;
-                updateDisplay();
-            };
-
-            const onMouseUp = () => {
-                document.removeEventListener("mousemove", onMouseMove);
-                document.removeEventListener("mouseup", onMouseUp);
-            };
-
-            document.addEventListener("mousemove", onMouseMove);
-            document.addEventListener("mouseup", onMouseUp);
-        });
-
-        color.append(colorContainer, colorInput, opacityInput);
-        draggable.append(nub, color);
-        modalStorage.parts.push({ c: rngHex, p: rngPos });
-        modalStorage.selectedPointer = draggable;
-        return draggable;
-    }
-
-    function genSettingsTable(div) {
-        const btnStyle = `width: 35px; height: 35px; border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; background: var(--paint-input-background, --ui-primary, #fff); transition: transform 0.2s;`;
-        const selectStlye = `cursor: pointer; height: 30px; margin: 5px; border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; background: var(--ui-secondary, #fff);`;
-        const directionStyle = `text-align: center; width: 50px; height: 25px; margin: 5px; border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; background: var(--ui-secondary, #fff);`;
-
-        const createBtn = document.createElement("button");
-        createBtn.setAttribute("style", btnStyle);
-        createBtn.setAttribute("onmouseover", `this.style.transform="scale(1.1)"`);
-        createBtn.setAttribute("onmouseout", `this.style.transform="scale(1)"`);
-        createBtn.innerHTML = getButtonURI("add", true);
-        createBtn.addEventListener("click", (e) => {
-            const draggableSpace = modalStorage.modal.querySelector(`div[class="draggables"]`);
-            draggableSpace.appendChild(createDraggable());
-            updateDisplay();
-            e.stopPropagation();
-        });
-
-        const deleteBtn = document.createElement("button");
-        deleteBtn.setAttribute("style", btnStyle);
-        deleteBtn.setAttribute("onmouseover", `this.style.transform="scale(1.1)"`);
-        deleteBtn.setAttribute("onmouseout", `this.style.transform="scale(1)"`);
-        deleteBtn.style.margin = "0px 8px";
-        deleteBtn.innerHTML = getButtonURI("delete", true);
-        deleteBtn.addEventListener("click", (e) => {
-            const pointer = modalStorage.selectedPointer;
-            if (pointer) {
-                modalStorage.parts.splice(pointer.id, 1);
-                pointer.remove();
-                updateDisplay();
-                delete modalStorage.selectedPointer;
-            }
-            e.stopPropagation();
-        });
-
-        const title1 = document.createElement("span");
-        title1.textContent = "Gradient Type:";
-
-        const select = document.createElement("select");
-        select.setAttribute("style", selectStlye);
-
-        const option1 = document.createElement("option");
-        const option2 = document.createElement("option");
-        option1.text = "Linear"; option1.value = "Linear";
-        option2.text = "Radial"; option2.value = "Radial";
-        select.append(option1, option2);
-        select.addEventListener("change", (e) => {
-            modalStorage.type = e.target.value;
-            updateDisplay();
-            e.stopPropagation();
-        });
-
-        const title2 = document.createElement("span");
-        title2.textContent = "Direction:";
-
-        const dirBtn = document.createElement("input");
-        dirBtn.setAttribute("style", directionStyle);
-        dirBtn.setAttribute("type", "number");
-        dirBtn.setAttribute("max", 360);
-        dirBtn.setAttribute("min", 0);
-        dirBtn.setAttribute("value", 90);
-        dirBtn.addEventListener("input", (e) => {
-            modalStorage.dir = e.target.value;
-            updateDisplay();
-            e.stopPropagation();
-        });
-
-        div.append(createBtn, deleteBtn, title1, select, title2, dirBtn);
-    }
-
-    function genButtonTable(div) {
-        const themeHex = document.documentElement.style.getPropertyValue("--looks-secondary");
-        const btnStyle = `color: #fff; font-weight: 600; text-align: center; padding: 10px; margin: 10px 5px; border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; background: ${themeHex}; transition: transform 0.2s;`;
-
-        const enterBtn = document.createElement("button");
-        enterBtn.id = "enter";
-        enterBtn.setAttribute("style", btnStyle);
-        enterBtn.setAttribute("onmouseover", `this.style.transform="scale(1.1)"`);
-        enterBtn.setAttribute("onmouseout", `this.style.transform="scale(1)"`);
-        enterBtn.textContent = "Okay";
-
-        const cancelBtn = document.createElement("button");
-        cancelBtn.id = "cancel";
-        cancelBtn.setAttribute("style", btnStyle);
-        cancelBtn.setAttribute("onmouseover", `this.style.transform="scale(1.1)"`);
-        cancelBtn.setAttribute("onmouseout", `this.style.transform="scale(1)"`);
-        cancelBtn.textContent = "Cancel";
-
-        div.append(cancelBtn, enterBtn);
-    }
-
-    function updateDisplay() {
-        const display = modalStorage.modal.querySelector(`div[class="color-display"]`);
-        display.style.background = encodeGradHTML(modalStorage);
-    }
-
     // Main GUI
     function openGradientMaker() {
+        function getButtonURI(name, dontCompile) {
+            const themeHex = document.documentElement.style.getPropertyValue("--looks-secondary");
+            const guiSVG = guiIMGS[name].replace("red", themeHex);
+            if (dontCompile) return guiSVG;
+            else return "data:image/svg+xml;base64," + btoa(guiSVG);
+        }
+
+        function showSelectedGrad(item) {
+            const [fillSwatch, outlineSwatch] = document.querySelectorAll(`div[class^=color-button_color-button_] div[class^=color-button_color-button-swatch_]`);
+            const outCSSGrad = paperGrad2CSS(extractGradient(item.strokeColor));
+            if (outlineSwatch) {
+                if (outCSSGrad) outlineSwatch.style.background = outCSSGrad;
+                else if (!item.strokeColor || item.strokeWidth === 0) outlineSwatch.style.background = "#fff";
+            }
+
+            const fillGrad = extractGradient(item.fillColor);
+            const fillCSSGrad = paperGrad2CSS(fillGrad);
+            modalStorage._gradCache = undefined;
+            if (fillSwatch) {
+                if (fillCSSGrad) {
+                    fillSwatch.style.background = fillCSSGrad;
+
+                    // Update cache
+                    const { gradient, destination, origin } = fillGrad;
+                    modalStorage._gradCache = {
+                        gradient,
+                        settings: {
+                            type: gradient.radial ? "Radial" : "Linear",
+                            dir: position2Angle(destination, origin),
+                            parts: gradient.stops.map(s => {
+                                const alpha = Math.round(s.color.alpha * 255).toString(16).padStart(2, "0");
+                                return { c: s.color.toCSS(true) + alpha, p: s.offset * 100 };
+                            })
+                        }
+                    };
+                } else if (!item.fillColor) fillSwatch.style.background = "#fff";
+            }
+        }
+
+        function createDraggable(optC, optP) {
+            const index = modalStorage.parts.length;
+            const rngPos = optP ?? Math.floor(Math.random() * 100);
+            const rngHex = optC ?? `#${Math.floor(Math.random() * Math.pow(2, 24)).toString(16).padStart(6, "0")}`;
+            const opacity = optC ? optC.length === 9 ? parseInt(optC.slice(7, 9), 16) / 255 : 1 : 1;
+
+            const draggable = document.createElement("div");
+            draggable.id = index;
+            draggable.classList.add("pointer");
+            draggable.setAttribute("style", `cursor: pointer; width: 25px; position: absolute; top: -6px; transform: translateX(-50%);`);
+            draggable.style.left = `${rngPos}%`;
+
+            const nub = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            nub.setAttribute("width", "14");
+            nub.setAttribute("height", "7");
+            nub.style.transform = "translateX(45%)";
+
+            const polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            polygon.setAttribute("points", "0,7 7,0 14,7");
+            polygon.setAttribute("stroke", "#fff");
+            polygon.setAttribute("fill", "#fff");
+            nub.appendChild(polygon);
+
+            const color = document.createElement("div");
+            color.setAttribute("style", `width: 25px; height: 25px; border-radius: 4px; background: #fff; display: flex; justify-content: center; align-items: center; flex-direction: column;`);
+
+            const colorContainer = document.createElement("div");
+            colorContainer.setAttribute("style", `width: 16px; height: 16px; border-radius: 5px; background: ${rngHex}; border: solid 2px rgba(0,0,0,.2); opacity: ${opacity}; margin-bottom: 2px;`);
+
+            const colorInput = document.createElement("input");
+            colorInput.setAttribute("type", "color");
+            colorInput.setAttribute("style", `opacity: 0; position: absolute; pointer-events: none;`);
+
+            const opacityInput = document.createElement("input");
+            opacityInput.setAttribute("type", "number");
+            opacityInput.setAttribute("min", "0");
+            opacityInput.setAttribute("max", "100");
+            opacityInput.value = opacity * 100;
+            opacityInput.setAttribute("style", `visibility: hidden; background: #fff; border: none; color: #000; text-align: center; position: absolute; pointer-events: auto; width: 45px; height: 25px; padding: 0; margin: 0; border-radius: 0 5px 5px 0; left: 22px;`);
+
+            // Color picker handler
+            colorContainer.addEventListener("click", (e) => {
+                opacityInput.style.visibility = "visible";
+                colorInput.click();
+                e.stopPropagation();
+            });
+            draggable.addEventListener("mouseleave", (e) => {
+                opacityInput.style.visibility = "hidden";
+                e.stopPropagation();
+            });
+
+            colorInput.addEventListener("input", (e) => {
+                modalStorage.parts[index].c = e.target.value;
+                colorContainer.style.background = e.target.value;
+                updateDisplay();
+            });
+
+            // Opacity slider handler
+            opacityInput.addEventListener("click", (e) => {
+                opacityInput.focus();
+                e.stopPropagation();
+            });
+            opacityInput.addEventListener("input", (e) => {
+                const newOpacity = Math.min(100, Math.max(0, e.target.value));
+                e.target.value = newOpacity;
+                colorContainer.style.opacity = newOpacity / 100;
+
+                const alpha = Math.round(newOpacity * 2.55).toString(16).padStart(2, "0");
+                const hex = modalStorage.parts[index].c;
+                modalStorage.parts[index].c = hex.substring(0, 7) + alpha;
+                updateDisplay();
+            });
+
+            draggable.addEventListener("mousedown", (e) => {
+                e.preventDefault();
+                if (e.target === opacityInput) return;
+
+                modalStorage.selectedPointer = draggable;
+                const container = draggable.parentElement;
+                const containerRect = container.getBoundingClientRect();
+
+                const onMouseMove = (moveEvent) => {
+                    const x = moveEvent.clientX - containerRect.left;
+                    const percent = Math.min(100, Math.max(0, (x / container.offsetWidth) * 100));
+                    draggable.style.left = `${percent}%`;
+                    modalStorage.parts[index].p = percent;
+                    updateDisplay();
+                };
+
+                const onMouseUp = () => {
+                    document.removeEventListener("mousemove", onMouseMove);
+                    document.removeEventListener("mouseup", onMouseUp);
+                };
+
+                document.addEventListener("mousemove", onMouseMove);
+                document.addEventListener("mouseup", onMouseUp);
+            });
+
+            color.append(colorContainer, colorInput, opacityInput);
+            draggable.append(nub, color);
+            modalStorage.parts.push({ c: rngHex, p: rngPos });
+            modalStorage.selectedPointer = draggable;
+            return draggable;
+        }
+
+        function genSettingsTable(div) {
+            const btnStyle = `width: 35px; height: 35px; border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; background: var(--paint-input-background, --ui-primary, #fff); transition: transform 0.2s;`;
+            const selectStlye = `cursor: pointer; height: 30px; margin: 5px; border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; background: var(--ui-secondary, #fff);`;
+            const directionStyle = `text-align: center; width: 50px; height: 25px; margin: 5px; border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; background: var(--ui-secondary, #fff);`;
+
+            const createBtn = document.createElement("button");
+            createBtn.setAttribute("style", btnStyle);
+            createBtn.innerHTML = getButtonURI("add", true);
+            createBtn.addEventListener("click", (e) => {
+                draggables.appendChild(createDraggable());
+                updateDisplay();
+                e.stopPropagation();
+            });
+
+            const deleteBtn = document.createElement("button");
+            deleteBtn.setAttribute("style", btnStyle);
+            deleteBtn.style.margin = "0px 8px";
+            deleteBtn.innerHTML = getButtonURI("delete", true);
+            deleteBtn.addEventListener("click", (e) => {
+                const pointer = modalStorage.selectedPointer;
+                if (pointer) {
+                    modalStorage.parts.splice(pointer.id, 1);
+                    pointer.remove();
+                    updateDisplay();
+                    delete modalStorage.selectedPointer;
+                }
+                e.stopPropagation();
+            });
+
+            const title1 = document.createElement("span");
+            title1.textContent = "Gradient Type:";
+
+            const select = document.createElement("select");
+            select.setAttribute("style", selectStlye);
+
+            const option1 = document.createElement("option");
+            const option2 = document.createElement("option");
+            option1.text = "Linear"; option1.value = "Linear";
+            option2.text = "Radial"; option2.value = "Radial";
+            select.append(option1, option2);
+            select.addEventListener("change", (e) => {
+                modalStorage.type = e.target.value;
+                updateDisplay();
+                e.stopPropagation();
+            });
+
+            const title2 = document.createElement("span");
+            title2.textContent = "Direction:";
+
+            const dirBtn = document.createElement("input");
+            dirBtn.setAttribute("style", directionStyle);
+            dirBtn.setAttribute("type", "number");
+            dirBtn.setAttribute("max", 360);
+            dirBtn.setAttribute("min", 0);
+            dirBtn.setAttribute("value", 90);
+            dirBtn.addEventListener("input", (e) => {
+                modalStorage.dir = e.target.value;
+                updateDisplay();
+                e.stopPropagation();
+            });
+
+            div.append(createBtn, deleteBtn, title1, select, title2, dirBtn);
+        }
+
+        function genButtonTable(div) {
+            const themeHex = document.documentElement.style.getPropertyValue("--looks-secondary");
+            const btnStyle = `color: #fff; font-weight: 600; text-align: center; padding: 10px; margin: 10px 5px; border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; background: ${themeHex}; transition: transform 0.2s;`;
+
+            const enterBtn = document.createElement("button");
+            enterBtn.id = "enter";
+            enterBtn.setAttribute("style", btnStyle);
+            enterBtn.setAttribute("onmouseover", `this.style.transform="scale(1.1)"`);
+            enterBtn.setAttribute("onmouseout", `this.style.transform="scale(1)"`);
+            enterBtn.textContent = "Okay";
+
+            const cancelBtn = document.createElement("button");
+            cancelBtn.id = "cancel";
+            cancelBtn.setAttribute("style", btnStyle);
+            cancelBtn.setAttribute("onmouseover", `this.style.transform="scale(1.1)"`);
+            cancelBtn.setAttribute("onmouseout", `this.style.transform="scale(1)"`);
+            cancelBtn.textContent = "Cancel";
+
+            div.append(cancelBtn, enterBtn);
+        }
+
+        function updateDisplay() {
+            display.style.background = encodeGradHTML(modalStorage);
+        }
+
         const paint = ReduxStore.getState().scratchPaint;
         const oldCache = modalStorage._gradCache;
         modalStorage = {
-            parts: [], type: "Linear", dir: 90,
-            selectedPointer: undefined, modal: undefined,
-            path: paint.modals.fillColor ? "fillColor" : "strokeColor"
+            parts: [], type: "Linear", dir: 90, selectedPointer: undefined,
+            path: paint.modals.fillColor ? "fillColor" : "strokeColor",
         };
 
-        const container = document.createElement("div");
-        container.classList.add("SP-gradient-maker");
-        container.setAttribute("style", `position: absolute; z-index: 9999; pointer-events: auto; background-color: rgba(0,0,0,.1); width: 100%; height: 100vh;`);
+        const { backdrop, container, content, closeButton, remove } = addon.tab.createModal("Complex Gradient", {
+            isOpen: true,
+            useEditorClasses: true,
+        });
+        container.classList.add("paintGradientMakerPopup");
+        content.classList.add("paintGradientMakerPopupContent");
 
-        const modal = document.createElement("div");
-        modal.classList.add("gradient-modal");
-        modal.setAttribute("style", `color: var(--paint-text-primary, #575e75); width: 450px; height: 260px; display: block; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); background: var(--ui-secondary, hsla(215, 75%, 95%, 1)); border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; padding: 15px;`);
-        modalStorage.modal = modal;
+        backdrop.addEventListener("click", remove);
+        closeButton.addEventListener("click", remove);
 
-        const title = document.createElement("span");
-        title.setAttribute("style", `display: block; text-align: center; justify-content: center; border-bottom: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); padding-bottom: 10px; margin: 0 25px 0 25px; font-weight: 600;"`);
-        title.textContent = "Gradient Maker";
+        const buttonRow = Object.assign(document.createElement("div"), {
+            className: addon.tab.scratchClass("prompt_button-row", { others: "paintGradientMakerPopupButtons" }),
+        });
+        const cancelButton = Object.assign(document.createElement("button"), {
+            textContent: msg("cancel"),
+        });
+        cancelButton.addEventListener("click", remove, { once: true });
+        buttonRow.appendChild(cancelButton);
+        const startButton = Object.assign(document.createElement("button"), {
+            textContent: "OK",
+            className: addon.tab.scratchClass("prompt_ok-button"),
+        });
+        startButton.addEventListener(
+            "click",
+            () => {
+                setSelected2Grad(modalStorage);
+                remove();
+            },
+            { once: true },
+        );
+        buttonRow.appendChild(startButton);
+        content.appendChild(buttonRow);
 
+        // Color display
         const display = document.createElement("div");
         display.classList.add("color-display");
-        display.setAttribute("style", `width: 420px; height: 40px; display: flex; justify-content: center; align-items: center; margin: 15px 15px 0 15px; border: solid 2px grey; border-radius: 5px 5px 0 0;`);
+        display.setAttribute("style", `width: 420px; height: 100px; display: flex; justify-content: center; align-items: center; margin: 15px 15px 0 15px; border: solid 2px grey; border-radius: 5px 5px 0 0;`);
 
+        // Draggables space
         const draggables = document.createElement("div");
         draggables.classList.add("draggables");
         draggables.setAttribute("style", `width: 420px; height: 40px; position: relative; display: flex; justify-content: center; align-items: center; margin: 0 15px 15px 15px; border: solid 2px grey; border-radius: 0 0 5px 5px; background: #111111;`);
 
+        // Settings
         const settings = document.createElement("div");
         settings.classList.add("settings");
         settings.setAttribute("style", `border-top: dashed 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); padding-top: 10px; display: flex; justify-content: center; align-items: center;`);
         genSettingsTable(settings);
 
-        const buttons = document.createElement("div");
-        buttons.setAttribute("style", `display: flex; justify-content: center; align-items: center;`);
-        genButtonTable(buttons);
-        buttons.addEventListener("click", (e) => {
-            if (e.target.id) {
-                if (e.target.id === "enter") setSelected2Grad(modalStorage);
-                container.remove();
-            }
-            e.stopPropagation();
-        });
-
-        modal.append(title, display, draggables, settings, buttons);
-        container.appendChild(modal);
-        document.body.appendChild(container);
+        content.append(display, draggables, settings, buttons);
 
         if (paint.selectedItems?.length) decodeSelectedGrad(paint.selectedItems[0], draggables, settings);
         else if (oldCache) decodeFromCache(oldCache.settings, draggables, settings);

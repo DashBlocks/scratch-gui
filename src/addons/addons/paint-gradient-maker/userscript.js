@@ -489,27 +489,6 @@ export default async function ({ addon, console, msg }) {
             div.append(createBtn, deleteBtn, title1, select, title2, dirBtn);
         }
 
-        function genButtonTable(div) {
-            const themeHex = document.documentElement.style.getPropertyValue("--looks-secondary");
-            const btnStyle = `color: #fff; font-weight: 600; text-align: center; padding: 10px; margin: 10px 5px; border: solid 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); border-radius: 5px; background: ${themeHex}; transition: transform 0.2s;`;
-
-            const enterBtn = document.createElement("button");
-            enterBtn.id = "enter";
-            enterBtn.setAttribute("style", btnStyle);
-            enterBtn.setAttribute("onmouseover", `this.style.transform="scale(1.1)"`);
-            enterBtn.setAttribute("onmouseout", `this.style.transform="scale(1)"`);
-            enterBtn.textContent = "Okay";
-
-            const cancelBtn = document.createElement("button");
-            cancelBtn.id = "cancel";
-            cancelBtn.setAttribute("style", btnStyle);
-            cancelBtn.setAttribute("onmouseover", `this.style.transform="scale(1.1)"`);
-            cancelBtn.setAttribute("onmouseout", `this.style.transform="scale(1)"`);
-            cancelBtn.textContent = "Cancel";
-
-            div.append(cancelBtn, enterBtn);
-        }
-
         function updateDisplay() {
             display.style.background = encodeGradHTML(modalStorage);
         }
@@ -552,25 +531,21 @@ export default async function ({ addon, console, msg }) {
             { once: true },
         );
         buttonRow.appendChild(startButton);
-        content.appendChild(buttonRow);
 
         // Color display
         const display = document.createElement("div");
-        display.classList.add("color-display");
-        display.setAttribute("style", `width: 420px; height: 100px; display: flex; justify-content: center; align-items: center; margin: 15px 15px 0 15px; border: solid 2px grey; border-radius: 5px 5px 0 0;`);
+        display.classList.add("paintGradientMakerPopupDisplay");
 
         // Draggables space
         const draggables = document.createElement("div");
-        draggables.classList.add("draggables");
-        draggables.setAttribute("style", `width: 420px; height: 40px; position: relative; display: flex; justify-content: center; align-items: center; margin: 0 15px 15px 15px; border: solid 2px grey; border-radius: 0 0 5px 5px; background: #111111;`);
+        draggables.classList.add("paintGradientMakerPopupDraggables");
 
         // Settings
         const settings = document.createElement("div");
-        settings.classList.add("settings");
-        settings.setAttribute("style", `border-top: dashed 2px var(--ui-black-transparent, hsla(0, 0%, 0%, 0.15)); padding-top: 10px; display: flex; justify-content: center; align-items: center;`);
+        settings.classList.add("paintGradientMakerPopupSettings");
         genSettingsTable(settings);
 
-        content.append(display, draggables, settings, buttons);
+        content.append(display, draggables, settings, buttonRow);
 
         if (paint.selectedItems?.length) decodeSelectedGrad(paint.selectedItems[0], draggables, settings);
         else if (oldCache) decodeFromCache(oldCache.settings, draggables, settings);

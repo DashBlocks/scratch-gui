@@ -12,6 +12,11 @@ const manifest = {
             "url": "userscript.js"
         }
     ],
+    "userstyles": [
+        {
+            "url": "style.css"
+        }
+    ],
     "tags": ["editor", "new", "recommended"],
     "enabledByDefault": true,
     "dynamicEnable": true,

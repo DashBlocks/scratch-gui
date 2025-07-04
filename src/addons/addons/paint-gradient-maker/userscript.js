@@ -310,7 +310,7 @@ export default async function ({ addon, console, msg }) {
     function createDraggable(optC, optP) {
         const index = modalStorage.parts.length;
         const rngPos = optP ?? Math.floor(Math.random() * 100);
-        const rngHex = optC ?? `#${Math.floor(Math.random() * Math.pow(2, 24)).toString(16).padStart(6, "0")}`;
+        const rngHex = optC ?? `#${Math.floor(Math.random() * Math.pow(2, 24)).toString(16).padStart(6, "0")}ff`;
         const opacity = optC ? optC.length === 9 ? parseInt(optC.slice(7, 9), 16) / 255 : 1 : 1;
 
         const draggable = document.createElement("div");
@@ -428,7 +428,7 @@ export default async function ({ addon, console, msg }) {
     }
 
     function updateDisplay() {
-        const display = document.guerySelector(".paintGradientMakerPopupDisplay");
+        const display = document.querySelector(".paintGradientMakerPopupDisplay");
         if (display) display.style.background = encodeGradHTML(modalStorage);
     }
 

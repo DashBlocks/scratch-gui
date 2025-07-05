@@ -5,7 +5,7 @@ import Box from '../box/box.jsx';
 import Modal from '../../containers/modal.jsx';
 import classNames from 'classnames';
 
-import poster from './dash-poster.png';
+import poster from './dash-poster.svg';
 import styles from './welcome-modal.css';
 import { APP_NAME } from '../../lib/brand.js';
 

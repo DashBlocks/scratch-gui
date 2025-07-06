@@ -395,6 +395,8 @@ const events = function (isInitialSetup, isStage, targetId, colors) {
 };
 
 const control = function (isInitialSetup, isStage, targetId, colors) {
+    const apple = translate('OPERATORS_JOIN_APPLE', 'apple');
+    const banana = translate('OPERATORS_JOIN_BANANA', 'banana');
     // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
     <category
@@ -424,12 +426,12 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
         <block type="control_if_then_else">
             <value name="THEN">
                 <shadow type="text">
-                    <field name="TEXT">Foo</field>
+                    <field name="TEXT">${apple}</field>
                 </shadow>
             </value>
             <value name="ELSE">
                 <shadow type="text">
-                    <field name="TEXT">Bar</field>
+                    <field name="TEXT">${banana}</field>
                 </shadow>
             </value>
         </block>

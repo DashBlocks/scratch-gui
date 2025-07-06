@@ -458,10 +458,17 @@ export default async function ({ addon, console, msg }) {
             deleteBtn.addEventListener("click", (e) => {
                 const pointer = modalStorage.selectedPointer;
                 if (pointer) {
-                    modalStorage.parts.splice(pointer.id, 1);
-                    pointer.remove();
-                    updateDisplay();
                     delete modalStorage.selectedPointer;
+                    modalStorage.parts.splice(pointer.id, 1);
+                    const cache = {
+                        parts: modalStorage.parts,
+                        type: modalStorage.type,
+                        dir: modalStorage.dir,
+                    };
+                    modalStorage.parts = [];
+                    draggables.innerHTML = "";
+                    decodeFromCache(cache, draggables, settings);
+                    updateDisplay();
                 }
                 e.stopPropagation();
             });

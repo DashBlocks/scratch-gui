@@ -39,7 +39,7 @@
 }
 
 .paintGradientMakerPopupSettings {
-  border-top: dashed 2px var(--ui-black-transparent);
+  border-top: dashed 1px var(--ui-black-transparent);
   padding-top: 10px;
   display: flex;
   justify-content: center;

@@ -582,6 +582,55 @@
         ],
         "blocks": {}
     },
+{
+        "name": "Dashy",
+        "tags": [
+            "dash"
+        ],
+        "isStage": false,
+        "variables": {},
+        "costumes": [
+             {
+        "name": "Dashy-3",
+        "assetId": "c05a96659402138dd09e4a84743f52ad",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "c05a96659402138dd09e4a84743f52ad.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },
+    {
+        "name": "Dashy-2",
+        "assetId": "4d9fe47b613d3f7891aed9ba42f42a84",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "4d9fe47b613d3f7891aed9ba42f42a84.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },
+    {
+        "name": "Dashy",
+        "assetId": "30912c9a658a14b72af2d6f3eca41daf",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "30912c9a658a14b72af2d6f3eca41daf.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    }
+        ],
+        "sounds": [
+            {
+                "assetId": "83a9787d4cb6f3b7632b4ddfebf74367",
+                "name": "pop",
+                "dataFormat": "wav",
+                "format": "",
+                "rate": 44100,
+                "sampleCount": 1032,
+                "md5ext": "83a9787d4cb6f3b7632b4ddfebf74367.wav"
+            }
+        ],
+        "blocks": {}
+    },
     {
         "name": "Amon",
         "tags": [

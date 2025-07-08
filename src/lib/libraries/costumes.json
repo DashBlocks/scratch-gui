@@ -1,4 +1,28 @@
-[       {
+[         {
+        "name": "Dashy-3",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "c05a96659402138dd09e4a84743f52ad",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "c05a96659402138dd09e4a84743f52ad.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },
+    {
+        "name": "Dashy-2",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "4d9fe47b613d3f7891aed9ba42f42a84",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "4d9fe47b613d3f7891aed9ba42f42a84.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },
+    {
         "name": "Dashy",
         "tags": [
             "dash"

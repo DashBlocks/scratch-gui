@@ -1,4 +1,15 @@
-[
+[   
+    {
+        "name": "Wow",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "031214d441fde5d82a0fa22828d27035",
+        "dataFormat": "mp3",
+        "md5ext": "031214d441fde5d82a0fa22828d27035.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    },
     {
         "name": "A Bass",
         "tags": [

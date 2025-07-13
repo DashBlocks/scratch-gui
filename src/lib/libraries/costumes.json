@@ -1,4 +1,16 @@
 [         {
+        "name": "vector tiles",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "3a23f0bb5459de8ed0dab5af5efbb64f",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "3a23f0bb5459de8ed0dab5af5efbb64f.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },
+    {
         "name": "Dashy-3",
         "tags": [
             "dash"

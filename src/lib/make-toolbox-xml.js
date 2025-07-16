@@ -441,6 +441,7 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
         ${blockSeparator}
         <block type="control_resume"/>
         <block type="control_pause"/>
+        <block type="control_is_paused"/>
         <block type="control_stop"/>
         ${blockSeparator}
         ${isStage ? `

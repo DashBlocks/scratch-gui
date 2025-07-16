@@ -369,8 +369,6 @@ const events = function (isInitialSetup, isStage, targetId, colors) {
         <block type="event_whenbackdropswitchesto">
         </block>
         ${blockSeparator}
-        <block type="event_when">
-        </block>
         <block type="event_whengreaterthan">
             <value name="VALUE">
                 <shadow type="math_number">
@@ -443,7 +441,6 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
         ${blockSeparator}
         <block type="control_resume"/>
         <block type="control_pause"/>
-        <block type="control_is_paused"/>
         <block type="control_stop"/>
         ${blockSeparator}
         ${isStage ? `

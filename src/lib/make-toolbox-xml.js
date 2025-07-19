@@ -369,6 +369,7 @@ const events = function (isInitialSetup, isStage, targetId, colors) {
         <block type="event_whenbackdropswitchesto">
         </block>
         ${blockSeparator}
+        <block type="event_when"/>
         <block type="event_whengreaterthan">
             <value name="VALUE">
                 <shadow type="math_number">
@@ -698,6 +699,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                     </shadow>
                 </value>
             </block>
+            <block type="operator_newline"/>
             <block type="operator_letter_of">
                 <value name="LETTER">
                     <shadow type="math_whole_number">

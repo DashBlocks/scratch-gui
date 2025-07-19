@@ -100,6 +100,12 @@ class SB3Downloader extends React.Component {
                 suggestedName: this.props.projectFilename,
                 types: [
                     {
+                        description: 'DashBlocks Project',
+                        accept: {
+                            'application/octet-stream': '.dbp'
+                        }
+                    },
+                    {
                         description: 'Scratch 3 Project',
                         accept: {
                             'application/octet-stream': '.sb3'

@@ -20,7 +20,7 @@ class WelcomeModal extends React.Component {
         this.props.onCloseWelcomeModal();
     }
     handleChangeDontShow (checked) {
-        this.setState({dontShow: checked.toString()});
+        this.setState({dontShow: checked});
         localStorage.setItem('dontShowWelcomeModal', checked);
     }
     render () {

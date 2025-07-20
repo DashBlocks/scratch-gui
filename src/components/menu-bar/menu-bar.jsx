@@ -671,7 +671,7 @@ class MenuBar extends React.Component {
                                             />
                                         </MenuItem>
                                     )}
-                                    {this.props.isPlayerOnly || (this.props.canSave || this.props.canCreateCopy || this.props.canRemix) && (
+                                    {(this.props.canSave || this.props.canCreateCopy || this.props.canRemix) && (
                                         <MenuSection>
                                             {this.props.canSave && (
                                                 <MenuItem onClick={this.handleClickSave}>

@@ -28,6 +28,10 @@
     background-color: $input-background;
 }
 
+.dont-show-checkbox {
+    margin-right: 0.5rem;
+}
+
 .button-row {
     font-weight: bolder;
     text-align: right;

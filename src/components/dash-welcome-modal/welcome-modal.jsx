@@ -7,6 +7,7 @@ import classNames from 'classnames';
 
 import poster from './dash-poster.svg';
 import styles from './welcome-modal.css';
+import FancyCheckbox from '../tw-fancy-checkbox/checkbox.jsx';
 import { APP_NAME } from '../../lib/brand.js';
 
 const WelcomeModalComponent = props => (
@@ -27,9 +28,9 @@ const WelcomeModalComponent = props => (
                 <br />
                 <br />
                 <b>It's recommended to switch language to English (if you didn't already)</b> because some texts aren't translated or translated wrong.
-                <br />
-                <br />
             </p>
+            <br />
+            <br />
             <img
                 className={styles.poster}
                 src={poster}
@@ -40,6 +41,13 @@ const WelcomeModalComponent = props => (
                 <br />
                 View all contributors on <a href={`${process.env.ROOT}credits.html`}>credits page</a>.
             </p>
+            <br />
+            <br />
+            <FancyCheckbox
+                className={styles.dontShowCheckbox}
+                checked={props.dontShow}
+                onChange={props.onChangeDontShow}
+            >Don't show this again</FancyCheckbox>
         </Box>
         <Box className={styles.buttonRow}>
             <button
@@ -52,6 +60,8 @@ const WelcomeModalComponent = props => (
 
 WelcomeModalComponent.propTypes = {
     intl: intlShape,
+    dontShow: PropTypes.bool.isRequired,
+    onChangeDontShow: PropTypes.func,
     onClose: PropTypes.func.isRequired
 };
 

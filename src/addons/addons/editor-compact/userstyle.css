@@ -94,10 +94,6 @@
   padding: 0.5rem;
   height: 4.75rem;
 }
-[class*="sprite-info_row"] {
-  justify-content: flex-start;
-}
-[class*="sprite-info_group"],
 [class*="sprite-info_column_"] {
   margin-inline-end: 1rem;
 }

@@ -49,7 +49,7 @@ const WelcomeModalComponent = props => (
                     checked={props.dontShow}
                     onChange={props.onChangeDontShow}
                 />
-                Don't show this again
+                <p>Don't show this again</p>
             </label>
             <button
                 className={styles.closeButton}

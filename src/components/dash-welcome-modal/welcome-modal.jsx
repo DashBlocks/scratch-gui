@@ -41,17 +41,16 @@ const WelcomeModalComponent = props => (
                 <br />
                 View all contributors on <a href={`${process.env.ROOT}credits.html`}>credits page</a>.
             </p>
-            <br />
-            <br />
+        </Box>
+        <Box className={styles.buttonRow}>
             <label className={styles.dontShowContainer}>
                 <FancyCheckbox
                     className={styles.dontShowCheckbox}
                     checked={props.dontShow}
                     onChange={props.onChangeDontShow}
-                >Don't show this again</FancyCheckbox>
+                />
+                Don't show this again
             </label>
-        </Box>
-        <Box className={styles.buttonRow}>
             <button
                 className={styles.closeButton}
                 onClick={props.onClose}

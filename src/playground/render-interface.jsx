@@ -404,7 +404,10 @@ class Interface extends React.PureComponent {
                                         </Tab>
                                         <Tab
                                             className={classNames(tabClassNames.tab, {
-                                                [tabClassNames.tabDisabled]: !(description.instructions || description.credits)
+                                                [tabClassNames.tabDisabled]: !(
+                                                    (description.instructions || description.credits) &&
+                                                    !(description.instructions === 'unshared' || description.credits === 'unshared')
+                                                )
                                             })}
                                             onClick={this.onActivateDescriptionTab.bind(this)}
                                         >

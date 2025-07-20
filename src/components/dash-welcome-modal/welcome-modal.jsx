@@ -43,11 +43,13 @@ const WelcomeModalComponent = props => (
             </p>
             <br />
             <br />
-            <FancyCheckbox
-                className={styles.dontShowCheckbox}
-                checked={props.dontShow}
-                onChange={props.onChangeDontShow}
-            >Don't show this again</FancyCheckbox>
+            <label className={styles.dontShowContainer}>
+                <FancyCheckbox
+                    className={styles.dontShowCheckbox}
+                    checked={props.dontShow}
+                    onChange={props.onChangeDontShow}
+                >Don't show this again</FancyCheckbox>
+            </label>
         </Box>
         <Box className={styles.buttonRow}>
             <button

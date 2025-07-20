@@ -28,6 +28,10 @@
     background-color: $input-background;
 }
 
+.dont-show-container {
+    display: flex;
+    align-items: center;
+}
 .dont-show-checkbox {
     margin-right: 0.5rem;
 }

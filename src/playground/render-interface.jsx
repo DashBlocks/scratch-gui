@@ -98,8 +98,14 @@ if (AddonChannels.changeChannel) {
 }
 
 const RenderWelcomeModal = () => {
+    const [isOpen, setIsOpen] = React.useState(false);
+
     function handleOnOpen() {
-        <DashWelcomeModal />
+        setIsOpen(true);
+    }
+
+    function handleOnClose() {
+        setIsOpen(false);
     }
 
     return (
@@ -112,8 +118,9 @@ const RenderWelcomeModal = () => {
                     id="dash.home.welcomeModal"
                 />
             </a>
+            {isOpen && <DashWelcomeModal onClose={handleOnClose}/>}
         </>
-    )
+    );
 }
 
 runAddons();

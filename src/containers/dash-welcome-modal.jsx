@@ -17,7 +17,11 @@ class WelcomeModal extends React.Component {
         };
     }
     handleClose () {
-        this.props.onClose();
+        if (this.props.onClose) {
+            this.props.onClose();
+        } else {
+            this.props.dispatchClose();
+        }
     }
     handleChangeDontShow (e) {
         this.setState({
@@ -37,11 +41,12 @@ class WelcomeModal extends React.Component {
 }
 
 WelcomeModal.propTypes = {
-    onClose: PropTypes.func
+    onClose: PropTypes.func,
+    dispatchClose: PropTypes.func
 };
 
 const mapDispatchToProps = dispatch => ({
-    onClose: () => dispatch(closeWelcomeModal())
+    dispatchClose: () => dispatch(closeWelcomeModal())
 });
 
 export default connect(

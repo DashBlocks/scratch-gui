@@ -51,6 +51,7 @@ import cloudIcon from '!../lib/tw-recolor/build!./icons/icon--cloud.svg';
 import descriptionIcon from '!../lib/tw-recolor/build!./icons/icon--description.svg';
 
 import styles from './interface.css';
+import DashWelcomeModal from '../containers/dash-welcome-modal.jsx';
 
 const isInvalidEmbed = window.parent !== window;
 
@@ -94,6 +95,20 @@ if (AddonChannels.changeChannel) {
     AddonChannels.changeChannel.addEventListener('message', e => {
         SettingsStore.setStoreWithVersionCheck(e.data);
     });
+}
+
+const RenderWelcomeModal = () => {
+    let isRendered;
+
+    function handleOnOpen() {
+        isRendered = true;
+        // ...
+    }
+    function handleOnClose() {
+        isRendered = false;
+        // ...
+    }
+    <DashWelcomeModal onOpen={handleOnOpen} onClose={handleOnClose}/>
 }
 
 runAddons();

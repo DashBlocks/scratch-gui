@@ -35,6 +35,7 @@ import ProjectInput from '../components/tw-project-input/project-input.jsx';
 import FeaturedProjects from '../components/tw-featured-projects/featured-projects.jsx';
 import Description from '../components/tw-description/description.jsx';
 import BrowserModal from '../components/browser-modal/browser-modal.jsx';
+import DashWelcomeModal from '../containers/dash-welcome-modal.jsx';
 import CloudVariableBadge from '../containers/tw-cloud-variable-badge.jsx';
 import {isBrowserSupported} from '../lib/tw-environment-support-prober';
 import AddonChannels from '../addons/channels';
@@ -51,7 +52,6 @@ import cloudIcon from '!../lib/tw-recolor/build!./icons/icon--cloud.svg';
 import descriptionIcon from '!../lib/tw-recolor/build!./icons/icon--description.svg';
 
 import styles from './interface.css';
-import DashWelcomeModal from '../containers/dash-welcome-modal.jsx';
 
 const isInvalidEmbed = window.parent !== window;
 
@@ -98,17 +98,22 @@ if (AddonChannels.changeChannel) {
 }
 
 const RenderWelcomeModal = () => {
-    let isRendered;
-
     function handleOnOpen() {
-        isRendered = true;
-        // ...
+        <DashWelcomeModal />
     }
-    function handleOnClose() {
-        isRendered = false;
-        // ...
-    }
-    <DashWelcomeModal onOpen={handleOnOpen} onClose={handleOnClose}/>
+
+    return (
+        <>
+            <a onClick={handleOnOpen}>
+                {/* todo: translate */}
+                <FormattedMessage
+                    defaultMessage="Welcome Modal"
+                    description="Link to open welcome modal"
+                    id="dash.home.welcomeModal"
+                />
+            </a>
+        </>
+    )
 }
 
 runAddons();
@@ -180,6 +185,7 @@ const Footer = () => (
 
             <div className={styles.footerColumns}>
                 <div className={styles.footerSection}>
+                    <RenderWelcomeModal />
                     <a href="credits.html">
                         <FormattedMessage
                             defaultMessage="Credits"
@@ -187,13 +193,13 @@ const Footer = () => (
                             id="tw.footer.credits"
                         />
                     </a>
-                    <a href="https://github.com/sponsors/DBDev-git">
+                    {/*<a href="...">
                         <FormattedMessage
                             defaultMessage="Donate"
                             description="Donation link in footer"
                             id="tw.footer.donate"
                         />
-                    </a>
+                    </a>*/}
                 </div>
                 <div className={styles.footerSection}>
                     <a href="https://desktop.turbowarp.org/">

@@ -46,19 +46,30 @@ const messages = defineMessages({
 });
 
 const lazyMessages = [
-    "Раскрашиваем блоки...",
-    "Исправляем ошибки...",
-    "Придумываем идеи...",
-    "Загружаем расширения...",
-    "Восстанавливаем спрайты...",
-    "Подписываемся на наш офицальный ТГ: https://t.me/DashBlocks",
-    "Пасём Dash'ев...",
-    "Переводим Dash...",
-    "Разбаниваем Spartan dav'а...",
-    "Компилируем в JavaScript...",
-    "Гладим кото-блоки...",
-    "Собираем скрипты...",
-    "Скучаем..."
+    // Asset-related messages
+    "Coloring the blocks...",
+    "Loading extensions...",
+    "Making costumes...",
+    "Restoring the sprites...",
+    "Listening to the sounds...",
+    "Admiring the fonts...",
+    "Making scripts...",
+
+    // Just normal messages
+    "Fixing errors...",
+    "Coming up with ideas...",
+    "Compiling to JavaScript...",
+    "Translating Dash...",
+
+    // Funny messages
+    "Keeping an eye on Dashy...",
+    "Unbanning SpartanDav...",
+    "Patting the cat blocks...",
+    "Deleting Memokot... (trying to)",
+    "*You found the \"12\"*",
+
+    // Promotions
+    "Subscribe to our TG channel - https://t.me/DashBlocks ;)"
 ];
 
 // Because progress events are fired so often during the very performance-critical loading

@@ -45,6 +45,14 @@ const messages = defineMessages({
     }
 });
 
+const lazyMessages = [
+    "Frying the blocks...",
+    "Frying the costumes...",
+    "Frying the sounds...",
+    "Frying the extensions...",
+    "Just frying..."
+];
+
 // Because progress events are fired so often during the very performance-critical loading
 // process and React updates are very slow, we bypass React for updating the progress bar.
 
@@ -60,8 +68,14 @@ class LoaderComponent extends React.Component {
         this.barInnerEl = null;
         this.messageEl = null;
         this.ignoreProgress = false;
+        this.state = {
+            messageNumber: this.chooseRandomMessage()
+        };
     }
     componentDidMount () {
+        this.intervalId = setInterval(() => {
+            this.setState({messageNumber: this.chooseRandomMessage()});
+        }, 5000);
         this.handleAssetProgress(
             this.props.vm.runtime.finishedAssetRequests,
             this.props.vm.runtime.totalAssetRequests
@@ -70,8 +84,22 @@ class LoaderComponent extends React.Component {
         this.props.vm.runtime.on('PROJECT_LOADED', this.handleProjectLoaded);
     }
     componentWillUnmount () {
+        clearInterval(this.intervalId);
         this.props.vm.off('ASSET_PROGRESS', this.handleAssetProgress);
         this.props.vm.runtime.off('PROJECT_LOADED', this.handleProjectLoaded);
+    }
+    chooseRandomMessage () {
+        let messageNumber;
+        const sum = lazyMessages.reduce((acc, m) => acc + 1, 0);
+        let rand = sum * Math.random();
+        for (let i = 0; i < lazyMessages.length; i++) {
+            rand -= 1;
+            if (rand <= 0) {
+                messageNumber = i;
+                break;
+            }
+        }
+        return messageNumber;
     }
     handleAssetProgress (finished, total) {
         if (this.ignoreProgress || !this.barInnerEl || !this.messageEl) {
@@ -92,7 +120,7 @@ class LoaderComponent extends React.Component {
         }
     }
     handleProjectLoaded () {
-        if (this.ignoreProgress || !this.barInnerEl || !this.messageEl) {
+        if (this.ignoreProgress || !this.barInnerEl || !this.messageEl || !this.lazyMessageEl) {
             return;
         }
 
@@ -145,6 +173,22 @@ class LoaderComponent extends React.Component {
                             className={styles.barInner}
                             ref={this.barInnerRef}
                         />
+                    </div>
+
+                    <div className={styles.messageContainerOuter}>
+                        <div
+                            className={styles.messageContainerInner}
+                            style={{transform: `translate(0, -${this.state.messageNumber * 25}px)`}}
+                        >
+                            {lazyMessages.map((m, i) => (
+                                <div
+                                    className={styles.message}
+                                    key={i}
+                                >
+                                    {m}
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

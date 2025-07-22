@@ -190,3 +190,12 @@
     height: 100%;
     background-color: $ui-white-default;
 }
+
+.message-container-outer {
+    height: 30px;
+    overflow: hidden;
+}
+
+.message-container-inner {
+    transition: transform 0.5s;
+}

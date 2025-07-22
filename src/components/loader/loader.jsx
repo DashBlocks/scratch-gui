@@ -46,11 +46,19 @@ const messages = defineMessages({
 });
 
 const lazyMessages = [
-    "Frying the blocks...",
-    "Frying the costumes...",
-    "Frying the sounds...",
-    "Frying the extensions...",
-    "Just frying..."
+    "Раскрашиваем блоки...",
+    "Исправляем ошибки...",
+    "Придумываем идеи...",
+    "Загружаем расширения...",
+    "Восстанавливаем спрайты...",
+    "Подписываемся на наш офицальный ТГ: https://t.me/DashBlocks",
+    "Пасём Dash'ев...",
+    "Переводим Dash...",
+    "Разбаниваем Spartan dav'а...",
+    "Компилируем в JavaScript...",
+    "Гладим кото-блоки...",
+    "Собираем скрипты...",
+    "Скучаем..."
 ];
 
 // Because progress events are fired so often during the very performance-critical loading

@@ -248,14 +248,14 @@ a {
     text-decoration: none;
     color: inherit;
 }
-.commit-link:hover {
-    background-color: $ui-black-transparent;
-}
 
 .commit-item {
     padding: 0.5rem;
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: 0.5rem;
+}
+.commit-item:hover {
+    border-color: $looks-secondary;
 }
 
 .commit-message {

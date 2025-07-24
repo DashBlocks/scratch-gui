@@ -574,9 +574,9 @@ class Interface extends React.PureComponent {
                                                 />
                                             </p>
                                             <FeaturedProjects studio="37103090" />
-                                            <p>
+                                            {/*<p>
                                                 {lazyMessages[this.chooseRandomMessage()]}
-                                            </p>
+                                            </p>*/}
                                         </div>
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>

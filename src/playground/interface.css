@@ -253,14 +253,11 @@ a {
 }
 
 .commit-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
     padding: 0.5rem;
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: 0.5rem;
 }
 
-.commit-date {
-    font-size: 0.75rem;
+.commit-message {
+    font-weight: bold;
 }

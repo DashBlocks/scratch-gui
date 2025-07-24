@@ -241,32 +241,26 @@ a {
 .commits-container {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 0.5rem;
 }
 
 .commit-link {
     text-decoration: none;
     color: inherit;
 }
-
 .commit-link:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: $ui-black-transparent;
 }
 
 .commit-item {
     display: flex;
-    align-items: center;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-}
-
-.commit-info {
-    display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    border: 0.0625rem solid $ui-black-transparent;
+    border-radius: 0.5rem;
 }
 
-.commit-message {
-    color: #24292e;
+.commit-date {
+    font-size: 0.75rem;
 }

@@ -16,7 +16,7 @@
 
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
@@ -50,6 +50,7 @@ import aboutIcon from '!../lib/tw-recolor/build!./icons/icon--about.svg';
 import unsharedIcon from '!../lib/tw-recolor/build!./icons/icon--unshared.svg';
 import cloudIcon from '!../lib/tw-recolor/build!./icons/icon--cloud.svg';
 import descriptionIcon from '!../lib/tw-recolor/build!./icons/icon--description.svg';
+import whatsNewIcon from '!../lib/tw-recolor/build!./icons/icon--whatsnew.svg';
 
 import styles from './interface.css';
 
@@ -274,6 +275,50 @@ const Footer = () => (
     </footer>
 );
 
+const WhatsNew = () => {
+    const [commits, setCommits] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+
+    useEffect(() => {
+        fetch('https://api.github.com/repos/DashBlocks/dashblocks.github.io/commits')
+            .then(response => response.json())
+            .then(data => {
+                setCommits(data.slice(0, 10));
+                setLoading(false);
+            })
+            .catch(err => {
+                setError(err);
+                setLoading(false);
+            });
+    });
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>An error occured</div>;
+
+    return (
+        <div className={styles.commitsContainer}>
+            {commits.map(commit => (
+                <a
+                    key={commit.sha}
+                    href={commit.html_url}
+                    className={styles.commitLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <div className={styles.commitItem}>
+                        <div className={styles.commitInfo}>
+                            <span className={styles.commitMessage}>
+                                {commit.commit.message}
+                            </span>
+                        </div>
+                    </div>
+                </a>
+            ))}
+        </div>
+    );
+};
+
 class Interface extends React.PureComponent {
     constructor (props) {
         super(props);
@@ -398,6 +443,17 @@ class Interface extends React.PureComponent {
                                                 }}
                                             />
                                         </Tab>
+                                        <Tab className={tabClassNames.tab}>
+                                            <img
+                                                draggable={false}
+                                                src={whatsNewIcon()}
+                                            />
+                                            <FormattedMessage
+                                                defaultMessage="What's new?"
+                                                description="Button to get to the What's New? panel"
+                                                id="dash.home.tab.whatsNew"
+                                            />
+                                        </Tab>
                                         <Tab
                                             className={classNames(tabClassNames.tab, {
                                                 [tabClassNames.tabDisabled]: !(description.instructions === 'unshared' || description.credits === 'unshared')
@@ -470,6 +526,17 @@ class Interface extends React.PureComponent {
                                                 />
                                             </p>
                                             <FeaturedProjects studio="37103090" />
+                                        </div>
+                                    </TabPanel>
+                                    <TabPanel className={tabClassNames.tabPanel}>
+                                        <div
+                                            className={styles.section}
+                                            style={{
+                                                overflowY: "auto",
+                                                maxHeight: "520px"
+                                            }}
+                                        >
+                                            <WhatsNew />
                                         </div>
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>

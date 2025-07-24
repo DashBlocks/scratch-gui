@@ -237,3 +237,36 @@ a {
 .tab-panel.is-selected {
     display: block;
 }
+
+.commits-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.commit-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.commit-link:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.commit-item {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+.commit-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.commit-message {
+    color: #24292e;
+}

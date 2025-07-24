@@ -18,6 +18,13 @@ const mainMessages = {
             id="gui.loader.headline"
         />
     ),
+    'dash.loader.loadingPage': (
+        <FormattedMessage 
+            defaultMessage="Loading Page"
+            description="Main page loading message"
+            id='dash.loader.loadingPage'
+        />
+    ),
     'gui.loader.creating': (
         <FormattedMessage
             defaultMessage="Creating Project"

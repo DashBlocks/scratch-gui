@@ -53,6 +53,7 @@ import descriptionIcon from '!../lib/tw-recolor/build!./icons/icon--description.
 import whatsNewIcon from '!../lib/tw-recolor/build!./icons/icon--whatsnew.svg';
 
 import styles from './interface.css';
+import Loader from '../components/loader/loader.jsx';
 
 const isInvalidEmbed = window.parent !== window;
 
@@ -96,6 +97,33 @@ if (AddonChannels.changeChannel) {
     AddonChannels.changeChannel.addEventListener('message', e => {
         SettingsStore.setStoreWithVersionCheck(e.data);
     });
+}
+
+const RenderLoader = () => {
+    const [pageLoaded, setPageLoaded] = useState(false);
+
+    useEffect(() => {
+        const handleLoad = () => {
+            setPageLoaded(true);
+        };
+
+        if (document.readyState === 'complete') {
+            setPageLoaded(true);
+        } else {
+            window.addEventListener('load', handleLoad);
+        }
+
+        return () => {
+            window.removeEventListener('load', handleLoad);
+        };
+    }, []);
+
+    return !pageLoaded ? (
+        <Loader
+            isFullScreen
+            messageId="dash.loader.loadingPage"
+        />
+    ) : null;
 }
 
 const RenderWelcomeModal = () => {
@@ -387,6 +415,7 @@ class Interface extends React.PureComponent {
                 })}
                 dir={isRtl ? 'rtl' : 'ltr'}
             >
+                <RenderLoader />
                 {isHomepage ? (
                     <WrappedMenuBar
                         canChangeLanguage

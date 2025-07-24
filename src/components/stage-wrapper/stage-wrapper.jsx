@@ -12,23 +12,6 @@ import Loader from '../loader/loader.jsx';
 import styles from './stage-wrapper.css';
 
 const StageWrapperComponent = function (props) {
-    const [pageLoaded, setPageLoaded] = useState(false);
-
-    useEffect(() => {
-        const handleLoad = () => {
-            setPageLoaded(true);
-        };
-
-        if (document.readyState === 'complete') {
-            setPageLoaded(true);
-        } else {
-            window.addEventListener('load', handleLoad);
-        }
-
-        return () => {
-            window.removeEventListener('load', handleLoad);
-        };
-    });
     const {
         isEmbedded,
         isFullScreen,
@@ -70,12 +53,6 @@ const StageWrapperComponent = function (props) {
             </Box>
             {loading ? (
                 <Loader isFullScreen={isFullScreen} />
-            ) : null}
-            {!pageLoaded ? (
-                <Loader
-                    isFullScreen
-                    messageId="gui.loader.creating"
-                />
             ) : null}
         </Box>
     );

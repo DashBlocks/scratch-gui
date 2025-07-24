@@ -53,6 +53,7 @@ import descriptionIcon from '!../lib/tw-recolor/build!./icons/icon--description.
 import whatsNewIcon from '!../lib/tw-recolor/build!./icons/icon--whatsnew.svg';
 
 import styles from './interface.css';
+import lazyMessages from '../components/loader/lazy-messages.json'
 import Loader from '../components/loader/loader.jsx';
 
 const isInvalidEmbed = window.parent !== window;
@@ -352,12 +353,26 @@ class Interface extends React.PureComponent {
         super(props);
         this.handleUpdateProjectTitle = this.handleUpdateProjectTitle.bind(this);
         this.state = {
-            activeTabIndex: 0
+            activeTabIndex: 0,
+            messageNumber: 0,
         };
     }
     componentDidUpdate (prevProps) {
         if (prevProps.isLoading && !this.props.isLoading) {
             loadServiceWorker();
+        }
+    }
+    componentDidMount() {
+        const sum = lazyMessages.reduce((acc, _) => acc + 1, 0);
+        let rand = sum * Math.random();
+        for (let i = 0; i < lazyMessages.length; i++) {
+            rand -= 1;
+            if (rand <= 0) {
+                this.setState({
+                    messageNumber: i
+                });
+                break;
+            }
         }
     }
     handleUpdateProjectTitle (title, isDefault) {
@@ -386,6 +401,10 @@ class Interface extends React.PureComponent {
         this.setState({
             activeTabIndex: 3
         });
+    }
+
+    chooseRandomMessage() {
+        return this.state.messageNumber;
     }
     render () {
         if (isInvalidEmbed) {
@@ -555,6 +574,9 @@ class Interface extends React.PureComponent {
                                                 />
                                             </p>
                                             <FeaturedProjects studio="37103090" />
+                                            <p>
+                                                {lazyMessages[this.chooseRandomMessage()]}
+                                            </p>
                                         </div>
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>

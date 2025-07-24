@@ -9,6 +9,7 @@ import {getIsLoadingWithId} from '../../reducers/project-state';
 import topBlock from './top-block.svg';
 import middleBlock from './middle-block.svg';
 import bottomBlock from './bottom-block.svg';
+import lazyMessages from './lazy-messages.json'
 
 const mainMessages = {
     'gui.loader.headline': (
@@ -51,33 +52,6 @@ const messages = defineMessages({
         id: 'tw.loader.loadingAssets'
     }
 });
-
-const lazyMessages = [
-    // Asset-related messages
-    "Coloring the blocks...",
-    "Loading extensions...",
-    "Making costumes...",
-    "Restoring the sprites...",
-    "Listening to the sounds...",
-    "Admiring the fonts...",
-    "Making scripts...",
-
-    // Just normal messages
-    "Fixing errors...",
-    "Coming up with ideas...",
-    "Compiling to JavaScript...",
-    "Translating Dash...",
-
-    // Funny messages
-    "Keeping an eye on Dashy...",
-    "Unbanning SpartanDav...",
-    "Patting the cat blocks...",
-    "Deleting Memokot... (trying to)",
-    "*You found the \"12\"*",
-
-    // Promotions
-    "Subscribe to our TG channel - https://t.me/DashBlocks ;)"
-];
 
 // Because progress events are fired so often during the very performance-critical loading
 // process and React updates are very slow, we bypass React for updating the progress bar.

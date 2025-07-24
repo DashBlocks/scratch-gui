@@ -58,6 +58,9 @@ import Loader from '../components/loader/loader.jsx';
 
 const isInvalidEmbed = window.parent !== window;
 
+// Browser support is not perfect yet
+const relativeTimeSupported = () => typeof Intl !== 'undefined' && typeof Intl.RelativeTimeFormat !== 'undefined';
+
 const handleClickAddonSettings = addonId => {
     // addonId might be a string of the addon to focus on, undefined, or an event (treat like undefined)
     const path = process.env.ROUTING_STYLE === 'wildcard' ? 'addons' : 'addons.html';
@@ -327,24 +330,36 @@ const WhatsNew = () => {
 
     return (
         <div className={styles.commitsContainer}>
-            {commits.map(commit => (
-                <a
-                    key={commit.sha}
-                    href={commit.html_url}
-                    className={styles.commitLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <div className={styles.commitItem}>
-                        <div>
-                            {commit.commit.message}
+            {commits.map(commit => {
+                const createdDate = new Date(commit.commit.commiter.date);
+                return (
+                    <a
+                        key={commit.sha}
+                        href={commit.html_url}
+                        className={styles.commitLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <div className={styles.commitItem}>
+                            <div className={styles.commitMessage}>
+                                {commit.commit.message}
+                            </div>
+                            <div>
+                                {relativeTimeSupported() && (
+                                    <span>
+                                        <FormattedRelative value={createdDate} />
+                                        {' ('}
+                                    </span>
+                                )}
+                                <FormattedDate value={createdDate} />
+                                {', '}
+                                <FormattedTime value={createdDate} />
+                                {relativeTimeSupported() && ')'}
+                            </div>
                         </div>
-                        <div className={styles.commitDate}>
-                            {`Commit date: ${commit.commit.commiter.date}`}
-                        </div>
-                    </div>
-                </a>
-            ))}
+                    </a>
+                );
+            })}
         </div>
     );
 };

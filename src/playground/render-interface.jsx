@@ -336,10 +336,11 @@ const WhatsNew = () => {
                     rel="noopener noreferrer"
                 >
                     <div className={styles.commitItem}>
-                        <div className={styles.commitInfo}>
-                            <span className={styles.commitMessage}>
-                                {commit.commit.message}
-                            </span>
+                        <div>
+                            {commit.commit.message}
+                        </div>
+                        <div className={styles.commitDate}>
+                            {`Commit date: ${commit.commit.commiter.date}`}
                         </div>
                     </div>
                 </a>

@@ -280,18 +280,20 @@ const WhatsNew = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
 
-    useEffect(() => {
-        fetch('https://api.github.com/repos/DashBlocks/dashblocks.github.io/commits')
-            .then(response => response.json())
-            .then(data => {
-                setCommits(data.slice(0, 10));
-                setLoading(false);
-            })
-            .catch(err => {
-                setError(err);
-                setLoading(false);
-            });
-    });
+    if (loading) {
+        useEffect(() => {
+            fetch('https://api.github.com/repos/DashBlocks/dashblocks.github.io/commits')
+                .then(response => response.json())
+                .then(data => {
+                    setCommits(data.slice(0, 10));
+                    setLoading(false);
+                })
+                .catch(err => {
+                    setError(err);
+                    setLoading(false);
+                });
+        });
+    }
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>An error occured</div>;

@@ -134,7 +134,6 @@ a {
 }
 
 .tab-list {
-    width: 100%;
     display: flex;
     align-items: flex-end;
     flex-shrink: 0;
@@ -222,6 +221,7 @@ a {
 
 /* Body of the tabs */
 .tabs {
+    width: calc(480px + 1rem + 0.125rem);
     position: relative;
     flex-grow: 1;
     display: flex;

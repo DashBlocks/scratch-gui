@@ -45,6 +45,7 @@ import InvalidEmbed from '../components/tw-invalid-embed/invalid-embed.jsx';
 import {APP_NAME} from '../lib/brand.js';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import tabStyles from 'react-tabs/style/react-tabs.css';
+import TWRenderRecoloredImage from '../lib/tw-recolor/render.jsx';
 
 import aboutIcon from '!../lib/tw-recolor/build!./icons/icon--about.svg';
 import unsharedIcon from '!../lib/tw-recolor/build!./icons/icon--unshared.svg';
@@ -403,22 +404,6 @@ class Interface extends React.PureComponent {
             activeTabIndex: tab
         });
     }
-    onActivateUnsharedTab () {
-        this.setState({
-            activeTabIndex: 1
-        });
-    }
-    onActivateCloudTab () {
-        this.setState({
-            activeTabIndex: 2
-        });
-    }
-    onActivateDescriptionTab () {
-        this.setState({
-            activeTabIndex: 3
-        });
-    }
-
     chooseRandomMessage() {
         return this.state.messageNumber;
     }
@@ -494,9 +479,9 @@ class Interface extends React.PureComponent {
                                 >
                                     <TabList className={tabClassNames.tabList}>
                                         <Tab className={tabClassNames.tab}>
-                                            <img
+                                            <TWRenderRecoloredImage
                                                 draggable={false}
-                                                src={aboutIcon()}
+                                                src={aboutIcon}
                                             />
                                             <FormattedMessage
                                                 defaultMessage="About {APP_NAME}"
@@ -508,9 +493,9 @@ class Interface extends React.PureComponent {
                                             />
                                         </Tab>
                                         <Tab className={tabClassNames.tab}>
-                                            <img
+                                            <TWRenderRecoloredImage
                                                 draggable={false}
-                                                src={whatsNewIcon()}
+                                                src={whatsNewIcon}
                                             />
                                             <FormattedMessage
                                                 defaultMessage="What's new?"
@@ -522,11 +507,10 @@ class Interface extends React.PureComponent {
                                             className={classNames(tabClassNames.tab, {
                                                 [tabClassNames.tabDisabled]: !(description.instructions === 'unshared' || description.credits === 'unshared')
                                             })}
-                                            onClick={this.onActivateUnsharedTab.bind(this)}
                                         >
-                                            <img
+                                            <TWRenderRecoloredImage
                                                 draggable={false}
-                                                src={unsharedIcon()}
+                                                src={unsharedIcon}
                                             />
                                             <FormattedMessage
                                                 defaultMessage="Unshared project"
@@ -538,11 +522,10 @@ class Interface extends React.PureComponent {
                                             className={classNames(tabClassNames.tab, {
                                                 [tabClassNames.tabDisabled]: !(hasCloudVariables && projectId !== '0')
                                             })}
-                                            onClick={this.onActivateCloudTab.bind(this)}
                                         >
-                                            <img
+                                            <TWRenderRecoloredImage
                                                 draggable={false}
-                                                src={cloudIcon()}
+                                                src={cloudIcon}
                                             />
                                             <FormattedMessage
                                                 defaultMessage="Cloud variables"
@@ -557,11 +540,10 @@ class Interface extends React.PureComponent {
                                                     !(description.instructions === 'unshared' || description.credits === 'unshared')
                                                 )
                                             })}
-                                            onClick={this.onActivateDescriptionTab.bind(this)}
                                         >
-                                            <img
+                                            <TWRenderRecoloredImage
                                                 draggable={false}
-                                                src={descriptionIcon()}
+                                                src={descriptionIcon}
                                             />
                                             <FormattedMessage
                                                 defaultMessage="Description"

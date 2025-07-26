@@ -224,6 +224,11 @@ module.exports = [
                 title: `${APP_NAME} Credits`,
                 ...htmlWebpackPluginCommon
             }),
+            new HtmlWebpackPlugin({
+                chunks: [],
+                template: '/yandex_27bc2812ef539133.html',
+                filename: 'yandex_27bc2812ef539133.html'
+            }),
             new CopyWebpackPlugin({
                 patterns: [
                     {

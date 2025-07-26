@@ -19,7 +19,7 @@ import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
+import {FormattedMessage, FormattedDate, FormattedTime, FormattedRelative, defineMessages, injectIntl, intlShape} from 'react-intl';
 import {getIsLoading} from '../reducers/project-state.js';
 import AppStateHOC from '../lib/app-state-hoc.jsx';
 import ErrorBoundaryHOC from '../lib/error-boundary-hoc.jsx';
@@ -45,6 +45,7 @@ import InvalidEmbed from '../components/tw-invalid-embed/invalid-embed.jsx';
 import {APP_NAME} from '../lib/brand.js';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import tabStyles from 'react-tabs/style/react-tabs.css';
+import TWRenderRecoloredImage from '../lib/tw-recolor/render.jsx';
 
 import aboutIcon from '!../lib/tw-recolor/build!./icons/icon--about.svg';
 import unsharedIcon from '!../lib/tw-recolor/build!./icons/icon--unshared.svg';
@@ -57,6 +58,9 @@ import lazyMessages from '../components/loader/lazy-messages.json'
 import Loader from '../components/loader/loader.jsx';
 
 const isInvalidEmbed = window.parent !== window;
+
+// Browser support is not perfect yet
+const relativeTimeSupported = () => typeof Intl !== 'undefined' && typeof Intl.RelativeTimeFormat !== 'undefined';
 
 const handleClickAddonSettings = addonId => {
     // addonId might be a string of the addon to focus on, undefined, or an event (treat like undefined)
@@ -327,23 +331,36 @@ const WhatsNew = () => {
 
     return (
         <div className={styles.commitsContainer}>
-            {commits.map(commit => (
-                <a
-                    key={commit.sha}
-                    href={commit.html_url}
-                    className={styles.commitLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <div className={styles.commitItem}>
-                        <div className={styles.commitInfo}>
-                            <span className={styles.commitMessage}>
+            {commits.map(commit => {
+                const createdDate = new Date(commit.commit.commiter.date);
+                return (
+                    <a
+                        key={commit.sha}
+                        href={commit.html_url}
+                        className={styles.commitLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <div className={styles.commitItem}>
+                            <div className={styles.commitMessage}>
                                 {commit.commit.message}
-                            </span>
+                            </div>
+                            <div>
+                                {relativeTimeSupported() && (
+                                    <span>
+                                        <FormattedRelative value={createdDate} />
+                                        {' ('}
+                                    </span>
+                                )}
+                                <FormattedDate value={createdDate} />
+                                {', '}
+                                <FormattedTime value={createdDate} />
+                                {relativeTimeSupported() && ')'}
+                            </div>
                         </div>
-                    </div>
-                </a>
-            ))}
+                    </a>
+                );
+            })}
         </div>
     );
 };
@@ -387,22 +404,6 @@ class Interface extends React.PureComponent {
             activeTabIndex: tab
         });
     }
-    onActivateUnsharedTab () {
-        this.setState({
-            activeTabIndex: 1
-        });
-    }
-    onActivateCloudTab () {
-        this.setState({
-            activeTabIndex: 2
-        });
-    }
-    onActivateDescriptionTab () {
-        this.setState({
-            activeTabIndex: 3
-        });
-    }
-
     chooseRandomMessage() {
         return this.state.messageNumber;
     }
@@ -478,9 +479,9 @@ class Interface extends React.PureComponent {
                                 >
                                     <TabList className={tabClassNames.tabList}>
                                         <Tab className={tabClassNames.tab}>
-                                            <img
+                                            <TWRenderRecoloredImage
                                                 draggable={false}
-                                                src={aboutIcon()}
+                                                src={aboutIcon}
                                             />
                                             <FormattedMessage
                                                 defaultMessage="About {APP_NAME}"
@@ -492,9 +493,9 @@ class Interface extends React.PureComponent {
                                             />
                                         </Tab>
                                         <Tab className={tabClassNames.tab}>
-                                            <img
+                                            <TWRenderRecoloredImage
                                                 draggable={false}
-                                                src={whatsNewIcon()}
+                                                src={whatsNewIcon}
                                             />
                                             <FormattedMessage
                                                 defaultMessage="What's new?"
@@ -506,11 +507,10 @@ class Interface extends React.PureComponent {
                                             className={classNames(tabClassNames.tab, {
                                                 [tabClassNames.tabDisabled]: !(description.instructions === 'unshared' || description.credits === 'unshared')
                                             })}
-                                            onClick={this.onActivateUnsharedTab.bind(this)}
                                         >
-                                            <img
+                                            <TWRenderRecoloredImage
                                                 draggable={false}
-                                                src={unsharedIcon()}
+                                                src={unsharedIcon}
                                             />
                                             <FormattedMessage
                                                 defaultMessage="Unshared project"
@@ -522,11 +522,10 @@ class Interface extends React.PureComponent {
                                             className={classNames(tabClassNames.tab, {
                                                 [tabClassNames.tabDisabled]: !(hasCloudVariables && projectId !== '0')
                                             })}
-                                            onClick={this.onActivateCloudTab.bind(this)}
                                         >
-                                            <img
+                                            <TWRenderRecoloredImage
                                                 draggable={false}
-                                                src={cloudIcon()}
+                                                src={cloudIcon}
                                             />
                                             <FormattedMessage
                                                 defaultMessage="Cloud variables"
@@ -541,11 +540,10 @@ class Interface extends React.PureComponent {
                                                     !(description.instructions === 'unshared' || description.credits === 'unshared')
                                                 )
                                             })}
-                                            onClick={this.onActivateDescriptionTab.bind(this)}
                                         >
-                                            <img
+                                            <TWRenderRecoloredImage
                                                 draggable={false}
-                                                src={descriptionIcon()}
+                                                src={descriptionIcon}
                                             />
                                             <FormattedMessage
                                                 defaultMessage="Description"

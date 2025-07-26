@@ -134,7 +134,6 @@ a {
 }
 
 .tab-list {
-    width: 100%;
     display: flex;
     align-items: flex-end;
     flex-shrink: 0;
@@ -222,6 +221,7 @@ a {
 
 /* Body of the tabs */
 .tabs {
+    width: calc(480px + 1rem + 0.125rem);
     position: relative;
     flex-grow: 1;
     display: flex;
@@ -241,7 +241,7 @@ a {
 .commits-container {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 0.5rem;
 }
 
 .commit-link {
@@ -249,24 +249,15 @@ a {
     color: inherit;
 }
 
-.commit-link:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-}
-
 .commit-item {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
+    padding: 0.5rem;
+    border: 0.0625rem solid $ui-black-transparent;
+    border-radius: 0.5rem;
 }
-
-.commit-info {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+.commit-item:hover {
+    border-color: $looks-secondary;
 }
 
 .commit-message {
-    color: #24292e;
+    font-weight: bold;
 }

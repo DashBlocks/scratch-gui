@@ -332,7 +332,7 @@ const WhatsNew = () => {
     return (
         <div className={styles.commitsContainer}>
             {commits.map(commit => {
-                const createdDate = new Date(commit.commit.commiter.date);
+                const createdDate = new Date(commit.commit.committer.date);
                 return (
                     <a
                         key={commit.sha}

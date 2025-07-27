@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {closeSettingsModal} from '../reducers/modals';
 import SettingsModalComponent from '../components/tw-settings-modal/settings-modal.jsx';
 import {defaultStageSize} from '../reducers/custom-stage-size';
+import { setCloudHost } from '../reducers/tw.js';
 
 const messages = defineMessages({
     newFramerate: {
@@ -29,6 +30,7 @@ class UsernameModal extends React.Component {
             'handleWarpTimerChange',
             'handleStageWidthChange',
             'handleStageHeightChange',
+            'handleCloudHostChange',
             'handleDisableCompilerChange',
             'handleStoreProjectOptions'
         ]);
@@ -82,6 +84,9 @@ class UsernameModal extends React.Component {
     handleStageHeightChange (value) {
         this.props.vm.setStageSize(this.props.customStageSize.width, value);
     }
+    handleCloudHostChange (value) {
+        this.props.onSetCloudHost(value)
+    }
     handleStoreProjectOptions () {
         this.props.vm.storeProjectOptions();
     }
@@ -113,6 +118,9 @@ class UsernameModal extends React.Component {
                     this.props.customStageSize.width !== defaultStageSize.width ||
                     this.props.customStageSize.height !== defaultStageSize.height
                 }
+                cloudHost={this.props.cloudHost}
+                onCloudHostChange={this.handleCloudHostChange}
+                customCloudVarServerEnabled={this.props.customCloudVarServerEnabled}
                 onStoreProjectOptions={this.handleStoreProjectOptions}
                 {...props}
             />
@@ -123,6 +131,7 @@ class UsernameModal extends React.Component {
 UsernameModal.propTypes = {
     intl: intlShape,
     onClose: PropTypes.func,
+    onSetCloudHost: PropTypes.func,
     vm: PropTypes.shape({
         renderer: PropTypes.shape({
             setUseHighQualityRender: PropTypes.func
@@ -146,6 +155,8 @@ UsernameModal.propTypes = {
         width: PropTypes.number,
         height: PropTypes.number
     }),
+    cloudHost: PropTypes.string,
+    customCloudVarServerEnabled: PropTypes.bool,
     disableCompiler: PropTypes.bool
 };
 
@@ -160,10 +171,13 @@ const mapStateToProps = state => ({
     removeLimits: !state.scratchGui.tw.runtimeOptions.miscLimits,
     warpTimer: state.scratchGui.tw.compilerOptions.warpTimer,
     customStageSize: state.scratchGui.customStageSize,
+    cloudHost: state.scratchGui.tw.cloudHost,
+    customCloudVarServerEnabled: state.scratchGui.tw.cloud,
     disableCompiler: !state.scratchGui.tw.compilerOptions.enabled
 });
 
 const mapDispatchToProps = dispatch => ({
+    onSetCloudHost: cloudHost => dispatch(setCloudHost(cloudHost)),
     onClose: () => dispatch(closeSettingsModal())
 });
 

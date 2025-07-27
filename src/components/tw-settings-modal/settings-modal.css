@@ -88,6 +88,13 @@
     width: 80px;
 }
 
+.custom-cloud-var-server > * {
+    margin-right: 0.5rem;
+}
+.custom-cloud-var-server-input {
+    width: 80px; /* todo: make input-adaptive width */
+}
+
 .info {
     margin-bottom: 0.25rem;
 }

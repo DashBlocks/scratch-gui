@@ -394,6 +394,45 @@ CustomStageSize.propTypes = {
     onStageHeightChange: PropTypes.func
 };
 
+const CustomCloudVarServer = ({
+    customCloudVarServerEnabled,
+    cloudHost,
+    onCloudHostChange
+}) => (
+    <Setting
+        active={customCloudVarServerEnabled}
+        primary={(
+            <div className={classNames(styles.label, styles.customCloudVarServer)}>
+                <FormattedMessage
+                    defaultMessage="Custom Cloud Variable Server:"
+                    description="Custom Cloud Variable Server option"
+                    id="dash.settingsModal.customCloudVarServer"
+                />
+                <BufferedInput
+                    value={cloudHost}
+                    onSubmit={onCloudHostChange}
+                    className={styles.customCloudVarServerInput}
+                    type="string"
+                    step="1"
+                />
+            </div>
+        )}
+        help={(
+            <FormattedMessage
+                // eslint-disable-next-line max-len
+                defaultMessage="Changes the cloud variable host server."
+                description="Custom Cloud Variable Server option"
+                id="dash.settingsModal.customCloudVarServerHelp"
+            />
+        )}
+    />
+);
+CustomCloudVarServer.propTypes = {
+    customCloudVarServerEnabled: PropTypes.bool,
+    cloudHost: PropTypes.string,
+    onCloudHostChange: PropTypes.func,
+};
+
 const StoreProjectOptions = ({onStoreProjectOptions}) => (
     <div className={styles.setting}>
         <div>
@@ -410,9 +449,12 @@ const StoreProjectOptions = ({onStoreProjectOptions}) => (
             <p>
                 <FormattedMessage
                     // eslint-disable-next-line max-len
-                    defaultMessage="Stores the selected settings in the project so they will be automatically applied when TurboWarp loads this project. Warp timer and disable compiler will not be saved."
+                    defaultMessage="Stores the selected settings in the project so they will be automatically applied when {APP_NAME} loads this project. Warp timer, disable compiler and custom cloud variable server will not be saved."
                     description="Help text for the store settings in project button"
                     id="tw.settingsModal.storeProjectOptionsHelp"
+                    values={{
+                        APP_NAME
+                    }}
                 />
             </p>
         </div>
@@ -482,6 +524,16 @@ const SettingsModalComponent = props => (
             <RemoveMiscLimits
                 value={props.removeLimits}
                 onChange={props.onRemoveLimitsChange}
+            />
+            <Header>
+                <FormattedMessage
+                    defaultMessage="Other"
+                    description="Settings modal section"
+                    id="dash.settingsModal.other"
+                />
+            </Header>
+            <CustomCloudVarServer
+                {...props}
             />
             <Header>
                 <FormattedMessage

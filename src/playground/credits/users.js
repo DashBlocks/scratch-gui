@@ -44,7 +44,7 @@ const contributors = [
     },
     {
       userID: '106478819',
-      username: 'scratch-craft-2'
+      username: 'scratch_craft_2'
     },
     {
       userID: '97813064',

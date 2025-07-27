@@ -400,6 +400,7 @@ const TWStateManager = function (WrappedComponent) {
 
             if (
                 this.props.customStageSize !== prevProps.customStageSize ||
+                this.props.cloudHost !== prevProps.cloudHost ||
                 this.props.runtimeOptions !== prevProps.runtimeOptions ||
                 this.props.compilerOptions !== prevProps.compilerOptions ||
                 this.props.highQualityPen !== prevProps.highQualityPen ||
@@ -419,6 +420,12 @@ const TWStateManager = function (WrappedComponent) {
                     searchParams.delete('size');
                 } else {
                     searchParams.set('size', `${width}x${height}`);
+                }
+
+                if (this.props.cloudHost == 'wss://clouddata.turbowarp.org') {
+                    searchParams.delete('cloud_host');
+                } else {
+                    searchParams.set('cloud_host', this.props.cloudHost);
                 }
 
                 if (this.props.framerate === 30) {
@@ -513,6 +520,7 @@ const TWStateManager = function (WrappedComponent) {
                 /* eslint-disable no-unused-vars */
                 intl,
                 customStageSize,
+                cloudHost,
                 isFullScreen,
                 isPlayerOnly,
                 isEmbedded,
@@ -547,6 +555,7 @@ const TWStateManager = function (WrappedComponent) {
             width: PropTypes.number,
             height: PropTypes.number
         }),
+        cloudHost: PropTypes.string,
         isFullScreen: PropTypes.bool,
         isPlayerOnly: PropTypes.bool,
         isEmbedded: PropTypes.bool,
@@ -579,6 +588,7 @@ const TWStateManager = function (WrappedComponent) {
     };
     const mapStateToProps = state => ({
         customStageSize: state.scratchGui.customStageSize,
+        cloudHost: state.scratchGui.tw.cloudHost,
         isFullScreen: state.scratchGui.mode.isFullScreen,
         isPlayerOnly: state.scratchGui.mode.isPlayerOnly,
         isEmbedded: state.scratchGui.mode.isEmbedded,

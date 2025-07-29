@@ -22,7 +22,7 @@ jobs:
         run: npm run build
       
       - name: Upload the pages artifact
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v4
         with:
           path: ./build
   
@@ -38,4 +38,4 @@ jobs:
     steps:
       - name: Publish Pages
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: actions/deploy-pages@v4

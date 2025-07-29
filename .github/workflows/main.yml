@@ -1,0 +1,41 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "npm"
+      
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Scratch
+        run: npm run build
+      
+      - name: Upload the pages artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./build
+  
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Publish Pages
+        id: deployment
+        uses: actions/deploy-pages@v2

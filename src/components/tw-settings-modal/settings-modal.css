@@ -92,7 +92,7 @@
     margin-right: 0.5rem;
 }
 .custom-cloud-var-server-input {
-    width: 80px; /* todo: make input-adaptive width */
+    width: 350px; /* todo: make input-adaptive width */
 }
 
 .info {

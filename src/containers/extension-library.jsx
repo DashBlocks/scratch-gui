@@ -249,6 +249,12 @@ class ExtensionLibrary extends React.PureComponent {
             return;
         }
 
+        if (extensionId === 'data_lists_enable') {
+            this.props.onEnableLists();
+            this.props.onCategorySelected('data');
+            return;
+        }
+
         const url = item.extensionURL ? item.extensionURL : extensionId;
         if (!item.disabled) {
             if (this.props.vm.extensionManager.isExtensionLoaded(extensionId)) {
@@ -335,6 +341,7 @@ ExtensionLibrary.propTypes = {
     intl: intlShape.isRequired,
     onCategorySelected: PropTypes.func,
     onEnableProcedureReturns: PropTypes.func,
+    onEnableLists: PropTypes.func,
     onOpenCustomExtensionModal: PropTypes.func,
     onRequestClose: PropTypes.func,
     visible: PropTypes.bool,

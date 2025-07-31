@@ -31,6 +31,8 @@ class ListMonitorScroller extends React.Component {
         );
     }
     rowRenderer ({index, key, style}) {
+        const value = this.props.values[index];
+        const isNestedArray = Array.isArray(value);
         return (
             <div
                 className={styles.listRow}
@@ -56,11 +58,12 @@ class ListMonitorScroller extends React.Component {
                                 spellCheck={false}
                                 style={{color: this.props.categoryColor.text}}
                                 type="text"
-                                value={this.props.activeValue}
+                                value={isNestedArray ? "nested array" : this.props.activeValue}
                                 onBlur={this.props.onDeactivate}
                                 onChange={this.props.onInput}
                                 onFocus={this.props.onFocus}
                                 onKeyDown={this.props.onKeyPress} // key down to get ahead of blur
+                                readOnly={isNestedArray}
                             />
                             <div
                                 className={styles.removeButton}
@@ -71,7 +74,9 @@ class ListMonitorScroller extends React.Component {
                         </div>
 
                     ) : (
-                        <div className={styles.valueInner}>{this.props.values[index]}</div>
+                        <div className={styles.valueInner}>
+                            {isNestedArray ? <i>nested array</i> : value}
+                        </div>
                     )}
                 </div>
             </div>
@@ -115,7 +120,8 @@ ListMonitorScroller.propTypes = {
     onRemove: PropTypes.func,
     values: PropTypes.arrayOf(PropTypes.oneOfType([
         PropTypes.string,
-        PropTypes.number
+        PropTypes.number,
+        PropTypes.array
     ])),
     width: PropTypes.number
 };

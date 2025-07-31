@@ -786,10 +786,67 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
         id="json"
         colour="${colors.primary}"
         secondaryColour="${colors.tertiary}">
-        <block type="json_...">
-            <value name="...">
-                <shadow type="...">
-                    <field name="..."/>
+        <block type="json_array_empty" />
+        ${blockSeparator}
+        <block type="json_array_split">
+            <value name="TEXT">
+                <shadow type="text">
+                    <field name="TEXT">apple,banana</field>
+                </shadow>
+            </value>
+            <value name="DELIM">
+                <shadow type="text">
+                    <field name="TEXT">,</field>
+                </shadow>
+            </value>
+        </block>
+        ${blockSeparator}
+        <block type="json_array_item_of">
+            <value name="INDEX">
+                <shadow type="data_listindexrandom">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="json_array_item_no_of">
+            <value name="VALUE">
+                <shadow type="text">
+                    <field name="TEXT">item</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="json_array_contains">
+            <value name="VALUE">
+                <shadow type="text">
+                    <field name="TEXT">item</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="json_array_length" />
+        ${blockSeparator}
+        <block type="json_array_in_front_of">
+            <value name="ITEM">
+                <shadow type="text">
+                    <field name="TEXT">item</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="json_array_behind">
+            <value name="ITEM">
+                <shadow type="text">
+                    <field name="TEXT">item</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="json_array_at">
+            <value name="ITEM">
+                <shadow type="text">
+                    <field name="TEXT">item</field>
+                </shadow>
+            </value>
+            <value name="INDEX">
+                <shadow type="data_listindexrandom">
+                    <field name="NUM">1</field>
                 </shadow>
             </value>
         </block>

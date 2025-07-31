@@ -786,6 +786,13 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
         id="json"
         colour="${colors.primary}"
         secondaryColour="${colors.tertiary}">
+        <block type="json_...">
+            <value name="...">
+                <shadow type="...">
+                    <field name="..."/>
+                </shadow>
+            </value>
+        </block>
         ${categorySeparator}
     </category>
     `;

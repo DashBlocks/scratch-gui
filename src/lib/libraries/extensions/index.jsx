@@ -336,7 +336,7 @@ export default [
         helpLink: 'https://scratch.mit.edu/vernier'
     },
     {
-        // not really an extension, but it's easiest to present it as one
+        // Not really an extension, but it's easiest to present it as one
         name: (
             <FormattedMessage
                 defaultMessage="Custom Reporters"
@@ -355,6 +355,27 @@ export default [
         ),
         tags: ['tw'],
         incompatibleWithScratch: true,
+        featured: true
+    },
+    {
+        // Not really an extension, but it's easiest to present it as one
+        name: (
+            <FormattedMessage
+                defaultMessage="Legacy Lists"
+                description="Name of legacy lists enabler"
+                id="dash.legacyLists.name"
+            />
+        ),
+        extensionId: 'data_lists_enable',
+        iconURL: returnIcon,
+        description: (
+            <FormattedMessage
+                defaultMessage="Enable a vanilla lists system. Note that the JSON blocks are more flexible and should be used instead if possible."
+                description="Description of legacy lists enabler"
+                id="dash.legacyLists.description"
+            />
+        ),
+        tags: ['dash'],
         featured: true
     },
     {

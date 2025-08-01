@@ -163,6 +163,14 @@ const manifest = {
     },
     {
       "dynamic": true,
+      "name": "json",
+      "id": "json-color",
+      "type": "color",
+      "default": "#748BEE",
+      "allowTransparency": true
+    },
+    {
+      "dynamic": true,
       "name": "custom",
       "id": "custom-color",
       "type": "color",

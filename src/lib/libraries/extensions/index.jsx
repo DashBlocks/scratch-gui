@@ -49,6 +49,7 @@ import gdxforConnectionSmallIconURL from './gdxfor/gdxfor-small.svg';
 import twIcon from './tw/dash.svg';
 import customExtensionIcon from './custom/custom.svg';
 import returnIcon from './custom/return.svg';
+import legacyListsIcon from './custom/legacy-lists.svg';
 import galleryIcon from './gallery/gallery.svg';
 import {APP_NAME} from '../../brand';
 
@@ -367,7 +368,7 @@ export default [
             />
         ),
         extensionId: 'data_lists_enable',
-        iconURL: returnIcon,
+        iconURL: legacyListsIcon,
         description: (
             <FormattedMessage
                 defaultMessage="Enable a vanilla lists system. Note that the JSON blocks are more flexible and should be used instead if possible."

@@ -50,6 +50,10 @@
   background-image: url(icons/list_icon.svg);
 }
 
+.scratchCategoryId-json .scratchCategoryItemBubble::after {
+  background-image: url(icons/json_icon.svg);
+}
+
 .scratchCategoryId-myBlocks .scratchCategoryItemBubble::after {
   background-image: url(icons/block_icon.svg);
 }

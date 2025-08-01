@@ -14,10 +14,19 @@ export default async function ({ addon, console, msg, safeMsg }) {
     const listButtonIndex = toolboxXML.findIndex(
       (i) => i.getAttribute("callbackkey") === "CREATE_LIST" || i.getAttribute("type") === "data_addtolist"
     );
-    return {
-      variables: toolboxXML.slice(0, listButtonIndex),
-      lists: toolboxXML.slice(listButtonIndex, toolboxXML.length),
-    };
+    if (listButtonIndex === -1) {
+      const label = document.createElement("label");
+      label.setAttribute("text", "Enable \"Legacy Lists\"!");
+      return {
+        variables: toolboxXML,
+        lists: [label],
+      };
+    } else {
+      return {
+        variables: toolboxXML.slice(0, listButtonIndex),
+        lists: toolboxXML.slice(listButtonIndex, toolboxXML.length),
+      };
+    }
   };
 
   const separateLocalVariables = (workspace, toolboxXML) => {

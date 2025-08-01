@@ -61,11 +61,11 @@ const blockColors = {
         tertiary: '#E64D00',
         quaternary: '#E64D00'
     },
-    json: { // todo: add json category colors to high-contrast and dark
+    json: {
         primary: "#748BEE",
-        secondary: "#4D60B4FF",
-        tertiary: "#2E3C7AFF",
-        quaternary: "#2E3C7AFF"
+        secondary: "#687DD6",
+        tertiary: "#5C6FBE",
+        quaternary: "#5C6FBE"
     },
     more: {
         primary: '#FF6680',

@@ -612,6 +612,50 @@ export default async function ({ addon, console, msg }) {
       ];
     }
 
+    if (addon.settings.get("json")) {
+      blockSwitches["json_array_in_front_of"] = [
+        noopSwitch,
+        {
+          opcode: "json_array_behind",
+        },
+        {
+          opcode: "json_array_at",
+          createInputs: {
+            INDEX: {
+              shadowType: "math_integer",
+              value: "1",
+            },
+          },
+        },
+      ];
+      blockSwitches["json_array_behind"] = [
+        {
+          opcode: "json_array_in_front_of",
+        },
+        noopSwitch,
+        {
+          opcode: "json_array_at",
+          createInputs: {
+            INDEX: {
+              shadowType: "math_integer",
+              value: "1",
+            },
+          },
+        },
+      ];
+      blockSwitches["json_array_at"] = [
+        {
+          opcode: "json_array_in_front_of",
+          splitInputs: ["INDEX"],
+        },
+        {
+          opcode: "json_array_behind",
+          splitInputs: ["INDEX"],
+        },
+        noopSwitch,
+      ];
+    }
+
     if (addon.settings.get("extension")) {
       blockSwitches["pen_penDown"] = [
         noopSwitch,

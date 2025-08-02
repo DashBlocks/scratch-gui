@@ -80,6 +80,13 @@ const manifest = {
     },
     {
       "dynamic": true,
+      "name": "JSON blocks",
+      "id": "json",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "dynamic": true,
       "name": "Extension blocks",
       "id": "extension",
       "type": "boolean",

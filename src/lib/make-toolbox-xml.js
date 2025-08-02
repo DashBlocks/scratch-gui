@@ -786,8 +786,7 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
         id="json"
         colour="${colors.primary}"
         secondaryColour="${colors.tertiary}">
-        <block type="json_array_empty" />
-        ${blockSeparator}
+        <block type="json_array_empty"/>
         <block type="json_array_split">
             <value name="TEXT">
                 <shadow type="text">
@@ -803,7 +802,7 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
         ${blockSeparator}
         <block type="json_array_item_of">
             <value name="INDEX">
-                <shadow type="data_listindexrandom">
+                <shadow type="math_number">
                     <field name="NUM">1</field>
                 </shadow>
             </value>
@@ -845,7 +844,26 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
             <value name="INDEX">
-                <shadow type="data_listindexrandom">
+                <shadow type="math_number">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="json_array_replace">
+            <value name="INDEX">
+                <shadow type="math_number">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+            <value name="ITEM">
+                <shadow type="text">
+                    <field name="TEXT">item</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="json_array_delete">
+            <value name="INDEX">
+                <shadow type="math_number">
                     <field name="NUM">1</field>
                 </shadow>
             </value>

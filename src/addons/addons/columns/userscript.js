@@ -95,6 +95,7 @@ export default async function ({ addon, msg, console }) {
       "sensing",
       "operators",
       "variables",
+      "lists",
       "json",
       "myBlocks",
     ];

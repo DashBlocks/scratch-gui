@@ -14,6 +14,7 @@ const BLOCK_COLOR_NAMES = [
     'operators',
     'data',
     'data_lists',
+    'json',
     'more',
     'addons'
 ];

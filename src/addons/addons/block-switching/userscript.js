@@ -618,39 +618,22 @@ export default async function ({ addon, console, msg }) {
         {
           opcode: "json_array_behind",
         },
-        {
-          opcode: "json_array_at",
-          createInputs: {
-            INDEX: {
-              shadowType: "math_integer",
-              value: "1",
-            },
-          },
-        },
       ];
       blockSwitches["json_array_behind"] = [
         {
           opcode: "json_array_in_front_of",
         },
         noopSwitch,
-        {
-          opcode: "json_array_at",
-          createInputs: {
-            INDEX: {
-              shadowType: "math_integer",
-              value: "1",
-            },
-          },
-        },
       ];
       blockSwitches["json_array_at"] = [
+        noopSwitch,
         {
-          opcode: "json_array_in_front_of",
-          splitInputs: ["INDEX"],
+          opcode: "json_array_replace",
         },
+      ];
+      blockSwitches["json_array_replace"] = [
         {
-          opcode: "json_array_behind",
-          splitInputs: ["INDEX"],
+          opcode: "json_array_at",
         },
         noopSwitch,
       ];

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import VM from 'scratch-vm';
 import extensions from '../../../extensions/src/lib/extensions.js';
-import pmExtensions from '../../../PenguinMod-ExtensionsGallery/src/lib/extensions.js';
+const pmExtensions = require('../../../extensions/src/lib/extensions.js').pm;
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import log from '../lib/log';
 
@@ -96,7 +96,7 @@ const fetchPmLibrary = async () => {
         nameTranslations: extension.nameTranslations || {},
         description: extension.description,
         descriptionTranslations: extension.descriptionTranslations || {},
-        extensionId: `pm_extension_index${index}`, // Metadata of PM extensions doesn't have extensions IDs, but we need ID value as string for apply some styles and Favorite/Unfavorite working
+        extensionId: extension.id,
         extensionURL: `https://extensions.penguinmod.com/extensions/${extension.code}`,
         iconURL: `https://extensions.penguinmod.com/images/${extension.banner || 'unknown.svg'}`,
         tags: ['pm'],

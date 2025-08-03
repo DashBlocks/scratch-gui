@@ -19,7 +19,7 @@ import VM from 'scratch-vm';
 const availableModes = opcode => (
     monitorModes.filter(t => {
         if (opcode === 'data_variable') {
-            return t !== 'list';
+            return true;
         } else if (opcode === 'data_listcontents') {
             return t === 'list';
         }

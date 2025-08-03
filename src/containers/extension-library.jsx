@@ -280,13 +280,16 @@ class ExtensionLibrary extends React.PureComponent {
 
         library.push('---');
         
+        const addedIds = new Set();
         if (this.state.gallery) {
             library.push(toLibraryItem(galleryMore));
-            library.push(
-                ...this.state.gallery
-                    .map(i => translateGalleryItem(i, locale))
-                    .map(toLibraryItem)
-            );
+            const filteredGallery = this.state.gallery
+                .filter(item => !addedIds.has(item.extensionId))
+                .map(i => {
+                    addedIds.add(i.extensionId);
+                    return translateGalleryItem(i, locale);
+                });
+            library.push(...filteredGallery.map(toLibraryItem));
         } else if (this.state.galleryTimedOut && !this.state.gallery) {
             library.push(toLibraryItem(galleryLoading));
         } else if (this.state.galleryError && !this.state.gallery) {
@@ -296,11 +299,13 @@ class ExtensionLibrary extends React.PureComponent {
         library.push('---');
 
         if (this.state.twGallery) {
-            library.push(
-                ...this.state.twGallery
-                    .map(i => translateGalleryItem(i, locale))
-                    .map(toLibraryItem)
-            );
+            const filteredTw = this.state.twGallery
+                .filter(item => !addedIds.has(item.extensionId))
+                .map(i => {
+                    addedIds.add(i.extensionId);
+                    return translateGalleryItem(i, locale);
+                });
+            library.push(...filteredTw.map(toLibraryItem));
         } else if (this.state.galleryTimedOut && !this.state.twGallery) {
             library.push(toLibraryItem(galleryLoading));
         } else if (this.state.galleryError && !this.state.twGallery) {
@@ -310,11 +315,13 @@ class ExtensionLibrary extends React.PureComponent {
         library.push('---');
 
         if (this.state.pmGallery) {
-            library.push(
-                ...this.state.pmGallery
-                    .map(i => translateGalleryItem(i, locale))
-                    .map(toLibraryItem)
-            );
+            const filteredPm = this.state.pmGallery
+                .filter(item => !addedIds.has(item.extensionId))
+                .map(i => {
+                    addedIds.add(i.extensionId);
+                    return translateGalleryItem(i, locale);
+                });
+            library.push(...filteredPm.map(toLibraryItem));
         } else if (this.state.galleryTimedOut && !this.state.pmGallery) {
             library.push(toLibraryItem(galleryLoading));
         } else if (this.state.galleryError && !this.state.pmGallery) {

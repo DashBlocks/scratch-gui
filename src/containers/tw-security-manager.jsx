@@ -26,6 +26,7 @@ const manuallyTrustExtension = url => {
 const isTrustedExtension = url => (
     // Always trust our official extension repository.
     url.toLowerCase().startsWith('https://dashblocks.github.io/') ||
+    url.toLowerCase().startsWith('https://dashblocks.github.io/extensions/') ||
     url.toLowerCase().startsWith('https://github.com/dashblocks/') ||
 
     // Always trust official galleries.

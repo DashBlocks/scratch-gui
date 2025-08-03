@@ -64,8 +64,8 @@ const blockColors = {
     json: {
         primary: "#1B1C2A",
         secondary: "#4C4C4C",
-        tertiary: "#0E0F16",
-        quaternary: "#0E0F16"
+        tertiary: "#748BEE",
+        quaternary: "#748BEE"
     },
     more: {
         primary: '#331419',

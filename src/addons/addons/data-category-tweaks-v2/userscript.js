@@ -10,16 +10,20 @@ export default async function ({ addon, console, msg, safeMsg }) {
   // (Yes this is weird but it's how it was originally and I'm too scared to change it)
   let hasSeparateListCategory = false;
 
+  const makeLabel = (l10n) => {
+    const label = document.createElement("label");
+    label.setAttribute("text", msg(l10n));
+    return label;
+  };
+
   const separateVariablesByType = (toolboxXML) => {
     const listButtonIndex = toolboxXML.findIndex(
       (i) => i.getAttribute("callbackkey") === "CREATE_LIST" || i.getAttribute("type") === "data_addtolist"
     );
     if (listButtonIndex === -1) {
-      const label = document.createElement("label");
-      label.setAttribute("text", "Enable \"Legacy Lists\"!");
       return {
         variables: toolboxXML,
-        lists: [label],
+        lists: [],
       };
     } else {
       return {
@@ -31,12 +35,6 @@ export default async function ({ addon, console, msg, safeMsg }) {
 
   const separateLocalVariables = (workspace, toolboxXML) => {
     const { variables, lists } = separateVariablesByType(toolboxXML);
-
-    const makeLabel = (l10n) => {
-      const label = document.createElement("label");
-      label.setAttribute("text", msg(l10n));
-      return label;
-    };
 
     const fixGaps = (variables) => {
       if (variables.length > 0) {
@@ -135,6 +133,9 @@ export default async function ({ addon, console, msg, safeMsg }) {
     }
 
     const { variables, lists } = separateVariablesByType(result);
+    if (lists.length === 0) {
+      lists[0] = makeLabel("enable-legacy-lists");
+    }
     variableCategory = variables;
     listCategory = lists;
     return variableCategory;

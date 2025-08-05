@@ -4,8 +4,7 @@ import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
 import VM from 'scratch-vm';
-import extensions from '../../../extensions/src/lib/extensions.js';
-const pmExtensions = require('../../../extensions/src/lib/extensions.js').pm;
+import {extensions, pmExtensions} from '../../../extensions/src/lib/extensions.js';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import log from '../lib/log';
 

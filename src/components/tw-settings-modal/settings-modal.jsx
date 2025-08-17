@@ -151,23 +151,33 @@ const HighQualityPen = props => (
 );
 
 const CustomFPS = props => (
-    <BooleanSetting
-        value={props.framerate !== 30}
-        onChange={props.onChange}
-        label={
-            <FormattedMessage
-                defaultMessage="60 FPS (Custom FPS)"
-                description="FPS setting"
-                id="tw.settingsModal.fps"
-            />
-        }
+    <Setting
+        active={props.framerate !== 30}
+        primary={(
+            <div className={classNames(styles.label, styles.customCloudVarServer)}>
+                <FormattedMessage
+                    defaultMessage="Custom FPS:"
+                    description="FPS setting"
+                    id="tw.settingsModal.fps"
+                />
+                <BufferedInput
+                    value={props.framerate}
+                    onSubmit={props.onChange}
+                    className={styles.customFPS}
+                    type="number"
+                    min="10"
+                    max="1000"
+                    step="1"
+                />
+            </div>
+        )}
         help={
             <FormattedMessage
                 // eslint-disable-next-line max-len
-                defaultMessage="Runs scripts 60 times per second instead of 30. Most projects will not work properly with this enabled. You should try Interpolation with 60 FPS mode disabled if that is the case. {customFramerate}."
+                defaultMessage="Runs scripts with custom times per second instead of 30. 60 FPS recommended. Most projects will not work properly with this enabled. You should try Interpolation with Custom FPS mode disabled if that is the case."
                 description="FPS setting help"
                 id="tw.settingsModal.fpsHelp"
-                values={{
+                /*values={{
                     customFramerate: (
                         <a
                             onClick={props.onCustomizeFramerate}
@@ -180,7 +190,7 @@ const CustomFPS = props => (
                             />
                         </a>
                     )
-                }}
+                }}*/
             />
         }
         slug="custom-fps"

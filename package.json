@@ -11,8 +11,9 @@
   },
   "main": "./dist/scratch-gui.js",
   "scripts": {
-    "build": "npm run clean && webpack --colors --bail && npm run build:prepublish",
+    "build": "npm run clean && webpack --colors --bail && npm run build:prepublish && npm run build:desktop",
     "build:prepublish": "rm -rf ../dashblocks.github.io/* && cp -r ./build/* ../dashblocks.github.io",
+    "build:desktop": "rm -rf ../dash_d/public/* && cp -r ./build/* ../dash_d/public/",
     "render-fonts": "rm -rf ../penguinmod-render-fonts/* && cp -r ./src/lib/tw-scratch-render-fonts/* ../penguinmod-render-fonts",
     "clean": "rimraf ./build && mkdirp build && rimraf ./dist && mkdirp dist",
     "deploy": "touch build/.nojekyll && gh-pages -t -d build -m \"[skip ci] Build for $(git log --pretty=format:%H -n1)\"",

@@ -150,23 +150,26 @@ const HighQualityPen = props => (
     />
 );
 
-const CustomFPS = props => (
+const CustomFPS = ({
+    framerate,
+    onFramerateChange
+}) => (
     <Setting
-        active={props.framerate !== 30}
+        active={framerate !== 30}
         primary={(
-            <div className={classNames(styles.label, styles.customCloudVarServer)}>
+            <div className={classNames(styles.label, styles.customFps)}>
                 <FormattedMessage
                     defaultMessage="Custom FPS:"
                     description="FPS setting"
                     id="tw.settingsModal.fps"
                 />
                 <BufferedInput
-                    value={props.framerate}
-                    onSubmit={props.onChange}
-                    className={styles.customFPS}
+                    value={framerate}
+                    onSubmit={onFramerateChange}
+                    className={styles.customFpsInput}
                     type="number"
                     min="10"
-                    max="1000"
+                    max="250"
                     step="1"
                 />
             </div>
@@ -198,8 +201,7 @@ const CustomFPS = props => (
 );
 CustomFPS.propTypes = {
     framerate: PropTypes.number,
-    onChange: PropTypes.func,
-    onCustomizeFramerate: PropTypes.func
+    onFramerateChange: PropTypes.func
 };
 
 const Interpolation = props => (
@@ -500,9 +502,7 @@ const SettingsModalComponent = props => (
                 />
             </Header>
             <CustomFPS
-                framerate={props.framerate}
-                onChange={props.onFramerateChange}
-                onCustomizeFramerate={props.onCustomizeFramerate}
+                {...props}
             />
             <Interpolation
                 value={props.interpolation}

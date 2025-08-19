@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {closeSettingsModal} from '../reducers/modals';
 import SettingsModalComponent from '../components/tw-settings-modal/settings-modal.jsx';
 import {defaultStageSize} from '../reducers/custom-stage-size';
-import { setCloudHost } from '../reducers/tw.js';
+import {setCloudHost} from '../reducers/tw.js';
 
 const messages = defineMessages({
     newFramerate: {
@@ -35,8 +35,8 @@ class UsernameModal extends React.Component {
             'handleStoreProjectOptions'
         ]);
     }
-    handleFramerateChange (e) {
-        this.props.vm.setFramerate(e.target.checked ? 60 : 30);
+    handleFramerateChange (value) {
+        this.props.vm.setFramerate(value);
     }
     async handleCustomizeFramerate () {
         // prompt() returns Promise in desktop app

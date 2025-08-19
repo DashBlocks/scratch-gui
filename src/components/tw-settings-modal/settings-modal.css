@@ -81,6 +81,13 @@
     filter: $filter-icon-black;
 }
 
+.custom-fps > * {
+    margin-right: 0.5rem;
+}
+.custom-fps-input {
+    width: 50px;
+}
+
 .custom-stage-size > * {
     margin-right: 0.5rem;
 }

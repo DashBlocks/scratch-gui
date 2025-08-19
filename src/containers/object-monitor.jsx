@@ -5,7 +5,7 @@ import VM from 'scratch-vm';
 import {connect} from 'react-redux';
 import {getEventXY} from '../lib/touch-utils';
 import {getVariableValue, setVariableValue} from '../lib/variable-utils';
-import ObjectMonitorComponent from '../components/monitor/list-monitor.jsx';
+import ObjectMonitorComponent from '../components/monitor/object-monitor.jsx';
 import {Map} from 'immutable';
 
 class ObjectMonitor extends React.Component {

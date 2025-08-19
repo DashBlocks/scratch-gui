@@ -10,6 +10,7 @@ import DefaultMonitor from './default-monitor.jsx';
 import LargeMonitor from './large-monitor.jsx';
 import SliderMonitor from '../../containers/slider-monitor.jsx';
 import ListMonitor from '../../containers/list-monitor.jsx';
+import ObjectMonitor from '../../containers/object-monitor.jsx';
 import {Theme} from '../../lib/themes/index.js';
 
 import styles from './monitor.css';
@@ -29,7 +30,8 @@ const modes = {
     default: DefaultMonitor,
     large: LargeMonitor,
     slider: SliderMonitor,
-    list: ListMonitor
+    list: ListMonitor,
+    object: ObjectMonitor
 };
 
 const getCategoryColor = (theme, category) => {
@@ -41,7 +43,9 @@ const getCategoryColor = (theme, category) => {
 };
 
 const MonitorComponent = props => {
-    const mode = Array.isArray(props.value) ? 'list' : props.mode;
+    const mode = Array.isArray(props.value)
+        ? 'list'
+        : typeof props.value === 'object' && props.value instanceof Object && !Array.isArray(props.value) ? 'object' : props.mode;
 
     return (
         <ContextMenuTrigger

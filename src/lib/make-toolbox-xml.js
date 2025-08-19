@@ -803,6 +803,15 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
         id="json"
         colour="${colors.primary}"
         secondaryColour="${colors.tertiary}">
+        <block type="json_contains">
+            <value name="VALUE">
+                <shadow type="text">
+                    <field name="TEXT">item</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="json_length" />
+        ${blockSeparator}
         <block type="json_array_empty"/>
         <block type="json_array_split">
             <value name="TEXT">
@@ -831,14 +840,6 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
-        <block type="json_array_contains">
-            <value name="VALUE">
-                <shadow type="text">
-                    <field name="TEXT">item</field>
-                </shadow>
-            </value>
-        </block>
-        <block type="json_array_length" />
         ${blockSeparator}
         <block type="json_array_in_front_of">
             <value name="ITEM">
@@ -882,6 +883,60 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
             <value name="INDEX">
                 <shadow type="math_number">
                     <field name="NUM">1</field>
+                </shadow>
+            </value>
+        </block>
+        ${blockSeparator}
+        <block type="json_object_empty"/>
+        <block type="json_object_split">
+            <value name="TEXT">
+                <shadow type="text">
+                    <field name="TEXT">key1:apple,key2:banana</field>
+                </shadow>
+            </value>
+            <value name="KEYDELIM">
+                <shadow type="text">
+                    <field name="TEXT">:</field>
+                </shadow>
+            </value>
+            <value name="PAIRDELIM">
+                <shadow type="text">
+                    <field name="TEXT">,</field>
+                </shadow>
+            </value>
+        </block>
+        ${blockSeparator}
+        <block type="json_object_item_of">
+            <value name="KEY">
+                <shadow type="text">
+                    <field name="TEXT">key</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="json_object_contains_key">
+            <value name="KEY">
+                <shadow type="text">
+                    <field name="TEXT">key</field>
+                </shadow>
+            </value>
+        </block>
+        ${blockSeparator}
+        <block type="json_object_set">
+            <value name="KEY">
+                <shadow type="text">
+                    <field name="TEXT">key</field>
+                </shadow>
+            </value>
+            <value name="ITEM">
+                <shadow type="text">
+                    <field name="TEXT">item</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="json_object_delete">
+            <value name="KEY">
+                <shadow type="text">
+                    <field name="TEXT">key</field>
                 </shadow>
             </value>
         </block>

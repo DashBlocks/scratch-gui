@@ -796,6 +796,8 @@ const variables = function (isInitialSetup, isStage, targetId, colors) {
 };
 
 const json = function (isInitialSetup, isStage, targetId, colors) {
+    const arrays = "Arrays";
+    const objects = "Objects";
     // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
     <category
@@ -812,6 +814,7 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
         </block>
         <block type="json_length" />
         ${blockSeparator}
+        <label text="${arrays}"></label>
         <block type="json_array_empty"/>
         <block type="json_array_split">
             <value name="TEXT">
@@ -887,6 +890,7 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         ${blockSeparator}
+        <label text="${objects}"></label>
         <block type="json_object_empty"/>
         <block type="json_object_split">
             <value name="TEXT">

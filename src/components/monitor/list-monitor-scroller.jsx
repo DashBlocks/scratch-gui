@@ -33,6 +33,7 @@ class ListMonitorScroller extends React.Component {
     rowRenderer ({index, key, style}) {
         const value = this.props.values[index];
         const isNestedArray = Array.isArray(value);
+        const isNestedObject = typeof value === 'object' && value instanceof Object && !Array.isArray(value);
         return (
             <div
                 className={styles.listRow}
@@ -58,12 +59,12 @@ class ListMonitorScroller extends React.Component {
                                 spellCheck={false}
                                 style={{color: this.props.categoryColor.text}}
                                 type="text"
-                                value={isNestedArray ? "nested array" : this.props.activeValue}
+                                value={isNestedArray ? "nested array" : isNestedObject ? "nested object" : this.props.activeValue}
                                 onBlur={this.props.onDeactivate}
                                 onChange={this.props.onInput}
                                 onFocus={this.props.onFocus}
                                 onKeyDown={this.props.onKeyPress} // key down to get ahead of blur
-                                readOnly={isNestedArray}
+                                readOnly={isNestedArray || isNestedObject}
                             />
                             <div
                                 className={styles.removeButton}
@@ -75,7 +76,7 @@ class ListMonitorScroller extends React.Component {
 
                     ) : (
                         <div className={styles.valueInner}>
-                            {isNestedArray ? <i>nested array</i> : value}
+                            {isNestedArray ? <i>nested array</i> : isNestedObject ? <i>nested object</i> : value}
                         </div>
                     )}
                 </div>
@@ -121,7 +122,8 @@ ListMonitorScroller.propTypes = {
     values: PropTypes.arrayOf(PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
-        PropTypes.array
+        PropTypes.array,
+        PropTypes.object
     ])),
     width: PropTypes.number
 };

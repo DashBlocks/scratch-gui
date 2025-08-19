@@ -205,6 +205,7 @@ class Monitor extends React.Component {
         const monitorProps = monitorAdapter(this.props);
         const showSliderOption = availableModes(this.props.opcode).indexOf('slider') !== -1;
         const isList = this.props.mode === 'list';
+        const isObject = this.props.mode === 'object';
         return (
             <React.Fragment>
                 {this.state.sliderPrompt && <SliderPrompt
@@ -232,8 +233,8 @@ class Monitor extends React.Component {
                     onImport={isList ? this.handleImport : null}
                     onHide={this.handleHide}
                     onNextMode={this.handleNextMode}
-                    onSetModeToDefault={isList ? null : this.handleSetModeToDefault}
-                    onSetModeToLarge={isList ? null : this.handleSetModeToLarge}
+                    onSetModeToDefault={isList || isObject ? null : this.handleSetModeToDefault}
+                    onSetModeToLarge={isList || isObject ? null : this.handleSetModeToLarge}
                     onSetModeToSlider={showSliderOption ? this.handleSetModeToSlider : null}
                     onSliderPromptOpen={this.handleSliderPromptOpen}
                 />

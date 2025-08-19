@@ -516,22 +516,20 @@ class MenuBar extends React.Component {
                     </div>
                 )}
                 <div className={styles.mainMenu}>
+                    {this.props.isPlayerOnly && (
+                        <a
+                            href="/"
+                            rel="noreferrer"
+                            target="_blank"
+                        >
+                            <img
+                                className={styles.dashLogo}
+                                src={dashLogo}
+                                draggable={false}
+                            />
+                        </a>
+                    )}
                     <div className={styles.fileGroup}>
-                        {this.props.isPlayerOnly && (
-                            <a
-                                href=""
-                                rel="noreferrer"
-                                target="_blank"
-                            >
-                                <div className={classNames(styles.menuBarItem, styles.hoverable)}>
-                                    <img
-                                        className={styles.dashLogo}
-                                        src={dashLogo}
-                                        draggable={false}
-                                    />
-                                </div>
-                            </a>
-                        )}
                         {!this.props.isPlayerOnly && (this.props.canChangeTheme || this.props.canChangeLanguage) && (<SettingsMenu
                             className={styles.fileGroup}
                             canChangeLanguage={this.props.canChangeLanguage}
@@ -622,7 +620,7 @@ class MenuBar extends React.Component {
                                 </Button>
                             </a>
                         </div>}
-                        {this.props.isPlayerOnly || (this.props.canManageFiles) && (
+                        {!this.props.isPlayerOnly && (this.props.canManageFiles) && (
                             <MenuLabel
                                 open={this.props.fileMenuOpen}
                                 onOpen={this.props.onClickFile}
@@ -701,7 +699,7 @@ class MenuBar extends React.Component {
                                         >
                                             {(_className, downloadProject, extended) => (
                                                 <React.Fragment>
-                                                    {extended.available && (
+                                                    {!this.props.isPlayerOnly && extended.available && (
                                                         <React.Fragment>
                                                             {extended.name !== null && (
                                                                 // eslint-disable-next-line max-len
@@ -728,7 +726,7 @@ class MenuBar extends React.Component {
                                                             </MenuItem>
                                                         </React.Fragment>
                                                     )}
-                                                    {notScratchDesktop() && (
+                                                    {!this.props.isPlayerOnly && notScratchDesktop() && (
                                                         <MenuItem
                                                             onClick={this.getSaveToComputerHandler(downloadProject)}
                                                         >
@@ -946,7 +944,7 @@ class MenuBar extends React.Component {
                             </MenuLabel>
                         )}
 
-                        {this.props.isPlayerOnly || this.props.onClickAddonSettings && (
+                        {this.props.onClickAddonSettings && (
                             <div
                                 className={classNames(styles.menuBarItem, styles.hoverable)}
                                 onClick={this.props.onClickAddonSettings}
@@ -1094,11 +1092,11 @@ class MenuBar extends React.Component {
                     </div>}
                 </div>
 
-                <div className={styles.accountInfoGroup}>
+                {!this.props.isPlayerOnly && <div className={styles.accountInfoGroup}>
                     <TWSaveStatus
                         showSaveFilePicker={this.props.showSaveFilePicker}
                     />
-                </div>
+                </div>}
 
                 {aboutButton}
             </Box>

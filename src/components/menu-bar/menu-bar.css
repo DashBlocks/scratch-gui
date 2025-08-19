@@ -63,8 +63,16 @@
 .inactive {
     opacity: 0;
 }
-.dashLogo {
+.dash-logo {
+    transition: height 0.3s ease;
     height: 2.25rem;
+    color: inherit;
+}
+.dash-logo:hover {
+    height: 2.40rem;
+}
+.dash-logo:clickable {
+    cursor: pointer;
 }
 
 .menu-bar-item {

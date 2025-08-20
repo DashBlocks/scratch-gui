@@ -1,4 +1,38 @@
-[         {
+[     {
+        "name": "Умникис квадратная голова",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "8f9b6ccb90d6638f52f203e8c8f1cc38",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "8f9b6ccb90d6638f52f203e8c8f1cc38.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },  {
+        "name": "Умникис рад",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "98946d7191ac762ae6d368006add1f04",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "98946d7191ac762ae6d368006add1f04.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    }, {
+        "name": "Просто Умникис",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "bdedd65f42a75be806700e1ced51b613",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "bdedd65f42a75be806700e1ced51b613.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },
+ {
         "name": "vector tiles",
         "tags": [
             "dash"

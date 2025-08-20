@@ -1,8 +1,12 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Modal from '../../containers/modal.jsx';
 import Box from '../box/box.jsx';
 import {defineMessages, injectIntl, intlShape, FormattedMessage} from 'react-intl';
+import {connect} from 'react-redux';
+import LazyScratchBlocks from '../../lib/tw-lazy-scratch-blocks';
+import {blockColors} from '../../lib/themes/blocks/three';
 
 import booleanInputIcon from './icon--boolean-input.svg';
 import textInputIcon from './icon--text-input.svg';
@@ -103,6 +107,24 @@ const CustomProcedures = props => (
                     </div>
                 </div>
             </div>
+            <div className={styles.colorRow}>
+                {((ScratchBlocks) => Object.values(ScratchBlocks.Categories).map((category, index) => (
+                    <div
+                        style={{ backgroundColor: ScratchBlocks.Colours[category].primary }}
+                        className={styles.colorOption}
+                        role="button"
+                        draggable={false}
+                        onClick={() => props.setColor(blockColors[category].primary)}
+                    />
+                )))(LazyScratchBlocks.get())}
+                <input
+                    style={{ backgroundColor: props.getCustomExtensionColors().primary(props.color) }}
+                    type="color"
+                    value={props.color}
+                    className={classNames(styles.colorOption, styles.colorPicker)}
+                    onChange={(e) => props.setColor(e.target.value)}
+                />
+            </div>
             <div className={styles.checkboxRow}>
                 <label>
                     <input
@@ -142,7 +164,7 @@ const CustomProcedures = props => (
         </Box>
     </Modal>
 );
-
+            
 CustomProcedures.propTypes = {
     componentRef: PropTypes.func.isRequired,
     intl: intlShape,
@@ -155,4 +177,10 @@ CustomProcedures.propTypes = {
     warp: PropTypes.bool.isRequired
 };
 
-export default injectIntl(CustomProcedures);
+const mapStateToProps = state => ({
+    getCustomExtensionColors: state.scratchGui.theme.theme.getCustomExtensionColors
+});
+
+export default injectIntl(connect(
+    mapStateToProps
+)(CustomProcedures));

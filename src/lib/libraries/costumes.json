@@ -1,4 +1,15 @@
-[     {
+[    {
+        "name": "Mouse",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "5d52bd4223f1a412eda7957b0f55b58e",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "5d52bd4223f1a412eda7957b0f55b58e.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    }, {
         "name": "Умникис квадратная голова",
         "tags": [
             "dash"

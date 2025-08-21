@@ -109,7 +109,7 @@ const CustomProcedures = props => (
             </div>
             <div className={styles.colorRow}>
                 {((ScratchBlocks) => Object.entries(ScratchBlocks.Colours)
-                    .filter((v) => Object.values(Blockly.Categories).includes(v[0]))
+                    .filter((v) => Object.values(ScratchBlocks.Categories).includes(v[0]))
                     .map((v, index) => (
                         <div
                             key={index}

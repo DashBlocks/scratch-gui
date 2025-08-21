@@ -114,7 +114,7 @@ class CustomProcedures extends React.Component {
     }
     handleSetColor (color) {
         if (this.mutationRoot) {
-            this.mutationRoot.customColor_ = color;
+            this.mutationRoot.customColour_ = color;
             this.mutationRoot.updateDisplay_();
             this.setState({color: this.mutationRoot.customColour_ ?? null});
         }

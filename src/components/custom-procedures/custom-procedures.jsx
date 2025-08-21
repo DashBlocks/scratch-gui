@@ -24,7 +24,7 @@ const messages = defineMessages({
 
 const CustomProcedures = (props) => {
   const ScratchBlocks = LazyScratchBlocks.get();
-  const themeObj = props.getCustomExtensionColors();
+  const themeObj = props.theme.getCustomExtensionColors();
   return (
     <Modal
       className={styles.modalContent}
@@ -178,7 +178,7 @@ CustomProcedures.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    getCustomExtensionColors: state.scratchGui.theme.theme.getCustomExtensionColors
+    theme: state.scratchGui.theme.theme
 });
 
 export default injectIntl(connect(

@@ -108,22 +108,19 @@ const CustomProcedures = props => (
                 </div>
             </div>
             <div className={styles.colorRow}>
-                {((ScratchBlocks) => Object.values(ScratchBlocks.Categories).map((category, index) => (
-                    <div
-                        key={index}
-                        style={{
-                            backgroundColor: category === 'data-lists'
-                                ? ScratchBlocks.Colours.data_lists.primary
-                                : ScratchBlocks.Colours[category].primary
-                        }}
-                        className={styles.colorOption}
-                        role="button"
-                        draggable={false}
-                        onClick={() => props.setColor(category === 'data-lists'
-                            ? blockColors.data_lists.primary
-                            : blockColors.Colours[category].primary)}
-                    />
-                )))(LazyScratchBlocks.get())}
+                {((ScratchBlocks) => Object.entries(ScratchBlocks.Colours)
+                    .filter((v) => Object.values(Blockly.Categories).includes(v[0]))
+                    .map((v, index) => (
+                        <div
+                            key={index}
+                            style={{ backgroundColor: v[1].primary }}
+                            className={styles.colorOption}
+                            role="button"
+                            draggable={false}
+                            onClick={() => props.setColor(blockColors[v[0]].primary)}
+                        />
+                    ))
+                )(LazyScratchBlocks.get())}
                 <input
                     style={{ backgroundColor: props.theme.getCustomExtensionColors().primary(props.color) }}
                     type="color"

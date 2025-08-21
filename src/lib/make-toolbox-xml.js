@@ -731,6 +731,19 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
               </value>
             </block>
+            ${blockSeparator}
+            <block type="operator_nums_in_range">
+              <value name="FROM">
+                <shadow type="math_number">
+                  <field name="NUM">1</field>
+                </shadow>
+              </value>
+              <value name="TO">
+                <shadow type="math_number">
+                  <field name="NUM">10</field>
+                </shadow>
+              </value>
+            </block>
             <block type="operator_in_range">
               <value name="NUM">
                 <shadow type="math_number">

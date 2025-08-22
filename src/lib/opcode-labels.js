@@ -226,6 +226,7 @@ class OpcodeLabels {
         this._opcodeMap.motion_direction.labelFn = () => this._translator(messages.motion_direction);
         this._opcodeMap.motion_xposition.labelFn = () => this._translator(messages.motion_xposition);
         this._opcodeMap.motion_yposition.labelFn = () => this._translator(messages.motion_yposition);
+        this._opcodeMap.motion_position.labelFn = () => this._translator(messages.motion_position);
 
         // Looks
         this._opcodeMap.looks_size.labelFn = () => this._translator(messages.looks_size);
@@ -251,11 +252,15 @@ class OpcodeLabels {
         this._opcodeMap.sound_volume.labelFn = () => this._translator(messages.sound_volume);
         this._opcodeMap.sound_tempo.labelFn = () => this._translator(messages.sound_tempo);
 
+        // Control
+        this._opcodeMap.control_is_paused.labelFn = () => this._translator(messages.control_is_paused);
+
         // Sensing
         this._opcodeMap.sensing_answer.labelFn = () => this._translator(messages.sensing_answer);
         this._opcodeMap.sensing_mousedown.labelFn = () => this._translator(messages.sensing_mousedown);
         this._opcodeMap.sensing_mousex.labelFn = () => this._translator(messages.sensing_mousex);
         this._opcodeMap.sensing_mousey.labelFn = () => this._translator(messages.sensing_mousey);
+        this._opcodeMap.sensing_mousexy.labelFn = () => this._translator(messages.sensing_mousexy);
         this._opcodeMap.sensing_loudness.labelFn = () => this._translator(messages.sensing_loudness);
         this._opcodeMap.sensing_username.labelFn = () => this._translator(messages.sensing_username);
         this._opcodeMap.sensing_current.labelFn = params => {

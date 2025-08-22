@@ -142,6 +142,7 @@ const motion = function (isInitialSetup, isStage, targetId, colors) {
         ${blockSeparator}
         <block id="${targetId}_xposition" type="motion_xposition"/>
         <block id="${targetId}_yposition" type="motion_yposition"/>
+        <block id="${targetId}_position" type="motion_position"/>
         <block id="${targetId}_direction" type="motion_direction"/>`}
         ${categorySeparator}
     </category>
@@ -546,6 +547,7 @@ const sensing = function (isInitialSetup, isStage, targetId, colors) {
         <block type="sensing_mousedown"/>
         <block type="sensing_mousex"/>
         <block type="sensing_mousey"/>
+        <block type="sensing_mousexy"/>
         ${isStage ? '' : `
             ${blockSeparator}
             '<block type="sensing_setdragmode" id="sensing_setdragmode"></block>'+

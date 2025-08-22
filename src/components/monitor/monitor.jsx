@@ -19,6 +19,7 @@ import styles from './monitor.css';
 const categoryColorMap = {
     data: 'data',
     sensing: 'sensing',
+    control: 'control',
     sound: 'sounds',
     looks: 'looks',
     motion: 'motion',

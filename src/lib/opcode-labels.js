@@ -16,6 +16,11 @@ const messages = defineMessages({
         description: 'Label for the y position monitor when shown on the stage',
         id: 'gui.opcodeLabels.yposition'
     },
+    motion_position: {
+        defaultMessage: 'position',
+        description: 'Label for the position monitor when shown on the stage',
+        id: 'dash.opcode.position'
+    },
 
     // Looks
     looks_size: {
@@ -57,6 +62,13 @@ const messages = defineMessages({
         id: 'gui.opcodeLabels.tempo'
     },
 
+    // Control
+    control_is_paused: {
+        defaultMessage: 'is paused?',
+        description: 'Label for the "is paused?" monitor when shown on the stage',
+        id: 'dash.opcode.ispaused'
+    },
+
     // Sensing
     sensing_answer: {
         defaultMessage: 'answer',
@@ -77,6 +89,11 @@ const messages = defineMessages({
         defaultMessage: 'mouse y',
         description: 'Label for the mouse y monitor when show on the stage',
         id: 'tw.opcode.mousey'
+    },
+    sensing_mousexy: {
+        defaultMessage: 'mouse position',
+        description: 'Label for the mouse position monitor when show on the stage',
+        id: 'dash.opcode.mousexy'
     },
     sensing_loudness: {
         defaultMessage: 'loudness',
@@ -154,6 +171,7 @@ class OpcodeLabels {
             motion_direction: {category: 'motion'},
             motion_xposition: {category: 'motion'},
             motion_yposition: {category: 'motion'},
+            motion_position: {category: 'motion'},
 
             // Looks
             looks_size: {category: 'looks'},
@@ -169,11 +187,15 @@ class OpcodeLabels {
             sound_volume: {category: 'sound'},
             sound_tempo: {category: 'sound'},
 
+            // Control
+            control_is_paused: {category: 'control'},
+
             // Sensing
             sensing_answer: {category: 'sensing'},
             sensing_mousedown: {category: 'sensing'},
             sensing_mousex: {category: 'sensing'},
             sensing_mousey: {category: 'sensing'},
+            sensing_mousexy: {category: 'sensing'},
             sensing_loudness: {category: 'sensing'},
             sensing_username: {category: 'sensing'},
             sensing_current: {category: 'sensing'},

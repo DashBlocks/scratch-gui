@@ -939,6 +939,7 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
+        <block type="json_object_entries"/>
         ${blockSeparator}
         <block type="json_object_set">
             <value name="KEY">

@@ -64,8 +64,8 @@ const messages = defineMessages({
 
     // Control
     control_is_paused: {
-        defaultMessage: 'is paused?',
-        description: 'Label for the "is paused?" monitor when shown on the stage',
+        defaultMessage: 'paused?',
+        description: 'Label for the paused monitor when shown on the stage',
         id: 'dash.opcode.ispaused'
     },
 

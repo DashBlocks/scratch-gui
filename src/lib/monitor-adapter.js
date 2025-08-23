@@ -49,7 +49,7 @@ export default function ({id, spriteName, opcode, params, value, vm}) {
     }
 
     // Object values can contain booleans, which should also be turned to strings
-    if (typeof value = 'object' && value instanceof Object && !Array.isArray(value)) {
+    if (typeof value == 'object' && value instanceof Object && !Array.isArray(value)) {
         for (let i = 0; i < Object.keys(value).length; i++) {
             const item = value[Object.keys(value)[i]];
             if (typeof item === 'boolean') {

@@ -92,7 +92,7 @@
     border: 2px solid $ui-black-transparent;
     border-radius: 50%;
     padding: calc($space * 1);
-    transition: background-color 0.2s;
+    transition: all 0.2s;
 }
 
 .color-option:hover {

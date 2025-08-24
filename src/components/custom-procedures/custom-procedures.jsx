@@ -140,7 +140,7 @@ const CustomProcedures = (props) => {
                     <input
                         style={{
                             backgroundColor: Object.keys(themeObj).length === 0
-                                ? props.color ?? blockColors.more.primary
+                                ? props.color ?? ScratchBlocks.Colours.more.primary
                                 : themeObj.primary(props.color ?? blockColors.more.primary),
                         }}
                         type="color"

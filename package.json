@@ -54,6 +54,7 @@
     "core-js": "2.5.7",
     "css-loader": "^1.0.0",
     "dapjs": "2.3.0",
+    "dash-extensions-gallery": "github:DashBlocks/extensions#develop",
     "es6-object-assign": "1.1.0",
     "get-float-time-domain-data": "0.1.0",
     "get-user-media-promise": "1.1.4",

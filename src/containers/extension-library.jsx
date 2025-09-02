@@ -4,7 +4,7 @@ import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
 import VM from 'scratch-vm';
-import {extensions, pmExtensions} from '../../../extensions/src/lib/extensions.js';
+import {extensions, pmExtensions} from 'dash-extensions-gallery/src/lib/extensions.js';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import log from '../lib/log';
 
@@ -129,8 +129,8 @@ const fetchLibrary = async () => {
         description: extension.description,
         descriptionTranslations: extension.descriptionTranslations || {},
         extensionId: extension.id,
-        extensionURL: `https://dashblocks.github.io/extensions/static/extensions/${extension.code}`,
-        iconURL: `https://dashblocks.github.io/extensions/static/images/${extension.banner || 'unknown.svg'}`,
+        extensionURL: `https://dashblocks.github.io/dash-extensions-gallery/static/extensions/${extension.code}`,
+        iconURL: `https://dashblocks.github.io/dash-extensions-gallery/static/images/${extension.banner || 'unknown.svg'}`,
         tags: ['dash'],
         credits: [
             ...(typeof extension.creator == 'object' ? extension.creator : [extension.creator] || []),
@@ -148,7 +148,7 @@ const fetchLibrary = async () => {
                 </a>
             );
         }),
-        docsURI: extension.documentation ? `https://dashblocks.github.io/extensions/src/lib/Documentation/${extension.documentation}.md` : null,
+        docsURI: extension.documentation ? `https://dashblocks.github.io/dash-extensions-gallery/src/lib/Documentation/${extension.documentation}.md` : null,
         samples: /*extension.samples ? extension.samples.map(sample => ({
             href: `${process.env.ROOT}editor?project_url=https://extensions.turbowarp.org/samples/${encodeURIComponent(sample)}.sb3`,
             text: sample

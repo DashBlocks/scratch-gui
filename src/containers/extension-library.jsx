@@ -129,7 +129,7 @@ const fetchLibrary = async () => {
         description: extension.description,
         descriptionTranslations: extension.descriptionTranslations || {},
         extensionId: extension.id,
-        extensionURL: `https://dashblocks.github.io/dash-extensions-gallery/static/extensions/${extension.code}`,
+        extensionURL: extension.code.startsWith('http') ? extension.code : `https://dashblocks.github.io/dash-extensions-gallery/static/extensions/${extension.code}`,
         iconURL: `https://dashblocks.github.io/dash-extensions-gallery/static/images/${extension.banner || 'unknown.svg'}`,
         tags: ['dash'],
         credits: [

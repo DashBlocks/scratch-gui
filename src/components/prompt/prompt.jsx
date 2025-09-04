@@ -43,12 +43,12 @@ const messages = defineMessages({
 
 const Packager = () => (
     <a
-        href="https://packager.turbowarp.org"
+        href="https://dashblocks.github.io/packager"
         target="_blank"
         rel="noopener noreferrer"
     >
         {/* Should not be translated */}
-        {'TurboWarp Packager'}
+        {'Dash Packager'}
     </a>
 );
 
@@ -167,7 +167,7 @@ const PromptComponent = props => (
                             /* eslint-disable-next-line max-len */
                             defaultMessage="Although you can create cloud variables, they won't work unless this project is uploaded to Scratch or converted using a tool like the {packager}."
                             // eslint-disable-next-line max-len
-                            description="Reminder that cloud variables may not work when the editor is open. {packager} is replaced with a link to open the TurboWarp Packager, always English."
+                            description="Reminder that cloud variables may not work when the editor is open. {packager} is replaced with a link to open the Dash Packager, always English."
                             values={{
                                 packager: <Packager />
                             }}

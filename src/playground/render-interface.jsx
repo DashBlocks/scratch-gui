@@ -247,9 +247,9 @@ const Footer = () => (
                         {/* Do not translate */}
                         {'TurboWarp Desktop'}
                     </a>
-                    <a href="https://packager.turbowarp.org/">
+                    <a href="https://dashblocks.github.io/packager">
                         {/* Do not translate */}
-                        {'TurboWarp Packager'}
+                        {'Dash Packager'}
                     </a>
                     <a href="https://docs.turbowarp.org/embedding">
                         <FormattedMessage

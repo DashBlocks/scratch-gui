@@ -17,6 +17,7 @@ import extensionTags from '../lib/libraries/tw-extension-tags';
 
 import LibraryComponent from '../components/library/library.jsx';
 import extensionIcon from '../components/action-menu/icon--sprite.svg';
+import { isTrustedExtension, manuallyTrustExtension } from './tw-security-manager.jsx';
 
 const messages = defineMessages({
     extensionTitle: {
@@ -256,6 +257,9 @@ class ExtensionLibrary extends React.PureComponent {
 
         const url = item.extensionURL ? item.extensionURL : extensionId;
         if (!item.disabled) {
+            if (!isTrustedExtension(url)) {
+                manuallyTrustExtension(url);
+            }
             if (this.props.vm.extensionManager.isExtensionLoaded(extensionId)) {
                 this.props.onCategorySelected(extensionId);
             } else {

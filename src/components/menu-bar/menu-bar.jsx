@@ -612,7 +612,7 @@ class MenuBar extends React.Component {
                                     <FormattedMessage
                                         defaultMessage="{APP_NAME} Forum"
                                         description="Button to give link to forum in the menu bar"
-                                        id="tw.feedbackButton"
+                                        id="dash.forumButton"
                                         values={{
                                             APP_NAME
                                         }}
@@ -1082,7 +1082,7 @@ class MenuBar extends React.Component {
                                 <FormattedMessage
                                     defaultMessage="{APP_NAME} Forum"
                                     description="Button to give link to forum in the menu bar"
-                                    id="tw.feedbackButton"
+                                    id="dash.forumButton"
                                     values={{
                                         APP_NAME
                                     }}

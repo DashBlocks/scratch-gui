@@ -99,7 +99,7 @@ const fetchPmLibrary = async () => {
         extensionId: extension.id,
         extensionURL: `https://extensions.penguinmod.com/extensions/${extension.code}`,
         iconURL: `https://extensions.penguinmod.com/images/${extension.banner || 'unknown.svg'}`,
-        tags: ['pm'],
+        tags: ['other'],
         credits: [
             ...(typeof extension.creator == 'object' ? extension.creator : [extension.creator] || []),
             ...(extension.notes ? [extension.notes] : [])

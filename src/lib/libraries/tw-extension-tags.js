@@ -5,5 +5,5 @@ export default [
     {tag: 'scratch', intlLabel: 'Scratch'},
     {tag: 'dash', intlLabel: APP_NAME},
     {tag: 'tw', intlLabel: 'TurboWarp'},
-    {tag: 'pm', intlLabel: 'PenguinMod'}
+    {tag: 'other', intlLabel: 'Other'}
 ];

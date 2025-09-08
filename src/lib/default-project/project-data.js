@@ -170,7 +170,7 @@ const projectData = translateFunction => {
                     width: 479.0123291015625,
                     height: 144.9382781982422,
                     minimized: false,
-                    text: "Hello, welcome to the Dash editor!\nDash is a TurboWarp and PenguinMod mod with new features. Don't wait, start creating right now!"
+                    text: "Hello, welcome to the Dash editor!\nDash is based on Scratch, TurboWarp and other mods that adds more blocks, extensions, colors, compiles projects to JavaScript to make them run really fast and other features.\n\nDon't wait, start creating right now!"
                 }
             },
             currentCostume: 3,

@@ -733,6 +733,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
               </value>
             </block>
+            ${blockSeparator}
             <block type="operator_is_string">
               <value name="STRING">
                 <shadow type="text">
@@ -744,6 +745,13 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
               <value name="NUM">
                 <shadow type="text">
                   <field name="TEXT">50</field>
+                </shadow>
+              </value>
+            </block>
+            <block type="operator_cast">
+              <value name="VALUE">
+                <shadow type="text">
+                  <field name="TEXT">${apple}</field>
                 </shadow>
               </value>
             </block>

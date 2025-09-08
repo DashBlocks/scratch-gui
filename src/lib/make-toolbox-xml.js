@@ -850,7 +850,6 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         <block type="json_length" />
-        ${blockSeparator}
         <label text="${arrays}"></label>
         <block type="json_array_empty"/>
         <block type="json_array_split">
@@ -926,7 +925,6 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
-        ${blockSeparator}
         <label text="${objects}"></label>
         <block type="json_object_empty"/>
         <block type="json_object_split">

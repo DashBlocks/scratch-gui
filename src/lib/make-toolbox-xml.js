@@ -734,17 +734,17 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
               </value>
             </block>
             ${blockSeparator}
-            <block type="operator_is_string">
-              <value name="STRING">
+            <block type="operator_typeof">
+              <value name="VALUE">
                 <shadow type="text">
                   <field name="TEXT">${apple}</field>
                 </shadow>
               </value>
             </block>
-            <block type="operator_is_number">
-              <value name="NUM">
+            <block type="operator_is_type">
+              <value name="VALUE">
                 <shadow type="text">
-                  <field name="TEXT">50</field>
+                  <field name="TEXT">${apple}</field>
                 </shadow>
               </value>
             </block>

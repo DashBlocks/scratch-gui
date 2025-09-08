@@ -197,9 +197,9 @@ const Footer = () => (
             <div className={styles.footerText}>
                 <FormattedMessage
                     // eslint-disable-next-line max-len
-                    defaultMessage="{APP_NAME} is based on TurboWarp and one mod of TurboWarp (we can't mention it here), but not affiliated with these mods. TurboWarp is available for free at: {turbowarpDotOrg}."
-                    description="A disclaimer that Dash is a TurboWarp and mod of TurboWarp mod."
-                    id="tw.footer.basedOnDisclaimer"
+                    defaultMessage="{APP_NAME} is based on Scratch, TurboWarp and other mods, but not affiliated with these mods. TurboWarp is available for free at: {turbowarpDotOrg}."
+                    description="Disclaimer that Dash is based on Scratch and TurboWarp and other mods."
+                    id="dash.footer.basedOnDisclaimer"
                     values={{
                         APP_NAME,
                         turbowarpDotOrg: (
@@ -209,15 +209,6 @@ const Footer = () => (
                                 rel="noreferrer"
                             >
                                 {'https://turbowarp.org/'}
-                            </a>
-                        ),
-                        penguinmodDotCom: (
-                            <a
-                                href="https://penguinmod.com/"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                {'https://penguinmod.com'}
                             </a>
                         )
                     }}

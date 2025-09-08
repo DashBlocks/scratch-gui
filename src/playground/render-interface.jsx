@@ -563,7 +563,7 @@ class Interface extends React.PureComponent {
                                             <p>
                                                 <FormattedMessage
                                                     // eslint-disable-next-line max-len
-                                                    defaultMessage="{APP_NAME} is based on Scratch, TurboWarp and other mods that adds more blocks, extensions, colors and other and compiles projects to JavaScript to make them run really fast. Try it out by clicking on 'See inside' button or by inputting a project ID or URL above or choosing a featured project below."
+                                                    defaultMessage="{APP_NAME} is based on Scratch, TurboWarp and other mods that adds more blocks, extensions, colors, compiles projects to JavaScript to make them run really fast and other features. Try it out by clicking on 'See inside' button or by inputting a project ID or URL above or choosing a featured project below."
                                                     description="Description of Dash on the homepage"
                                                     id="dash.home.description"
                                                     values={{

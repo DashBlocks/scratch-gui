@@ -1,4 +1,16 @@
 [    {
+        "name": "Кнопка со стрелкой",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "19240cd6c0eb42ce03a72d36c0c5269e",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "19240cd6c0eb42ce03a72d36c0c5269e.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },
+    {
         "name": "Mouse",
         "tags": [
             "dash"

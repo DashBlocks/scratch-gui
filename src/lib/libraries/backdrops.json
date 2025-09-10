@@ -1,4 +1,16 @@
-[
+[    {
+        "name": "desert-backdrop",
+        "tags": [
+            "Dash",
+            "desert"
+        ],
+        "assetId": "a7942bef40614de5b46f271110f4259e",
+        "bitmapResolution": 2,
+        "dataFormat": "svg",
+        "md5ext": "a7942bef40614de5b46f271110f4259e.png",
+        "rotationCenterX": 70,
+        "rotationCenterY": 50
+    },
     {
         "name": "game-backdrop",
         "tags": [

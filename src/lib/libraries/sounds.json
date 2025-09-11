@@ -1,4 +1,24 @@
 [   {
+        "name": "click",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "0a351b04e7845a4901585745cda626be",
+        "dataFormat": "mp3",
+        "md5ext": "0a351b04e7845a4901585745cda626be.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    },{
+        "name": "Всплеск",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "605552b1d4ae1efa6a853b51ec73a786",
+        "dataFormat": "mp3",
+        "md5ext": "605552b1d4ae1efa6a853b51ec73a786.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    },{
         "name": "repair/construction",
         "tags": [
             "dash"

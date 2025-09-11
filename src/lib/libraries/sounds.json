@@ -1,4 +1,35 @@
-[   
+[   {
+        "name": "repair/construction",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "d0fc4a4aa49b56dc5f61f02f05f5338e",
+        "dataFormat": "mp3",
+        "md5ext": "d0fc4a4aa49b56dc5f61f02f05f5338e.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    },{
+        "name": "Coins",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "b58277da23243d0deeea3a7c42b280c5",
+        "dataFormat": "mp3",
+        "md5ext": "b58277da23243d0deeea3a7c42b280c5.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    },
+    {
+        "name": "Gems",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "ecc9ff3d1be91137224e144a4a02620f",
+        "dataFormat": "mp3",
+        "md5ext": "ecc9ff3d1be91137224e144a4a02620f.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    },
     {
         "name": "Wow",
         "tags": [

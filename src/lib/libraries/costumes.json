@@ -1,4 +1,48 @@
 [   {
+        "name": "Звезда",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "f5d27add6a88f142e73d682b0add1a4f",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "f5d27add6a88f142e73d682b0add1a4f.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
+        "name": "Серце",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "93cc2e1921a912b41bbe6170a0a4cf2b",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "93cc2e1921a912b41bbe6170a0a4cf2b.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
+        "name": "Алмаз",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "e834742d53c4722ab82db79101e9dbbb",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "e834742d53c4722ab82db79101e9dbbb.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
+        "name": "Огонь",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "b0ac4c2bfeb44731c8c3a9a57624b86e",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "b0ac4c2bfeb44731c8c3a9a57624b86e.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
         "name": "Корона",
         "tags": [
             "dash"

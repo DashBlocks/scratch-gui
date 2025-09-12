@@ -1,4 +1,16 @@
 [    {
+        "name": "dash-backdrop",
+        "tags": [
+            "Dash"
+        ],
+        "assetId": "f12ebd0e685de88d84d3aea2701420cb",
+        "bitmapResolution": 2,
+        "dataFormat": "svg",
+        "md5ext": "f12ebd0e685de88d84d3aea2701420cb.svg",
+        "rotationCenterX": 420,
+        "rotationCenterY": 270
+    },
+    {
         "name": "desert-backdrop",
         "tags": [
             "Dash",

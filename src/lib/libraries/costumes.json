@@ -1,4 +1,15 @@
-[    {
+[   {
+        "name": "Корона",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "9b333905b5cd97df4068cb44036989a8",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "19b333905b5cd97df4068cb44036989a8.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    }, {
         "name": "Кнопка со стрелкой",
         "tags": [
             "dash"

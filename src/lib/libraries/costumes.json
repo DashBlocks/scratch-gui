@@ -1,4 +1,15 @@
-[   {
+[  {
+        "name": "Монетка",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "6a8fe7eaf8f9be409e842a50d2e32fb5",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "6a8fe7eaf8f9be409e842a50d2e32fb5.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    }, {
         "name": "Звезда",
         "tags": [
             "dash"

@@ -46,7 +46,7 @@ const getCategoryColor = (theme, category) => {
 const MonitorComponent = props => {
     const mode = Array.isArray(props.value)
         ? 'list'
-        : typeof props.value === 'object' && props.value instanceof Object && !Array.isArray(props.value) ? 'object' : props.mode;
+        : props.value?.constructor?.prototype === Object.prototype ? 'object' : props.mode;
 
     return (
         <ContextMenuTrigger
@@ -68,7 +68,7 @@ const MonitorComponent = props => {
                 <Box
                     className={styles.monitorContainer}
                     componentRef={props.componentRef}
-                    onDoubleClick={mode === 'list' || !props.draggable ? null : props.onNextMode}
+                    onDoubleClick={mode === 'list' || mode === 'object' || !props.draggable ? null : props.onNextMode}
                     data-id={props.id}
                     data-opcode={props.opcode}
                 >

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import styles from './monitor.css';
+import DOMElementRenderer from '../../containers/dom-element-renderer.jsx';
 
 const SliderMonitor = ({categoryColor, isDiscrete, label, min, max, value, onSliderUpdate}) => (
     <div className={styles.defaultMonitor}>
@@ -17,7 +18,9 @@ const SliderMonitor = ({categoryColor, isDiscrete, label, min, max, value, onSli
                     color: categoryColor.text
                 }}
             >
-                {value}
+                {typeof value?.customId === 'string' && typeof value?.toMonitorContent === 'function'
+                    ? (<DOMElementRenderer domElement={value.toMonitorContent()} />)
+                    : String(value)}
             </div>
         </div>
         <div className={styles.row}>
@@ -27,7 +30,7 @@ const SliderMonitor = ({categoryColor, isDiscrete, label, min, max, value, onSli
                 min={min}
                 step={isDiscrete ? 1 : 0.01}
                 type="range"
-                value={value}
+                value={Number(value)}
                 onChange={onSliderUpdate}
             />
         </div>

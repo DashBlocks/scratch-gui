@@ -29,7 +29,7 @@ export default function ({id, spriteName, opcode, params, value, vm}) {
 
     // If value is a number, round it to six decimal places
     if (typeof value === 'number') {
-        value = Number(value.toFixed(6));
+        value = Number(value.toFixed(8));
     }
 
     // Turn the value to a string, for handle boolean values
@@ -37,7 +37,12 @@ export default function ({id, spriteName, opcode, params, value, vm}) {
         value = value.toString();
     }
 
-    // Lists and Array values can contain booleans, which should also be turned to strings
+    // Turn the value to a string, for handle null values
+    if (value === null) {
+        value = 'null';
+    }
+
+    // Lists and Array values can contain booleans and null, which should also be turned to strings
     if (Array.isArray(value)) {
         value = value.slice();
         for (let i = 0; i < value.length; i++) {
@@ -45,15 +50,21 @@ export default function ({id, spriteName, opcode, params, value, vm}) {
             if (typeof item === 'boolean') {
                 value[i] = item.toString();
             }
+            if (item === null) {
+                value[i] = 'null';
+            }
         }
     }
 
-    // Object values can contain booleans, which should also be turned to strings
-    if (typeof value == 'object' && value instanceof Object && !Array.isArray(value)) {
+    // Object values can contain booleans and null, which should also be turned to strings
+    if (value?.constructor?.prototype === Object.prototype) {
         for (let i = 0; i < Object.keys(value).length; i++) {
             const item = value[Object.keys(value)[i]];
             if (typeof item === 'boolean') {
                 value[Object.keys(value)[i]] = item.toString();
+            }
+            if (item === null) {
+                value[Object.keys(value)[i]] = 'null';
             }
         }
     }

@@ -1,4 +1,15 @@
 [  {
+        "name": "Стрелка для акцента",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "6a8fe7eaf8f9be409e842a50d2e32fb5",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "0835d57106220fbe19ae60127f861204.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
         "name": "Монетка",
         "tags": [
             "dash"

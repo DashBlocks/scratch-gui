@@ -1,4 +1,14 @@
 [   {
+        "name": "click 2",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "dd51db0d161223caa27d241cb8ccd46c.mp3",
+        "dataFormat": "mp3",
+        "md5ext": "dd51db0d161223caa27d241cb8ccd46c.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    }, {
         "name": "click",
         "tags": [
             "dash"

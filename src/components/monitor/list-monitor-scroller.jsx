@@ -6,6 +6,7 @@ import {FormattedMessage} from 'react-intl';
 
 import styles from './monitor.css';
 import {List} from 'react-virtualized';
+import DOMElementRenderer from '../../containers/dom-element-renderer.jsx';
 
 class ListMonitorScroller extends React.Component {
     constructor (props) {
@@ -33,7 +34,7 @@ class ListMonitorScroller extends React.Component {
     rowRenderer ({index, key, style}) {
         const value = this.props.values[index];
         const isNestedArray = Array.isArray(value);
-        const isNestedObject = typeof value === 'object' && value instanceof Object && !Array.isArray(value);
+        const isNestedObject = value?.constructor?.prototype === Object.prototype;
         return (
             <div
                 className={styles.listRow}
@@ -59,7 +60,13 @@ class ListMonitorScroller extends React.Component {
                                 spellCheck={false}
                                 style={{color: this.props.categoryColor.text}}
                                 type="text"
-                                value={isNestedArray ? "nested array" : isNestedObject ? "nested object" : this.props.activeValue}
+                                value={isNestedArray
+                                    ? "nested array"
+                                    : isNestedObject
+                                        ? "nested object"
+                                        : String(typeof this.props.activeValue?.customId === 'string' && typeof this.props.activeValue?.toListEditor === 'function'
+                                            ? this.props.activeValue.toListEditor()
+                                            : this.props.activeValue)}
                                 onBlur={this.props.onDeactivate}
                                 onChange={this.props.onInput}
                                 onFocus={this.props.onFocus}
@@ -76,7 +83,15 @@ class ListMonitorScroller extends React.Component {
 
                     ) : (
                         <div className={styles.valueInner}>
-                            {isNestedArray ? <i>nested array</i> : isNestedObject ? <i>nested object</i> : value}
+                            {isNestedArray
+                                ? <i>nested array</i>
+                                : isNestedObject
+                                    ? <i>nested object</i>
+                                    : typeof value?.customId === 'string' && (typeof value?.toListItem === 'function' || typeof value?.toMonitorContent === 'function')
+                                        ? (<DOMElementRenderer domElement={typeof value?.toListItem === 'function'
+                                            ? value.toListItem()
+                                            : value.toMonitorContent()} />)
+                                        : String(value)}
                         </div>
                     )}
                 </div>

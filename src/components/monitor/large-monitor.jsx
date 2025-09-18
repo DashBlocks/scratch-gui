@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './monitor.css';
+import DOMElementRenderer from '../../containers/dom-element-renderer.jsx';
 
 const LargeMonitor = ({categoryColor, value}) => (
     <div className={styles.largeMonitor}>
@@ -11,7 +12,9 @@ const LargeMonitor = ({categoryColor, value}) => (
                 color: categoryColor.text
             }}
         >
-            {value}
+            {typeof value?.customId === 'string' && typeof value?.toMonitorContent === 'function'
+                ? (<DOMElementRenderer domElement={value.toMonitorContent()} />)
+                : String(value)}
         </div>
     </div>
 );

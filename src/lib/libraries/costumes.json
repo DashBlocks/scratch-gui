@@ -1,9 +1,31 @@
-[  {
+[  z{
+        "name": "Кнопка игры",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "9d22c6c957d53f52e9f66ed5a5a06635",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "9d22c6c957d53f52e9f66ed5a5a06635.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
+        "name": "Кнопка",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "22064a691060094b6fc12673b759713e",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "22064a691060094b6fc12673b759713e.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
         "name": "Стрелка для акцента",
         "tags": [
             "dash"
         ],
-        "assetId": "6a8fe7eaf8f9be409e842a50d2e32fb5",
+        "assetId": "0835d57106220fbe19ae60127f861204",
         "bitmapResolution": 1,
         "dataFormat": "svg",
         "md5ext": "0835d57106220fbe19ae60127f861204.svg",
@@ -58,10 +80,10 @@
         "tags": [
             "dash"
         ],
-        "assetId": "b0ac4c2bfeb44731c8c3a9a57624b86e",
+        "assetId": "0d68b033635c1df1aef6a239e1d9708f",
         "bitmapResolution": 1,
         "dataFormat": "svg",
-        "md5ext": "b0ac4c2bfeb44731c8c3a9a57624b86e.svg",
+        "md5ext": "0d68b033635c1df1aef6a239e1d9708f.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
     },{
@@ -72,7 +94,7 @@
         "assetId": "9b333905b5cd97df4068cb44036989a8",
         "bitmapResolution": 1,
         "dataFormat": "svg",
-        "md5ext": "19b333905b5cd97df4068cb44036989a8.svg",
+        "md5ext": "9b333905b5cd97df4068cb44036989a8.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
     }, {

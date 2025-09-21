@@ -426,9 +426,15 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
         <block type="control_if"/>
         <block type="control_if_else"/>
         <block type="control_if_then_else">
+        <block type="control_if_elseif_else">
             <value name="THEN">
                 <shadow type="text">
                     <field name="TEXT">${apple}</field>
+                </shadow>
+            </value>
+            <value name="ELSEIF">
+                <shadow type="text">
+                    <field name="TEXT">${gadina}</field>
                 </shadow>
             </value>
             <value name="ELSE">

@@ -35,6 +35,8 @@ const PackagerIntegrationHOC = function (WrappedComponent) {
             }
 
             const packagerData = e.data.p4;
+            if (!packagerData) return;
+
             if (packagerData.type !== 'ready-for-import') {
                 return;
             }

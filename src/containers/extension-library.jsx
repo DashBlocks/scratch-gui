@@ -232,7 +232,7 @@ class ExtensionLibrary extends React.PureComponent {
         }
     }
     handleItemSelect (item) {
-        if (item.href) {
+        if (!item || item.href) {
             return;
         }
 

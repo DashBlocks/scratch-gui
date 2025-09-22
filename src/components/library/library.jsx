@@ -322,9 +322,10 @@ class LibraryComponent extends React.Component {
                                 internetConnectionRequired={dataItem.internetConnectionRequired}
                                 isPlaying={this.state.playingItem === index}
                                 key={dataItem.key || (
-                                    typeof dataItem.name === 'string' ?
+                                    dataItem.id ? dataItem.id :
+                                    (typeof dataItem.name === 'string' ?
                                         dataItem.name :
-                                        dataItem.rawURL
+                                        dataItem.rawURL)
                                 )}
                                 name={dataItem.name}
                                 credits={dataItem.credits}

@@ -273,10 +273,12 @@ const looks = function (isInitialSetup, isStage, targetId, costumeName, backdrop
             </value>
         </block>
         <block type="looks_cleargraphiceffects"/>
+        <block type="looks_geteffect"/>
         ${blockSeparator}
         ${isStage ? '' : `
             <block type="looks_show"/>
             <block type="looks_hide"/>
+            <block type="looks_isvisible"/>
         ${blockSeparator}
             <block type="looks_gotofrontback"/>
             <block type="looks_goforwardbackwardlayers">

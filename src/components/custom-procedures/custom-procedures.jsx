@@ -137,6 +137,22 @@ const CustomProcedures = (props) => {
                             onClick={() => props.setColor(blockColors[category].primary)}
                         />
                     ))}
+                    {props.vm.runtime._blockInfo
+                        .filter(extInfo => extInfo.color1.toLowerCase() !== "#0fbd8c")
+                        .map((extInfo, index) => (
+                            <div
+                                key={index}
+                                style={{
+                                    backgroundColor: Object.keys(themeObj).length === 0
+                                        ? extInfo.color1
+                                        : themeObj.primary(extInfo.color1),
+                                }}
+                                className={styles.colorOption}
+                                role="button"
+                                draggable={false}
+                                onClick={() => props.setColor(extInfo.color1)}
+                            />
+                        ))}
                     <input
                         style={{
                             backgroundColor: Object.keys(themeObj).length === 0
@@ -200,7 +216,8 @@ CustomProcedures.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    theme: state.scratchGui.theme.theme
+    theme: state.scratchGui.theme.theme,
+    vm: state.scratchGui.vm
 });
 
 export default injectIntl(connect(

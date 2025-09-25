@@ -488,7 +488,9 @@ export class BlockTypeInfo {
       const spriteOptions = [
         [Blockly.Msg.SENSING_OF_XPOSITION, "x position"],
         [Blockly.Msg.SENSING_OF_YPOSITION, "y position"],
-        [Blockly.Msg.SENSING_OF_DIRECTION, "direction"],
+        [Blockly.Msg.SENSING_OF_POSITION, 'position'],
+        [Blockly.Msg.SENSING_OF_DIRECTION, 'direction'],
+        [Blockly.Msg.SENSING_OF_ISVISIBLE, 'visibility'],
         [Blockly.Msg.SENSING_OF_COSTUMENUMBER, "costume #"],
         [Blockly.Msg.SENSING_OF_COSTUMENAME, "costume name"],
         [Blockly.Msg.SENSING_OF_SIZE, "size"],

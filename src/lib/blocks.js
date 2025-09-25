@@ -241,7 +241,9 @@ export default function (vm) {
             const spriteOptions = [
                 [ScratchBlocks.Msg.SENSING_OF_XPOSITION, 'x position'],
                 [ScratchBlocks.Msg.SENSING_OF_YPOSITION, 'y position'],
+                [ScratchBlocks.Msg.SENSING_OF_POSITION, 'position'],
                 [ScratchBlocks.Msg.SENSING_OF_DIRECTION, 'direction'],
+                [ScratchBlocks.Msg.SENSING_OF_ISVISIBLE, 'visibility'],
                 [ScratchBlocks.Msg.SENSING_OF_COSTUMENUMBER, 'costume #'],
                 [ScratchBlocks.Msg.SENSING_OF_COSTUMENAME, 'costume name'],
                 [ScratchBlocks.Msg.SENSING_OF_SIZE, 'size'],

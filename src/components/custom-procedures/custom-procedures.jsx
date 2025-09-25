@@ -138,7 +138,7 @@ const CustomProcedures = (props) => {
                         />
                     ))}
                     {props.vm.runtime._blockInfo
-                        .filter(extInfo => extInfo.color1.toLowerCase() !== "#0fbd8c")
+                        .filter(extInfo => extInfo.color1.toLowerCase() !== blockColors.pen.primary.toLowerCase())
                         .map((extInfo, index) => (
                             <div
                                 key={index}

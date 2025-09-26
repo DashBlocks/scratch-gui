@@ -34,20 +34,8 @@ export default async function ({ addon, console, msg }) {
 
     let valueReportBox = document.createElement("div");
     valueReportBox.setAttribute("class", "valueReportBox");
-    const maxShownItems = 50;
     if (Array.isArray(value)) {
-      const more = value.length - maxShownItems;
-      const result = value.length === 0 ? '[]' : value.slice(0, maxShownItems).reduce(function(acc, value, i, array) {
-        acc += i === 0 ? '[' : '';
-        acc += Array.isArray(value)
-          ? 'nested array'
-          : typeof value === 'object' && value !== null
-            ? 'nested object'
-            : JSON.stringify(value);
-        acc += i === array.length - 1 ? (more > 0 ? ', *' + more + ' more items*' : '') + ']' : ', ';
-        return acc;
-      }, '');
-      valueReportBox.textContent = result;
+      valueReportBox.appendChild(this.generateReporterJSONContent(value));
     } else if (typeof value === 'object' && value !== null) {
       if (
         value?.constructor?.prototype !== Object.prototype &&
@@ -55,19 +43,7 @@ export default async function ({ addon, console, msg }) {
       ) {
         valueReportBox.appendChild(value.toReporterContent());
       } else {
-        const more = Object.keys(value).length - maxShownItems;
-        const result = Object.keys(value).length === 0 ? '{}' : Object.entries(value).slice(0, 50).reduce(function(acc, value, i, array) {
-          acc += i === 0 ? '{' : '';
-          acc += JSON.stringify(value[0]) + ': ';
-          acc += Array.isArray(value[1])
-            ? 'nested array'
-            : typeof value[1] === 'object' && value[1] !== null
-              ? 'nested object'
-              : JSON.stringify(value[1]);
-          acc += i === array.length - 1 ? (more > 0 ? ', *' + more + ' more items*' : '') + '}' : ', ';
-          return acc;
-        }, '');
-        valueReportBox.textContent = result;
+        valueReportBox.appendChild(this.generateReporterJSONContent(value));
       }
     } else {
       valueReportBox.textContent = String(value);

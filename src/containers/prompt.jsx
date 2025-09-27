@@ -21,7 +21,7 @@ class Prompt extends React.Component {
                 props.vm &&
                 props.vm.runtime.getNumberOfCloudVariables() < SCRATCH_MAX_CLOUD_VARIABLES
             ) || false,
-            inputValue: '',
+            inputValue: props.defaultValue || '',
             globalSelected: true,
             cloudSelected: false,
             canAddCloudVariable: (props.vm && props.vm.runtime.canAddCloudVariable()) || false

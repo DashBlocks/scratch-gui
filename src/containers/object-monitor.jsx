@@ -7,6 +7,7 @@ import {getEventXY} from '../lib/touch-utils';
 import {getVariableValue, setVariableValue} from '../lib/variable-utils';
 import ObjectMonitorComponent from '../components/monitor/object-monitor.jsx';
 import {Map} from 'immutable';
+import Prompt from './prompt.jsx';
 
 class ObjectMonitor extends React.Component {
     constructor (props) {
@@ -19,10 +20,14 @@ class ObjectMonitor extends React.Component {
             'handleKeyPress',
             'handleFocus',
             'handleAdd',
+            'handleOk',
+            'handleCancel',
             'handleResizeMouseDown'
         ]);
 
         this.state = {
+            prompt: false,
+            draggable: true,
             activeIndex: null,
             activeValue: null,
             width: props.width || 100,
@@ -54,8 +59,8 @@ class ObjectMonitor extends React.Component {
     }
 
     handleFocus (e) {
-        // Select all the text in the input when it is focused.
-        e.target.select();
+        // Select all the text in the input when it is focused and prompt is not opened.
+        if (!this.state.prompt) e.target.select();
     }
 
     handleKeyPress (e) {
@@ -101,17 +106,29 @@ class ObjectMonitor extends React.Component {
 
     handleAdd () {
         // Add button appends a blank value and switches to it
-        const key = prompt('Enter key...', 'key'); // TODO: replace prompt method
-        if (!key) return;
+        this.handleDeactivate();
+        this.setState({prompt: true, draggable: false})
+    }
+
+    handleOk (key) {
+        if (!key) {
+            this.setState({prompt: false, draggable: true});
+            return;
+        };
         const {vm, targetId, id: variableId} = this.props;
         const newObjectValue = getVariableValue(vm, targetId, variableId);
         if (Object.keys(newObjectValue).includes(key)) {
           alert(`Value with the key "${key}" already exists!`);
+          this.setState({prompt: false, draggable: true});
           return;
         }
         newObjectValue[key] = '';
         setVariableValue(vm, targetId, variableId, newObjectValue);
-        this.setState({activeIndex: Object.keys(newObjectValue).length - 1, activeValue: ''});
+        this.setState({activeIndex: Object.keys(newObjectValue).length - 1, activeValue: '', prompt: false, draggable: true});
+    }
+
+    handleCancel () {
+        this.setState({prompt: false, draggable: true});
     }
 
     handleResizeMouseDown (e) {
@@ -155,21 +172,38 @@ class ObjectMonitor extends React.Component {
             ...props
         } = this.props;
         return (
-            <ObjectMonitorComponent
-                {...props}
-                activeIndex={this.state.activeIndex}
-                activeValue={this.state.activeValue}
-                height={this.state.height}
-                width={this.state.width}
-                onActivate={this.handleActivate}
-                onAdd={this.handleAdd}
-                onDeactivate={this.handleDeactivate}
-                onFocus={this.handleFocus}
-                onInput={this.handleInput}
-                onKeyPress={this.handleKeyPress}
-                onRemove={this.handleRemove}
-                onResizeMouseDown={this.handleResizeMouseDown}
-            />
+            <>
+                {this.state.prompt && (
+                    <Prompt
+                        title="New Item"
+                        label="Enter key for new item in object."
+                        defaultValue="key"
+                        onOk={this.handleOk}
+                        onCancel={this.handleCancel}
+                        showVariableOptions={false}
+                        showCloudOption={false}
+                        showListMessage={false}
+                        isStage={false}
+                        vm={vm}
+                    />
+                )}
+                <ObjectMonitorComponent
+                    {...props}
+                    activeIndex={this.state.activeIndex}
+                    activeValue={this.state.activeValue}
+                    height={this.state.height}
+                    width={this.state.width}
+                    onActivate={this.handleActivate}
+                    onAdd={this.handleAdd}
+                    onDeactivate={this.handleDeactivate}
+                    onFocus={this.handleFocus}
+                    onInput={this.handleInput}
+                    onKeyPress={this.handleKeyPress}
+                    onRemove={this.handleRemove}
+                    onResizeMouseDown={this.handleResizeMouseDown}
+                    draggable={this.state.draggable}
+                />
+            </>
         );
     }
 }

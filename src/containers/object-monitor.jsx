@@ -102,6 +102,7 @@ class ObjectMonitor extends React.Component {
     handleAdd () {
         // Add button appends a blank value and switches to it
         const key = prompt('Enter key...', 'key'); // TODO: replace prompt method
+        if (!key) return;
         const {vm, targetId, id: variableId} = this.props;
         const newObjectValue = getVariableValue(vm, targetId, variableId);
         if (Object.keys(newObjectValue).includes(key)) {

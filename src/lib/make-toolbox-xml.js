@@ -381,7 +381,13 @@ const events = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         ${blockSeparator}
-        <block type="event_whenbroadcastreceived">
+        <block type="event_whenbroadcastreceived"/>
+        <block type="event_open">
+            <value name="OPEN_LINK">
+                <shadow type="text">
+                    <field name="TEXT">https://dashblocks.github.io</field>
+                </shadow>
+            </value>
         </block>
         <block type="event_broadcast">
             <value name="BROADCAST_INPUT">

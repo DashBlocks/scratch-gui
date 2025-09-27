@@ -20,10 +20,10 @@ import styles from './security-manager-modal.css';
 
 const messages = defineMessages({
     title: {
-        defaultMessage: 'Extension Security',
+        defaultMessage: 'Security Manager',
         // eslint-disable-next-line max-len
         description: 'Title of modal thats asks the user for permission to let the project load an extension, fetch a resource, open a window, etc.',
-        id: 'tw.securityManager.title'
+        id: 'dash.securityManager.title'
     }
 });
 

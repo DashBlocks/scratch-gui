@@ -23,15 +23,16 @@ const manuallyTrustExtension = url => {
  * @param {string} url URL as a string.
  * @returns {boolean} True if the extension can is trusted
  */
-const isTrustedExtension = url => (
-    // Always trust our official extension repository.
-    url.toLowerCase().startsWith('https://dashblocks.github.io/') ||
-    url.toLowerCase().startsWith('https://dashblocks.github.io/extensions/') ||
-    url.toLowerCase().startsWith('https://github.com/dashblocks/') ||
-
-    // Always trust official galleries.
-    url.toLowerCase().startsWith('https://extensions.turbowarp.org/') ||
-    url.toLowerCase().startsWith('https://extensions.penguinmod.com/') ||
+const isTrustedUrl = url => (
+    url.toLowerCase().startsWith('https://dashblocks.github.io') ||
+    url.toLowerCase().startsWith('https://github.com/dashblocks') ||
+    url.toLowerCase().startsWith('https://scratch.org') ||
+    url.toLowerCase().startsWith('https://scratch.mit.edu') ||
+    url.toLowerCase().startsWith('https://turbowarp.org') ||
+    url.toLowerCase().startsWith('https://extensions.turbowarp.org') ||
+    url.toLowerCase().startsWith('https://penguinmod.com') ||
+    url.toLowerCase().startsWith('https://studio.penguinmod.com') ||
+    url.toLowerCase().startsWith('https://extensions.penguinmod.com') ||
 
     // For development.
     url.toLowerCase().startsWith('http://localhost:') ||
@@ -57,7 +58,7 @@ const embedOriginsTrustedByUser = new Set();
  */
 const isAlwaysTrustedForFetching = parsed => (
     // If we would trust loading an extension from here, we can trust loading resources too.
-    isTrustedExtension(parsed.href) ||
+    isTrustedUrl(parsed.href) ||
 
     // Any TurboWarp service such as trampoline
     parsed.origin === 'https://turbowarp.org' ||
@@ -239,7 +240,7 @@ class TWSecurityManagerComponent extends React.Component {
      * @returns {string} The VM worker mode to use
      */
     getSandboxMode (url) {
-        if (isTrustedExtension(url)) {
+        if (isTrustedUrl(url)) {
             log.info(`Loading extension ${url} unsandboxed`);
             return 'unsandboxed';
         }
@@ -261,7 +262,7 @@ class TWSecurityManagerComponent extends React.Component {
      * @returns {Promise<boolean>} Whether the extension can be loaded
      */
     async canLoadExtensionFromProject (url) {
-        if (isTrustedExtension(url)) {
+        if (isTrustedUrl(url)) {
             log.info(`Loading extension ${url} automatically`);
             return true;
         }
@@ -479,5 +480,5 @@ const ConnectedSecurityManagerComponent = connect(
 export {
     ConnectedSecurityManagerComponent as default,
     manuallyTrustExtension,
-    isTrustedExtension
+    isTrustedUrl
 };

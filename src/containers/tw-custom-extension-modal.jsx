@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import log from '../lib/log';
 import CustomExtensionModalComponent from '../components/tw-custom-extension-modal/custom-extension-modal.jsx';
 import {closeCustomExtensionModal} from '../reducers/modals';
-import {manuallyTrustExtension, isTrustedExtension} from './tw-security-manager.jsx';
+import {manuallyTrustExtension, isTrustedUrl} from './tw-security-manager.jsx';
 import {getPersistedUnsandboxed, setPersistedUnsandboxed} from '../lib/tw-persisted-unsandboxed.js';
 
 /**
@@ -192,7 +192,7 @@ class CustomExtensionModal extends React.Component {
 
     isUnsandboxed () {
         if (this.state.type === 'url') {
-            return isTrustedExtension(this.state.url);
+            return isTrustedUrl(this.state.url);
         }
         return this.state.unsandboxed;
     }

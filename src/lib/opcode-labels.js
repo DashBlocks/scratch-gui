@@ -23,6 +23,11 @@ const messages = defineMessages({
     },
 
     // Looks
+    looks_isvisible: {
+        defaultMessage: 'visible?',
+        description: 'Label for the visible monitor when shown on the stage',
+        id: 'dash.opcode.isvisible'
+    },
     looks_size: {
         defaultMessage: 'size',
         description: 'Label for the size monitor when shown on the stage',
@@ -174,6 +179,7 @@ class OpcodeLabels {
             motion_position: {category: 'motion'},
 
             // Looks
+            looks_isvisible: {category: 'looks'},
             looks_size: {category: 'looks'},
             looks_costumenumbername: {category: 'looks'},
             looks_backdropnumbername: {category: 'looks'},
@@ -229,6 +235,7 @@ class OpcodeLabels {
         this._opcodeMap.motion_position.labelFn = () => this._translator(messages.motion_position);
 
         // Looks
+        this._opcodeMap.looks_isvisible.labelFn = () => this._translator(messages.looks_isvisible);
         this._opcodeMap.looks_size.labelFn = () => this._translator(messages.looks_size);
         this._opcodeMap.looks_costumenumbername.labelFn = params => {
             if (params.NUMBER_NAME === 'number') {

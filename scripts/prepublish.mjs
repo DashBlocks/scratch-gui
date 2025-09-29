@@ -83,7 +83,11 @@ const downloadMicrobitHex = async () => {
     console.info(`Downloading ${url}`);
     const response = await crossFetch(url);
     const zipBuffer = Buffer.from(await response.arrayBuffer());
+<<<<<<< HEAD
     const sha256 = nodeCrypto.createHash('sha256').update(zipBuffer).digest('hex');
+=======
+    const sha256 = nodeCrypto.createHash('sha-256').update(zipBuffer).digest('hex');
+>>>>>>> upstream/develop
     if (sha256 !== expectedSHA256) {
         throw new Error(`microbit hex has SHA-256 ${sha256} but expected ${expectedSHA256}`);
     }

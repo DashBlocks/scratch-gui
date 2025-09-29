@@ -2,6 +2,17 @@ import OpcodeLabels from './opcode-labels.js';
 
 const isUndefined = a => typeof a === 'undefined';
 
+const circularReplacer = () => {
+    const stack = new Set();
+    return (_, value) => {
+        if (typeof value === 'object' && value !== null) {
+            if (stack.has(value)) return Array.isArray(value) ? '[...]' : '{...}';
+            stack.add(value);
+        }
+        return value;
+    };
+};
+
 /**
  * Convert monitors from VM format to what the GUI needs to render.
  * - Convert opcode to a label and a category

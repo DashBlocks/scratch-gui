@@ -70,6 +70,7 @@
     font-weight: bold;
 }
 
+<<<<<<< HEAD
 /* Color options row */
 .color-row {
     display: flex;
@@ -130,6 +131,8 @@
     width: 24px;
 }
 
+=======
+>>>>>>> upstream/develop
 /* "Run without screen refresh" row */
 .checkbox-row {
     margin-top: 1rem;

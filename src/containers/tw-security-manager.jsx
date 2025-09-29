@@ -294,8 +294,13 @@ class TWSecurityManagerComponent extends React.Component {
             return true;
         }
         const {showModal, releaseLock} = await this.acquireModalLock();
-        const origin = (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? parsed.origin : null;
-        if (origin && fetchOriginsTrustedByUser.has(origin)) {
+        const host = (
+            parsed.protocol === 'http:' ||
+            parsed.protocol === 'https:' ||
+            parsed.protocol === 'ws:' ||
+            parsed.protocol === 'wss:'
+        ) ? parsed.host : null;
+        if (host && fetchOriginsTrustedByUser.has(host)) {
             releaseLock();
             return true;
         }

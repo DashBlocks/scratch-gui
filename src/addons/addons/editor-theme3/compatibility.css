@@ -76,6 +76,7 @@
   --sa-block-field-background: var(--editorTheme3-data_lists-field, #e64d00);
 }
 
+<<<<<<< HEAD
 .sa-block-color-json {
   --sa-block-background-primary: var(--editorTheme3-json-primary, #748bee);
   --sa-block-background-secondary: var(--editorTheme3-json-secondary, #687dd6);
@@ -83,6 +84,8 @@
   --sa-block-field-background: var(--editorTheme3-json-field, #5563a7);
 }
 
+=======
+>>>>>>> upstream/develop
 .sa-block-color-more,
 .sa-block-color-null {
   --sa-block-background-primary: var(--editorTheme3-more-primary, #ff6680);

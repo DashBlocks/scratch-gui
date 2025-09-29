@@ -50,10 +50,13 @@
   background-image: url(icons/list_icon.svg);
 }
 
+<<<<<<< HEAD
 .scratchCategoryId-json .scratchCategoryItemBubble::after {
   background-image: url(icons/json_icon.svg);
 }
 
+=======
+>>>>>>> upstream/develop
 .scratchCategoryId-myBlocks .scratchCategoryItemBubble::after {
   background-image: url(icons/block_icon.svg);
 }

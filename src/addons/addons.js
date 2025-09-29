@@ -85,7 +85,10 @@ const addons = [
 ];
 
 const newAddons = [
+<<<<<<< HEAD
     'paint-gradient-maker',
+=======
+>>>>>>> upstream/develop
     'expanded-backpack'
 ];
 

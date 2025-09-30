@@ -38,4 +38,5 @@ Makefile text eol=lf
 README text eol=lf
 TRADEMARK text eol=lf
 
-# Use CRLF for Windows-specific file types
+# ...
+*.png filter=lfs diff=lfs merge=lfs -text

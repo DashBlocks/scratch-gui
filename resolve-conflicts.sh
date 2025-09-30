@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# Auto-resolve all image conflicts as 'ours' (your branch, current)
+# Auto-resolve all image conflicts as 'ours'
 git ls-files -u | awk '{print $4}' | sort -u | grep -E '\.(png|jpg|jpeg|gif|svg|webp|bmp|ico)$' | xargs -r git checkout --ours
 
-echo "All image conflicts resolved as 'ours' (your branch, current)."
+echo "All image conflicts resolved as 'ours'"
 echo "Now resolving non-image conflicts..."
 
 non_image_files=( $(git ls-files -u | awk '{print $4}' | sort -u | grep -vE '\.(png|jpg|jpeg|gif|svg|webp|bmp|ico)$') )
 
 if [ ${#non_image_files[@]} -eq 0 ]; then
-    echo "No non-image conflicts found."
+    echo "No non-image conflicts found"
     exit 0
 fi
 
@@ -76,7 +76,6 @@ for f in "${non_image_files[@]}"; do
                     awk -v start="$hunk_start" 'NR>=start {print; if (/^>>>>>>> /) exit}' "$f"
                     ;;
                 ac|AC)
-                    # All ours for this file (your branch, current, above =======)
                     while grep -q '^<<<<<<< ' "$f"; do
                         hunk_start2=$(grep -n '^<<<<<<< ' "$f" | head -n1 | cut -d: -f1)
                         awk -v start="$hunk_start2" '
@@ -92,7 +91,6 @@ for f in "${non_image_files[@]}"; do
                     done
                     break 2;;
                 ai|AI)
-                    # All theirs for this file (incoming/upstream branch, below =======)
                     while grep -q '^<<<<<<< ' "$f"; do
                         hunk_start2=$(grep -n '^<<<<<<< ' "$f" | head -n1 | cut -d: -f1)
                         awk -v start="$hunk_start2" '

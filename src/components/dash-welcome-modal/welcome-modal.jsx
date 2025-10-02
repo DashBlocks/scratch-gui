@@ -22,14 +22,14 @@ const WelcomeModalComponent = props => (
                 Hello, <b>welcome to the Dash!</b>
                 <br />
                 <br />
-                <b><i>Dash</i></b> is based on <i>Scratch</i>, <i>TurboWarp</i> and <i>other mods</i> that adds <b>more blocks</b>, <b>extensions</b>, <b>colors</b>, <b>compiles projects to JavaScript to make them run really fast</b> and <b><i>other features</i></b>.
+                <b><i>Dash</i></b> is a mod of <b><i>TurboWarp</i></b> and other mods that adds a <i>JSON category</i>, <i>new blocks</i>, <i>extensions</i>, <i>accent colors</i>, and <i>other features</i>.
+                <br />
                 <br />
                 Don't wait, <b>start creating right now!</b>
                 <br />
                 <br />
                 <b>It's recommended to switch language to English (if you didn't already)</b> because some texts aren't translated or translated wrong.
             </p>
-            <br />
             <br />
             <img
                 className={styles.poster}

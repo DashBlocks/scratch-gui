@@ -4,7 +4,7 @@ import {isScratchDesktop} from '../../lib/isScratchDesktop';
 import CloseButton from '../close-button/close-button.jsx';
 import styles from './tw-news.css';
 
-const LOCAL_STORAGE_KEY = 'tw:closedNews';
+const LOCAL_STORAGE_KEY = 'dash:closedNews';
 const NEWS_ID = 'new-compiler';
 
 const getIsClosedInLocalStorage = () => {

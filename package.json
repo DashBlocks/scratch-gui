@@ -97,7 +97,7 @@
     "scratch-blocks": "github:DashBlocks/scratch-blocks#develop-builds",
     "scratch-paint": "github:DashBlocks/PenguinMod-Paint#develop",
     "scratch-render": "github:TurboWarp/scratch-render#develop",
-    "scratch-vm": "github:DashBlocks/scratch-vm-old#develop-module",
+    "scratch-vm": "github:DashBlocks/scratch-vm-old#develop",
     "style-loader": "^0.23.0",
     "text-encoding": "0.7.0",
     "to-style": "1.3.3",

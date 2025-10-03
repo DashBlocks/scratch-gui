@@ -1,5 +1,6 @@
-[  {
-        "name": "Кнопка игры",
+[
+    {
+        "name": "Play Button",
         "tags": [
             "dash"
         ],
@@ -9,8 +10,9 @@
         "md5ext": "9d22c6c957d53f52e9f66ed5a5a06635.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
-        "name": "Кнопка",
+    },
+    {
+        "name": "Button6",
         "tags": [
             "dash"
         ],
@@ -20,10 +22,14 @@
         "md5ext": "22064a691060094b6fc12673b759713e.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
-        "name": "Стрелка для акцента",
+    },
+    {
+        "name": "Arrow2",
         "tags": [
-            "dash"
+            "dash",
+            "icons",
+            "symbols",
+            "down"
         ],
         "assetId": "0835d57106220fbe19ae60127f861204",
         "bitmapResolution": 1,
@@ -31,8 +37,9 @@
         "md5ext": "0835d57106220fbe19ae60127f861204.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
-        "name": "Монетка",
+    },
+    {
+        "name": "Coin",
         "tags": [
             "dash"
         ],
@@ -42,8 +49,9 @@
         "md5ext": "6a8fe7eaf8f9be409e842a50d2e32fb5.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    }, {
-        "name": "Звезда",
+    },
+    {
+        "name": "Star2",
         "tags": [
             "dash"
         ],
@@ -53,8 +61,9 @@
         "md5ext": "f5d27add6a88f142e73d682b0add1a4f.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
-        "name": "Серце",
+    },
+    {
+        "name": "Heart",
         "tags": [
             "dash"
         ],
@@ -64,8 +73,9 @@
         "md5ext": "93cc2e1921a912b41bbe6170a0a4cf2b.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
-        "name": "Алмаз",
+    },
+    {
+        "name": "Diamond",
         "tags": [
             "dash"
         ],
@@ -75,8 +85,9 @@
         "md5ext": "e834742d53c4722ab82db79101e9dbbb.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
-        "name": "Огонь",
+    },
+    {
+        "name": "Crown-a",
         "tags": [
             "dash"
         ],
@@ -86,8 +97,9 @@
         "md5ext": "0d68b033635c1df1aef6a239e1d9708f.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
-        "name": "Корона",
+    },
+    {
+        "name": "Crown-b",
         "tags": [
             "dash"
         ],
@@ -97,8 +109,9 @@
         "md5ext": "9b333905b5cd97df4068cb44036989a8.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    }, {
-        "name": "Кнопка со стрелкой",
+    },
+    {
+        "name": "Button7",
         "tags": [
             "dash"
         ],
@@ -110,7 +123,7 @@
         "rotationCenterY": 0
     },
     {
-        "name": "Mouse",
+        "name": "Cursor",
         "tags": [
             "dash"
         ],
@@ -120,8 +133,9 @@
         "md5ext": "5d52bd4223f1a412eda7957b0f55b58e.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    }, {
-        "name": "Умникис квадратная голова",
+    },
+    {
+        "name": "Umnikis Squared",
         "tags": [
             "dash"
         ],
@@ -131,8 +145,9 @@
         "md5ext": "8f9b6ccb90d6638f52f203e8c8f1cc38.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },  {
-        "name": "Умникис рад",
+    },
+    {
+        "name": "Happy Umnikis",
         "tags": [
             "dash"
         ],
@@ -142,8 +157,9 @@
         "md5ext": "98946d7191ac762ae6d368006add1f04.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    }, {
-        "name": "Просто Умникис",
+    },
+    {
+        "name": "Just Umnikis",
         "tags": [
             "dash"
         ],
@@ -154,8 +170,8 @@
         "rotationCenterX": 0,
         "rotationCenterY": 0
     },
- {
-        "name": "vector tiles",
+    {
+        "name": "Vector Tiles",
         "tags": [
             "dash"
         ],
@@ -167,7 +183,7 @@
         "rotationCenterY": 0
     },
     {
-        "name": "Dashy-3",
+        "name": "Dashy-c",
         "tags": [
             "dash"
         ],
@@ -179,7 +195,7 @@
         "rotationCenterY": 0
     },
     {
-        "name": "Dashy-2",
+        "name": "Dashy-b",
         "tags": [
             "dash"
         ],
@@ -191,7 +207,7 @@
         "rotationCenterY": 0
     },
     {
-        "name": "Dashy",
+        "name": "Dashy-a",
         "tags": [
             "dash"
         ],
@@ -202,8 +218,8 @@
         "rotationCenterX": 0,
         "rotationCenterY": 0
     },
-      {
-        "name": "home",
+    {
+        "name": "House-a",
         "tags": [
             "dash",
             "home"
@@ -215,8 +231,8 @@
         "rotationCenterX": 0,
         "rotationCenterY": 0
     },
-       {
-        "name": "home-2",
+    {
+        "name": "House-b",
         "tags": [
             "dash",
             "home"

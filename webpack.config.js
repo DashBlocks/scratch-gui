@@ -180,7 +180,7 @@ module.exports = [
                 'process.env.ENABLE_SERVICE_WORKER': JSON.stringify(process.env.ENABLE_SERVICE_WORKER || ''),
                 'process.env.ROOT': JSON.stringify(root),
                 'process.env.ROUTING_STYLE': JSON.stringify(process.env.ROUTING_STYLE || 'filehash'),
-                'process.env.OLD_COMPILER': false
+                'process.env.OLD_COMPILER': true
             }),
             new HtmlWebpackPlugin({
                 chunks: ['editor'],

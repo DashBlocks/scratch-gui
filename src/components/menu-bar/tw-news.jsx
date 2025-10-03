@@ -55,6 +55,14 @@ class TWNews extends React.Component {
                     >
                         {'Learn more.'}
                     </a>
+                    {' '}
+                    <a
+                        href="https://dashblocks.github.io/old-compiler"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        {'Old compiler.'}
+                    </a>
                 </div>
                 <CloseButton
                     className={styles.close}

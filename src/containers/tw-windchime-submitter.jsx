@@ -24,14 +24,14 @@ const isOptedOut = () => {
     // These headers are really intended to be about third-parties so we don't need to follow them,
     // but if someone has these set, it's good to assume that they would opt out if given the choice.
     // So we'll just respect that preemptively.
-    return navigator.globalPrivacyControl === 'true' || navigator.doNotTrack === '1';
+    return navigator.globalPrivacyControl || navigator.doNotTrack === '1';
 };
 
 class TWWindchimeSubmitter extends React.Component {
     componentDidUpdate (prevProps) {
         if (
-            (this.props.isRunning && !prevProps.isRunning) &&
-            this.props.projectId
+            (this.props.isStarted && !prevProps.isStarted) &&
+            this.props.projectId !== '0'
         ) {
             this.submit();
         }
@@ -72,12 +72,12 @@ class TWWindchimeSubmitter extends React.Component {
 
 TWWindchimeSubmitter.propTypes = {
     isEmbedded: PropTypes.bool.isRequired,
-    isRunning: PropTypes.bool.isRequired,
+    isStarted: PropTypes.bool.isRequired,
     projectId: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
-    isRunning: state.scratchGui.vmStatus.running,
+    isStarted: state.scratchGui.vmStatus.running,
     projectId: state.scratchGui.projectState.projectId
 });
 

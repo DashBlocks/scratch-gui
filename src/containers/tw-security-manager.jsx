@@ -60,6 +60,9 @@ const isAlwaysTrustedForFetching = parsed => (
     // If we would trust loading an extension from here, we can trust loading resources too.
     isTrustedUrl(parsed.href) ||
 
+    // Any Dash service
+    parsed.origin === 'https://dashblocks.github.io' ||
+
     // Any TurboWarp service such as trampoline
     parsed.origin === 'https://turbowarp.org' ||
     parsed.origin.endsWith('.turbowarp.org') ||

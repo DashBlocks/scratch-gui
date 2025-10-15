@@ -157,7 +157,7 @@ const RenderWelcomeModal = () => {
     );
 }
 
-const checkForTests = () {
+const checkForTests = () => {
     useEffect(() => {
         if (window.location.href == "https://dashblocks.github.io/scratch-gui") {
             const url = new URL(window.location.href);

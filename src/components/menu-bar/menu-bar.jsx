@@ -1106,7 +1106,7 @@ class MenuBar extends React.Component {
         return (
             <React.Fragment>
                 {menuBar}
-                {!process.env.OLD_COMPILER && (<TWNews />)}
+                {/* !process.env.OLD_COMPILER && (<TWNews />) */}
             </React.Fragment>
         );
     }

@@ -709,6 +709,19 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                     </shadow>
                 </value>
             </block>
+            <block type="operator_joinexpandable">
+                <mutation inputcount="2"></mutation>
+                <value name="INPUT1">
+                    <shadow type="text">
+                        <field name="TEXT">${apple}</field>
+                    </shadow>
+                </value>
+                <value name="INPUT2">
+                    <shadow type="text">
+                        <field name="TEXT">${banana}</field>
+                    </shadow>
+                </value>
+            </block>
             <block type="operator_newline"/>
             <block type="operator_letter_of">
                 <value name="LETTER">

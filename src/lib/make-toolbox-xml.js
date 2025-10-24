@@ -718,7 +718,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </value>
                 <value name="INPUT2">
                     <shadow type="text">
-                        <field name="TEXT">${banana}</field>
+                        <field name="TEXT">${banana} </field>
                     </shadow>
                 </value>
             </block>

@@ -713,7 +713,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 <mutation inputcount="2"></mutation>
                 <value name="INPUT1">
                     <shadow type="text">
-                        <field name="TEXT">${apple}</field>
+                        <field name="TEXT">${apple} </field>
                     </shadow>
                 </value>
                 <value name="INPUT2">

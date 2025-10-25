@@ -1,4 +1,37 @@
-[
+[ {
+        "name": "Negative mark",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "f5db6ab9c90011e3f568ff870c76058f",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "f5db6ab9c90011e3f568ff870c76058f.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
+        "name": "Check mark",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "0f43a4452d158798fa4ad32eea767c02",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "0f43a4452d158798fa4ad32eea767c02.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
+        "name": "Cake",
+        "tags": [
+            "dash", "cake", "eat"
+        ],
+        "assetId": "4f7660e1c9ebe1ecd79a793b7bf0f93a",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "4f7660e1c9ebe1ecd79a793b7bf0f93a.svg",
+        "rotationCenterX": 60,
+        "rotationCenterY": 50
+    },
     {
         "name": "Play Button",
         "tags": [
@@ -79,10 +112,10 @@
         "tags": [
             "dash"
         ],
-        "assetId": "e834742d53c4722ab82db79101e9dbbb",
+        "assetId": "acc38096a0b5e6761177c141f50e3cb7",
         "bitmapResolution": 1,
         "dataFormat": "svg",
-        "md5ext": "e834742d53c4722ab82db79101e9dbbb.svg",
+        "md5ext": "acc38096a0b5e6761177c141f50e3cb7.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
     },

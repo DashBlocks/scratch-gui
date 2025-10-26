@@ -19,16 +19,10 @@ const WelcomeModalComponent = props => (
     >
         <Box className={styles.body}>
             <p className={styles.text}>
-                Hello, <b>welcome to the Dash!</b>
+                <b>Dash</b> is based on <b>Scratch</b> and adds stuff like <b>JSON category</b>, <b>new blocks</b>, <b>extensions</b>, <b>accent colors</b>, and <b>other features</b>.
                 <br />
                 <br />
-                <b><i>Dash</i></b> is a mod of <b><i>TurboWarp</i></b> and other mods that adds a <i>JSON category</i>, <i>new blocks</i>, <i>extensions</i>, <i>accent colors</i>, and <i>other features</i>.
-                <br />
-                <br />
-                Don't wait, <b>start creating right now!</b>
-                <br />
-                <br />
-                <b>It's recommended to switch language to English (if you didn't already)</b> because some texts aren't translated or translated wrong.
+                <b>Dash features are available only in English (at the moment)</b>, so consider setting language to English.
             </p>
             <br />
             <img

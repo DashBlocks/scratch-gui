@@ -583,6 +583,10 @@ const sensing = function (isInitialSetup, isStage, targetId, colors) {
 };
 
 const operators = function (isInitialSetup, isStage, targetId, colors) {
+    const math = 'Math';
+    const logic = 'Logic';
+    const strings = 'Strings';
+    const types = 'Types';
     const apple = translate('OPERATORS_JOIN_APPLE', 'apple');
     const banana = translate('OPERATORS_JOIN_BANANA', 'banana');
     const letter = translate('OPERATORS_LETTEROF_APPLE', 'a');
@@ -593,6 +597,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
         id="operators"
         colour="${colors.primary}"
         secondaryColour="${colors.tertiary}">
+        <label text="${math}"></label>
         <block type="operator_add">
             <value name="NUM1">
                 <shadow type="math_number">
@@ -655,6 +660,47 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         ${blockSeparator}
+        <block type="operator_mod">
+            <value name="NUM1">
+                <shadow type="math_number">
+                    <field name="NUM"/>
+                </shadow>
+            </value>
+            <value name="NUM2">
+                <shadow type="math_number">
+                    <field name="NUM"/>
+                </shadow>
+            </value>
+        </block>
+        <block type="operator_round">
+            <value name="NUM">
+                <shadow type="math_number">
+                    <field name="NUM"/>
+                </shadow>
+            </value>
+        </block>
+        ${blockSeparator}
+        <block type="operator_mathop">
+            <value name="NUM">
+                <shadow type="math_number">
+                    <field name="NUM"/>
+                </shadow>
+            </value>
+        </block>
+        ${blockSeparator}
+        <block type="operator_nums_in_range">
+            <value name="FROM">
+                <shadow type="math_number">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+            <value name="TO">
+                <shadow type="math_number">
+                    <field name="NUM">10</field>
+                </shadow>
+            </value>
+        </block>
+        <label text="${logic}"></label>
         <block type="operator_gt">
             <value name="OPERAND1">
                 <shadow type="text">
@@ -696,6 +742,24 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
         <block type="operator_or"/>
         <block type="operator_not"/>
         ${blockSeparator}
+        <block type="operator_in_range">
+            <value name="NUM">
+                <shadow type="math_number">
+                    <field name="NUM">5</field>
+                </shadow>
+            </value>
+            <value name="FROM">
+                <shadow type="math_number">
+                    <field name="NUM">1</field>
+                </shadow>
+            </value>
+            <value name="TO">
+                <shadow type="math_number">
+                    <field name="NUM">10</field>
+                </shadow>
+            </value>
+        </block>
+        <label text="${strings}"></label>
         ${isInitialSetup ? '' : `
             <block type="operator_joinexpandable">
                 <mutation inputcount="2"></mutation>
@@ -730,6 +794,13 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                     </shadow>
                 </value>
             </block>
+            <block type="operator_to_case">
+              <value name="VALUE">
+                <shadow type="text">
+                  <field name="TEXT">${apple}</field>
+                </shadow>
+              </value>
+            </block>
             <block type="operator_contains" id="operator_contains">
               <value name="STRING1">
                 <shadow type="text">
@@ -754,7 +825,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
               </value>
             </block>
-            ${blockSeparator}
+            <label text="${types}"></label>
             <block type="operator_typeof">
               <value name="VALUE">
                 <shadow type="text">
@@ -776,72 +847,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
               </value>
             </block>
-            <block type="operator_to_case">
-              <value name="VALUE">
-                <shadow type="text">
-                  <field name="TEXT">${apple}</field>
-                </shadow>
-              </value>
-            </block>
-            ${blockSeparator}
-            <block type="operator_nums_in_range">
-              <value name="FROM">
-                <shadow type="math_number">
-                  <field name="NUM">1</field>
-                </shadow>
-              </value>
-              <value name="TO">
-                <shadow type="math_number">
-                  <field name="NUM">10</field>
-                </shadow>
-              </value>
-            </block>
-            <block type="operator_in_range">
-              <value name="NUM">
-                <shadow type="math_number">
-                  <field name="NUM">5</field>
-                </shadow>
-              </value>
-              <value name="FROM">
-                <shadow type="math_number">
-                  <field name="NUM">1</field>
-                </shadow>
-              </value>
-              <value name="TO">
-                <shadow type="math_number">
-                  <field name="NUM">10</field>
-                </shadow>
-              </value>
-            </block>
         `}
-        ${blockSeparator}
-        <block type="operator_mod">
-            <value name="NUM1">
-                <shadow type="math_number">
-                    <field name="NUM"/>
-                </shadow>
-            </value>
-            <value name="NUM2">
-                <shadow type="math_number">
-                    <field name="NUM"/>
-                </shadow>
-            </value>
-        </block>
-        <block type="operator_round">
-            <value name="NUM">
-                <shadow type="math_number">
-                    <field name="NUM"/>
-                </shadow>
-            </value>
-        </block>
-        ${blockSeparator}
-        <block type="operator_mathop">
-            <value name="NUM">
-                <shadow type="math_number">
-                    <field name="NUM"/>
-                </shadow>
-            </value>
-        </block>
         ${categorySeparator}
     </category>
     `;
@@ -861,8 +867,10 @@ const variables = function (isInitialSetup, isStage, targetId, colors) {
 };
 
 const json = function (isInitialSetup, isStage, targetId, colors) {
-    const arrays = "Arrays";
-    const objects = "Objects";
+    const arrays = 'Arrays';
+    const objects = 'Objects';
+    const apple = translate('OPERATORS_JOIN_APPLE', 'apple');
+    const banana = translate('OPERATORS_JOIN_BANANA', 'banana');
     // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
     <category
@@ -878,8 +886,37 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         <block type="json_length" />
+        <block type="json_stringify_spacer">
+            <value name="SPACER">
+                <shadow type="text">
+                    <field name="TEXT">  </field>
+                </shadow>
+            </value>
+        </block>
+        ${blockSeparator}
+        <block type="json_get_by_path" />
+        <block type="json_set_by_path">
+            <value name="ITEM">
+                <shadow type="text">
+                    <field name="TEXT">item</field>
+                </shadow>
+            </value>
+        </block>
         <label text="${arrays}"></label>
         <block type="json_array_empty"/>
+        <block type="json_array_expandable">
+            <mutation inputcount="2"></mutation>
+            <value name="INPUT1">
+                <shadow type="text">
+                    <field name="TEXT">${apple} </field>
+                </shadow>
+            </value>
+            <value name="INPUT2">
+                <shadow type="text">
+                    <field name="TEXT">${banana} </field>
+                </shadow>
+            </value>
+        </block>
         <block type="json_array_split">
             <value name="TEXT">
                 <shadow type="text">

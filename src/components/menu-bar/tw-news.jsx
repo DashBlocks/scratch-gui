@@ -28,7 +28,15 @@ class TWNews extends React.Component {
         };
         this.handleClose = this.handleClose.bind(this);
     }
-    handleClose () {
+    handleCloseNewCompiler () {
+        markAsClosedInLocalStorage(this.props.key, this.props.id);
+        this.setState({
+            closed: true
+        }, () => {
+            window.dispatchEvent(new Event('resize'));
+        });
+    }
+    handleCloseDevVersion () {
         markAsClosedInLocalStorage(this.props.key, this.props.id);
         this.setState({
             closed: true
@@ -41,42 +49,51 @@ class TWNews extends React.Component {
             return null;
         }
         return (
-            <div className={styles.news}>
-                {this.props.id == 'new-compiler' && (<div className={styles.text}>
-                    {/* eslint-disable-next-line max-len */}
-                    {`We rewrote the ${APP_NAME} compiler to make projects run even faster. Bugs are possible. `}
-                    <a
-                        href="https://docs.turbowarp.org/new-compiler"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        {'Learn more.'}
-                    </a>
-                    {' '}
-                    <a
-                        href="https://dashblocks.github.io/old-compiler"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        {'Old compiler.'}
-                    </a>
+            <>
+                {this.props.id == 'new-compiler' && (<div className={styles.news}>
+                    <div className={styles.text}>
+                        {/* eslint-disable-next-line max-len */}
+                        {`We rewrote the ${APP_NAME} compiler to make projects run even faster. Bugs are possible. `}
+                        <a
+                            href="https://docs.turbowarp.org/new-compiler"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            {'Learn more.'}
+                        </a>
+                        {' '}
+                        <a
+                            href="https://dashblocks.github.io/old-compiler"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            {'Old compiler.'}
+                        </a>
+                    </div>
+                    <CloseButton
+                        className={styles.close}
+                        onClick={this.handleCloseNewCompiler}
+                    />
                 </div>)}
-                {this.props.id == 'dev-version' && (<div className={styles.text}>
-                    {/* eslint-disable-next-line max-len */}
-                    {`Do not use this version (dev) in real projects! `}
-                    <a
-                        href="https://dashblocks.github.io"
-                        target="_blank"
-                        rel="noreferrer"
-                    >
-                        {'Main version.'}
-                    </a>
-                </div>)}
-                <CloseButton
-                    className={styles.close}
-                    onClick={this.handleClose}
-                />
-            </div>
+                {this.props.id == 'dev-version' && (<div className={styles.news}>
+                    <div className={styles.text}>
+                        {/* eslint-disable-next-line max-len */}
+                        {`Do not use this version (dev) in real projects! `}
+                        <a
+                            href="https://dashblocks.github.io"
+                            target="_blank"
+                            rel="noreferrer"
+                        >
+                            {'Main version.'}
+                        </a>
+                    </div>
+                    <CloseButton
+                        className={styles.close}
+                        onClick={this.handleCloseDevVersion}
+                    />
+                </div>
+                )}
+            </>
         );
     }
 }

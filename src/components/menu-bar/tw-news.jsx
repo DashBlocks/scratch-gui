@@ -63,7 +63,7 @@ class TWNews extends React.Component {
                 </div>)}
                 {this.props.id == 'dev-version' && (<div className={styles.text}>
                     {/* eslint-disable-next-line max-len */}
-                    {`Do not use this version (dev) in real projects! `}
+                    {`This is a "Dev" version of ${APP_NAME}. Please do not use this version for real projects, as it may break your projects! `}
                     <a
                         href="https://dashblocks.github.io"
                         target="_blank"

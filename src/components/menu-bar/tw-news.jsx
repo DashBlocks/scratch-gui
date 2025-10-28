@@ -4,20 +4,17 @@ import {isScratchDesktop} from '../../lib/isScratchDesktop';
 import CloseButton from '../close-button/close-button.jsx';
 import styles from './tw-news.css';
 
-const LOCAL_STORAGE_KEY = 'dash:closedNews';
-const NEWS_ID = 'new-compiler';
-
-const getIsClosedInLocalStorage = () => {
+const getIsClosedInLocalStorage = (key, id) => {
     try {
-        return localStorage.getItem(LOCAL_STORAGE_KEY) === NEWS_ID;
+        return localStorage.getItem(key) === id;
     } catch (e) {
         return false;
     }
 };
 
-const markAsClosedInLocalStorage = () => {
+const markAsClosedInLocalStorage = (key, id) => {
     try {
-        localStorage.setItem(LOCAL_STORAGE_KEY, NEWS_ID);
+        localStorage.setItem(key, id);
     } catch (e) {
         // ignore
     }
@@ -27,12 +24,12 @@ class TWNews extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            closed: getIsClosedInLocalStorage()
+            closed: getIsClosedInLocalStorage(props.key, props.id)
         };
         this.handleClose = this.handleClose.bind(this);
     }
     handleClose () {
-        markAsClosedInLocalStorage();
+        markAsClosedInLocalStorage(this.props.key, this.props.id);
         this.setState({
             closed: true
         }, () => {
@@ -45,7 +42,7 @@ class TWNews extends React.Component {
         }
         return (
             <div className={styles.news}>
-                <div className={styles.text}>
+                {this.props.id == 'new-compiler' && (<div className={styles.text}>
                     {/* eslint-disable-next-line max-len */}
                     {`We rewrote the ${APP_NAME} compiler to make projects run even faster. Bugs are possible. `}
                     <a
@@ -63,7 +60,18 @@ class TWNews extends React.Component {
                     >
                         {'Old compiler.'}
                     </a>
-                </div>
+                </div>)}
+                {this.props.id == 'dev-version' && (<div className={styles.text}>
+                    {/* eslint-disable-next-line max-len */}
+                    {`Do not use this version (dev) in real projects! `}
+                    <a
+                        href="https://dashblocks.github.io"
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        {'Main version.'}
+                    </a>
+                </div>)}
                 <CloseButton
                     className={styles.close}
                     onClick={this.handleClose}

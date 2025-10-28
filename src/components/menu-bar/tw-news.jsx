@@ -26,7 +26,8 @@ class TWNews extends React.Component {
         this.state = {
             closed: getIsClosedInLocalStorage(props.key, props.id)
         };
-        this.handleClose = this.handleClose.bind(this);
+        this.handleCloseNewCompiler = this.handleCloseNewCompiler.bind(this);
+        this.handleCloseDevVersion = this.handleCloseDevVersion.bind(this);
     }
     handleCloseNewCompiler () {
         markAsClosedInLocalStorage(this.props.key, this.props.id);

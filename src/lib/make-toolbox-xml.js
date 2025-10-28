@@ -933,7 +933,7 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
         <block type="json_array_split">
             <value name="TEXT">
                 <shadow type="text">
-                    <field name="TEXT">apple,banana</field>
+                    <field name="TEXT">${apple},${banana}</field>
                 </shadow>
             </value>
             <value name="DELIM">
@@ -1008,7 +1008,7 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
         <block type="json_object_split">
             <value name="TEXT">
                 <shadow type="text">
-                    <field name="TEXT">key1:apple,key2:banana</field>
+                    <field name="TEXT">key1:${apple},key2:${banana}</field>
                 </shadow>
             </value>
             <value name="KEYDELIM">

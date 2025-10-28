@@ -91,8 +91,7 @@ class TWNews extends React.Component {
                         className={styles.close}
                         onClick={this.handleCloseDevVersion}
                     />
-                </div>
-                )}
+                </div>)}
             </>
         );
     }

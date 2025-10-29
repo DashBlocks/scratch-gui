@@ -1,4 +1,15 @@
 [ {
+        "name": "Scissors",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "44c73281361e37131b2f9c8f1f0b5860",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "44c73281361e37131b2f9c8f1f0b5860.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
         "name": "Negative mark",
         "tags": [
             "dash"

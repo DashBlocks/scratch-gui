@@ -413,16 +413,20 @@ class TWSecurityManagerComponent extends React.Component {
         }
         const origin = (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? parsed.origin : null;
         const {showModal, releaseLock} = await this.acquireModalLock();
-        if (origin && embedOriginsTrustedByUser.has(origin) || parsed && embedDatasTrustedByUser.has(parsed)) {
+        if ((origin && embedOriginsTrustedByUser.has(origin)) || embedDatasTrustedByUser.has(url)) {
             releaseLock();
             return true;
         }
-        const allowed = await showModal(SecurityModals.Embed, {url});
+        const allowed = await showModal(SecurityModals.Embed, {
+            url,
+            remember: this.state.data?.remember || false,
+            onChangeRemember: this.handleChangeRemember.bind(this)
+        });
         if (origin && allowed) {
             embedOriginsTrustedByUser.add(origin);
         }
-        if (parsed && this.state.data.remember && allowed) {
-            embedDatasTrustedByUser.add(parsed);
+        if (this.state.data.remember && allowed) {
+            embedDatasTrustedByUser.add(url);
         }
         return allowed;
     }

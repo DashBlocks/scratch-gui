@@ -53,6 +53,12 @@ const fetchOriginsTrustedByUser = new Set();
 const embedOriginsTrustedByUser = new Set();
 
 /**
+ * Set of datas manually trusted by the user for embedding.
+ * @type {Set<string>}
+ */
+const embedDatasTrustedByUser = new Set();
+
+/**
  * @param {URL} parsed Parsed URL object
  * @returns {boolean} True if the URL is part of the builtin set of URLs to always trust fetching from.
  */
@@ -407,7 +413,7 @@ class TWSecurityManagerComponent extends React.Component {
         }
         const origin = (parsed.protocol === 'http:' || parsed.protocol === 'https:') ? parsed.origin : null;
         const {showModal, releaseLock} = await this.acquireModalLock();
-        if (origin && embedOriginsTrustedByUser.has(origin)) {
+        if (origin && embedOriginsTrustedByUser.has(origin) || parsed && embedDatasTrustedByUser.has(parsed)) {
             releaseLock();
             return true;
         }
@@ -415,7 +421,20 @@ class TWSecurityManagerComponent extends React.Component {
         if (origin && allowed) {
             embedOriginsTrustedByUser.add(origin);
         }
+        if (parsed && this.state.data.remember && allowed) {
+            embedDatasTrustedByUser.add(parsed);
+        }
         return allowed;
+    }
+
+    handleChangeRemember (e) {
+        const checked = e.target.checked;
+        this.setState(oldState => ({
+            data: {
+                ...oldState.data,
+                remember: checked
+            }
+        }));
     }
 
     /**

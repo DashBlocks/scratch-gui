@@ -65,11 +65,11 @@ const EmbedModal = props => (
         <div className={styles.sandboxed}>
             <FormattedMessage
                 // eslint-disable-next-line max-len
-                defaultMessage="While the code will be sandboxed, it will still have access to information about your device such as your IP and general location. Make sure you trust the author of this extension before continuing."
-                description="Part of modal asking for permission to automatically load custom extension"
-                id="tw.loadExtension.sandboxed"
+                defaultMessage="While the embed will be sandboxed, it will still have access to information about your device such as your IP and general location."
+                description="Part of modal when a project attempts to embed another page over the stage"
+                id="tw.embed.risks"
             />
-        </div>уь
+        </div>
 
         {!props.url.startsWith('data:') && (
             <p>

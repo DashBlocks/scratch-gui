@@ -754,6 +754,9 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
         <block type="operator_and"/>
         <block type="operator_or"/>
         <block type="operator_not"/>
+        <block type="operator_comparatorexpandable">
+            <mutation inputcount="2" menuvalues="="></mutation>
+        </block>
         ${blockSeparator}
         <block type="operator_in_range">
             <value name="NUM">

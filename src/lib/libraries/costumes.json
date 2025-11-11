@@ -1,4 +1,48 @@
 [ {
+        "name": "Candy",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "6558e22d87c377bea8c8a7cb49a7b6c7.svg",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "6558e22d87c377bea8c8a7cb49a7b6c7.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
+        "name": "Trophy",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "9589b0e50068d6129c95279b683efe0a",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "9589b0e50068d6129c95279b683efe0a.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
+        "name": "Autumn leaves",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "ff84aecdea5aa1a8fcdc536a2d7bcc36",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "ff84aecdea5aa1a8fcdc536a2d7bcc36.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
+        "name": "Сup",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "a3df0b8910cdf4087c1d5a24b284bb12",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "a3df0b8910cdf4087c1d5a24b284bb12.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
         "name": "Scissors",
         "tags": [
             "dash"

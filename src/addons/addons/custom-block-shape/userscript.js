@@ -96,55 +96,6 @@ export default async function ({ addon, console }) {
         2 * notchSize +
         " -4,-" +
         2 * notchSize;
-      BlockSvg.INPUT_SHAPE_HEXAGONAL =
-        "M " +
-        4 * GRID_UNIT * multiplier +
-        ",0 " +
-        " h " +
-        4 * GRID_UNIT +
-        " l " +
-        4 * GRID_UNIT * multiplier +
-        "," +
-        4 * GRID_UNIT * multiplier +
-        " l " +
-        -4 * GRID_UNIT * multiplier +
-        "," +
-        4 * GRID_UNIT * multiplier +
-        " h " +
-        -4 * GRID_UNIT +
-        " l " +
-        -4 * GRID_UNIT * multiplier +
-        "," +
-        -4 * GRID_UNIT * multiplier +
-        " l " +
-        4 * GRID_UNIT * multiplier +
-        "," +
-        -4 * GRID_UNIT * multiplier +
-        " z";
-      BlockSvg.INPUT_SHAPE_HEXAGONAL_WIDTH = 12 * GRID_UNIT * multiplier;
-      BlockSvg.INPUT_SHAPE_ROUND =
-        "M " +
-        4 * GRID_UNIT * multiplier +
-        ",0" +
-        " h " +
-        4 * GRID_UNIT * multiplier +
-        " a " +
-        4 * GRID_UNIT * multiplier +
-        " " +
-        4 * GRID_UNIT * multiplier +
-        " 0 0 1 0 " +
-        8 * GRID_UNIT * multiplier +
-        " h " +
-        -4 * GRID_UNIT * multiplier +
-        " a " +
-        4 * GRID_UNIT * multiplier +
-        " " +
-        4 * GRID_UNIT * multiplier +
-        " 0 0 1 0 -" +
-        8 * GRID_UNIT * multiplier +
-        " z";
-      BlockSvg.INPUT_SHAPE_ROUND_WIDTH = 12 * GRID_UNIT * multiplier;
-      BlockSvg.INPUT_SHAPE_HEIGHT = 8 * GRID_UNIT * multiplier;
       BlockSvg.FIELD_HEIGHT = 8 * GRID_UNIT * multiplier; // NOTE: Determines string input heights
       BlockSvg.FIELD_WIDTH = 6 * GRID_UNIT * Math.min(multiplier, 1) + 10 * GRID_UNIT * Math.max(multiplier - 1, 0);
       BlockSvg.FIELD_DEFAULT_CORNER_RADIUS = 4 * GRID_UNIT * multiplier;
@@ -235,6 +186,96 @@ export default async function ({ addon, console }) {
         (1 * GRID_UNIT - BlockSvg.CORNER_RADIUS);
 
       BlockSvg.STATEMENT_INPUT_INNER_SPACE = 2.8 * GRID_UNIT - 0.9 * GRID_UNIT * cornerSize;
+
+      // Input setting
+      BlockSvg.INPUT_SHAPE_HEXAGONAL =
+        "M " +
+        4 * GRID_UNIT * multiplier +
+        ",0 " +
+        " h " +
+        4 * GRID_UNIT +
+        " l " +
+        4 * GRID_UNIT * multiplier +
+        "," +
+        4 * GRID_UNIT * multiplier +
+        " l " +
+        -4 * GRID_UNIT * multiplier +
+        "," +
+        4 * GRID_UNIT * multiplier +
+        " h " +
+        -4 * GRID_UNIT +
+        " l " +
+        -4 * GRID_UNIT * multiplier +
+        "," +
+        -4 * GRID_UNIT * multiplier +
+        " l " +
+        4 * GRID_UNIT * multiplier +
+        "," +
+        -4 * GRID_UNIT * multiplier +
+        " z";
+      BlockSvg.INPUT_SHAPE_HEXAGONAL_WIDTH = 12 * GRID_UNIT * multiplier;
+      BlockSvg.INPUT_SHAPE_SQUARE =
+        BlockSvg.TOP_LEFT_CORNER_START +
+        BlockSvg.TOP_LEFT_CORNER +
+        ' h ' +
+        (12 * GRID_UNIT * multiplier - 2 * BlockSvg.CORNER_RADIUS) +
+        BlockSvg.TOP_RIGHT_CORNER +
+        ' v ' +
+        (8 * GRID_UNIT * multiplier - 2 * BlockSvg.CORNER_RADIUS) +
+        BlockSvg.BOTTOM_RIGHT_CORNER +
+        ' h ' +
+        (-12 * GRID_UNIT * multiplier + 2 * BlockSvg.CORNER_RADIUS) +
+        BlockSvg.BOTTOM_LEFT_CORNER +
+        ' z';
+      BlockSvg.INPUT_SHAPE_SQUARE_WIDTH = 12 * GRID_UNIT * multiplier;
+      BlockSvg.INPUT_SHAPE_PLUS =
+        `
+        M ${9 * GRID_UNIT * multiplier} 0
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+        l 0 2
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+        l 0 4
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 -${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 -${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+        l 0 2
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 -${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+        h -${6 * GRID_UNIT * multiplier}
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 -${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier}
+        l 0 -2
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 -${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier}
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 -${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier}
+        l 0 -4
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier}
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier}
+        l 0 -2
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier} 
+        z
+        `;
+      BlockSvg.INPUT_SHAPE_PLUS_WIDTH = 12 * GRID_UNIT * multiplier;
+      BlockSvg.INPUT_SHAPE_ROUND =
+        "M " +
+        4 * GRID_UNIT * multiplier +
+        ",0" +
+        " h " +
+        4 * GRID_UNIT * multiplier +
+        " a " +
+        4 * GRID_UNIT * multiplier +
+        " " +
+        4 * GRID_UNIT * multiplier +
+        " 0 0 1 0 " +
+        8 * GRID_UNIT * multiplier +
+        " h " +
+        -4 * GRID_UNIT * multiplier +
+        " a " +
+        4 * GRID_UNIT * multiplier +
+        " " +
+        4 * GRID_UNIT * multiplier +
+        " 0 0 1 0 -" +
+        8 * GRID_UNIT * multiplier +
+        " z";
+      BlockSvg.INPUT_SHAPE_ROUND_WIDTH = 12 * GRID_UNIT * multiplier;
+      BlockSvg.INPUT_SHAPE_HEIGHT = 8 * GRID_UNIT * multiplier;
     }
 
     function applyAndUpdate(...args) {

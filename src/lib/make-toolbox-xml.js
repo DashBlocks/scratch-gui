@@ -646,8 +646,8 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
-        <block type="operator_mathexpandable">
-            <mutation inputcount="2" menuvalues="+"></mutation>
+        <block type="operator_math_expandable">
+            <mutation inputcount="2" menuvalues="+"/>
             <value name="NUM1">
                 <shadow type="math_number">
                     <field name="NUM"/>
@@ -750,13 +750,26 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
                 </shadow>
             </value>
         </block>
+        <block type="operator_numbers_comparator_expandable">
+            <mutation inputcount="2" menuvalues="="/>
+            <value name="STRING1">
+                <shadow type="text">
+                    <field name="TEXT"/>
+                </shadow>
+            </value>
+            <value name="STRING2">
+                <shadow type="text">
+                    <field name="TEXT"/>
+                </shadow>
+            </value>
+        </block>
         ${blockSeparator}
         <block type="operator_and"/>
         <block type="operator_or"/>
-        <block type="operator_not"/>
-        <block type="operator_comparatorexpandable">
-            <mutation inputcount="2" menuvalues="="></mutation>
+        <block type="operator_conditions_comparator_expandable">
+            <mutation inputcount="2" menuvalues="="/>
         </block>
+        <block type="operator_not"/>
         ${blockSeparator}
         <block type="operator_in_range">
             <value name="NUM">

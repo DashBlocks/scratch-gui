@@ -583,10 +583,10 @@ const sensing = function (isInitialSetup, isStage, targetId, colors) {
 };
 
 const operators = function (isInitialSetup, isStage, targetId, colors) {
-    const math = 'Math';
-    const logic = 'Logic';
-    const strings = 'Strings';
-    const types = 'Types';
+    const math = translate('OPERATORS_CATEGORY_MATH', 'Math');
+    const logic = translate('OPERATORS_CATEGORY_LOGIC', 'Logic');
+    const strings = translate('OPERATORS_CATEGORY_STRINGS', 'Strings');
+    const types = translate('OPERATORS_CATEGORY_TYPES', 'Types');
     const apple = translate('OPERATORS_JOIN_APPLE', 'apple');
     const banana = translate('OPERATORS_JOIN_BANANA', 'banana');
     const letter = translate('OPERATORS_LETTEROF_APPLE', 'a');

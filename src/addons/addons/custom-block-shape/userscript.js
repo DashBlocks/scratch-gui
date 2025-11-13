@@ -235,7 +235,7 @@ export default async function ({ addon, console }) {
         l 0 2
         a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
         a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
-        l 0 4
+        l 0 ${4 * (multiplier * multiplier)}
         a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 -${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
         a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 -${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
         l 0 2
@@ -245,7 +245,7 @@ export default async function ({ addon, console }) {
         l 0 -2
         a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 -${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier}
         a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 -${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier}
-        l 0 -4
+        l 0 ${-4 * (multiplier * multiplier)}
         a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier}
         a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier}
         l 0 -2

@@ -433,6 +433,10 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
         ${blockSeparator}
         <block type="control_if"/>
         <block type="control_if_else"/>
+        <block type="control_if_else_expandable">
+            <mutation branches="2" ends-in-else="true"></mutation>
+            <value name="BOOL1"/>
+        </block>
         <block type="control_if_then_else">
             <value name="THEN">
                 <shadow type="text">

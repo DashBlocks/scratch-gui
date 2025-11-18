@@ -2,14 +2,15 @@
  * Internal stored state. Not valid until after at least one call to `setIsScratchDesktop()`.
  * @type {boolean}
  */
-let _isScratchDesktop; // undefined = not ready yet
+let _isScratchDesktop = process.env.DESKTOP; // undefined = not ready yet
 
 /**
  * Tell the `isScratchDesktop()` whether or not the GUI is running under Scratch Desktop.
  * @param {boolean} value - the new value which `isScratchDesktop()` should return in the future.
  */
 const setIsScratchDesktop = function (value) {
-    _isScratchDesktop = value;
+    console.log(value, _isScratchDesktop)
+    //_isScratchDesktop = value;
 };
 
 /**

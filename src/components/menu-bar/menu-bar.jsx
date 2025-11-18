@@ -106,7 +106,7 @@ import oldtimeyLogo from './oldtimey-logo.svg';
 import sharedMessages from '../../lib/shared-messages';
 
 import SeeInsideButton from './tw-see-inside.jsx';
-import {notScratchDesktop} from '../../lib/isScratchDesktop.js';
+import isScratchDesktop, {notScratchDesktop} from '../../lib/isScratchDesktop.js';
 import {APP_NAME} from '../../lib/brand.js';
 
 const ariaMessages = defineMessages({
@@ -1044,7 +1044,7 @@ class MenuBar extends React.Component {
                     )}
                     <div className={classNames(styles.menuBarItem, styles.communityButtonWrapper)}>
                         {this.props.enableCommunity ? (
-                            (this.props.isShowingProject || this.props.isUpdating) && (
+                            (!isScratchDesktop() && this.props.isShowingProject || this.props.isUpdating) && (
                                 <ProjectWatcher onDoneUpdating={this.props.onSeeCommunity}>
                                     {
                                         waitForUpdate => (
@@ -1071,7 +1071,7 @@ class MenuBar extends React.Component {
                             />
                         ) : []))}
                     </div>
-                    {!this.props.isPlayerOnly && <div className={styles.menuBarItem}>
+                    {!this.props.isPlayerOnly && !isScratchDesktop() && <div className={styles.menuBarItem}>
                         <a
                             className={styles.feedbackLink}
                             href="https://scratch.mit.edu/discuss/topic/828107/#post-8609237"

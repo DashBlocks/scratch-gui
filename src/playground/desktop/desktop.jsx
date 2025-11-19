@@ -7,7 +7,7 @@ import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 
-const version = '0.0.0';
+const version = '1.0.0';
 
 /* eslint-disable react/jsx-no-literals */
 

@@ -182,7 +182,7 @@ module.exports = [
                 'process.env.ROOT': JSON.stringify(root),
                 'process.env.ROUTING_STYLE': JSON.stringify(process.env.ROUTING_STYLE || 'filehash'),
                 'process.env.OLD_COMPILER': false,
-                'process.env.DESKTOP': false
+                'process.env.DESKTOP': true
             }),
             new HtmlWebpackPlugin({
                 chunks: ['editor'],

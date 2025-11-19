@@ -234,9 +234,9 @@ const Footer = () => (
                     </a>*/}
                 </div>
                 <div className={styles.footerSection}>
-                    <a href="https://desktop.turbowarp.org/">
+                    <a href="https://dashblocks.github.io/desktop.html">
                         {/* Do not translate */}
-                        {'TurboWarp Desktop'}
+                        {'Dash Desktop'}
                     </a>
                     <a href="https://dashblocks.github.io/packager">
                         {/* Do not translate */}

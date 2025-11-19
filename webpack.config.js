@@ -147,7 +147,8 @@ module.exports = [
             'fullscreen': './src/playground/fullscreen.jsx',
             'embed': './src/playground/embed.jsx',
             'addon-settings': './src/playground/addon-settings.jsx',
-            'credits': './src/playground/credits/credits.jsx'
+            'credits': './src/playground/credits/credits.jsx',
+            'desktop': './src/playground/desktop/desktop.jsx'
         },
         output: {
             path: path.resolve(__dirname, 'build')
@@ -223,6 +224,13 @@ module.exports = [
                 template: 'src/playground/simple.ejs',
                 filename: 'credits.html',
                 title: `${APP_NAME} Credits`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['desktop'],
+                template: 'src/playground/simple.ejs',
+                filename: 'desktop.html',
+                title: `${APP_NAME} Desktop - Dash as a desktop app`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

@@ -64,8 +64,16 @@ const Credits = () => (
                 The {APP_NAME} project is made possible by the work of many volunteers.
             </p>
         </section>
-        {APP_NAME !== 'TurboWarp' && (
+        {APP_NAME !== 'Dash' && (
             // Be kind and considerate. Don't remove this :)
+            <section>
+                <h2>Dash</h2>
+                <p>
+                    {APP_NAME} is based on <a href="https://dashblocks.github.io/">Dash</a>.
+                </p>
+            </section>
+        )}
+        {APP_NAME !== 'TurboWarp' && (
             <section>
                 <h2>TurboWarp</h2>
                 <p>

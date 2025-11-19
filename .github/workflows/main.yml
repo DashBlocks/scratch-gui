@@ -21,9 +21,6 @@ jobs:
       - name: Update Dependencies
         run: npm update --legacy-peer-deps
 
-      - name: Pull LFS files
-        run: git lfs pull
-
       - name: Build Scratch
         run: npm run build
       

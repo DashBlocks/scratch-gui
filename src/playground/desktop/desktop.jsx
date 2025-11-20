@@ -35,7 +35,7 @@ const Desktop = () => (
                     window.open(`https://github.com/DashBlocks/desktop/releases/download/v${version}/Dash.Desktop.Setup.${version}.exe`, '_blank', 'noreferrer');
                 }}
             >
-                Download for Windows
+                Download for Windows (x64)
             </button>
         </section>
         <section>
@@ -53,7 +53,7 @@ const Desktop = () => (
                     window.open(`https://github.com/DashBlocks/desktop/releases/download/v${version}/Dash.Desktop-${version}-arm64.AppImage`, '_blank', 'noreferrer');
                 }}
             >
-                Download for AppImage arm64 (Linux)
+                Download for AppImage x64 (Linux)
             </button>
         </section>
     </main>

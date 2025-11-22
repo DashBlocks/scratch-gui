@@ -3392,6 +3392,7 @@
         "tw.menuBar.newFramerate": "Новая частота кадров:",
         "tw.menuBar.newWindow": "Новое окно",
         "tw.menuBar.package": "Упаковать проект",
+        "dash.menuBar.unpackage": "Распаковщик",
         "tw.menuBar.reportError1": "В некоторых скриптах возникли ошибки.",
         "tw.menuBar.reportError2": "Это баг. Пожалуйста, сообщите о ней.",
         "tw.menuBar.restorePoints": "Точки восстановления",

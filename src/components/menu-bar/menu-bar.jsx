@@ -220,6 +220,7 @@ class MenuBar extends React.Component {
             'handleClickSave',
             'handleClickSaveAsCopy',
             'handleClickPackager',
+            'handleClickUnpackager',
             'handleClickDesktopSettings',
             'handleClickRestorePoints',
             'handleClickSeeCommunity',
@@ -271,6 +272,9 @@ class MenuBar extends React.Component {
     handleClickPackager () {
         this.props.onClickPackager();
         this.props.onRequestCloseFile();
+    }
+    handleClickUnpackager () {
+        window.open("https://dashblocks.github.io/unpackager/", '_blank')
     }
     handleClickDesktopSettings () {
         this.props.onClickDesktopSettings();
@@ -761,6 +765,20 @@ class MenuBar extends React.Component {
                                                     // eslint-disable-next-line max-len
                                                     description="Menu bar item to open the current project in the packager"
                                                     id="tw.menuBar.package"
+                                                />
+                                            </MenuItem>
+                                        </MenuSection>
+                                    )}
+                                    {this.props.onClickUnpackager && (
+                                        <MenuSection>
+                                            <MenuItem
+                                                onClick={this.handleClickUnpackager}
+                                            >
+                                                <FormattedMessage
+                                                    defaultMessage="Unpackage project"
+                                                    // eslint-disable-next-line max-len
+                                                    description="Menu bar item to open the unpackager"
+                                                    id="dash.menuBar.unpackage"
                                                 />
                                             </MenuItem>
                                         </MenuSection>

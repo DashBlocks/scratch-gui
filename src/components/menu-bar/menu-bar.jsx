@@ -220,7 +220,6 @@ class MenuBar extends React.Component {
             'handleClickSave',
             'handleClickSaveAsCopy',
             'handleClickPackager',
-            'handleClickUnpackager',
             'handleClickDesktopSettings',
             'handleClickRestorePoints',
             'handleClickSeeCommunity',
@@ -272,9 +271,6 @@ class MenuBar extends React.Component {
     handleClickPackager () {
         this.props.onClickPackager();
         this.props.onRequestCloseFile();
-    }
-    handleClickUnpackager () {
-        window.open("https://dashblocks.github.io/unpackager/", '_blank')
     }
     handleClickDesktopSettings () {
         this.props.onClickDesktopSettings();
@@ -767,15 +763,11 @@ class MenuBar extends React.Component {
                                                     id="tw.menuBar.package"
                                                 />
                                             </MenuItem>
-                                        </MenuSection>
-                                    )}
-                                    {this.props.onClickUnpackager && (
-                                        <MenuSection>
                                             <MenuItem
-                                                onClick={this.handleClickUnpackager}
+                                                onClick={() => window.open("https://dashblocks.github.io/unpackager/", '_blank')}
                                             >
                                                 <FormattedMessage
-                                                    defaultMessage="Unpackage project"
+                                                    defaultMessage="Unpackager"
                                                     // eslint-disable-next-line max-len
                                                     description="Menu bar item to open the unpackager"
                                                     id="dash.menuBar.unpackage"

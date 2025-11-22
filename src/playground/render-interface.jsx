@@ -371,9 +371,9 @@ class Interface extends React.PureComponent {
         }
     }
     componentDidMount() {
-        const sum = lazyMessages.reduce((acc, _) => acc + 1, 0);
+        const sum = lazyMessages.en.reduce(acc => acc + 1, 0);
         let rand = sum * Math.random();
-        for (let i = 0; i < lazyMessages.length; i++) {
+        for (let i = 0; i < lazyMessages.en.length; i++) {
             rand -= 1;
             if (rand <= 0) {
                 this.setState({

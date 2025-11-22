@@ -1,25 +1,60 @@
-[
-    "Coloring the blocks...",
-    "Loading extensions...",
-    "Making costumes...",
-    "Restoring the sprites...",
-    "Listening to the sounds...",
-    "Setting up broadcasts...",
-    "Admiring the fonts...",
-    "Making scripts...",
+{
+    "en": [
+        "Coloring the blocks...",
+        "Loading extensions...",
+        "Making costumes...",
+        "Restoring the sprites...",
+        "Listening to the sounds...",
+        "Setting up broadcasts...",
+        "Admiring the fonts...",
+        "Making scripts...",
+        "Writing comments...",
 
-    "Fixing errors...",
-    "Coming up with ideas...",
-    "Compiling to JavaScript...",
-    "Waiting for the load to finish...",
+        "Fixing errors...",
+        "Coming up with ideas...",
+        "Compiling to JavaScript...",
+        "Waiting for the load to finish...",
+        "Translating Dash...",
+        "Making new features...",
+        "Welcome to Dash!",
 
-    "Translating Dash... (no)",
-    "Keeping an eye on Dashy...",
-    "Unbanning SpartanDav...",
-    "Patting the cat blocks...",
-    "Deleting Memokot... (trying to)",
-    "*You found the \"12\"*",
-    "Not 100% yet :|",
+        "Keeping an eye on Dashy...",
+        "Unbanning SpartanDav...",
+        "Patting the cat blocks...",
+        "Deleting Memokot... (trying to)",
+        "*You found the \"12\"*",
+        "Not 100% yet :|",
+        "say (Hello, world!) for (5) seconds",
 
-    "Subscribe to our TG channel - https://t.me/DashBlocks ;)"
-]
+        "Subscribe to our TG channel - https://t.me/DashBlocks ;)"
+    ],
+    "ru": [
+        "Раскрашиваем блоки...",
+        "Загружаем расширения...",
+        "Создаем костюмы...",
+        "Восстанавливаем спрайты...",
+        "Слушаем звуки...",
+        "Настраиваем сообщения...",
+        "Любуемся шрифтами...",
+        "Создаем скрипты...",
+        "Пишем комментарии...",
+
+        "Исправляем ошибки...",
+        "Придумываем идеи...",
+        "Компилируем в JavaScript...",
+        "Ждем окончания загрузки...",
+        "Переводим Dash...",
+        "Делаем новые фичи...",
+        "Добро пожаловать в Dash!",
+
+        "Следим за Dashy...",
+        "Разбаниваем SpartanDav...",
+        "Гладим котоблоки...",
+        "Удаляем Мемокота... (пытаемся)",
+        "*Ты нашёл \"12\"*",
+        "Ещё не 100% :|",
+        "говорить (Привет, мир!) (5) секунд",
+
+        "Подпишись на наш ТГ канал - https://t.me/DashBlocks ;)"
+    ]
+}

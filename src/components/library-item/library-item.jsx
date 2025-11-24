@@ -179,7 +179,13 @@ class LibraryItemComponent extends React.PureComponent {
                         {this.props.docsURI || this.props.samples ? (
                             <div className={styles.featuredExtensionMetadataSection}>
                                 <div>
-                                    <div>Resources</div>
+                                    <div>
+                                        <FormattedMessage
+                                            defaultMessage="Resources"
+                                            description="Label for extension resources"
+                                            id="dash.extensionLibrary.resources"
+                                        />
+                                    </div>
                                     <div
                                         className={styles.featuredExtensionMetadataDetail}
                                     >

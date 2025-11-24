@@ -177,7 +177,7 @@ const CustomFPS = ({
         help={
             <FormattedMessage
                 // eslint-disable-next-line max-len
-                defaultMessage="Runs scripts with custom times per second instead of 30. 60 FPS recommended. Most projects will not work properly with this enabled. You should try Interpolation with Custom FPS mode disabled if that is the case."
+                defaultMessage="Runs scripts with custom times per second instead of 30. 60 FPS recommended. Most projects will not work properly with this enabled. You should try Interpolation with 30 FPS if that is the case."
                 description="FPS setting help"
                 id="tw.settingsModal.fpsHelp"
                 /*values={{

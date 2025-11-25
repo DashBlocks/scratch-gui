@@ -30,7 +30,9 @@ const getFonts = function () {
         'Lilita One Regular': require('base64-loader!./Lilita One Regular.ttf'),
         'Minecrafter': require('base64-loader!./Minecrafter.Reg.ttf'),
         'Obelix Pro': require('base64-loader!./obelix_pro.ttf'),
-        'Jet Brains Mono': require('base64-loader!./JetBrainsMono-Light.ttf')
+        'Jet Brains Mono': require('base64-loader!./JetBrainsMono-Light.ttf'),
+        'Runs Trial': require('base64-loader!./Runs Trial.ttf'),
+        'Rubik': require('base64-loader!./Rubik.ttf')
     };
     /* eslint-enable global-require */
 

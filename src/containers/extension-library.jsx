@@ -48,7 +48,15 @@ let cachedPmGallery = null;
 let cachedGallery = null;
 
 const fetchTwLibrary = async () => {
-    const res = await fetch('https://extensions.turbowarp.org/generated-metadata/extensions-v0.json');
+    let res;
+    try {
+        res = await fetch('https://extensions.turbowarp.org/generated-metadata/extensions-v0.json');
+        if (!res.ok) {
+            res = await fetch('https://dashblocks.github.io/tw-extensions/generated-metadata/extensions-v0.json');
+        }
+    } catch (_) {
+        res = await fetch('https://dashblocks.github.io/tw-extensions/generated-metadata/extensions-v0.json');
+    }
     if (!res.ok) {
         throw new Error(`HTTP status ${res.status}`);
     }

@@ -45,7 +45,7 @@ class CustomExtensionModal extends React.Component {
             files: null,
             text: '',
             unsandboxed: getPersistedUnsandboxed(),
-            isTwMirror: false
+            isTwGalleryMirror: false
         };
     }
 
@@ -141,21 +141,31 @@ class CustomExtensionModal extends React.Component {
                         const res = await fetch(url);
                         if (!res.ok) {
                             this.setState({
-                                isTwMirror: true
+                                isTwGalleryMirror: true
                             });
-                            await this.props.vm.extensionManager.loadExtensionURL(url.replace('https://extensions.turbowarp.org/', 'https://dashblocks.github.io/tw-extensions/'));
+                            await this.props.vm.extensionManager.loadExtensionURL(
+                                url.replace(
+                                    'https://extensions.turbowarp.org/',
+                                    'https://dashblocks.github.io/tw-extensions/'
+                                )
+                            );
                             return;
                         }
                     } catch (_) {
                         this.setState({
-                            isTwMirror: true
+                            isTwGalleryMirror: true
                         });
-                        await this.props.vm.extensionManager.loadExtensionURL(url.replace('https://extensions.turbowarp.org/', 'https://dashblocks.github.io/tw-extensions/'));
+                        await this.props.vm.extensionManager.loadExtensionURL(
+                            url.replace(
+                                'https://extensions.turbowarp.org/',
+                                'https://dashblocks.github.io/tw-extensions/'
+                            )
+                        );
                         return;
                     }
                 }
                 this.setState({
-                    isTwMirror: false
+                    isTwGalleryMirror: false
                 });
                 await this.props.vm.extensionManager.loadExtensionURL(url);
             }

@@ -68,3 +68,7 @@
     align-items: center;
     justify-content: center;
 }
+
+.tw-gallery-mirror-note {
+    opacity: 0.75;
+}

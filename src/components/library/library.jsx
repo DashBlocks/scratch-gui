@@ -301,6 +301,14 @@ class LibraryComponent extends React.Component {
                     {filteredData && this.getFilteredData().map((dataItem, index) => (
                         dataItem === '---' ? (
                             <Separator key={index} />
+                        ) : dataItem === 'twGalleryMirror' ? (
+                            <div key={index} className={styles.twGalleryMirrorNote}>
+                                {this.props.intl.formatMessage({
+                                    id: 'dash.extensionLibrary.twGalleryMirrorNote',
+                                    defaultMessage: 'Note: You are currently viewing a mirror of the TurboWarp Extension Gallery. Some extensions may be out of date or unavailable.',
+                                    description: 'Note indicating that the TurboWarp Extension Gallery is being served from a mirror site.'
+                                })}
+                            </div>
                         ) : (
                             <LibraryItem
                                 bluetoothRequired={dataItem.bluetoothRequired}

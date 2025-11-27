@@ -44,6 +44,7 @@ const translateGalleryItem = (extension, locale) => ({
 });
 
 let cachedTwGallery = null;
+let twGalleryMirror = false;
 let cachedPmGallery = null;
 let cachedGallery = null;
 
@@ -51,15 +52,19 @@ const fetchTwLibrary = async () => {
     let res;
     try {
         res = await fetch('https://extensions.turbowarp.org/generated-metadata/extensions-v0.json');
+        twGalleryMirror = false;
         if (!res.ok) {
             res = await fetch('https://dashblocks.github.io/tw-extensions/generated-metadata/extensions-v0.json');
+            twGalleryMirror = true;
         }
     } catch (_) {
         res = await fetch('https://dashblocks.github.io/tw-extensions/generated-metadata/extensions-v0.json');
+        twGalleryMirror = true;
     }
     if (!res.ok) {
         throw new Error(`HTTP status ${res.status}`);
     }
+    twGalleryMirror = true;
     const data = await res.json();
     return data.extensions.map(extension => ({
         name: extension.name,
@@ -308,6 +313,8 @@ class ExtensionLibrary extends React.PureComponent {
         }
 
         library.push('---');
+
+        if (twGalleryMirror) library.push('twGalleryMirror');
 
         if (this.state.twGallery) {
             const filteredTw = this.state.twGallery

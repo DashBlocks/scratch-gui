@@ -24,6 +24,12 @@ const messages = defineMessages({
         defaultMessage: 'Choose an Extension',
         description: 'Heading for the extension library',
         id: 'gui.extensionLibrary.chooseAnExtension'
+    },
+    twGalleryMirrorConfirm: {
+        // eslint-disable-next-line max-len
+        defaultMessage: 'This extension will be loaded from a mirror of the TurboWarp Extensions Gallery. Are you sure you want to proceed?',
+        description: 'Confirm loading extension from mirror',
+        id: 'dash.confirmTwGalleryMirror'
     }
 });
 
@@ -64,7 +70,6 @@ const fetchTwLibrary = async () => {
     if (!res.ok) {
         throw new Error(`HTTP status ${res.status}`);
     }
-    twGalleryMirror = true;
     const data = await res.json();
     return data.extensions.map(extension => ({
         name: extension.name,
@@ -276,6 +281,28 @@ class ExtensionLibrary extends React.PureComponent {
             if (this.props.vm.extensionManager.isExtensionLoaded(extensionId)) {
                 this.props.onCategorySelected(extensionId);
             } else {
+                if (
+                    url.startsWith('https://extensions.turbowarp.org/') &&
+                    twGalleryMirror &&
+                    // eslint-disable-next-line no-alert
+                    confirm(this.props.intl.formatMessage(messages.twGalleryMirrorConfirm))
+                ) {
+                    this.props.vm.extensionManager.loadExtensionURL(
+                        url.replace(
+                            'https://extensions.turbowarp.org/',
+                            'https://dashblocks.github.io/tw-extensions/'
+                        )
+                    )
+                        .then(() => {
+                            this.props.onCategorySelected(extensionId);
+                        })
+                        .catch(err => {
+                            log.error(err);
+                            // eslint-disable-next-line no-alert
+                            alert(err);
+                        });
+                    return;
+                }
                 this.props.vm.extensionManager.loadExtensionURL(url)
                     .then(() => {
                         this.props.onCategorySelected(extensionId);

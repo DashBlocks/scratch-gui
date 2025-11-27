@@ -71,4 +71,5 @@
 
 .tw-gallery-mirror-note {
     opacity: 0.75;
+    flex-basis: 100%;
 }

@@ -44,7 +44,8 @@ class CustomExtensionModal extends React.Component {
             url: '',
             files: null,
             text: '',
-            unsandboxed: getPersistedUnsandboxed()
+            unsandboxed: getPersistedUnsandboxed(),
+            isTwMirror: false
         };
     }
 
@@ -135,6 +136,27 @@ class CustomExtensionModal extends React.Component {
             }
 
             for (const url of urls) {
+                if (url.startsWith('https://extensions.turbowarp.org/')) {
+                    try {
+                        const res = await fetch(url);
+                        if (!res.ok) {
+                            this.setState({
+                                isTwMirror: true
+                            });
+                            await this.props.vm.extensionManager.loadExtensionURL(url.replace('https://extensions.turbowarp.org/', 'https://dashblocks.github.io/tw-extensions/'));
+                            return;
+                        }
+                    } catch (_) {
+                        this.setState({
+                            isTwMirror: true
+                        });
+                        await this.props.vm.extensionManager.loadExtensionURL(url.replace('https://extensions.turbowarp.org/', 'https://dashblocks.github.io/tw-extensions/'));
+                        return;
+                    }
+                }
+                this.setState({
+                    isTwMirror: false
+                });
                 await this.props.vm.extensionManager.loadExtensionURL(url);
             }
         } catch (err) {

@@ -20,6 +20,26 @@ const messages = defineMessages({
         defaultMessage: 'Make a Block',
         description: 'Title for the modal where you create a custom block.',
         id: 'gui.customProcedures.myblockModalTitle'
+    },
+    numberTextType: {
+        defaultMessage: 'number or text',
+        description: 'Description of the number/text input type',
+        id: 'gui.customProcedures.numberTextType'
+    },
+    booleanType: {
+        defaultMessage: 'boolean',
+        description: 'Description of the boolean input type',
+        id: 'gui.customProcedures.booleanType'
+    },
+    arrayType: {
+        defaultMessage: 'array',
+        description: 'Description of the array input type',
+        id: 'dash.customProcedures.arrayType'
+    },
+    objectType: {
+        defaultMessage: 'object',
+        description: 'Description of the object input type',
+        id: 'dash.customProcedures.objectType'
     }
 });
 
@@ -95,32 +115,16 @@ const CustomProcedures = (props) => {
                             onChange={props.handleInputMenuChange}
                         >
                             <option value="s">
-                                <FormattedMessage
-                                    defaultMessage="number or text"
-                                    description="Description of the number/text input type"
-                                    id="gui.customProcedures.numberTextType"
-                                />
+                                {props.intl.formatMessage(messages.numberTextType)}
                             </option>
                             <option value="b">
-                                <FormattedMessage
-                                    defaultMessage="boolean"
-                                    description="Description of the boolean input type"
-                                    id="gui.customProcedures.booleanType"
-                                />
+                                {props.intl.formatMessage(messages.booleanType)}
                             </option>
                             <option value="a">
-                                <FormattedMessage
-                                    defaultMessage="array"
-                                    description="Description of the array input type"
-                                    id="dash.customProcedures.arrayType"
-                                />
+                                {props.intl.formatMessage(messages.arrayType)}
                             </option>
                             <option value="o">
-                                <FormattedMessage
-                                    defaultMessage="object"
-                                    description="Description of the object input type"
-                                    id="dash.customProcedures.objectType"
-                                />
+                                {props.intl.formatMessage(messages.objectType)}
                             </option>
                         </select>
                     </div>

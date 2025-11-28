@@ -26,7 +26,7 @@ const messages = defineMessages({
 const CustomProcedures = (props) => {
     const [inputIcon, setInputIcon] = useState(textInputIcon);
     useEffect(() => {
-        switch (props.menuOption) {
+        switch (props.menuInput) {
             case "s":
                 setInputIcon(textInputIcon);
                 break;
@@ -40,7 +40,7 @@ const CustomProcedures = (props) => {
                 setInputIcon(arrayInputIcon);
                 break;
         };
-    }, [props.menuOption]);
+    }, [props.menuInput]);
     
     const ScratchBlocks = LazyScratchBlocks.get();
     const themeObj = props.theme.getCustomExtensionColors();

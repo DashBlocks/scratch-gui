@@ -9,6 +9,7 @@ import LazyScratchBlocks from '../../lib/tw-lazy-scratch-blocks';
 import {blockColors} from '../../lib/themes/blocks/three';
 
 import booleanInputIcon from './icon--boolean-input.svg';
+import arrayInputIcon from './icon--array-input.svg';
 import textInputIcon from './icon--text-input.svg';
 import labelIcon from './icon--label.svg';
 
@@ -23,6 +24,24 @@ const messages = defineMessages({
 });
 
 const CustomProcedures = (props) => {
+    const [inputIcon, setInputIcon] = useState(textInputIcon);
+    useEffect(() => {
+        switch (props.menuOption) {
+            case "s":
+                setInputIcon(textInputIcon);
+                break;
+            case "b":
+                setInputIcon(booleanInputIcon);
+                break;
+            case "a":
+                setInputIcon(arrayInputIcon);
+                break;
+            case "o":
+                setInputIcon(arrayInputIcon);
+                break;
+        };
+    }, [props.menuOption]);
+    
     const ScratchBlocks = LazyScratchBlocks.get();
     const themeObj = props.theme.getCustomExtensionColors();
     const categories = [
@@ -60,7 +79,7 @@ const CustomProcedures = (props) => {
                     >
                         <img
                             className={styles.optionIcon}
-                            src={textInputIcon}
+                            src={inputIcon}
                             draggable={false}
                         />
                         <div className={styles.optionTitle}>
@@ -70,39 +89,40 @@ const CustomProcedures = (props) => {
                                 id="gui.customProcedures.addAnInputNumberText"
                             />
                         </div>
-                        <div className={styles.optionDescription}>
-                            <FormattedMessage
-                                defaultMessage="number or text"
-                                description="Description of the number/text input type"
-                                id="gui.customProcedures.numberTextType"
-                            />
-                        </div>
-                    </div>
-                    <div
-                        className={styles.optionCard}
-                        role="button"
-                        tabIndex="0"
-                        onClick={props.onAddBoolean}
-                    >
-                        <img
-                            className={styles.optionIcon}
-                            src={booleanInputIcon}
-                            draggable={false}
-                        />
-                        <div className={styles.optionTitle}>
-                            <FormattedMessage
-                                defaultMessage="Add an input"
-                                description="Label for button to add a boolean input"
-                                id="gui.customProcedures.addAnInputBoolean"
-                            />
-                        </div>
-                        <div className={styles.optionDescription}>
-                            <FormattedMessage
-                                defaultMessage="boolean"
-                                description="Description of the boolean input type"
-                                id="gui.customProcedures.booleanType"
-                            />
-                        </div>
+                        <select
+                            className={styles.optionMenu}
+                            onClick={props.handlePropagation}
+                            onChange={props.handleInputMenuChange}
+                        >
+                            <option value="s">
+                                <FormattedMessage
+                                    defaultMessage="number or text"
+                                    description="Description of the number/text input type"
+                                    id="gui.customProcedures.numberTextType"
+                                />
+                            </option>
+                            <option value="b">
+                                <FormattedMessage
+                                    defaultMessage="boolean"
+                                    description="Description of the boolean input type"
+                                    id="gui.customProcedures.booleanType"
+                                />
+                            </option>
+                            <option value="a">
+                                <FormattedMessage
+                                    defaultMessage="array"
+                                    description="Description of the array input type"
+                                    id="dash.customProcedures.arrayType"
+                                />
+                            </option>
+                            <option value="o">
+                                <FormattedMessage
+                                    defaultMessage="object"
+                                    description="Description of the object input type"
+                                    id="dash.customProcedures.objectType"
+                                />
+                            </option>
+                        </select>
                     </div>
                     <div
                         className={styles.optionCard}
@@ -206,9 +226,10 @@ const CustomProcedures = (props) => {
 CustomProcedures.propTypes = {
     componentRef: PropTypes.func.isRequired,
     intl: intlShape,
-    onAddBoolean: PropTypes.func.isRequired,
+    onAddInput: PropTypes.func.isRequired,
     onAddLabel: PropTypes.func.isRequired,
-    onAddTextNumber: PropTypes.func.isRequired,
+    handlePropagation: PropTypes.func.isRequired,
+    handleInputMenuChange: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     onOk: PropTypes.func.isRequired,
     onToggleWarp: PropTypes.func.isRequired,

@@ -170,10 +170,12 @@ class CustomProcedures extends React.Component {
                 componentRef={this.setBlocks}
                 warp={this.state.warp}
                 color={this.state.color}
-                onAddBoolean={this.handleAddBoolean}
+                onAddInput={this.handleAddInput}
                 onAddLabel={this.handleAddLabel}
                 setColor={this.handleSetColor}
-                onAddTextNumber={this.handleAddTextNumber}
+                handlePropagation={this.handlePropagation}
+                handleInputMenuChange={this.handleInputMenuChange}
+                menuInput={this.state.menuInput}
                 onCancel={this.handleCancel}
                 onOk={this.handleOk}
                 onToggleWarp={this.handleToggleWarp}

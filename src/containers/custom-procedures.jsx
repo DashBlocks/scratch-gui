@@ -11,10 +11,11 @@ class CustomProcedures extends React.Component {
         super(props);
         bindAll(this, [
             'handleAddLabel',
-            'handleAddBoolean',
-            'handleAddTextNumber',
+            'handleAddInput',
             'handleSetColor',
             'handleToggleWarp',
+            'handlePropagation',
+            'handleInputMenuChange',
             'handleCancel',
             'handleOk',
             'setBlocks'
@@ -22,7 +23,8 @@ class CustomProcedures extends React.Component {
         this.state = {
             rtlOffset: 0,
             warp: false,
-            color: null
+            color: null,
+            menuInput: 's'
         };
     }
     componentWillUnmount () {
@@ -131,14 +133,22 @@ class CustomProcedures extends React.Component {
             this.mutationRoot.addLabelExternal();
         }
     }
-    handleAddBoolean () {
+    handleAddInput () {
         if (this.mutationRoot) {
-            this.mutationRoot.addBooleanExternal();
-        }
-    }
-    handleAddTextNumber () {
-        if (this.mutationRoot) {
-            this.mutationRoot.addStringNumberExternal();
+            switch (this.state.menuInput) {
+                case 's':
+                    this.mutationRoot.addStringNumberExternal();
+                    break;
+                case 'b':
+                    this.mutationRoot.addBooleanExternal();
+                    break;
+                case 'a':
+                    this.mutationRoot.addArrayExternal();
+                    break;
+                case 'o':
+                    this.mutationRoot.addObjectExternal();
+                    break;
+            };
         }
     }
     handleToggleWarp () {
@@ -147,6 +157,12 @@ class CustomProcedures extends React.Component {
             this.mutationRoot.setWarp(newWarp);
             this.setState({warp: newWarp});
         }
+    }
+    handlePropagation (e) {
+        e.stopPropagation();
+    }
+    handleInputMenuChange (e) {
+        this.setState({menuInput: e.target.value});
     }
     render () {
         return (

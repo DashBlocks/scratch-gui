@@ -66,6 +66,10 @@
     margin-bottom: 0.5rem;
 }
 
+.option-menu {
+    text-align: center;
+}
+
 .option-title {
     font-weight: bold;
 }

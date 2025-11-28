@@ -95,7 +95,7 @@ const CustomProcedures = (props) => {
                         className={styles.optionCard}
                         role="button"
                         tabIndex="0"
-                        onClick={props.onAddTextNumber}
+                        onClick={props.onAddInput}
                     >
                         <img
                             className={styles.optionIcon}

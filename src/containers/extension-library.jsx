@@ -283,10 +283,9 @@ class ExtensionLibrary extends React.PureComponent {
             } else {
                 if (
                     url.startsWith('https://extensions.turbowarp.org/') &&
-                    twGalleryMirror &&
-                    // eslint-disable-next-line no-alert
-                    confirm(this.props.intl.formatMessage(messages.twGalleryMirrorConfirm))
+                    twGalleryMirror
                 ) {
+                    if (!confirm(this.props.intl.formatMessage(messages.twGalleryMirrorConfirm))) return;
                     this.props.vm.extensionManager.loadExtensionURL(
                         url.replace(
                             'https://extensions.turbowarp.org/',

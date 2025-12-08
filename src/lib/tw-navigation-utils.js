@@ -1,14 +1,19 @@
 import {setProjectId as reduxSetProjectId} from '../reducers/project-state';
 
 const setProjectId = (dispatch, projectId) => {
-    if (process.env.ROUTING_STYLE === 'wildcard') {
-        if (projectId === '0') {
-            projectId = '';
-        }
-        location.href = `${process.env.ROOT}${projectId}`;
+    if (!projectId || projectId === '0') {
+        projectId = '';
+        dispatch(reduxSetProjectId(projectId));
         return;
     }
-    dispatch(reduxSetProjectId(projectId));
+    if (process.env.ROUTING_STYLE === 'wildcard') {
+        location.href = `${process.env.ROOT}${projectId}`;
+        return;
+    } else {
+        location.href = `${process.env.ROOT}#${projectId}`;
+        window.location.reload();
+        return;
+    }
 };
 
 const searchParamsToString = params => {

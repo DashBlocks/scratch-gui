@@ -1,9 +1,39 @@
 [   {
+        "name": "Jingle-bells",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "a4ef7da2a60cfcc6f78a1d7d87c28de2",
+        "dataFormat": "mp3",
+        "md5ext": "a4ef7da2a60cfcc6f78a1d7d87c28de2.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    },{
+        "name": "EpicMusic",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "41f499663fa051d600440e80b9f6068e",
+        "dataFormat": "wav",
+        "md5ext": "41f499663fa051d600440e80b9f6068e.wav",
+        "sampleCount": 56320,
+        "rate": 44100
+    },{
+        "name": "EpicMusic",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "41f499663fa051d600440e80b9f6068e",
+        "dataFormat": "wav",
+        "md5ext": "41f499663fa051d600440e80b9f6068e.wav",
+        "sampleCount": 56320,
+        "rate": 44100
+    },{
         "name": "click 2",
         "tags": [
             "dash"
         ],
-        "assetId": "dd51db0d161223caa27d241cb8ccd46c.mp3",
+        "assetId": "dd51db0d161223caa27d241cb8ccd46c",
         "dataFormat": "mp3",
         "md5ext": "dd51db0d161223caa27d241cb8ccd46c.mp3",
         "sampleCount": 56320,

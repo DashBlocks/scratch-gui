@@ -109,7 +109,6 @@
   /* .gui_extension-button-container_b4rCs (z-index: 42) */
   z-index: 43;
   padding-inline: 0.5rem;
-  background-color: var(--editorDarkMode-page, hsl(215, 100%, 95%));
 }
 
 [class*="gui_stage-and-target-wrapper_"] {

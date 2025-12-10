@@ -74,10 +74,6 @@
     border-left: 1px solid $ui-black-transparent;
 }
 
-.blocks :global(.blocklySvg){
-    fill-opacity: var(--wallpaper-opaque);
-}
-
 .blocks :global(.blocklyBlockDragSurface) {
     /*
         Fix an issue where the drag surface was preventing hover events for sharing blocks.

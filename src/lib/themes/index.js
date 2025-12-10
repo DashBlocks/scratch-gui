@@ -124,12 +124,19 @@ class Theme {
     }
 
     getBlockColors () {
-        return defaultsDeep(
+        let blockColors = defaultsDeep(
             {},
             ACCENT_MAP[this.accent].blockColors,
             GUI_MAP[this.gui].blockColors,
             BLOCKS_MAP[this.blocks].colors
         );
+        if (this.wallpaper.url !== null) {
+            blockColors = defaultsDeep(
+                blocksColors,
+                {workspace: blocksColors.workspace + Math.round(this.wallpaper.opaque * 255).toString(16).padStart(2, 0)}
+            )
+        }
+        return blockColors;
     }
 
     getExtensions () {

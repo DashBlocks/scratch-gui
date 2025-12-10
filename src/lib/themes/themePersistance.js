@@ -65,7 +65,8 @@ const detectTheme = () => {
         return new Theme(
             parsed.accent || systemPreferences.accent,
             parsed.gui || systemPreferences.gui,
-            parsed.blocks || systemPreferences.blocks
+            parsed.blocks || systemPreferences.blocks,
+            parsed.wallpaper || null
         );
     } catch (e) {
         // ignore
@@ -90,6 +91,9 @@ const persistTheme = theme => {
     // custom blocks are managed by addon at runtime, don't save here
     if (theme.blocks !== systemPreferences.blocks && theme.blocks !== BLOCKS_CUSTOM) {
         nonDefaultSettings.blocks = theme.blocks;
+    }
+    if (theme.wallpaper.url !== null) {
+        nonDefaultSettings.wallpaper = theme.wallpaper;
     }
 
     if (Object.keys(nonDefaultSettings).length === 0) {

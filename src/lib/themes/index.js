@@ -132,8 +132,8 @@ class Theme {
         );
         if (this.wallpaper.url !== null) {
             blockColors = defaultsDeep(
-                blocksColors,
-                {workspace: blocksColors.workspace + Math.round(this.wallpaper.opaque * 255).toString(16).padStart(2, 0)}
+                blockColors,
+                {workspace: blockColors.workspace + Math.round(this.wallpaper.opaque * 255).toString(16).padStart(2, 0)}
             )
         }
         return blockColors;

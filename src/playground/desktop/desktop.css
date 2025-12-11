@@ -33,6 +33,18 @@ a {
 
 }
 
+download-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+screenshot {
+    filter: drop-shadow(0 0 1rem $ui-black-transparent);
+    border-radius: 0.5rem;
+    background-color: $page-background;
+}
+
 button {
     padding: 0.5rem;
     border: 0.0625rem solid $ui-black-transparent;

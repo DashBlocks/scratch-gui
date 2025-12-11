@@ -66,7 +66,9 @@ const SettingsMenu = ({
                             onOpenCustomSettings={onOpenCustomSettings}
                         />
                         <TWAccentThemeMenu />
-                        <WallpaperThemeMenu />
+                        <WallpaperThemeMenu
+                            onOpenCustomSettings={onOpenCustomSettings}
+                        />
                     </React.Fragment>
                 )}
                 {onClickDesktopSettings && <TWDesktopSettings onClick={onClickDesktopSettings} />}

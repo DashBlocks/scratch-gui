@@ -33,16 +33,17 @@ a {
 
 }
 
-download-list {
+.download-list {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
 }
 
-screenshot {
+.screenshot {
     filter: drop-shadow(0 0 1rem $ui-black-transparent);
     border-radius: 0.5rem;
     background-color: $page-background;
+    width: 100%;
 }
 
 button {

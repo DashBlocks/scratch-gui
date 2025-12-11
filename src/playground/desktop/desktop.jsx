@@ -7,13 +7,15 @@ import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 
-import screenshot from './screenshot.png';
+import screenshotLight from './screenshot-light.png';
+import screenshotDark from './screenshot-dark.png';
 
 const version = '1.1.0';
 
 /* eslint-disable react/jsx-no-literals */
 
-applyGuiColors(detectTheme());
+const theme = detectTheme();
+applyGuiColors(theme);
 
 const Desktop = () => (
     <main className={styles.main}>
@@ -27,7 +29,7 @@ const Desktop = () => (
             <img
                 className={styles.screenshot}
                 loading="lazy"
-                src={screenshot}
+                src={theme.isDark() ? screenshotDark : screenshotLight}
             />
         </section>
         <section>

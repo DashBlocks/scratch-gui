@@ -115,7 +115,7 @@ class WallpaperThemeMenu extends React.Component {
                     <Prompt
                         title={this.props.intl.formatMessage(messages.changeOpaque)}
                         label={this.props.intl.formatMessage(messages.changeOpaquePrompt)}
-                        defaultValue={this.props.theme.wallpaper.opaque}
+                        defaultValue={this.props.theme.wallpaper.opaque * 100}
                         onOk={this.handleOk}
                         onCancel={this.handleCancel}
                         showVariableOptions={false}

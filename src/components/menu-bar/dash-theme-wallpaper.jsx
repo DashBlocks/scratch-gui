@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import {injectIntl} from 'react-intl';
 import PropTypes from 'prop-types';
 import bindAll from 'lodash.bindall';
 import React from 'react';
@@ -11,7 +12,19 @@ import {openWallpaperThemeMenu, wallpaperThemeMenuOpen, closeSettingsMenu} from 
 import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
 import styles from './settings-menu.css';
-import menuBarStyles from './menu-bar.css';
+
+const messages = defineMessages({
+    changeOpaquePrompt: {
+        id: 'dash.wallpaper.changeOpaquePrompt',
+        defaultMessage: 'Enter new opaque of workspace:',
+        description: 'Text of prompt for changing opaque of workspace'
+    },
+    changeOpaque: {
+        id: 'dash.wallpaper.changeOpaque',
+        defaultMessage: 'Change opaque of workspace',
+        description: 'Option to change opaque of Blockly workspace'
+    }
+});
 
 class WallpaperThemeMenu extends React.Component {
     constructor (props) {
@@ -19,10 +32,12 @@ class WallpaperThemeMenu extends React.Component {
         bindAll(this, [
             'handleFileChange',
             'handleOpenFilePicker',
+            'handleChangeOpaque',
             'handleRemoveWallpaper'
         ]);
         this.state = {
-            selectedFiles: null
+            selectedFiles: null,
+            prompt: false
         };
     }
 
@@ -34,7 +49,10 @@ class WallpaperThemeMenu extends React.Component {
             reader.onload = (e) => {
                 const dataUrl = e.target.result;
                 this.props.onChangeTheme(
-                    this.props.theme.set('wallpaper', {url: dataUrl, opaque: 0.6})
+                    this.props.theme.set('wallpaper', {
+                        url: dataUrl,
+                        opaque: this.props.theme.wallpaper.url == null ? 0.6 : this.props.theme.wallpaper.opaque
+                    })
                 );
             };
             reader.readAsDataURL(file);
@@ -58,6 +76,26 @@ class WallpaperThemeMenu extends React.Component {
         input.remove();
     }
 
+    handleChangeOpaque () {
+        this.setState({prompt: true})
+    }
+
+    handleOk (value) {
+        if (!value && value != 0) {
+            this.setState({prompt: false});
+            return;
+        };
+        const opaque = Math.max(0, Math.min(1, value / 100));
+        this.props.onChangeTheme(
+            this.props.theme.set('wallpaper', {url: this.props.theme.wallpaper.url, opaque})
+        );
+        this.setState({prompt: false});
+    }
+
+    handleCancel () {
+        this.setState({prompt: false});
+    }
+    
     handleRemoveWallpaper () {
         this.setState({selectedFiles: null});
         this.props.onChangeTheme(
@@ -72,56 +110,78 @@ class WallpaperThemeMenu extends React.Component {
             onOpenMenu
         } = this.props;
         return (
-            <MenuItem expanded={isOpen}>
-                <div
-                    className={styles.option}
-                    onClick={onOpenMenu}
-                >
-                    {/* todo: icon */}
-                    <span className={styles.submenuLabel}>
-                        <FormattedMessage
-                            defaultMessage="Wallpaper"
-                            description="Wallpaper label"
-                            id="dash.wallpaper"
-                        />
-                    </span>
-                    <img
-                        className={styles.expandCaret}
-                        src={dropdownCaret}
-                        draggable={false}
+            <>
+                {this.state.prompt && (
+                    <Prompt
+                        title={this.props.intl.formatMessage(messages.changeOpaque)}
+                        label={this.props.intl.formatMessage(messages.changeOpaquePrompt)}
+                        defaultValue={this.props.theme.wallpaper.opaque}
+                        onOk={this.handleOk}
+                        onCancel={this.handleCancel}
+                        showVariableOptions={false}
+                        showCloudOption={false}
+                        showListMessage={false}
+                        isStage={false}
+                        vm={vm}
                     />
-                </div>
-                <Submenu place={isRtl ? 'left' : 'right'}>
-                    <MenuItem onClick={this.handleOpenFilePicker}>
-                        {this.state.selectedFiles ? (
-                            <FormattedMessage
-                                defaultMessage="Selected: {name}"
-                                description="Shows selected wallpaper file name"
-                                id="tw.fileInput.selected"
-                                values={{
-                                    name: this.state.selectedFiles[0].name
-                                }}
-                            />
-                        ) : (
-                            <FormattedMessage
-                                defaultMessage="Choose wallpaper..."
-                                description="Button text to choose a wallpaper file"
-                                id="dash.wallpaper.choose"
-                            />
-                        )}
-                    </MenuItem>
-                    <MenuItem
-                        className={classNames({[menuBarStyles.disabled]: this.props.theme.wallpaper.url == null})}
-                        onClick={this.props.theme.wallpaper.url == null ? () => {} : this.handleRemoveWallpaper}
+                )}
+                <MenuItem expanded={isOpen}>
+                    <div
+                        className={styles.option}
+                        onClick={onOpenMenu}
                     >
-                        <FormattedMessage
-                            defaultMessage="Remove wallpaper"
-                            description="Option to remove wallpaper"
-                            id="dash.wallpaper.remove"
+                        {/* todo: icon */}
+                        <span className={styles.submenuLabel}>
+                            <FormattedMessage
+                                defaultMessage="Wallpaper"
+                                description="Wallpaper label"
+                                id="dash.wallpaper"
+                            />
+                        </span>
+                        <img
+                            className={styles.expandCaret}
+                            src={dropdownCaret}
+                            draggable={false}
                         />
-                    </MenuItem>
-                </Submenu>
-            </MenuItem>
+                    </div>
+                    <Submenu place={isRtl ? 'left' : 'right'}>
+                        <MenuItem onClick={this.handleOpenFilePicker}>
+                            {this.state.selectedFiles ? (
+                                <FormattedMessage
+                                    defaultMessage="Selected: {name}"
+                                    description="Shows selected wallpaper file name"
+                                    id="tw.fileInput.selected"
+                                    values={{
+                                        name: this.state.selectedFiles[0].name
+                                    }}
+                                />
+                            ) : (
+                                <FormattedMessage
+                                    defaultMessage="Choose wallpaper..."
+                                    description="Button text to choose a wallpaper file"
+                                    id="dash.wallpaper.choose"
+                                />
+                            )}
+                        </MenuItem>
+                        <MenuItem
+                            className={classNames({[styles.disabled]: this.props.theme.wallpaper.url == null})}
+                            onClick={this.props.theme.wallpaper.url == null ? () => {} : this.handleChangeOpaque}
+                        >
+                            {this.props.intl.formatMessage(messages.changeOpaque)}
+                        </MenuItem>
+                        <MenuItem
+                            className={classNames({[styles.disabled]: this.props.theme.wallpaper.url == null})}
+                            onClick={this.props.theme.wallpaper.url == null ? () => {} : this.handleRemoveWallpaper}
+                        >
+                            <FormattedMessage
+                                defaultMessage="Remove wallpaper"
+                                description="Option to remove wallpaper"
+                                id="dash.wallpaper.remove"
+                            />
+                        </MenuItem>
+                    </Submenu>
+                </MenuItem>
+            </>
         );
     }
 }
@@ -148,7 +208,7 @@ const mapDispatchToProps = dispatch => ({
     onOpenMenu: () => dispatch(openWallpaperThemeMenu())
 });
 
-export default connect(
+export default injectIntl(connect(
     mapStateToProps,
     mapDispatchToProps
-)(WallpaperThemeMenu);
+)(WallpaperThemeMenu));

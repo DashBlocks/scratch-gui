@@ -12,6 +12,7 @@ import {openWallpaperThemeMenu, wallpaperThemeMenuOpen, closeSettingsMenu} from 
 import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
 import Prompt from '../../containers/prompt.jsx';
+import wallpaperIcon from './dash-wallpaper.svg'
 import styles from './settings-menu.css';
 
 const messages = defineMessages({
@@ -134,7 +135,11 @@ class WallpaperThemeMenu extends React.Component {
                         className={styles.option}
                         onClick={onOpenMenu}
                     >
-                        {/* todo: icon */}
+                        <img
+                            src={wallpaperIcon}
+                            draggable={false}
+                            width={24}
+                        />
                         <span className={styles.submenuLabel}>
                             <FormattedMessage
                                 defaultMessage="Wallpaper"

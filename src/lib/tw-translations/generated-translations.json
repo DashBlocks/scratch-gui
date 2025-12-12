@@ -3559,8 +3559,8 @@
         "tw.viewFeaturedProjects": "Нажмите, чтобы посмотреть избранные проекты.",
         "tw.viewOnScratch": "Посмотреть проект в Scratch",
         "dash.wallpaper": "Обои",
-        "dash.wallpaper.changeOpaquePrompt": "Введите новое значение непрозрачности рабочего места",
-        "dash.wallpaper.changeOpaque": "Изменить непрозрачность рабочего места",
+        "dash.wallpaper.changeOpaquePrompt": "Введите новое значение непрозрачности рабочего места:",
+        "dash.wallpaper.changeOpaque": "Изменить непрозрачность",
         "dash.wallpaper.choose": "Выбрать обои...",
         "dash.wallpaper.remove": "Убрать обои"
     },

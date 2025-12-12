@@ -152,11 +152,11 @@ class WallpaperThemeMenu extends React.Component {
                         <MenuItem onClick={this.handleOpenFilePicker}>
                             {this.state.selectedFiles ? (
                                 <FormattedMessage
-                                    defaultMessage="Selected: {name}"
+                                    defaultMessage="Selected: {names}"
                                     description="Shows selected wallpaper file name"
                                     id="tw.fileInput.selected"
                                     values={{
-                                        name: this.state.selectedFiles[0].name
+                                        names: this.state.selectedFiles[0].name
                                     }}
                                 />
                             ) : (

@@ -88,8 +88,3 @@
 .open-link {
     margin-left: 0.5rem;
 }
-
-.input {
-    height: 25px;
-    width: 200px; /* todo: make input-adaptive width */
-}

@@ -82430,7 +82430,7 @@ const extensions = [
         name: "Playgama Bridge SDK",
         id: "playgama",
         description: "Blocks that initialize and interact with the Playgama Bridge SDK. Official.",
-        code: "https://github.com/Playgama/bridge-scratch/releases/download/v1.25.0-preview/PlaygamaBridge.js",
+        code: "https://github.com/playgama/bridge-scratch/releases/latest/download/PlaygamaBridge.js",
         // banner: "Playgama/PlaygamaBridge.svg",
         creator: ['Playgama', 'sergei-playgama', 'DBDev-IT'],
         isGitHub: true,
@@ -82474,7 +82474,7 @@ const extensions = [
         name: "Wheel Scroll",
         id: "Den4ik12WheelScroll",
         description: "Blocks for detecting mouse wheel scrolling.",
-        code: "Den4ik-12/WheelScroll 1.2.js",
+        code: "Den4ik-12/WheelScroll.js",
         banner: "Den4ik-12/WheelScroll.svg",
         creator: "Den4ik-12",
     },
@@ -146934,6 +146934,8 @@ const SoundPlayer = __webpack_require__(/*! ./SoundPlayer */ "./node_modules/scr
 const EffectChain = __webpack_require__(/*! ./effects/EffectChain */ "./node_modules/scratch-audio/src/effects/EffectChain.js");
 const PanEffect = __webpack_require__(/*! ./effects/PanEffect */ "./node_modules/scratch-audio/src/effects/PanEffect.js");
 const PitchEffect = __webpack_require__(/*! ./effects/PitchEffect */ "./node_modules/scratch-audio/src/effects/PitchEffect.js");
+const LowPassEffect = __webpack_require__(/*! ./effects/LowPassEffect */ "./node_modules/scratch-audio/src/effects/LowPassEffect.js");
+const HighPassEffect = __webpack_require__(/*! ./effects/HighPassEffect */ "./node_modules/scratch-audio/src/effects/HighPassEffect.js");
 const VolumeEffect = __webpack_require__(/*! ./effects/VolumeEffect */ "./node_modules/scratch-audio/src/effects/VolumeEffect.js");
 const SoundBank = __webpack_require__(/*! ./SoundBank */ "./node_modules/scratch-audio/src/SoundBank.js");
 
@@ -147004,7 +147006,7 @@ class AudioEngine {
      * Array of effects applied in order, left to right,
      * Left is closest to input, Right is closest to output
      */
-    this.effects = [PanEffect, PitchEffect, VolumeEffect];
+    this.effects = [PanEffect, PitchEffect, LowPassEffect, HighPassEffect, VolumeEffect];
     StartAudioContext(this.audioContext);
   }
 
@@ -147023,7 +147025,8 @@ class AudioEngine {
   get EFFECT_NAMES() {
     return {
       pitch: 'pitch',
-      pan: 'pan'
+      pan: 'pan',
+      highpass: 'highpass'
     };
   }
 
@@ -147369,7 +147372,7 @@ class SoundBank {
    * @param {string} soundId - id of sound to play
    * @returns {Promise} promise that resolves when the sound finishes playback
    */
-  playSound(target, soundId) {
+  playSound(target, soundId, from, to) {
     const effects = this.getSoundEffects(soundId);
     const player = this.getSoundPlayer(soundId);
     if (this.playerTargets.get(soundId) !== target) {
@@ -147381,7 +147384,7 @@ class SoundBank {
     effects.addSoundPlayer(player);
     effects.setEffectsFromTarget(target);
     player.connect(effects);
-    player.play();
+    player.play(from, to);
     return player.finished();
   }
 
@@ -147685,7 +147688,7 @@ class SoundPlayer extends EventEmitter {
    * If the sound is already playing it will stop playback with a quick fade
    * out.
    */
-  play() {
+  play(from, to) {
     if (this.isStarting) {
       this.emit('stop');
       this.emit('play');
@@ -147699,7 +147702,13 @@ class SoundPlayer extends EventEmitter {
     } else {
       this.initialize();
     }
-    this.outputNode.start();
+    if (typeof to != 'undefined') {
+      this.outputNode.start(0, from, Math.max(0, to - from));
+    } else if (from) {
+      this.outputNode.start(0, from);
+    } else {
+      this.outputNode.start();
+    }
     this.isPlaying = true;
     const {
       currentTime,
@@ -148150,6 +148159,134 @@ class EffectChain {
   }
 }
 module.exports = EffectChain;
+
+/***/ }),
+
+/***/ "./node_modules/scratch-audio/src/effects/HighPassEffect.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/scratch-audio/src/effects/HighPassEffect.js ***!
+  \******************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Effect = __webpack_require__(/*! ./Effect */ "./node_modules/scratch-audio/src/effects/Effect.js");
+
+/**
+ * A high pass filter effect, which cutoff frequency of the sound
+ */
+class HighPassEffect extends Effect {
+  /**
+   * Return the name of the effect.
+   * @type {string}
+   */
+  get name() {
+    return 'highpass';
+  }
+
+  /**
+   * Initialize the Effect.
+   * Effects start out uninitialized. Then initialize when they are first set
+   * with some value.
+   * @throws {Error} throws when left unimplemented
+   */
+  initialize() {
+    const audioContext = this.audioEngine.audioContext;
+    this.inputNode = audioContext.createBiquadFilter();
+    this.outputNode = audioContext.createGain();
+    this.inputNode.type = 'highpass';
+    this.inputNode.frequency.value = 0;
+    this.inputNode.connect(this.outputNode);
+    this.initialized = true;
+  }
+
+  /**
+   * Set the effect value
+   * @param {number} value - the new value to set the effect to
+   */
+  _set(value) {
+    this.value = value;
+    this.inputNode.frequency.value = value;
+  }
+
+  /**
+   * Clean up and disconnect audio nodes.
+   */
+  dispose() {
+    if (!this.initialized) {
+      return;
+    }
+    this.inputNode.disconnect();
+    this.inputNode = null;
+    this.outputNode = null;
+    this.target = null;
+    this.initialized = false;
+  }
+}
+module.exports = HighPassEffect;
+
+/***/ }),
+
+/***/ "./node_modules/scratch-audio/src/effects/LowPassEffect.js":
+/*!*****************************************************************!*\
+  !*** ./node_modules/scratch-audio/src/effects/LowPassEffect.js ***!
+  \*****************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+const Effect = __webpack_require__(/*! ./Effect */ "./node_modules/scratch-audio/src/effects/Effect.js");
+
+/**
+ * A low pass filter effect, which cutoff frequency of the sound
+ */
+class LowPassEffect extends Effect {
+  /**
+   * Return the name of the effect.
+   * @type {string}
+   */
+  get name() {
+    return 'lowpass';
+  }
+
+  /**
+   * Initialize the Effect.
+   * Effects start out uninitialized. Then initialize when they are first set
+   * with some value.
+   * @throws {Error} throws when left unimplemented
+   */
+  initialize() {
+    const audioContext = this.audioEngine.audioContext;
+    this.inputNode = audioContext.createBiquadFilter();
+    this.outputNode = audioContext.createGain();
+    this.inputNode.type = 'lowpass';
+    this.inputNode.frequency.value = 24000;
+    this.inputNode.connect(this.outputNode);
+    this.initialized = true;
+  }
+
+  /**
+   * Set the effect value
+   * @param {number} value - the new value to set the effect to
+   */
+  _set(value) {
+    this.value = value;
+    this.inputNode.frequency.value = value;
+  }
+
+  /**
+   * Clean up and disconnect audio nodes.
+   */
+  dispose() {
+    if (!this.initialized) {
+      return;
+    }
+    this.inputNode.disconnect();
+    this.inputNode = null;
+    this.outputNode = null;
+    this.target = null;
+    this.initialized = false;
+  }
+}
+module.exports = LowPassEffect;
 
 /***/ }),
 
@@ -150931,6 +151068,13 @@ const ModeToolsComponent = props => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_
   })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_button_button_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
     className: classnames__WEBPACK_IMPORTED_MODULE_0___default()(_font_dropdown_css__WEBPACK_IMPORTED_MODULE_9___default.a.modMenuItem),
     onClick: props.onChoose,
+    onMouseOver: props.onHoverRubik
+  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(DisplayFont, {
+    font: _lib_fonts__WEBPACK_IMPORTED_MODULE_7__["default"].RUBIK,
+    getFontName: props.getFontName
+  })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(_button_button_jsx__WEBPACK_IMPORTED_MODULE_4__["default"], {
+    className: classnames__WEBPACK_IMPORTED_MODULE_0___default()(_font_dropdown_css__WEBPACK_IMPORTED_MODULE_9___default.a.modMenuItem),
+    onClick: props.onChoose,
     onMouseOver: props.onHoverChinese
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement(DisplayFont, {
     font: _lib_fonts__WEBPACK_IMPORTED_MODULE_7__["default"].CHINESE,
@@ -151018,6 +151162,7 @@ ModeToolsComponent.propTypes = {
   onHoverMinecrafter: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
   onHoverObelixPro: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
   onHoverJetBrainsMono: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
+  onHoverRubik: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
   onHoverSansSerif: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
   onHoverSerif: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func,
   onOpenDropdown: prop_types__WEBPACK_IMPORTED_MODULE_1___default.a.func
@@ -152125,7 +152270,7 @@ const ModeToolsComponent = props => {
       "defaultMessage": "Size"
     },
     brushSimplify: {
-      "id": "paint.modeTools.brushSimplify",
+      "id": "dash.paint.modeTools.brushSimplify",
       "defaultMessage": "Smoothing"
     },
     eraserSize: {
@@ -152133,31 +152278,31 @@ const ModeToolsComponent = props => {
       "defaultMessage": "Eraser size"
     },
     eraserSimplify: {
-      "id": "paint.modeTools.eraserSimplify",
+      "id": "dash.paint.modeTools.eraserSimplify",
       "defaultMessage": "Smoothing"
     },
     brushCircle: {
-      "id": "paint.modeTools.circleSquare",
-      "defaultMessage": "Circle Brush"
+      "id": "dash.paint.modeTools.brushCircle",
+      "defaultMessage": "Circle brush"
     },
     brushSquare: {
-      "id": "paint.modeTools.brushSquare",
-      "defaultMessage": "Square Brush"
+      "id": "dash.paint.modeTools.brushSquare",
+      "defaultMessage": "Square brush"
     },
     roundedCornerSize: {
-      "id": "paint.modeTools.roundedCornerSize",
+      "id": "dash.paint.modeTools.roundedCornerSize",
       "defaultMessage": "Rounded corner size"
     },
     currentSideCount: {
-      "id": "paint.modeTools.currentSideCount",
+      "id": "dash.paint.modeTools.currentSideCount",
       "defaultMessage": "Polygon side count"
     },
     spokeRatio: {
-      "id": "paint.modeTools.spikeRatio",
+      "id": "dash.paint.modeTools.spikeRatio",
       "defaultMessage": "Star spoke ratio"
     },
     penSimplify: {
-      "id": "paint.modeTools.penSimplify",
+      "id": "dash.paint.modeTools.penSimplify",
       "defaultMessage": "Smoothing"
     },
     copy: {
@@ -152165,7 +152310,7 @@ const ModeToolsComponent = props => {
       "defaultMessage": "Copy"
     },
     cut: {
-      "id": "paint.modeTools.cut",
+      "id": "dash.paint.modeTools.cut",
       "defaultMessage": "Cut"
     },
     paste: {
@@ -152205,56 +152350,60 @@ const ModeToolsComponent = props => {
       "defaultMessage": "Outlined"
     },
     movementCenter: {
-      "id": "paint.modeTools.movementCenter",
+      "id": "dash.paint.modeTools.movementCenter",
       "defaultMessage": "Center"
     },
     joinSpiked: {
-      "id": "pm.paint.modeTools.joinSpiked",
+      "id": "dash.paint.modeTools.joinSpiked",
       "defaultMessage": "Spiked"
     },
     joinRounded: {
-      "id": "pm.paint.modeTools.joinRounded",
+      "id": "dash.paint.modeTools.joinRounded",
       "defaultMessage": "Rounded"
     },
     joinBeveled: {
-      "id": "pm.paint.modeTools.joinBeveled",
+      "id": "dash.paint.modeTools.joinBeveled",
       "defaultMessage": "Beveled"
     },
     endRounded: {
-      "id": "pm.paint.modeTools.endRounded",
+      "id": "dash.paint.modeTools.endRounded",
       "defaultMessage": "Rounded"
     },
     endSquared: {
-      "id": "pm.paint.modeTools.endSquared",
+      "id": "dash.paint.modeTools.endSquared",
       "defaultMessage": "Squared"
     },
     merge: {
-      "id": "pm.paint.modeTools.merge",
+      "id": "dash.paint.modeTools.merge",
       "defaultMessage": "Merge"
     },
     subtract: {
-      "id": "pm.paint.modeTools.subtract",
+      "id": "dash.paint.modeTools.subtract",
       "defaultMessage": "Subtract"
     },
     mask: {
-      "id": "pm.paint.modeTools.mask",
+      "id": "dash.paint.modeTools.mask",
       "defaultMessage": "Mask"
     },
     filter: {
-      "id": "pm.paint.modeTools.filter",
+      "id": "dash.paint.modeTools.filter",
       "defaultMessage": "Filter"
     },
     leftAlign: {
-      "id": "pm.paint.modeTools.leftAlign",
-      "defaultMessage": "Left Align"
+      "id": "dash.paint.modeTools.leftAlign",
+      "defaultMessage": "Left align"
     },
     rightAlign: {
-      "id": "pm.paint.modeTools.rightAlign",
-      "defaultMessage": "Right Align"
+      "id": "dash.paint.modeTools.rightAlign",
+      "defaultMessage": "Right align"
     },
     centerAlign: {
-      "id": "pm.paint.modeTools.centerAlign",
-      "defaultMessage": "Center Align"
+      "id": "dash.paint.modeTools.centerAlign",
+      "defaultMessage": "Center align"
+    },
+    more: {
+      "id": "paint.paintEditor.more",
+      "defaultMessage": "More"
     }
   });
   switch (props.mode) {
@@ -152501,6 +152650,21 @@ const ModeToolsComponent = props => {
         })));
       }
     case _lib_modes__WEBPACK_IMPORTED_MODULE_28__["default"].RESHAPE:
+      const lineEndsReshape = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_input_group_input_group_jsx__WEBPACK_IMPORTED_MODULE_24__["default"], {
+        className: classnames__WEBPACK_IMPORTED_MODULE_0___default()(_mode_tools_css__WEBPACK_IMPORTED_MODULE_31___default.a.modDashedBorder, _mode_tools_css__WEBPACK_IMPORTED_MODULE_31___default.a.modLabeledIconHeight)
+      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_labeled_icon_button_labeled_icon_button_jsx__WEBPACK_IMPORTED_MODULE_27__["default"], {
+        disabled: props.hasSelectedRoundEnds,
+        hideLabel: Object(_lib_hide_label__WEBPACK_IMPORTED_MODULE_30__["hideLabel"])(props.intl.locale),
+        imgSrc: _tw_recolor_build_icons_round_line_svg__WEBPACK_IMPORTED_MODULE_38__["default"],
+        title: props.intl.formatMessage(messages.endRounded),
+        onClick: props.onRoundEnds
+      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_labeled_icon_button_labeled_icon_button_jsx__WEBPACK_IMPORTED_MODULE_27__["default"], {
+        disabled: props.hasSelectedSquareEnds,
+        hideLabel: Object(_lib_hide_label__WEBPACK_IMPORTED_MODULE_30__["hideLabel"])(props.intl.locale),
+        imgSrc: _tw_recolor_build_icons_square_line_svg__WEBPACK_IMPORTED_MODULE_39__["default"],
+        title: props.intl.formatMessage(messages.endSquared),
+        onClick: props.onSquareEnds
+      }));
       const lineJoinReshape = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_input_group_input_group_jsx__WEBPACK_IMPORTED_MODULE_24__["default"], {
         className: classnames__WEBPACK_IMPORTED_MODULE_0___default()(_mode_tools_css__WEBPACK_IMPORTED_MODULE_31___default.a.modDashedBorder, _mode_tools_css__WEBPACK_IMPORTED_MODULE_31___default.a.modLabeledIconHeight)
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_labeled_icon_button_labeled_icon_button_jsx__WEBPACK_IMPORTED_MODULE_27__["default"], {
@@ -152550,23 +152714,9 @@ const ModeToolsComponent = props => {
         imgSrc: _tw_recolor_build_icons_straight_point_svg__WEBPACK_IMPORTED_MODULE_62__["default"],
         title: props.intl.formatMessage(messages.pointed),
         onClick: props.onPointPoints
-      })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_input_group_input_group_jsx__WEBPACK_IMPORTED_MODULE_24__["default"], {
-        className: classnames__WEBPACK_IMPORTED_MODULE_0___default()(_mode_tools_css__WEBPACK_IMPORTED_MODULE_31___default.a.modDashedBorder, _mode_tools_css__WEBPACK_IMPORTED_MODULE_31___default.a.modLabeledIconHeight)
-      }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_labeled_icon_button_labeled_icon_button_jsx__WEBPACK_IMPORTED_MODULE_27__["default"], {
-        disabled: props.hasSelectedRoundEnds,
-        hideLabel: Object(_lib_hide_label__WEBPACK_IMPORTED_MODULE_30__["hideLabel"])(props.intl.locale),
-        imgSrc: _tw_recolor_build_icons_round_line_svg__WEBPACK_IMPORTED_MODULE_38__["default"],
-        title: props.intl.formatMessage(messages.endRounded),
-        onClick: props.onRoundEnds
-      }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_labeled_icon_button_labeled_icon_button_jsx__WEBPACK_IMPORTED_MODULE_27__["default"], {
-        disabled: props.hasSelectedSquareEnds,
-        hideLabel: Object(_lib_hide_label__WEBPACK_IMPORTED_MODULE_30__["hideLabel"])(props.intl.locale),
-        imgSrc: _tw_recolor_build_icons_square_line_svg__WEBPACK_IMPORTED_MODULE_39__["default"],
-        title: props.intl.formatMessage(messages.endSquared),
-        onClick: props.onSquareEnds
       })), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(react_responsive__WEBPACK_IMPORTED_MODULE_5___default.a, {
         minWidth: _lib_layout_constants__WEBPACK_IMPORTED_MODULE_6__["default"].fullSizeEditorMinWidthExtraToolsCollapsed
-      }, lineJoinReshape, deleteSelectedNodes), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(react_responsive__WEBPACK_IMPORTED_MODULE_5___default.a, {
+      }, lineEndsReshape, lineJoinReshape, deleteSelectedNodes), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(react_responsive__WEBPACK_IMPORTED_MODULE_5___default.a, {
         maxWidth: _lib_layout_constants__WEBPACK_IMPORTED_MODULE_6__["default"].fullSizeEditorMinWidthExtraToolsCollapsed - 1
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_input_group_input_group_jsx__WEBPACK_IMPORTED_MODULE_24__["default"], {
         className: classnames__WEBPACK_IMPORTED_MODULE_0___default()(_mode_tools_css__WEBPACK_IMPORTED_MODULE_31___default.a.modDashedBorder, _mode_tools_css__WEBPACK_IMPORTED_MODULE_31___default.a.modLabeledIconHeight)
@@ -152576,9 +152726,9 @@ const ModeToolsComponent = props => {
         popoverContent: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_input_group_input_group_jsx__WEBPACK_IMPORTED_MODULE_24__["default"], {
           className: _mode_tools_css__WEBPACK_IMPORTED_MODULE_31___default.a.modContextMenu,
           rtl: props.rtl
-        }, lineJoinReshape, deleteSelectedNodes),
+        }, lineEndsReshape, lineJoinReshape, deleteSelectedNodes),
         tipSize: .01
-      }, "More"))));
+      }, props.intl.formatMessage(messages.more)))));
     case _lib_modes__WEBPACK_IMPORTED_MODULE_28__["default"].BIT_SELECT:
     /* falls through */
     case _lib_modes__WEBPACK_IMPORTED_MODULE_28__["default"].SELECT:
@@ -152621,7 +152771,7 @@ const ModeToolsComponent = props => {
       const movementOptions = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_input_group_input_group_jsx__WEBPACK_IMPORTED_MODULE_24__["default"], {
         className: classnames__WEBPACK_IMPORTED_MODULE_0___default()(_mode_tools_css__WEBPACK_IMPORTED_MODULE_31___default.a.modDashedBorder, _mode_tools_css__WEBPACK_IMPORTED_MODULE_31___default.a.modLabeledIconHeight)
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_labeled_icon_button_labeled_icon_button_jsx__WEBPACK_IMPORTED_MODULE_27__["default"], {
-        hideLabel: props.intl.locale !== 'en',
+        hideLabel: Object(_lib_hide_label__WEBPACK_IMPORTED_MODULE_30__["hideLabel"])(props.intl.locale),
         imgSrc: _tw_recolor_build_icons_centerSelection_svg__WEBPACK_IMPORTED_MODULE_61__["default"],
         title: props.intl.formatMessage(messages.movementCenter),
         onClick: props.onCenterSelection
@@ -152669,7 +152819,7 @@ const ModeToolsComponent = props => {
           rtl: props.rtl
         }, reshapingMethods),
         tipSize: .01
-      }, "More"))) : null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(react_responsive__WEBPACK_IMPORTED_MODULE_5___default.a, {
+      }, props.intl.formatMessage(messages.more)))) : null), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(react_responsive__WEBPACK_IMPORTED_MODULE_5___default.a, {
         maxWidth: _lib_layout_constants__WEBPACK_IMPORTED_MODULE_6__["default"].fullSizeEditorMinWidthExtraToolsCollapsed - 1
       }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_3___default.a.createElement(_input_group_input_group_jsx__WEBPACK_IMPORTED_MODULE_24__["default"], {
         className: classnames__WEBPACK_IMPORTED_MODULE_0___default()(_mode_tools_css__WEBPACK_IMPORTED_MODULE_31___default.a.modDashedBorder, _mode_tools_css__WEBPACK_IMPORTED_MODULE_31___default.a.modLabeledIconHeight)
@@ -152681,7 +152831,7 @@ const ModeToolsComponent = props => {
           rtl: props.rtl
         }, flipOptions, movementOptions, reshapingMethods),
         tipSize: .01
-      }, "More"))));
+      }, props.intl.formatMessage(messages.more)))));
     case _lib_modes__WEBPACK_IMPORTED_MODULE_28__["default"].BIT_TEXT:
     /* falls through */
     case _lib_modes__WEBPACK_IMPORTED_MODULE_28__["default"].TEXT:
@@ -153392,7 +153542,7 @@ const PenModeComponent = props => /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0_
   imgDescriptor: {
     defaultMessage: 'Pen',
     description: 'Label for the pen tool, which draws outlines',
-    id: 'paint.penMode.pen'
+    id: 'dash.paint.penMode.pen'
   },
   imgSrc: _pen_svg__WEBPACK_IMPORTED_MODULE_3___default.a,
   isSelected: props.isSelected,
@@ -156484,7 +156634,7 @@ __webpack_require__.r(__webpack_exports__);
 class FontDropdown extends react__WEBPACK_IMPORTED_MODULE_4___default.a.Component {
   constructor(props) {
     super(props);
-    lodash_bindall__WEBPACK_IMPORTED_MODULE_2___default()(this, ['getFontName', 'handleHoverCustom', 'handleManageFonts', 'handleChangeFontSerif', 'handleChangeFontSansSerif', 'handleChangeFontHandwriting', 'handleChangeFontMarker', 'handleChangeFontCurly', 'handleChangeFontPixel', 'handleChangeFontPlayful', 'handleChangeFontBubbly', 'handleChangeFontTechnological', 'handleChangeFontBitsAndBytes', 'handleChangeFontArcade', 'handleChangeFontGogono', 'handleChangeFontJustBubble', 'handleChangeFontLilitaOne', 'handleChangeFontMinecrafter', 'handleChangeFontObelixPro', 'handleChangeFontJetBrainsMono', 'handleChangeFontScratch', 'handleChangeFontBranches', 'handleChangeFontArchivo', 'handleChangeFontArchivoBlack', 'handleChangeFontChinese', 'handleChangeFontJapanese', 'handleChangeFontKorean', 'handleOpenDropdown', 'handleClickOutsideDropdown', 'setDropdown', 'handleChoose', 'handleChooseCustom', 'handleChooseExisting']);
+    lodash_bindall__WEBPACK_IMPORTED_MODULE_2___default()(this, ['getFontName', 'handleHoverCustom', 'handleManageFonts', 'handleChangeFontSerif', 'handleChangeFontSansSerif', 'handleChangeFontHandwriting', 'handleChangeFontMarker', 'handleChangeFontCurly', 'handleChangeFontPixel', 'handleChangeFontPlayful', 'handleChangeFontBubbly', 'handleChangeFontTechnological', 'handleChangeFontBitsAndBytes', 'handleChangeFontArcade', 'handleChangeFontGogono', 'handleChangeFontJustBubble', 'handleChangeFontLilitaOne', 'handleChangeFontMinecrafter', 'handleChangeFontObelixPro', 'handleChangeFontJetBrainsMono', 'handleChangeFontRubik', 'handleChangeFontScratch', 'handleChangeFontBranches', 'handleChangeFontArchivo', 'handleChangeFontArchivoBlack', 'handleChangeFontChinese', 'handleChangeFontJapanese', 'handleChangeFontKorean', 'handleOpenDropdown', 'handleClickOutsideDropdown', 'setDropdown', 'handleChoose', 'handleChooseCustom', 'handleChooseExisting']);
     this.customFonts = {};
     this.acceptedCustomFontAgreement = false;
     this.latestCustomFont = null;
@@ -156727,6 +156877,11 @@ class FontDropdown extends react__WEBPACK_IMPORTED_MODULE_4___default.a.Componen
       this.props.changeFont(_lib_fonts__WEBPACK_IMPORTED_MODULE_6__["default"].JETBRAINSMONO);
     }
   }
+  handleChangeFontRubik() {
+    if (this.dropDown.isOpen()) {
+      this.props.changeFont(_lib_fonts__WEBPACK_IMPORTED_MODULE_6__["default"].RUBIK);
+    }
+  }
   handleChangeFontScratch() {
     if (this.dropDown.isOpen()) {
       this.props.changeFont(_lib_fonts__WEBPACK_IMPORTED_MODULE_6__["default"].SCRATCH);
@@ -156858,6 +157013,7 @@ class FontDropdown extends react__WEBPACK_IMPORTED_MODULE_4___default.a.Componen
       onHoverMinecrafter: this.handleChangeFontMinecrafter,
       onHoverObelixPro: this.handleChangeFontObelixPro,
       onHoverJetBrainsMono: this.handleChangeFontJetBrainsMono,
+      onHoverRubik: this.handleChangeFontRubik,
       onHoverScratch: this.handleChangeFontScratch,
       onHoverBranches: this.handleChangeFontBranches,
       onHoverSansSerif: this.handleChangeFontSansSerif,
@@ -171697,6 +171853,7 @@ const Fonts = {
   MINECRAFTER: 'Minecrafter',
   OBELIXPRO: 'Obelix Pro',
   JETBRAINSMONO: 'Jet Brains Mono',
+  RUBIK: 'Rubik',
   SCRATCH: 'Scratch',
   BRANCHES: 'Branches',
   CHINESE: '"Microsoft YaHei", "微软雅黑", STXihei, "华文细黑"',
@@ -171958,8 +172115,8 @@ const messages = Object(react_intl__WEBPACK_IMPORTED_MODULE_0__["defineMessages"
     "defaultMessage": "Reshape"
   },
   roundedRect: {
-    "id": "paint.roundedRectMode.roundedRect",
-    "defaultMessage": "Rounded Rectangle"
+    "id": "dash.paint.roundedRectMode.roundedRect",
+    "defaultMessage": "Rounded rectangle"
   },
   select: {
     "id": "paint.selectMode.select",
@@ -171970,19 +172127,19 @@ const messages = Object(react_intl__WEBPACK_IMPORTED_MODULE_0__["defineMessages"
     "defaultMessage": "Text"
   },
   sussy: {
-    "id": "paint.shapeMode.shape",
+    "id": "dash.paint.shapeMode.shape",
     "defaultMessage": "Shapes"
   },
   dragon: {
-    "id": "paint.dragonMode.dragon",
+    "id": "dash.paint.dragonMode.dragon",
     "defaultMessage": "Dragon"
   },
   triangle: {
-    "id": "paint.triangleMode.triangle",
+    "id": "dash.paint.triangleMode.triangle",
     "defaultMessage": "Triangle"
   },
   arrow: {
-    "id": "paint.arrowMode.arrow",
+    "id": "dash.paint.arrowMode.arrow",
     "defaultMessage": "Arrow"
   }
 });
@@ -193588,7 +193745,7 @@ module.exports = {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = function() {
-  return new Worker(__webpack_require__.p + "js/extension-worker/extension-worker.d753d008dca95daaa3b9.js");
+  return new Worker(__webpack_require__.p + "js/extension-worker/extension-worker.4e2e23d4d96542212c12.js");
 };
 
 /***/ }),
@@ -194855,7 +195012,11 @@ class Scratch3LooksBlocks {
     });
   }
   think(args, util) {
-    this.runtime.emit(Scratch3LooksBlocks.SAY_OR_THINK, util.target, 'think', args.MESSAGE);
+    this._think(args.MESSAGE, util.target);
+  }
+  _think(message, target) {
+    // used by compiler
+    this.runtime.emit(Scratch3LooksBlocks.SAY_OR_THINK, target, 'think', message);
   }
   thinkforsecs(args, util) {
     this.think(args, util);
@@ -195810,7 +195971,9 @@ class Scratch3ProcedureBlocks {
       procedures_call: this.call,
       procedures_return: this.return,
       argument_reporter_string_number: this.argumentReporterStringNumber,
-      argument_reporter_boolean: this.argumentReporterBoolean
+      argument_reporter_boolean: this.argumentReporterBoolean,
+      argument_reporter_array: this.argumentReporterArray,
+      argument_reporter_object: this.argumentReporterObject
     };
   }
   definition() {
@@ -195906,6 +196069,24 @@ class Scratch3ProcedureBlocks {
       if (lowercaseValue === 'is dash?' || lowercaseValue === 'is turbowarp?') {
         return true;
       }
+      // When the parameter is not found in the most recent procedure
+      // call, the default is always 0.
+      return 0;
+    }
+    return value;
+  }
+  argumentReporterArray(args, util) {
+    const value = util.getParam(args.VALUE);
+    if (value === null) {
+      // When the parameter is not found in the most recent procedure
+      // call, the default is always 0.
+      return 0;
+    }
+    return value;
+  }
+  argumentReporterObject(args, util) {
+    const value = util.getParam(args.VALUE);
+    if (value === null) {
       // When the parameter is not found in the most recent procedure
       // call, the default is always 0.
       return 0;
@@ -196333,7 +196514,9 @@ class Scratch3SoundBlocks {
     return {
       effects: {
         pitch: 0,
-        pan: 0
+        pan: 0,
+        highpass: 0,
+        lowpass: 24000
       }
     };
   }
@@ -196384,7 +196567,17 @@ class Scratch3SoundBlocks {
       pan: {
         min: -100,
         max: 100
-      } // 100% left to 100% right
+      },
+      // 100% left to 100% right
+      highpass: {
+        min: 0,
+        max: 24000
+      },
+      // 0 to 24000 Hz (half of sampleRate in AudioContext)
+      lowpass: {
+        min: 0,
+        max: 24000
+      } // 0 to 24000 Hz (half of sampleRate in AudioContext)
     };
   }
 
@@ -196400,6 +196593,16 @@ class Scratch3SoundBlocks {
       pan: {
         min: -100,
         max: 100
+      },
+      // No reason for these to go beyond default limits
+      highpass: {
+        min: 0,
+        max: 24000
+      },
+      // No reason for these to go beyond default limits
+      lowpass: {
+        min: 0,
+        max: 24000
       }
     };
   }
@@ -196444,10 +196647,15 @@ class Scratch3SoundBlocks {
     return {
       sound_play: this.playSound,
       sound_playuntildone: this.playSoundAndWait,
+      sound_playfrom: this.playSoundFrom,
+      sound_playfromuntildone: this.playSoundFromAndWait,
+      sound_stop: this.stopSound,
       sound_stopallsounds: this.stopAllSounds,
+      sound_issoundplaying: this.isSoundPlaying,
       sound_seteffectto: this.setEffect,
       sound_changeeffectby: this.changeEffect,
       sound_cleareffects: this.clearEffects,
+      sound_geteffect: this.getEffect,
       sound_sounds_menu: this.soundsMenu,
       sound_beats_menu: this.beatsMenu,
       sound_effects_menu: this.effectsMenu,
@@ -196471,6 +196679,13 @@ class Scratch3SoundBlocks {
   playSoundAndWait(args, util) {
     return this._playSound(args, util, STORE_WAITING);
   }
+  playSoundFrom(args, util) {
+    // Don't return the promise, it's the only difference for AndWait
+    this._playSound(args, util);
+  }
+  playSoundFromAndWait(args, util) {
+    return this._playSound(args, util, STORE_WAITING);
+  }
   _playSound(args, util, storeWaiting) {
     const index = this._getSoundIndex(args.SOUND_MENU, util);
     if (index >= 0) {
@@ -196483,13 +196698,14 @@ class Scratch3SoundBlocks {
       const {
         soundId
       } = sprite.sounds[index];
+      const from = Math.max(Cast.toNumber(args.FROM), 0);
       if (sprite.soundBank) {
         if (storeWaiting === STORE_WAITING) {
           this._addWaitingSound(target.id, soundId);
         } else {
           this._removeWaitingSound(target.id, soundId);
         }
-        return sprite.soundBank.playSound(target, soundId);
+        return sprite.soundBank.playSound(target, soundId, from);
       }
     }
   }
@@ -196537,6 +196753,24 @@ class Scratch3SoundBlocks {
     // if there is no sound by that name, return -1
     return -1;
   }
+  stopSound(args, util) {
+    const index = this._getSoundIndex(args.SOUND_MENU, util);
+    if (index >= 0) {
+      const {
+        target
+      } = util;
+      const {
+        sprite
+      } = target;
+      const {
+        soundId
+      } = sprite.sounds[index];
+      if (sprite.soundBank) {
+        sprite.soundBank.stop(target, soundId);
+        this._removeWaitingSound(target.id, soundId);
+      }
+    }
+  }
   stopAllSounds() {
     if (this.runtime.targets === null) return;
     const allTargets = this.runtime.targets;
@@ -196560,6 +196794,21 @@ class Scratch3SoundBlocks {
         }
         this.waitingSounds[target.id].clear();
       }
+    }
+  }
+  isSoundPlaying(args, util) {
+    const index = this._getSoundIndex(args.SOUND_MENU, util);
+    if (index < 0) return false;
+    const {
+      sprite
+    } = util.target;
+    const {
+      soundId
+    } = sprite.sounds[index];
+    if (sprite.soundBank) {
+      return sprite.soundBank.soundPlayers[soundId].isPlaying;
+    } else {
+      return false;
     }
   }
   setEffect(args, util) {
@@ -196616,6 +196865,12 @@ class Scratch3SoundBlocks {
     for (let i = 0; i < allTargets.length; i++) {
       this._clearEffectsForTarget(allTargets[i]);
     }
+  }
+  getEffect(args, util) {
+    const effect = Cast.toString(args.EFFECT).toLowerCase();
+    const soundState = this._getSoundState(util.target);
+    if (!Object.prototype.hasOwnProperty.call(soundState.effects, effect)) return 0;
+    return soundState.effects[effect];
   }
   setVolume(args, util) {
     const volume = Cast.toNumber(args.VOLUME);
@@ -196717,8 +196972,8 @@ module.exports = new CompatibilityLayerBlockUtility();
 
 // Please keep these lists alphabetical.
 
-const stacked = ['event_open', 'looks_changestretchby', 'looks_hideallsprites', 'looks_say', 'looks_sayforsecs', 'looks_setstretchto', 'looks_switchbackdroptoandwait', 'looks_think', 'looks_thinkforsecs', 'motion_align_scene', 'motion_glidesecstoxy', 'motion_glideto', 'motion_goto', 'motion_pointtowards', 'motion_scroll_right', 'motion_scroll_up', 'operator_newline', 'sensing_askandwait', 'sensing_setdragmode', 'sound_changeeffectby', 'sound_changevolumeby', 'sound_cleareffects', 'sound_play', 'sound_playuntildone', 'sound_seteffectto', 'sound_setvolumeto', 'sound_stopallsounds'];
-const inputs = ['motion_xscroll', 'motion_yscroll', 'operator_newline', 'sensing_loud', 'sensing_loudness', 'sensing_userid', 'sound_volume'];
+const stacked = ['event_open', 'looks_changestretchby', 'looks_hideallsprites', 'looks_sayforsecs', 'looks_setstretchto', 'looks_switchbackdroptoandwait', 'looks_thinkforsecs', 'motion_align_scene', 'motion_glidesecstoxy', 'motion_glideto', 'motion_goto', 'motion_pointtowards', 'motion_scroll_right', 'motion_scroll_up', 'sensing_askandwait', 'sensing_setdragmode', 'sound_changeeffectby', 'sound_changevolumeby', 'sound_cleareffects', 'sound_play', 'sound_playuntildone', 'sound_playfrom', 'sound_playfromuntildone', 'sound_seteffectto', 'sound_setvolumeto', 'sound_stop', 'sound_stopallsounds'];
+const inputs = ['motion_xscroll', 'motion_yscroll', 'sensing_loud', 'sensing_loudness', 'sensing_userid', 'sound_geteffect', 'sound_issoundplaying', 'sound_volume'];
 module.exports = {
   stacked,
   inputs
@@ -196931,6 +197186,8 @@ const StackOpcode = {
   LOOKS_BACKDROP_SET: 'looks.switchBackdrop',
   LOOKS_COSTUME_NEXT: 'looks.nextCostume',
   LOOKS_COSTUME_SET: 'looks.switchCostume',
+  LOOKS_SAY: 'looks.say',
+  LOOKS_THINK: 'looks.think',
   MOTION_X_SET: 'motion.setX',
   MOTION_X_CHANGE: 'motion.changeX',
   MOTION_Y_SET: 'motion.setY',
@@ -197824,6 +198081,30 @@ class ScriptTreeGenerator {
             if (name.toLowerCase() === 'is compiled?' || name.toLowerCase() === 'is turbowarp?' || name.toLowerCase() === 'is dash?') {
               return this.createConstantInput(true).toType(InputType.BOOLEAN);
             }
+            return this.createConstantInput(0);
+          }
+          return new IntermediateInput(InputOpcode.PROCEDURE_ARGUMENT, InputType.ANY, {
+            index
+          });
+        }
+      case 'argument_reporter_array':
+        {
+          // see argument_reporter_string_number above
+          const name = block.fields.VALUE.value;
+          const index = this.script.arguments.lastIndexOf(name);
+          if (index === -1) {
+            return this.createConstantInput(0);
+          }
+          return new IntermediateInput(InputOpcode.PROCEDURE_ARGUMENT, InputType.ANY, {
+            index
+          });
+        }
+      case 'argument_reporter_object':
+        {
+          // see argument_reporter_string_number above
+          const name = block.fields.VALUE.value;
+          const index = this.script.arguments.lastIndexOf(name);
+          if (index === -1) {
             return this.createConstantInput(0);
           }
           return new IntermediateInput(InputOpcode.PROCEDURE_ARGUMENT, InputType.ANY, {
@@ -198769,6 +199050,10 @@ class ScriptTreeGenerator {
         return new IntermediateStackBlock(StackOpcode.LOOKS_BACKDROP_NEXT);
       case 'looks_nextcostume':
         return new IntermediateStackBlock(StackOpcode.LOOKS_COSTUME_NEXT);
+      case 'looks_say':
+        return new IntermediateStackBlock(StackOpcode.LOOKS_SAY, {
+          message: this.descendInputOfBlock(block, 'MESSAGE')
+        });
       case 'looks_seteffectto':
         return new IntermediateStackBlock(StackOpcode.LOOKS_EFFECT_SET, {
           effect: block.fields.EFFECT.value.toLowerCase(),
@@ -198787,6 +199072,10 @@ class ScriptTreeGenerator {
       case 'looks_switchcostumeto':
         return new IntermediateStackBlock(StackOpcode.LOOKS_COSTUME_SET, {
           costume: this.descendInputOfBlock(block, 'COSTUME', true)
+        });
+      case 'looks_think':
+        return new IntermediateStackBlock(StackOpcode.LOOKS_THINK, {
+          message: this.descendInputOfBlock(block, 'MESSAGE')
         });
       case 'motion_changexby':
         return new IntermediateStackBlock(StackOpcode.MOTION_X_CHANGE, {
@@ -199663,17 +199952,35 @@ class IROptimizer {
         return state.getVariableType(inputs.variable);
       case InputOpcode.ADDON_CALL:
         break;
+      case InputOpcode.CAST_BOOLEAN:
+        {
+          const innerType = inputs.target.type;
+          if (innerType & InputType.BOOLEAN) return innerType;
+          return InputType.BOOLEAN;
+        }
       case InputOpcode.CAST_NUMBER:
         {
           const innerType = inputs.target.type;
           if (innerType & InputType.NUMBER) return innerType;
           return InputType.NUMBER;
         }
+      case InputOpcode.CAST_NUMBER_INDEX:
+        {
+          const innerType = inputs.target.type;
+          if (innerType & InputType.NUMBER_INDEX) return innerType;
+          return InputType.NUMBER_INDEX;
+        }
       case InputOpcode.CAST_NUMBER_OR_NAN:
         {
           const innerType = inputs.target.type;
           if (innerType & InputType.NUMBER_OR_NAN) return innerType;
           return InputType.NUMBER_OR_NAN;
+        }
+      case InputOpcode.CAST_STRING:
+        {
+          const innerType = inputs.target.type;
+          if (innerType & InputType.STRING) return innerType;
+          return InputType.STRING;
         }
       case InputOpcode.OP_ADD:
         {
@@ -200027,9 +200334,12 @@ class IROptimizer {
         break;
       case StackOpcode.CONTROL_WHILE:
       case StackOpcode.CONTROL_FOR:
+        modified = this.analyzeInputs(inputs, state) || modified;
+        modified = this.analyzeLoopedStack(inputs.do, state, stackBlock, true) || modified;
+        break;
       case StackOpcode.CONTROL_REPEAT:
         modified = this.analyzeInputs(inputs, state) || modified;
-        modified = this.analyzeLoopedStack(inputs.do, state, stackBlock) || modified;
+        modified = this.analyzeLoopedStack(inputs.do, state, stackBlock, false) || modified;
         break;
       case StackOpcode.CONTROL_IF_ELSE:
         {
@@ -200110,19 +200420,22 @@ class IROptimizer {
    * @param {IntermediateStack} stack
    * @param {TypeState} state
    * @param {IntermediateStackBlock} block
+   * @param {boolean} willReevaluateInputs
    * @returns {boolean}
    * @private
    */
-  analyzeLoopedStack(stack, state, block) {
+  analyzeLoopedStack(stack, state, block, willReevaluateInputs) {
+    let modified = false;
     if (block.yields && !this.ignoreYields) {
-      let modified = state.clear();
+      modified = state.clear();
+      if (willReevaluateInputs) {
+        modified = this.analyzeInputs(block.inputs, state) || modified;
+      }
       block.entryState = state.clone();
       block.exitState = state.clone();
-      modified = this.analyzeInputs(block.inputs, state) || modified;
       return this.analyzeStack(stack, state) || modified;
     }
     let iterations = 0;
-    let modified = false;
     let keepLooping;
     do {
       // If we are stuck in an apparent infinite loop, give up and assume the worst.
@@ -200138,7 +200451,9 @@ class IROptimizer {
       const newState = state.clone();
       modified = this.analyzeStack(stack, newState) || modified;
       modified = (keepLooping = state.or(newState)) || modified;
-      modified = this.analyzeInputs(block.inputs, state) || modified;
+      if (willReevaluateInputs) {
+        modified = this.analyzeInputs(block.inputs, state) || modified;
+      }
     } while (keepLooping);
     block.entryState = state.clone();
     return modified;
@@ -200158,6 +200473,14 @@ class IROptimizer {
       }
     }
     switch (input.opcode) {
+      case InputOpcode.CAST_BOOLEAN:
+        {
+          const targetType = input.inputs.target.type;
+          if ((targetType & InputType.BOOLEAN) === targetType) {
+            return input.inputs.target;
+          }
+          return input;
+        }
       case InputOpcode.CAST_NUMBER:
         {
           const targetType = input.inputs.target.type;
@@ -200166,10 +200489,26 @@ class IROptimizer {
           }
           return input;
         }
+      case InputOpcode.CAST_NUMBER_INDEX:
+        {
+          const targetType = input.inputs.target.type;
+          if ((targetType & InputType.NUMBER_INDEX) === targetType) {
+            return input.inputs.target;
+          }
+          return input;
+        }
       case InputOpcode.CAST_NUMBER_OR_NAN:
         {
           const targetType = input.inputs.target.type;
           if ((targetType & InputType.NUMBER_OR_NAN) === targetType) {
+            return input.inputs.target;
+          }
+          return input;
+        }
+      case InputOpcode.CAST_STRING:
+        {
+          const targetType = input.inputs.target.type;
+          if ((targetType & InputType.STRING) === targetType) {
             return input.inputs.target;
           }
           return input;
@@ -200318,6 +200657,15 @@ runtimeFunctions.createBranchInfo = "const createBranchInfo = (isLoop) => ({\n  
 runtimeFunctions.retire = "const retire = () => {\n    const thread = globalState.thread;\n    thread.target.runtime.sequencer.retireThread(thread);\n}";
 
 /**
+ * Converts NaN to zero. Used to match Scratch's string-to-number.
+ * Unlike (x || 0), -0 stays as -0 and is not converted to 0.
+ * This function needs to be written such that it's very easy for browsers to inline it.
+ * @param {number} value A number. Might be NaN.
+ * @returns {number} A number. Never NaN.
+ */
+runtimeFunctions.toNotNaN = "const toNotNaN = value => Number.isNaN(value) ? 0 : value";
+
+/**
  * Scratch cast to boolean.
  * Similar to Cast.toBoolean()
  * @param {*} value The value to cast
@@ -200331,7 +200679,7 @@ runtimeFunctions.toBoolean = "const toBoolean = value => {\n    if (typeof value
  * @param {*} value The value to cast
  * @returns {string} The value cast to a string
  */
-runtimeFunctions.toString = "const toString = value => {\n    if (typeof value === 'object') {\n        return JSON.stringify(value);\n    }\n    return '' + value;\n}";
+runtimeFunctions.toString = "const toString = value => {\n    if (value?.constructor?.prototype !== Object.prototype && typeof value?.customId === 'string') {\n        return String(value);\n    }\n    if (typeof value === 'object') {\n        return JSON.stringify(value);\n    }\n    return '' + value;\n}";
 
 /**
  * Scratch cast to array.
@@ -200339,7 +200687,7 @@ runtimeFunctions.toString = "const toString = value => {\n    if (typeof value =
  * @param {*} value The value to cast
  * @returns {Array} The value cast to an array
  */
-runtimeFunctions.toArray = "const toArray = value => {\n    if (Array.isArray(value)) {\n        return value;\n    }\n    try {\n        const result = JSON.parse(value);\n        return Array.isArray(result) ? result : [];\n    } catch {\n        return [];\n    }\n}";
+runtimeFunctions.toArray = "const toArray = value => {\n    if (value?.constructor?.prototype !== Object.prototype && typeof value?.customId === 'string') {\n        return [];\n    }\n    if (Array.isArray(value)) {\n        return value;\n    }\n    try {\n        const result = JSON.parse(value);\n        return Array.isArray(result) ? result : [];\n    } catch {\n        return [];\n    }\n}";
 
 /**
  * Scratch cast to object.
@@ -200347,7 +200695,7 @@ runtimeFunctions.toArray = "const toArray = value => {\n    if (Array.isArray(va
  * @param {*} value The value to cast
  * @returns {Object} The value cast to an object
  */
-runtimeFunctions.toObject = "const toObject = value => {\n    if (typeof value === 'object' && value instanceof Object && !Array.isArray(value)) {\n        return value;\n    }\n    try {\n        const result = JSON.parse(value);\n        return typeof result === 'object' && result instanceof Object && !Array.isArray(result) ? result : {};\n    } catch {\n        return {};\n    }\n}";
+runtimeFunctions.toObject = "const toObject = value => {\n    if (value?.constructor?.prototype !== Object.prototype && typeof value?.customId === 'string') {\n        return {};\n    }\n    if (typeof value === 'object' && value instanceof Object && !Array.isArray(value)) {\n        return value;\n    }\n    try {\n        const result = JSON.parse(value);\n        return typeof result === 'object' && result instanceof Object && !Array.isArray(result) ? result : {};\n    } catch {\n        return {};\n    }\n}";
 
 /**
  * Scratch cast to array or object.
@@ -200355,7 +200703,7 @@ runtimeFunctions.toObject = "const toObject = value => {\n    if (typeof value =
  * @param {*} value The value to cast
  * @returns {(Array|Object)} The value cast to an array or an object
  */
-runtimeFunctions.toJSON = "const toJSON = value => {\n    if (typeof value === 'object' && value instanceof Object) {\n        return value;\n    }\n    try {\n        const result = JSON.parse(value);\n        return typeof result === 'object' && result instanceof Object ? result : [];\n    } catch {\n        return [];\n    }\n}";
+runtimeFunctions.toJSON = "const toJSON = value => {\n    if (value?.constructor?.prototype !== Object.prototype && typeof value?.customId === 'string') {\n        return [];\n    }\n    if (typeof value === 'object' && value instanceof Object) {\n        return value;\n    }\n    try {\n        const result = JSON.parse(value);\n        return typeof result === 'object' && result instanceof Object ? result : [];\n    } catch {\n        return [];\n    }\n}";
 
 /**
  * If a number is very close to a whole number, round to that whole number.
@@ -200378,7 +200726,7 @@ baseRuntime += "const isNotActuallyZero = val => {\n    if (typeof val !== 'stri
  * @param {*} v2 Second value
  * @returns {boolean} true if v1 is equal to v2
  */
-baseRuntime += "const compareEqualSlow = (v1, v2) => {\n    const n1 = +v1;\n    if (isNaN(n1) || (n1 === 0 && isNotActuallyZero(v1))) return ('' + v1).toLowerCase() === ('' + v2).toLowerCase();\n    const n2 = +v2;\n    if (isNaN(n2) || (n2 === 0 && isNotActuallyZero(v2))) return ('' + v1).toLowerCase() === ('' + v2).toLowerCase();\n    return n1 === n2;\n};\nconst compareEqual = (v1, v2) => (typeof v1 === 'number' && typeof v2 === 'number' && !isNaN(v1) && !isNaN(v2) || v1 === v2) ? v1 === v2 : compareEqualSlow(v1, v2);";
+baseRuntime += "const compareEqualSlow = (v1, v2) => {\n    const n1 = +v1;\n    if (Number.isNaN(n1) || (n1 === 0 && isNotActuallyZero(v1))) return ('' + v1).toLowerCase() === ('' + v2).toLowerCase();\n    const n2 = +v2;\n    if (Number.isNaN(n2) || (n2 === 0 && isNotActuallyZero(v2))) return ('' + v1).toLowerCase() === ('' + v2).toLowerCase();\n    return n1 === n2;\n};\nconst compareEqual = (v1, v2) => (typeof v1 === 'number' && typeof v2 === 'number' && !Number.isNaN(v1) && !Number.isNaN(v2) || v1 === v2) ? v1 === v2 : compareEqualSlow(v1, v2);";
 
 /**
  * Determine if one value is greater than another.
@@ -200386,7 +200734,7 @@ baseRuntime += "const compareEqualSlow = (v1, v2) => {\n    const n1 = +v1;\n   
  * @param {*} v2 Second value
  * @returns {boolean} true if v1 is greater than v2
  */
-runtimeFunctions.compareGreaterThan = "const compareGreaterThanSlow = (v1, v2) => {\n    let n1 = +v1;\n    let n2 = +v2;\n    if (n1 === 0 && isNotActuallyZero(v1)) {\n        n1 = NaN;\n    } else if (n2 === 0 && isNotActuallyZero(v2)) {\n        n2 = NaN;\n    }\n    if (isNaN(n1) || isNaN(n2)) {\n        const s1 = ('' + v1).toLowerCase();\n        const s2 = ('' + v2).toLowerCase();\n        return s1 > s2;\n    }\n    return n1 > n2;\n};\nconst compareGreaterThan = (v1, v2) => typeof v1 === 'number' && typeof v2 === 'number' && !isNaN(v1) ? v1 > v2 : compareGreaterThanSlow(v1, v2)";
+runtimeFunctions.compareGreaterThan = "const compareGreaterThanSlow = (v1, v2) => {\n    let n1 = +v1;\n    let n2 = +v2;\n    if (n1 === 0 && isNotActuallyZero(v1)) {\n        n1 = NaN;\n    } else if (n2 === 0 && isNotActuallyZero(v2)) {\n        n2 = NaN;\n    }\n    if (Number.isNaN(n1) || Number.isNaN(n2)) {\n        const s1 = ('' + v1).toLowerCase();\n        const s2 = ('' + v2).toLowerCase();\n        return s1 > s2;\n    }\n    return n1 > n2;\n};\nconst compareGreaterThan = (v1, v2) => typeof v1 === 'number' && typeof v2 === 'number' && !Number.isNaN(v1) ? v1 > v2 : compareGreaterThanSlow(v1, v2)";
 
 /**
  * Determine if one value is less than another.
@@ -200394,7 +200742,7 @@ runtimeFunctions.compareGreaterThan = "const compareGreaterThanSlow = (v1, v2) =
  * @param {*} v2 Second value
  * @returns {boolean} true if v1 is less than v2
  */
-runtimeFunctions.compareLessThan = "const compareLessThanSlow = (v1, v2) => {\n    let n1 = +v1;\n    let n2 = +v2;\n    if (n1 === 0 && isNotActuallyZero(v1)) {\n        n1 = NaN;\n    } else if (n2 === 0 && isNotActuallyZero(v2)) {\n        n2 = NaN;\n    }\n    if (isNaN(n1) || isNaN(n2)) {\n        const s1 = ('' + v1).toLowerCase();\n        const s2 = ('' + v2).toLowerCase();\n        return s1 < s2;\n    }\n    return n1 < n2;\n};\nconst compareLessThan = (v1, v2) => typeof v1 === 'number' && typeof v2 === 'number' && !isNaN(v2) ? v1 < v2 : compareLessThanSlow(v1, v2)";
+runtimeFunctions.compareLessThan = "const compareLessThanSlow = (v1, v2) => {\n    let n1 = +v1;\n    let n2 = +v2;\n    if (n1 === 0 && isNotActuallyZero(v1)) {\n        n1 = NaN;\n    } else if (n2 === 0 && isNotActuallyZero(v2)) {\n        n2 = NaN;\n    }\n    if (Number.isNaN(n1) || Number.isNaN(n2)) {\n        const s1 = ('' + v1).toLowerCase();\n        const s2 = ('' + v2).toLowerCase();\n        return s1 < s2;\n    }\n    return n1 < n2;\n};\nconst compareLessThan = (v1, v2) => typeof v1 === 'number' && typeof v2 === 'number' && !Number.isNaN(v2) ? v1 < v2 : compareLessThanSlow(v1, v2)";
 
 /**
  * Generate a random integer.
@@ -200798,9 +201146,9 @@ class JSGenerator {
           return "(+".concat(this.descendInput(node.target.toType(InputType.BOOLEAN)), ")");
         }
         if (node.target.isAlwaysType(InputType.NUMBER_OR_NAN)) {
-          return "(".concat(this.descendInput(node.target), " || 0)");
+          return "toNotNaN(".concat(this.descendInput(node.target), ")");
         }
-        return "(+".concat(this.descendInput(node.target), " || 0)");
+        return "toNotNaN(+".concat(this.descendInput(node.target), ")");
       case InputOpcode.CAST_NUMBER_OR_NAN:
         return "(+".concat(this.descendInput(node.target), ")");
       case InputOpcode.CAST_NUMBER_INDEX:
@@ -201628,6 +201976,12 @@ class JSGenerator {
         break;
       case StackOpcode.LOOKS_COSTUME_SET:
         this.source += "runtime.ext_scratch3_looks._setCostume(target, ".concat(this.descendInput(node.costume), ");\n");
+        break;
+      case StackOpcode.LOOKS_SAY:
+        this.source += "runtime.ext_scratch3_looks._say(".concat(this.descendInput(node.message), ", target);\n");
+        break;
+      case StackOpcode.LOOKS_THINK:
+        this.source += "runtime.ext_scratch3_looks._think(".concat(this.descendInput(node.message), ", target);\n");
         break;
       case StackOpcode.MOTION_X_CHANGE:
         this.source += "target.setXY(target.x + ".concat(this.descendInput(node.dx), ", target.y);\n");
@@ -212097,6 +212451,16 @@ class ExtensionManager {
     }
     this.runtime.setExternalCommunicationMethod('customExtensions', true);
     this.loadingAsyncExtensions++;
+    if (extensionURL.startsWith('https://extensions.turbowarp.org/')) {
+      try {
+        const res = await fetch(extensionURL);
+        if (!res.ok) {
+          extensionURL = extensionURL.replace('https://extensions.turbowarp.org/', 'https://dashblocks.github.io/tw-extensions/');
+        }
+      } catch (_) {
+        extensionURL = extensionURL.replace('https://extensions.turbowarp.org/', 'https://dashblocks.github.io/tw-extensions/');
+      }
+    }
     const sandboxMode = await this.securityManager.getSandboxMode(extensionURL);
     const rewritten = await this.securityManager.rewriteExtensionURL(extensionURL);
     if (sandboxMode === 'unsandboxed') {
@@ -226826,6 +227190,10 @@ class Keyboard {
     // tw: track last pressed key
     this.lastKeyPressed = '';
     this._numeralKeyCodesToStringKey = new Map();
+    /**
+     * Set of Scratch keys used by the project.
+     */
+    this._usedKeys = new Set();
   }
 
   /**
@@ -226992,12 +227360,21 @@ class Keyboard {
       return this._keysPressed.length > 0;
     }
     const scratchKey = this._keyArgToScratchKey(keyArg);
+    this._usedKeys.add(scratchKey);
     return this._keysPressed.indexOf(scratchKey) > -1;
   }
 
   // tw: expose last pressed key
   getLastKeyPressed() {
     return this.lastKeyPressed;
+  }
+
+  /**
+   * @param {string} scratchKey Scratch key
+   * @returns {boolean} true if the project has used this key
+   */
+  hasUsedKey(scratchKey) {
+    return this._usedKeys.has(scratchKey);
   }
 }
 module.exports = Keyboard;
@@ -230679,8 +231056,11 @@ const getExtensionURLsToSave = (extensionIDs, runtime) => {
   const extensionURLs = runtime.extensionManager.getExtensionURLs();
   const toSave = {};
   for (const extension of extensionIDs) {
-    const url = extensionURLs[extension];
+    let url = extensionURLs[extension];
     if (typeof url === 'string') {
+      if (url.includes('https://dashblocks.github.io/tw-extensions/')) {
+        url = url.replace('https://dashblocks.github.io/tw-extensions/', 'https://extensions.turbowarp.org/');
+      }
       toSave[extension] = url;
     }
   }
@@ -233699,6 +234079,11 @@ class Cast {
    * @return {string} The Scratch-casted string value.
    */
   static toString(value) {
+    var _value$constructor;
+    // Convert custom types to string
+    if ((value === null || value === void 0 ? void 0 : (_value$constructor = value.constructor) === null || _value$constructor === void 0 ? void 0 : _value$constructor.prototype) !== Object.prototype && typeof (value === null || value === void 0 ? void 0 : value.customId) === 'string') {
+      return String(value);
+    }
     // Stringify JSON values
     if (typeof value === 'object') {
       return ExtendedJSON.stringify(value);
@@ -233713,6 +234098,11 @@ class Cast {
    * @return {Array} The Scratch-casted array value.
    */
   static toList(value) {
+    var _value$constructor2;
+    // Convert custom types to empty array
+    if ((value === null || value === void 0 ? void 0 : (_value$constructor2 = value.constructor) === null || _value$constructor2 === void 0 ? void 0 : _value$constructor2.prototype) !== Object.prototype && typeof (value === null || value === void 0 ? void 0 : value.customId) === 'string') {
+      return [];
+    }
     // Already an array?
     if (Array.isArray(value)) {
       return value;
@@ -233732,6 +234122,11 @@ class Cast {
    * @return {Object} The Scratch-casted object value.
    */
   static toObject(value) {
+    var _value$constructor3;
+    // Convert custom types to empty object
+    if ((value === null || value === void 0 ? void 0 : (_value$constructor3 = value.constructor) === null || _value$constructor3 === void 0 ? void 0 : _value$constructor3.prototype) !== Object.prototype && typeof (value === null || value === void 0 ? void 0 : value.customId) === 'string') {
+      return {};
+    }
     // Already an object?
     if (typeof value === 'object' && value instanceof Object && !Array.isArray(value)) {
       return value;
@@ -233752,6 +234147,11 @@ class Cast {
    * @return {(Array|Object)} The Scratch-casted array or object value.
    */
   static toJSON(value, arrayIfFail) {
+    var _value$constructor4;
+    // Convert custom types to empty array or object
+    if ((value === null || value === void 0 ? void 0 : (_value$constructor4 = value.constructor) === null || _value$constructor4 === void 0 ? void 0 : _value$constructor4.prototype) !== Object.prototype && typeof (value === null || value === void 0 ? void 0 : value.customId) === 'string') {
+      return arrayIfFail ? [] : {};
+    }
     // Already an array or an object?
     if (typeof value === 'object' && value instanceof Object) {
       return value;

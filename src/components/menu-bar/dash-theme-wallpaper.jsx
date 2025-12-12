@@ -34,7 +34,9 @@ class WallpaperThemeMenu extends React.Component {
             'handleFileChange',
             'handleOpenFilePicker',
             'handleChangeOpaque',
-            'handleRemoveWallpaper'
+            'handleRemoveWallpaper',
+            'handleOk',
+            'handleCancel'
         ]);
         this.state = {
             selectedFiles: null,

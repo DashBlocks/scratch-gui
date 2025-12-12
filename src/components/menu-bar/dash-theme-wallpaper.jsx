@@ -81,7 +81,7 @@ class WallpaperThemeMenu extends React.Component {
     }
 
     handleOk (value) {
-        if (!value && value != 0) {
+        if ((!value && value != 0) || typeof value == "string") {
             this.setState({prompt: false});
             return;
         };

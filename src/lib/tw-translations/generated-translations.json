@@ -3410,12 +3410,12 @@
         "tw.menuBar.newFramerate": "Новая частота кадров:",
         "tw.menuBar.newWindow": "Новое окно",
         "tw.menuBar.package": "Упаковать проект",
-        "dash.menuBar.unpackage": "Распаковщик",
         "tw.menuBar.reportError1": "В некоторых скриптах возникли ошибки.",
         "tw.menuBar.reportError2": "Это баг. Пожалуйста, сообщите о ней.",
         "tw.menuBar.restorePoints": "Точки восстановления",
         "tw.menuBar.saveAs": "Сохранить как {file}",
         "tw.menuBar.seeInside": "Войти внутрь проекта",
+        "dash.menuBar.unpackage": "Распаковщик",
         "tw.mono": "Моно",
         "tw.moreCloud": "Узнать побольше об облачных переменных.",
         "tw.notify.permission": "Если разрешить, ваш браузер может предложить вам включить уведомления, и дальнейшие уведомления будут разрешены автоматически.",
@@ -3557,7 +3557,12 @@
         "tw.usesCloudVariables2": "Облачные переменные {APP_NAME} не подключены к Scratch. Любой может {changeTheirUsername} на что угодно, поэтому остерегайтесь олицетворения.",
         "tw.usesCloudVariables2.change": "изменить их же имя пользователя",
         "tw.viewFeaturedProjects": "Нажмите, чтобы посмотреть избранные проекты.",
-        "tw.viewOnScratch": "Посмотреть проект в Scratch"
+        "tw.viewOnScratch": "Посмотреть проект в Scratch",
+        "dash.wallpaper": "Обои",
+        "dash.wallpaper.changeOpaquePrompt": "Введите новое значение непрозрачности рабочего места",
+        "dash.wallpaper.changeOpaque": "Изменить непрозрачность рабочего места",
+        "dash.wallpaper.choose": "Выбрать обои...",
+        "dash.wallpaper.remove": "Убрать обои"
     },
     "sk": {
         "tw.feedbackButton": "{APP_NAME} Spätná väzba",

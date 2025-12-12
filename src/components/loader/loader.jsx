@@ -90,9 +90,9 @@ class LoaderComponent extends React.Component {
     }
     chooseRandomMessage () {
         let messageNumber;
-        const sum = lazyMessages.reduce((acc, m) => acc + 1, 0);
+        const sum = lazyMessages.en.reduce(acc => acc + 1, 0);
         let rand = sum * Math.random();
-        for (let i = 0; i < lazyMessages.length; i++) {
+        for (let i = 0; i < lazyMessages.en.length; i++) {
             rand -= 1;
             if (rand <= 0) {
                 messageNumber = i;
@@ -180,7 +180,14 @@ class LoaderComponent extends React.Component {
                             className={styles.messageContainerInner}
                             style={{transform: `translate(0, -${this.state.messageNumber * 25}px)`}}
                         >
-                            {lazyMessages.map((m, i) => (
+                            {this.props.intl?.locale === 'ru' ? lazyMessages.ru.map((m, i) => (
+                                <div
+                                    className={styles.message}
+                                    key={i}
+                                >
+                                    {m}
+                                </div>
+                            )) : lazyMessages.en.map((m, i) => (
                                 <div
                                     className={styles.message}
                                     key={i}

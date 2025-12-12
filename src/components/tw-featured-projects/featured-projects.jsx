@@ -30,7 +30,7 @@ class FeaturedProjects extends React.Component {
         }
     }
     handleSelect (id) {
-        this.props.setProjectId(id);
+        setProjectId(dispatchEvent, id);
     }
     handleOpenProjects () {
         this.setState({

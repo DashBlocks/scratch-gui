@@ -24,6 +24,12 @@ const messages = defineMessages({
         defaultMessage: 'Choose an Extension',
         description: 'Heading for the extension library',
         id: 'gui.extensionLibrary.chooseAnExtension'
+    },
+    twGalleryMirrorConfirm: {
+        // eslint-disable-next-line max-len
+        defaultMessage: 'This extension will be loaded from a mirror of the TurboWarp Extensions Gallery. Are you sure you want to proceed?',
+        description: 'Confirm loading extension from mirror',
+        id: 'dash.confirmTwGalleryMirror'
     }
 });
 
@@ -44,11 +50,23 @@ const translateGalleryItem = (extension, locale) => ({
 });
 
 let cachedTwGallery = null;
+let twGalleryMirror = false;
 let cachedPmGallery = null;
 let cachedGallery = null;
 
 const fetchTwLibrary = async () => {
-    const res = await fetch('https://extensions.turbowarp.org/generated-metadata/extensions-v0.json');
+    let res;
+    try {
+        res = await fetch('https://extensions.turbowarp.org/generated-metadata/extensions-v0.json');
+        twGalleryMirror = false;
+        if (!res.ok) {
+            res = await fetch('https://dashblocks.github.io/tw-extensions/generated-metadata/extensions-v0.json');
+            twGalleryMirror = true;
+        }
+    } catch (_) {
+        res = await fetch('https://dashblocks.github.io/tw-extensions/generated-metadata/extensions-v0.json');
+        twGalleryMirror = true;
+    }
     if (!res.ok) {
         throw new Error(`HTTP status ${res.status}`);
     }
@@ -263,6 +281,27 @@ class ExtensionLibrary extends React.PureComponent {
             if (this.props.vm.extensionManager.isExtensionLoaded(extensionId)) {
                 this.props.onCategorySelected(extensionId);
             } else {
+                if (
+                    url.startsWith('https://extensions.turbowarp.org/') &&
+                    twGalleryMirror
+                ) {
+                    if (!confirm(this.props.intl.formatMessage(messages.twGalleryMirrorConfirm))) return;
+                    this.props.vm.extensionManager.loadExtensionURL(
+                        url.replace(
+                            'https://extensions.turbowarp.org/',
+                            'https://dashblocks.github.io/tw-extensions/'
+                        )
+                    )
+                        .then(() => {
+                            this.props.onCategorySelected(extensionId);
+                        })
+                        .catch(err => {
+                            log.error(err);
+                            // eslint-disable-next-line no-alert
+                            alert(err);
+                        });
+                    return;
+                }
                 this.props.vm.extensionManager.loadExtensionURL(url)
                     .then(() => {
                         this.props.onCategorySelected(extensionId);
@@ -300,6 +339,8 @@ class ExtensionLibrary extends React.PureComponent {
         }
 
         library.push('---');
+
+        if (twGalleryMirror) library.push('twGalleryMirror');
 
         if (this.state.twGallery) {
             const filteredTw = this.state.twGallery

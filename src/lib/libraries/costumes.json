@@ -1,9 +1,31 @@
 [ {
+        "name": "Snow globe",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "c8681e79e5311ed49823895d7c8a3c93",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "c8681e79e5311ed49823895d7c8a3c93.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
+        "name": "Christmas tree",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "15197531c723deda34a317a0ad951686",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "15197531c723deda34a317a0ad951686.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
         "name": "Candy",
         "tags": [
             "dash"
         ],
-        "assetId": "6558e22d87c377bea8c8a7cb49a7b6c7.svg",
+        "assetId": "6558e22d87c377bea8c8a7cb49a7b6c7",
         "bitmapResolution": 1,
         "dataFormat": "svg",
         "md5ext": "6558e22d87c377bea8c8a7cb49a7b6c7.svg",

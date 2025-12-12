@@ -763,6 +763,16 @@ class MenuBar extends React.Component {
                                                     id="tw.menuBar.package"
                                                 />
                                             </MenuItem>
+                                            <MenuItem
+                                                onClick={() => window.open("https://dashblocks.github.io/unpackager/", '_blank')}
+                                            >
+                                                <FormattedMessage
+                                                    defaultMessage="Unpackager"
+                                                    // eslint-disable-next-line max-len
+                                                    description="Menu bar item to open the unpackager"
+                                                    id="dash.menuBar.unpackage"
+                                                />
+                                            </MenuItem>
                                         </MenuSection>
                                     )}
                                     <MenuSection>

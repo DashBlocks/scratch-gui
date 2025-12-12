@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Modal from '../../containers/modal.jsx';
 import Box from '../box/box.jsx';
 import {defineMessages, injectIntl, intlShape, FormattedMessage} from 'react-intl';
@@ -9,6 +9,7 @@ import LazyScratchBlocks from '../../lib/tw-lazy-scratch-blocks';
 import {blockColors} from '../../lib/themes/blocks/three';
 
 import booleanInputIcon from './icon--boolean-input.svg';
+import arrayInputIcon from './icon--array-input.svg';
 import textInputIcon from './icon--text-input.svg';
 import labelIcon from './icon--label.svg';
 
@@ -19,10 +20,48 @@ const messages = defineMessages({
         defaultMessage: 'Make a Block',
         description: 'Title for the modal where you create a custom block.',
         id: 'gui.customProcedures.myblockModalTitle'
+    },
+    numberTextType: {
+        defaultMessage: 'number or text',
+        description: 'Description of the number/text input type',
+        id: 'gui.customProcedures.numberTextType'
+    },
+    booleanType: {
+        defaultMessage: 'boolean',
+        description: 'Description of the boolean input type',
+        id: 'gui.customProcedures.booleanType'
+    },
+    arrayType: {
+        defaultMessage: 'array',
+        description: 'Description of the array input type',
+        id: 'dash.customProcedures.arrayType'
+    },
+    objectType: {
+        defaultMessage: 'object',
+        description: 'Description of the object input type',
+        id: 'dash.customProcedures.objectType'
     }
 });
 
 const CustomProcedures = (props) => {
+    const [inputIcon, setInputIcon] = useState(textInputIcon);
+    useEffect(() => {
+        switch (props.menuInput) {
+            case "s":
+                setInputIcon(textInputIcon);
+                break;
+            case "b":
+                setInputIcon(booleanInputIcon);
+                break;
+            case "a":
+                setInputIcon(arrayInputIcon);
+                break;
+            case "o":
+                setInputIcon(arrayInputIcon);
+                break;
+        };
+    }, [props.menuInput]);
+    
     const ScratchBlocks = LazyScratchBlocks.get();
     const themeObj = props.theme.getCustomExtensionColors();
     const categories = [
@@ -56,11 +95,11 @@ const CustomProcedures = (props) => {
                         className={styles.optionCard}
                         role="button"
                         tabIndex="0"
-                        onClick={props.onAddTextNumber}
+                        onClick={props.onAddInput}
                     >
                         <img
                             className={styles.optionIcon}
-                            src={textInputIcon}
+                            src={inputIcon}
                             draggable={false}
                         />
                         <div className={styles.optionTitle}>
@@ -70,39 +109,24 @@ const CustomProcedures = (props) => {
                                 id="gui.customProcedures.addAnInputNumberText"
                             />
                         </div>
-                        <div className={styles.optionDescription}>
-                            <FormattedMessage
-                                defaultMessage="number or text"
-                                description="Description of the number/text input type"
-                                id="gui.customProcedures.numberTextType"
-                            />
-                        </div>
-                    </div>
-                    <div
-                        className={styles.optionCard}
-                        role="button"
-                        tabIndex="0"
-                        onClick={props.onAddBoolean}
-                    >
-                        <img
-                            className={styles.optionIcon}
-                            src={booleanInputIcon}
-                            draggable={false}
-                        />
-                        <div className={styles.optionTitle}>
-                            <FormattedMessage
-                                defaultMessage="Add an input"
-                                description="Label for button to add a boolean input"
-                                id="gui.customProcedures.addAnInputBoolean"
-                            />
-                        </div>
-                        <div className={styles.optionDescription}>
-                            <FormattedMessage
-                                defaultMessage="boolean"
-                                description="Description of the boolean input type"
-                                id="gui.customProcedures.booleanType"
-                            />
-                        </div>
+                        <select
+                            className={styles.optionMenu}
+                            onClick={props.handlePropagation}
+                            onChange={props.handleInputMenuChange}
+                        >
+                            <option value="s">
+                                {props.intl.formatMessage(messages.numberTextType)}
+                            </option>
+                            <option value="b">
+                                {props.intl.formatMessage(messages.booleanType)}
+                            </option>
+                            <option value="a">
+                                {props.intl.formatMessage(messages.arrayType)}
+                            </option>
+                            <option value="o">
+                                {props.intl.formatMessage(messages.objectType)}
+                            </option>
+                        </select>
                     </div>
                     <div
                         className={styles.optionCard}
@@ -206,9 +230,10 @@ const CustomProcedures = (props) => {
 CustomProcedures.propTypes = {
     componentRef: PropTypes.func.isRequired,
     intl: intlShape,
-    onAddBoolean: PropTypes.func.isRequired,
+    onAddInput: PropTypes.func.isRequired,
     onAddLabel: PropTypes.func.isRequired,
-    onAddTextNumber: PropTypes.func.isRequired,
+    handlePropagation: PropTypes.func.isRequired,
+    handleInputMenuChange: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
     onOk: PropTypes.func.isRequired,
     onToggleWarp: PropTypes.func.isRequired,

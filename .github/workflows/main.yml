@@ -21,9 +21,6 @@ jobs:
       - name: Update Dependencies
         run: npm update --legacy-peer-deps
 
-      - name: Pull LFS files
-        run: git lfs pull
-
       - name: Build Scratch
         run: npm run build
       
@@ -37,9 +34,6 @@ jobs:
     permissions:
       pages: write
       id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Publish Pages

@@ -319,7 +319,45 @@ const sound = function (isInitialSetup, isStage, targetId, soundName, colors) {
                 </shadow>
             </value>
         </block>
+        <block id="${targetId}_sound_playfromuntildone" type="sound_playfromuntildone">
+            <value name="SOUND_MENU">
+                <shadow type="sound_sounds_menu">
+                    <field name="SOUND_MENU">${soundName}</field>
+                </shadow>
+            </value>
+            <value name="FROM">
+                <shadow type="math_number">
+                    <field name="NUM">2</field>
+                </shadow>
+            </value>
+        </block>
+        <block id="${targetId}_sound_playfrom" type="sound_playfrom">
+            <value name="SOUND_MENU">
+                <shadow type="sound_sounds_menu">
+                    <field name="SOUND_MENU">${soundName}</field>
+                </shadow>
+            </value>
+            <value name="FROM">
+                <shadow type="math_number">
+                    <field name="NUM">2</field>
+                </shadow>
+            </value>
+        </block>
+        <block id="${targetId}_sound_stop" type="sound_stop">
+            <value name="SOUND_MENU">
+                <shadow type="sound_sounds_menu">
+                    <field name="SOUND_MENU">${soundName}</field>
+                </shadow>
+            </value>
+        </block>
         <block type="sound_stopallsounds"/>
+        <block id="${targetId}_sound_issoundplaying" type="sound_issoundplaying">
+            <value name="SOUND_MENU">
+                <shadow type="sound_sounds_menu">
+                    <field name="SOUND_MENU">${soundName}</field>
+                </shadow>
+            </value>
+        </block>
         ${blockSeparator}
         <block type="sound_changeeffectby">
             <value name="VALUE">
@@ -336,6 +374,7 @@ const sound = function (isInitialSetup, isStage, targetId, soundName, colors) {
             </value>
         </block>
         <block type="sound_cleareffects"/>
+        <block type="sound_geteffect"/>
         ${blockSeparator}
         <block type="sound_changevolumeby">
             <value name="VOLUME">

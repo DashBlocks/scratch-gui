@@ -76,6 +76,7 @@ class WallpaperThemeMenu extends React.Component {
                     className={styles.option}
                     onClick={onOpenMenu}
                 >
+                    {/* todo: icon */}
                     <span className={styles.submenuLabel}>
                         <FormattedMessage
                             defaultMessage="Wallpaper"

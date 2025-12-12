@@ -11,6 +11,7 @@ import {Theme} from '../../lib/themes/index.js';
 import {openWallpaperThemeMenu, wallpaperThemeMenuOpen, closeSettingsMenu} from '../../reducers/menus.js';
 import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
+import Prompt from '../../containers/prompt.jsx';
 import styles from './settings-menu.css';
 
 const messages = defineMessages({

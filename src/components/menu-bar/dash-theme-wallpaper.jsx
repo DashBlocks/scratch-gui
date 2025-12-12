@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import bindAll from 'lodash.bindall';
 import React from 'react';
 import {FormattedMessage, defineMessages} from 'react-intl';
 import {connect} from 'react-redux';
@@ -10,15 +11,18 @@ import {openWallpaperThemeMenu, wallpaperThemeMenuOpen, closeSettingsMenu} from 
 import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
 import styles from './settings-menu.css';
-import FileInput from '../tw-custom-extension-modal/file-input.jsx';
 
 class WallpaperThemeMenu extends React.Component {
     constructor (props) {
         super(props);
+        bindAll(this, [
+            'handleFileChange',
+            'handleOpenFilePicker',
+            'handleRemoveWallpaper'
+        ]);
         this.state = {
             selectedFiles: null
         };
-        this.handleFileChange = this.handleFileChange.bind(this);
     }
 
     handleFileChange (files) {
@@ -34,6 +38,30 @@ class WallpaperThemeMenu extends React.Component {
             };
             reader.readAsDataURL(file);
         }
+    }
+
+    handleOpenFilePicker () {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = ".img, .png, .jpg, .jpeg, .gif, .svg, .webp, .bmp, .ico, .tif, .tiff, .jfif, .pjpeg, .pjp, .avif, .cur, .apng";
+        input.multiple = false;
+        input.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files.length) {
+                this.handleFileChange(e.target.files);
+            } else {
+                this.handleFileChange(null);
+            }
+        });
+        document.body.appendChild(input);
+        input.click();
+        input.remove();
+    }
+
+    handleRemoveWallpaper () {
+        this.setState({selectedFiles: null});
+        this.props.onChangeTheme(
+            this.props.theme.set('wallpaper', {url: null, opaque: 0.6})
+        );
     }
 
     render () {
@@ -62,15 +90,33 @@ class WallpaperThemeMenu extends React.Component {
                     />
                 </div>
                 <Submenu place={isRtl ? 'left' : 'right'}>
-                    <div
-                        className={styles.option}
-                    >
-                        <FileInput
-                            accept=".img, .png, .jpg, .jpeg, .gif, .svg, .webp, .bmp, .ico, .tif, .tiff, .jfif, .pjpeg, .pjp, .avif, .cur, .apng"
-                            onChange={this.handleFileChange}
-                            files={this.state.selectedFiles}
-                        />
-                    </div>
+                    <MenuItem onClick={this.handleOpenFilePicker}>
+                        {this.state.selectedFiles ? (
+                            <FormattedMessage
+                                defaultMessage="Selected: {name}"
+                                description="Shows selected wallpaper file name"
+                                id="tw.fileInput.selected"
+                                values={{
+                                    name: this.state.selectedFiles[0].name
+                                }}
+                            />
+                        ) : (
+                            <FormattedMessage
+                                defaultMessage="Choose wallpaper..."
+                                description="Button text to choose a wallpaper file"
+                                id="dash.wallpaper.choose"
+                            />
+                        )}
+                    </MenuItem>
+                    {this.props.theme.wallpaper.url && (
+                        <MenuItem onClick={this.handleRemoveWallpaper}>
+                            <FormattedMessage
+                                defaultMessage="Remove wallpaper"
+                                description="Option to remove wallpaper"
+                                id="dash.wallpaper.remove"
+                            />
+                        </MenuItem>
+                    )}
                 </Submenu>
             </MenuItem>
         );
@@ -94,7 +140,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     onChangeTheme: theme => {
         dispatch(setTheme(theme));
-        dispatch(closeSettingsMenu());
         persistTheme(theme);
     },
     onOpenMenu: () => dispatch(openWallpaperThemeMenu())

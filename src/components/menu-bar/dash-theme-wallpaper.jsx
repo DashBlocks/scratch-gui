@@ -11,6 +11,7 @@ import {openWallpaperThemeMenu, wallpaperThemeMenuOpen, closeSettingsMenu} from 
 import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
 import styles from './settings-menu.css';
+import menuBarStyles from './menu-bar.css';
 
 class WallpaperThemeMenu extends React.Component {
     constructor (props) {
@@ -109,15 +110,16 @@ class WallpaperThemeMenu extends React.Component {
                             />
                         )}
                     </MenuItem>
-                    {this.props.theme.wallpaper.url && (
-                        <MenuItem onClick={this.handleRemoveWallpaper}>
-                            <FormattedMessage
-                                defaultMessage="Remove wallpaper"
-                                description="Option to remove wallpaper"
-                                id="dash.wallpaper.remove"
-                            />
-                        </MenuItem>
-                    )}
+                    <MenuItem
+                        className={classNames({[menuBarStyles.disabled]: this.props.theme.wallpaper.url == null})}
+                        onClick={this.props.theme.wallpaper.url == null ? () => {} : this.handleRemoveWallpaper}
+                    >
+                        <FormattedMessage
+                            defaultMessage="Remove wallpaper"
+                            description="Option to remove wallpaper"
+                            id="dash.wallpaper.remove"
+                        />
+                    </MenuItem>
                 </Submenu>
             </MenuItem>
         );

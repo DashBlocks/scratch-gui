@@ -81,7 +81,8 @@ class WallpaperThemeMenu extends React.Component {
     }
 
     handleChangeOpaque () {
-        this.setState({prompt: true})
+        this.props.onRequestClose();
+        this.setState({prompt: true});
     }
 
     handleOk (value) {
@@ -127,7 +128,6 @@ class WallpaperThemeMenu extends React.Component {
                         showCloudOption={false}
                         showListMessage={false}
                         isStage={false}
-                        vm={vm}
                     />
                 )}
                 <MenuItem expanded={isOpen}>
@@ -200,6 +200,7 @@ WallpaperThemeMenu.propTypes = {
     isRtl: PropTypes.bool,
     onChangeTheme: PropTypes.func,
     onOpenMenu: PropTypes.func,
+    onRequestClose: PropTypes.func,
     theme: PropTypes.instanceOf(Theme)
 };
 
@@ -214,7 +215,8 @@ const mapDispatchToProps = dispatch => ({
         dispatch(setTheme(theme));
         persistTheme(theme);
     },
-    onOpenMenu: () => dispatch(openWallpaperThemeMenu())
+    onOpenMenu: () => dispatch(openWallpaperThemeMenu()),
+    onRequestClose: () => dispatch(closeSettingsMenu())
 });
 
 export default injectIntl(connect(

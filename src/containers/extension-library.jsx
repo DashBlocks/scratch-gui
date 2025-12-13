@@ -78,7 +78,7 @@ const fetchTwLibrary = async () => {
         descriptionTranslations: extension.descriptionTranslations || {},
         extensionId: extension.id,
         extensionURL: `https://extensions.turbowarp.org/${extension.slug}.js`,
-        iconURL: `https://extensions.turbowarp.org/${extension.image || 'images/unknown.svg'}`,
+        iconURL: (twGalleryMirror ? 'https://dashblocks.github.io/tw-extensions/' : 'https://extensions.turbowarp.org/') + extension.image || 'images/unknown.svg',
         tags: ['tw'],
         credits: [
             ...(extension.original || []),
@@ -98,9 +98,9 @@ const fetchTwLibrary = async () => {
             }
             return credit.name;
         }),
-        docsURI: extension.docs ? `https://extensions.turbowarp.org/${extension.slug}` : null,
+        docsURI: extension.docs ? (twGalleryMirror ? 'https://dashblocks.github.io/tw-extensions/' : 'https://extensions.turbowarp.org/') + extension.slug : null,
         samples: extension.samples ? extension.samples.map(sample => ({
-            href: `${process.env.ROOT}editor?project_url=https://extensions.turbowarp.org/samples/${encodeURIComponent(sample)}.sb3`,
+            href: `${process.env.ROOT}editor?project_url=${(twGalleryMirror ? 'https://dashblocks.github.io/tw-extensions/samples/' : 'https://extensions.turbowarp.org/samples/') + encodeURIComponent(sample)}.sb3`,
             text: sample
         })) : null,
         incompatibleWithScratch: !extension.scratchCompatible,

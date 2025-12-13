@@ -1,4 +1,15 @@
 [    {
+        "name": "black-backdrop",
+        "tags": [
+            "Dash"
+        ],
+        "assetId": "0292f468a14ad456ff742794cbcdd5d3",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "0292f468a14ad456ff742794cbcdd5d3.svg",
+        "rotationCenterX": 187.3,
+        "rotationCenterY": 187
+    },{
         "name": "dash-backdrop",
         "tags": [
             "Dash"

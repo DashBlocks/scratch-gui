@@ -10,7 +10,7 @@ import {detectTheme} from '../../lib/themes/themePersistance';
 import screenshotLight from './screenshot-light.png';
 import screenshotDark from './screenshot-dark.png';
 
-const version = '1.1.0';
+const version = '2.0.0';
 
 /* eslint-disable react/jsx-no-literals */
 

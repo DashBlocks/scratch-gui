@@ -85,11 +85,11 @@ class WallpaperThemeMenu extends React.Component {
     }
 
     handleOk (value) {
-        if (!value) {
+        const num = Number(value);
+        if (!value || (!num && num !== 0)) {
             this.setState({prompt: false});
             return;
         };
-        const num = Number(value);
         const opaque = Math.max(0, Math.min(1, num / 100));
         this.props.onChangeTheme(
             this.props.theme.set('wallpaper', {url: this.props.theme.wallpaper.url, opaque})

@@ -81,7 +81,6 @@ class WallpaperThemeMenu extends React.Component {
     }
 
     handleChangeOpaque () {
-        this.props.onRequestClose();
         this.setState({prompt: true});
     }
 

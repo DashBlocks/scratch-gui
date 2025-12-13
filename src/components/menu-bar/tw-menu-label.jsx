@@ -44,6 +44,7 @@ class MenuLabel extends React.Component {
     }
     handleMouseUp (e) {
         if (this.props.open && !this.menuEl.contains(e.target)) {
+            if (e.target.closest && e.target.closest('[role="dialog"]')) return;
             this.props.onClose();
         }
     }

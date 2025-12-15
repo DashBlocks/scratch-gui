@@ -70,7 +70,7 @@ const applyGuiColors = theme => {
 
     // a horrible hack for icons...
     window.Recolor = {
-        primary: guiColors['looks-secondary']
+        primary: evaluateCSS(guiColors['looks-secondary'])
     };
     AddonHooks.recolorCallbacks.forEach(i => i());
 };

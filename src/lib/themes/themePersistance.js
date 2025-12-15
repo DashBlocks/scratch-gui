@@ -1,4 +1,4 @@
-import {BLOCKS_CUSTOM, Theme} from '.';
+import {BLOCKS_CUSTOM, Theme, ACCENT_CUSTOM} from '.';
 
 const matchMedia = query => (window.matchMedia ? window.matchMedia(query) : null);
 const PREFERS_HIGH_CONTRAST_QUERY = matchMedia('(prefers-contrast: more)');
@@ -62,12 +62,21 @@ const detectTheme = () => {
 
         const parsed = JSON.parse(local);
         // Any invalid values in storage will be handled by Theme itself
-        return new Theme(
+        const theme = new Theme(
             parsed.accent || systemPreferences.accent,
             parsed.gui || systemPreferences.gui,
             parsed.blocks || systemPreferences.blocks,
             parsed.wallpaper || null
         );
+        // If there's a stored custom accent color, apply it to CSS vars so custom accent evaluates correctly
+        if (parsed.customAccentColor) {
+            try {
+                document.documentElement.style.setProperty('--dash-accent-custom', parsed.customAccentColor);
+            } catch (e) {
+                // ignore
+            }
+        }
+        return theme;
     } catch (e) {
         // ignore
     }
@@ -94,6 +103,15 @@ const persistTheme = theme => {
     }
     if (theme.wallpaper.url !== null) {
         nonDefaultSettings.wallpaper = theme.wallpaper;
+    }
+
+    if (theme.accent === ACCENT_CUSTOM) {
+        try {
+            const custom = localStorage.getItem('dash:accent_custom_color');
+            if (custom) nonDefaultSettings.customAccentColor = custom;
+        } catch (e) {
+            // ignore
+        }
     }
 
     if (Object.keys(nonDefaultSettings).length === 0) {

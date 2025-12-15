@@ -6,6 +6,7 @@ import * as accentRed from './accent/red';
 import * as accentOrange from './accent/orange';
 import * as accentGreen from './accent/green';
 import * as accentRainbow from './accent/rainbow';
+import * as accentCustom from './accent/custom';
 
 import * as guiLight from './gui/light';
 import * as guiDark from './gui/dark';
@@ -20,13 +21,15 @@ const ACCENT_RED = 'red';
 const ACCENT_ORANGE = 'orange';
 const ACCENT_GREEN = 'green';
 const ACCENT_RAINBOW = 'rainbow';
+const ACCENT_CUSTOM = 'custom';
 const ACCENT_MAP = {
     [ACCENT_PURPLE]: accentPurple,
     [ACCENT_BLUE]: accentBlue,
     [ACCENT_RED]: accentRed,
     [ACCENT_ORANGE]: accentOrange,
     [ACCENT_GREEN]: accentGreen,
-    [ACCENT_RAINBOW]: accentRainbow
+    [ACCENT_RAINBOW]: accentRainbow,
+    [ACCENT_CUSTOM]: accentCustom
 };
 const ACCENT_DEFAULT = ACCENT_ORANGE;
 

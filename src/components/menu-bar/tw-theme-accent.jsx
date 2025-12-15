@@ -44,6 +44,11 @@ const options = defineMessages({
         defaultMessage: 'Rainbow',
         description: 'Name of color scheme that uses a rainbow.',
         id: 'tw.accent.rainbow'
+    },
+    [ACCENT_CUSTOM]: {
+        defaultMessage: 'Custom',
+        description: 'Name of color scheme that uses a custom.',
+        id: 'dash.accent.custom'
     }
 });
 

@@ -1,4 +1,26 @@
 [ {
+        "name": "Pixel elf",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "96dccacaad22499fae4ce64a9eefd76c",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "205547ed35ca921d65c768c252d15db4.png",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
+        "name": "Pixel cat",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "96dccacaad22499fae4ce64a9eefd76c",
+        "bitmapResolution": 1,
+        "dataFormat": "png",
+        "md5ext": "96dccacaad22499fae4ce64a9eefd76c.png",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
         "name": "Snow globe",
         "tags": [
             "dash"

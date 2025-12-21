@@ -1,4 +1,15 @@
 [ {
+        "name": "weapon assets",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "48a175fbdbec963466e7a825ecfd8d0a",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "48a175fbdbec963466e7a825ecfd8d0a.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
         "name": "Pixel elf",
         "tags": [
             "dash"

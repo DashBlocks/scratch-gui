@@ -1,4 +1,5 @@
-[ {
+[
+    {
         "name": "weapon assets",
         "tags": [
             "dash"
@@ -9,7 +10,8 @@
         "md5ext": "48a175fbdbec963466e7a825ecfd8d0a.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
+    },
+    {
         "name": "Pixel elf",
         "tags": [
             "dash"
@@ -20,7 +22,8 @@
         "md5ext": "205547ed35ca921d65c768c252d15db4.png",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
+    },
+    {
         "name": "Pixel cat",
         "tags": [
             "dash"
@@ -31,7 +34,8 @@
         "md5ext": "96dccacaad22499fae4ce64a9eefd76c.png",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
+    },
+    {
         "name": "Snow globe",
         "tags": [
             "dash"
@@ -42,7 +46,8 @@
         "md5ext": "c8681e79e5311ed49823895d7c8a3c93.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
+    },
+    {
         "name": "Christmas tree",
         "tags": [
             "dash"
@@ -53,7 +58,8 @@
         "md5ext": "15197531c723deda34a317a0ad951686.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
+    },
+    {
         "name": "Candy",
         "tags": [
             "dash"
@@ -64,7 +70,8 @@
         "md5ext": "6558e22d87c377bea8c8a7cb49a7b6c7.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
+    },
+    {
         "name": "Trophy",
         "tags": [
             "dash"
@@ -75,7 +82,8 @@
         "md5ext": "9589b0e50068d6129c95279b683efe0a.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
+    },
+    {
         "name": "Autumn leaves",
         "tags": [
             "dash"
@@ -86,7 +94,8 @@
         "md5ext": "ff84aecdea5aa1a8fcdc536a2d7bcc36.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
+    },
+    {
         "name": "Сup",
         "tags": [
             "dash"
@@ -97,7 +106,8 @@
         "md5ext": "a3df0b8910cdf4087c1d5a24b284bb12.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
+    },
+    {
         "name": "Scissors",
         "tags": [
             "dash"
@@ -108,7 +118,8 @@
         "md5ext": "44c73281361e37131b2f9c8f1f0b5860.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
+    },
+    {
         "name": "Negative mark",
         "tags": [
             "dash"
@@ -119,7 +130,8 @@
         "md5ext": "f5db6ab9c90011e3f568ff870c76058f.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
+    },
+    {
         "name": "Check mark",
         "tags": [
             "dash"
@@ -130,10 +142,13 @@
         "md5ext": "0f43a4452d158798fa4ad32eea767c02.svg",
         "rotationCenterX": 0,
         "rotationCenterY": 0
-    },{
+    },
+    {
         "name": "Cake",
         "tags": [
-            "dash", "cake", "eat"
+            "dash",
+            "cake",
+            "eat"
         ],
         "assetId": "4f7660e1c9ebe1ecd79a793b7bf0f93a",
         "bitmapResolution": 1,

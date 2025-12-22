@@ -1,4 +1,6 @@
 import { isPaused, setPaused, onPauseChanged, setup } from "../debugger/module.js";
+import pauseSrc from "!../../../lib/tw-recolor/build!./pause.svg";
+import playSrc from "!../../../lib/tw-recolor/build!./play.svg";
 
 export default async function ({ addon, console, msg }) {
   setup(addon);
@@ -9,7 +11,7 @@ export default async function ({ addon, console, msg }) {
   img.title = msg("pause");
 
   const setSrc = () => {
-    img.src = addon.self.getResource((isPaused() ? "/play.svg" : "/pause.svg")) /* rewritten by pull.js */;
+    img.src = isPaused() ? playSrc() : pauseSrc();
     img.title = isPaused() ? msg("play") : msg("pause");
   };
   img.addEventListener("click", () => setPaused(!isPaused()));

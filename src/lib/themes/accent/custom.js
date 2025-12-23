@@ -1,6 +1,6 @@
 const guiColors = {
     'motion-primary': 'var(--dash-accent-custom)',
-    'motion-primary-transparent': 'var(--dash-accent-custom-transparent)',
+    'motion-primary-transparent': 'var(--dash-accent-custom-motion-primary-transparent)',
     'motion-tertiary': 'var(--dash-accent-custom-dark)',
 
     'looks-secondary': 'var(--dash-accent-custom)',

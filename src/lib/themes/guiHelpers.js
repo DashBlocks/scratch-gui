@@ -25,8 +25,10 @@ const BLOCK_COLOR_NAMES = [
  * @returns {string} evaluated CSS
  */
 const evaluateCSS = (css, noVar) => {
-    for (let i = 0; (i === 0 || noVar) && css.match(/^var\(([\w-]+)\)$/); i++) {
+    let variableMatch = css.match(/^var\(([\w-]+)\)$/);
+    for (let i = 0; (i === 0 || noVar) && variableMatch; i++) {
         css = document.documentElement.style.getPropertyValue(variableMatch[1]);
+        variableMatch = css.match(/^var\(([\w-]+)\)$/);
     }
     return css;
 };

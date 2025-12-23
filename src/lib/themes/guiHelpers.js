@@ -21,12 +21,12 @@ const BLOCK_COLOR_NAMES = [
 
 /**
  * @param {string} css CSS color or var(--...)
+ * @param {string} noVar Return CSS color of returned var(--...)
  * @returns {string} evaluated CSS
  */
-const evaluateCSS = css => {
-    const variableMatch = css.match(/^var\(([\w-]+)\)$/);
-    if (variableMatch) {
-        return document.documentElement.style.getPropertyValue(variableMatch[1]);
+const evaluateCSS = (css, noVar) => {
+    for (let i = 0; (i === 0 || noVar) && css.match(/^var\(([\w-]+)\)$/); i++) {
+        css = document.documentElement.style.getPropertyValue(variableMatch[1]);
     }
     return css;
 };
@@ -156,7 +156,7 @@ const applyGuiColors = theme => {
         metaThemeColor.setAttribute('name', 'theme-color');
         document.head.appendChild(metaThemeColor);
     }
-    metaThemeColor.setAttribute('content', evaluateCSS(guiColors['menu-bar-background']));
+    metaThemeColor.setAttribute('content', evaluateCSS(guiColors['menu-bar-background'], true)));
 
     // a horrible hack for icons...
     window.Recolor = {

@@ -122,9 +122,10 @@ const applyGuiColors = theme => {
             const darkL = Math.max(0, hsl.l * 0.85);
             const lightL = Math.min(100, hsl.l * 1.15);
 
-            doc.style.setProperty('--dash-accent-custom-transparent', rgbaString({...rgb, a: 0.9}));
+            doc.style.setProperty('--dash-accent-custom-transparent', rgbaString({...rgb, a: 0.35}));
             doc.style.setProperty('--dash-accent-custom-light-transparent', rgbaString({...rgb, a: 0.15}));
             doc.style.setProperty('--dash-accent-custom-dark', hslToString({...hsl, l: darkL}));
+            doc.style.setProperty('--dash-accent-custom-motion-primary-transparent', rgbaString({...rgb, a: 0.9}));
             doc.style.setProperty('--dash-accent-custom-extensions-primary', hslToString({...hsl, l: Math.min(100, hsl.l + 10)}));
             doc.style.setProperty('--dash-accent-custom-extensions-tertiary', hslToString({...hsl, l: Math.max(0, hsl.l - 10)}));
             doc.style.setProperty('--dash-accent-custom-extensions-transparent', rgbaString({...rgb, a: 0.35}));

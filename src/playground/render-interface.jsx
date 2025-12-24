@@ -337,7 +337,7 @@ const WhatsNew = () => {
                         <div className={styles.commitItem}>
                             <div className={styles.commitMessage}>
                                 {matchedMsg[2] && <span className={styles.commitVersion}>
-                                    {matchedMsg[2]}
+                                    {'v' + matchedMsg[2]}
                                 </span>}
                                 {matchedMsg[4]}
                             </div>

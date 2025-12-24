@@ -325,6 +325,7 @@ const WhatsNew = () => {
         <div className={styles.commitsContainer}>
             {commits.map(commit => {
                 const createdDate = new Date(commit.commit.committer.date);
+                const matchedMsg = commit.commit.message.match(/^(\[(\d+(\.\d+)*)\])?(.*)$/);
                 return (
                     <a
                         key={commit.sha}
@@ -335,7 +336,10 @@ const WhatsNew = () => {
                     >
                         <div className={styles.commitItem}>
                             <div className={styles.commitMessage}>
-                                {commit.commit.message}
+                                {matchedMsg[2] && <span className={styles.commitVersion}>
+                                    {matchedMsg[2]}
+                                </span>}
+                                {matchedMsg[4]}
                             </div>
                             <div>
                                 {relativeTimeSupported() && (

@@ -3,6 +3,7 @@ import {APP_NAME} from '../../lib/brand';
 import {isScratchDesktop} from '../../lib/isScratchDesktop';
 import CloseButton from '../close-button/close-button.jsx';
 import styles from './tw-news.css';
+import { isNewYearMode } from '../dash-new-year-mode/new-year-mode.jsx';
 
 const getIsClosedInLocalStorage = (key, id) => {
     try {
@@ -28,6 +29,7 @@ class TWNews extends React.Component {
         };
         this.handleCloseNewCompiler = this.handleCloseNewCompiler.bind(this);
         this.handleCloseDevVersion = this.handleCloseDevVersion.bind(this);
+        this.handleCloseNewYear = this.handleCloseNewYear.bind(this);
     }
     handleCloseNewCompiler () {
         markAsClosedInLocalStorage(this.props.key, this.props.id);
@@ -38,6 +40,14 @@ class TWNews extends React.Component {
         });
     }
     handleCloseDevVersion () {
+        markAsClosedInLocalStorage(this.props.key, this.props.id);
+        this.setState({
+            closed: true
+        }, () => {
+            window.dispatchEvent(new Event('resize'));
+        });
+    }
+    handleCloseNewYear () {
         markAsClosedInLocalStorage(this.props.key, this.props.id);
         this.setState({
             closed: true
@@ -82,7 +92,6 @@ class TWNews extends React.Component {
                         {`This is a "Dev" version of ${APP_NAME}. Please do not use this version for real projects, as it may break your projects! `}
                         <a
                             href="https://dashblocks.github.io"
-                            target="_blank"
                             rel="noreferrer"
                         >
                             {'Main version.'}
@@ -91,6 +100,22 @@ class TWNews extends React.Component {
                     <CloseButton
                         className={styles.close}
                         onClick={this.handleCloseDevVersion}
+                    />
+                </div>)}
+                {this.props.id == 'new-year' && (<div className={styles.news}>
+                    <div className={styles.text}>
+                        {/* eslint-disable-next-line max-len */}
+                        {`Happy New Year! Enjoy the festive theme while it lasts. `}
+                        <a
+                            href={isNewYearMode() ? 'https://dashblocks.github.io' : 'https://dashblocks.github.io/?newYearMode'}
+                            rel="noreferrer"
+                        >
+                            {isNewYearMode() ? 'Switch to normal mode.' : 'Switch to new year mode.'}
+                        </a>
+                    </div>
+                    <CloseButton
+                        className={styles.close}
+                        onClick={this.handleCloseNewYear}
                     />
                 </div>)}
             </>

@@ -56,7 +56,7 @@ import whatsNewIcon from '!../lib/tw-recolor/build!./icons/icon--whatsnew.svg';
 import styles from './interface.css';
 import lazyMessages from '../components/loader/lazy-messages.json'
 import Loader from '../components/loader/loader.jsx';
-import NewYearMode from '../components/dash-new-year-mode/new-year-mode.jsx';
+import {NewYearMode, isNewYearMode} from '../components/dash-new-year-mode/new-year-mode.jsx';
 
 const isInvalidEmbed = window.parent !== window;
 
@@ -454,7 +454,7 @@ class Interface extends React.PureComponent {
                     </div>
                     {isHomepage ? (
                         <React.Fragment>
-                            {/* <NewYearMode /> */}
+                            {isNewYearMode() && <NewYearMode />}
                             {isBrowserSupported() ? null : (
                                 <BrowserModal isRtl={isRtl} />
                             )}

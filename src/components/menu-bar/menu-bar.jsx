@@ -33,6 +33,7 @@ import ChangeUsername from '../../containers/tw-change-username.jsx';
 import CloudVariablesToggler from '../../containers/tw-cloud-toggler.jsx';
 import TWSaveStatus from './tw-save-status.jsx';
 import TWNews from './tw-news.jsx';
+import {isNewYearMode} from '../../components/dash-new-year-mode/new-year-mode.jsx';
 
 import {openTipsLibrary, openSettingsModal, openRestorePointModal} from '../../reducers/modals';
 import {setPlayer} from '../../reducers/mode';
@@ -97,6 +98,7 @@ import addonsIcon from './addons.svg';
 import errorIcon from './tw-error.svg';
 import advancedIcon from './tw-advanced.svg';
 import dashLogo from './dash.png';
+import dashNewYearLogo from './dash-new-year.png'
 
 import ninetiesLogo from './nineties_logo.svg';
 import catLogo from './cat_logo.svg';
@@ -525,7 +527,7 @@ class MenuBar extends React.Component {
                         >
                             <img
                                 className={styles.dashLogo}
-                                src={dashLogo}
+                                src={isNewYearMode() ? dashNewYearLogo : dashLogo}
                                 draggable={false}
                             />
                         </a>
@@ -1118,6 +1120,7 @@ class MenuBar extends React.Component {
                 {menuBar}
                 {/* !process.env.OLD_COMPILER && (<TWNews key='dash:news1' id='new-compiler' />) */}
                 {window.location.href.startsWith('https://dashblocks.github.io/scratch-gui') && (<TWNews key='dash:news2' id='dev-version' />)}
+                <TWNews key='dash:news3' id='new-year' />
             </React.Fragment>
         );
     }

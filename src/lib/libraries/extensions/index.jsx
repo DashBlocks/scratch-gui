@@ -4,7 +4,7 @@ import {FormattedMessage} from 'react-intl';
 import musicIconURL from './music/music.png';
 import musicInsetIconURL from './music/music-small.svg';
 
-import penIconURL from './pen/pen.png';
+import penIconURL from './pen/pen.svg';
 import penInsetIconURL from './pen/pen-small.svg';
 
 import videoSensingIconURL from './videoSensing/video-sensing.png';

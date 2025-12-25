@@ -334,7 +334,7 @@ const WhatsNew = () => {
             {commits.map(commit => {
                 const createdDate = new Date(commit.commit.committer.date);
                 const matchedMsg = commit.commit.message.match(/^(\[(\d+(\.\d+)*)\])?(.*)$/);
-                version = matchedMsg[2] || version;
+                if (!version) version = matchedMsg[2];
                 return (
                     <a
                         key={commit.sha}

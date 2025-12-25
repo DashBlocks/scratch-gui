@@ -132,7 +132,7 @@ const RenderLoader = () => {
             messageId="dash.loader.loadingPage"
         />
     ) : null;
-}
+};
 
 const RenderWelcomeModal = () => {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -158,18 +158,40 @@ const RenderWelcomeModal = () => {
             {isOpen && <DashWelcomeModal onClose={handleOnClose}/>}
         </>
     );
-}
+};
+
+const RenderVersion = () => {
+    const [version, setVersion] = React.useState();
+
+    const fetchVersion = () => {
+        fetch('https://api.github.com/repos/DashBlocks/dashblocks.github.io/commits')
+            .then(response => response.json())
+            .then(data => {
+                const latestCommit = data[0];
+                const matchedVersion = latestCommit.commit.message.match(/^(\[(\d+(\.\d+)*)\])/);
+                setVersion(matchedVersion[2]);
+            });
+    };
+
+    useEffect(() => {
+        fetchVersion();
+    }, []);
+
+    return (
+        <div className={styles.footerText}>
+            <div className={styles.commitVersion}>
+                {'v' + version}
+            </div>
+        </div>
+    );
+};
 
 runAddons();
 
 const Footer = () => (
     <footer className={styles.footer}>
         <div className={styles.footerContent}>
-            {version && <div className={styles.footerText}>
-                <div className={styles.commitVersion}>
-                    {'v' + version}
-                </div>
-            </div>}
+            <RenderVersion />
 
             <div className={styles.footerText}>
                 <FormattedMessage
@@ -334,7 +356,6 @@ const WhatsNew = () => {
             {commits.map(commit => {
                 const createdDate = new Date(commit.commit.committer.date);
                 const matchedMsg = commit.commit.message.match(/^(\[(\d+(\.\d+)*)\])?(.*)$/);
-                if (!version) version = matchedMsg[2];
                 return (
                     <a
                         key={commit.sha}

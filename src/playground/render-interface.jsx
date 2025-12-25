@@ -60,6 +60,8 @@ import {NewYearMode, isNewYearMode} from '../components/dash-new-year-mode/new-y
 
 const isInvalidEmbed = window.parent !== window;
 
+let version;
+
 // Browser support is not perfect yet
 const relativeTimeSupported = () => typeof Intl !== 'undefined' && typeof Intl.RelativeTimeFormat !== 'undefined';
 
@@ -163,6 +165,12 @@ runAddons();
 const Footer = () => (
     <footer className={styles.footer}>
         <div className={styles.footerContent}>
+            {version && <div className={styles.footerText}>
+                <div className={styles.commitVersion}>
+                    {'v' + version}
+                </div>
+            </div>}
+
             <div className={styles.footerText}>
                 <FormattedMessage
                     // eslint-disable-next-line max-len
@@ -326,6 +334,7 @@ const WhatsNew = () => {
             {commits.map(commit => {
                 const createdDate = new Date(commit.commit.committer.date);
                 const matchedMsg = commit.commit.message.match(/^(\[(\d+(\.\d+)*)\])?(.*)$/);
+                version = matchedMsg[2] || version;
                 return (
                     <a
                         key={commit.sha}

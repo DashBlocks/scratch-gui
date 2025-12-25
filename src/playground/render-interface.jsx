@@ -180,7 +180,7 @@ const RenderVersion = () => {
     return (
         <div className={styles.footerText}>
             <div className={styles.commitVersion}>
-                {'v' + version}
+                {window.location.href.startsWith('https://dashblocks.github.io/scratch-gui') ? 'Dev' : 'v' + version}
             </div>
         </div>
     );

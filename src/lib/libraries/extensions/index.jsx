@@ -450,8 +450,7 @@ export const galleryLoading = {
         />
     ),
     tags: ['dash'],
-    featured: true,
-    disabled: true // soon
+    featured: true
 };
 
 export const galleryMore = {
@@ -478,8 +477,7 @@ export const galleryMore = {
         />
     ),
     tags: ['dash'],
-    featured: true,
-    disabled: true // soon
+    featured: true
 };
 
 export const galleryError = {
@@ -506,6 +504,5 @@ export const galleryError = {
         />
     ),
     tags: ['dash'],
-    featured: true,
-    disabled: true // soon
+    featured: true
 };

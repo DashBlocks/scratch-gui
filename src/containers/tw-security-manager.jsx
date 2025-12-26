@@ -6,6 +6,7 @@ import bindAll from 'lodash.bindall';
 import SecurityManagerModal from '../components/tw-security-manager-modal/security-manager-modal.jsx';
 import SecurityModals from '../lib/tw-security-manager-constants';
 import {getPersistedUnsandboxed, setPersistedUnsandboxed} from '../lib/tw-persisted-unsandboxed.js';
+import {extensions} from 'dash-extensions-gallery/src/lib/extensions.js';
 
 /* eslint-disable require-atomic-updates */
 
@@ -33,6 +34,7 @@ const isTrustedUrl = url => (
     url.toLowerCase().startsWith('https://penguinmod.com') ||
     url.toLowerCase().startsWith('https://studio.penguinmod.com') ||
     url.toLowerCase().startsWith('https://extensions.penguinmod.com') ||
+    extensions.some(ext => ext?.code === url) ||
 
     // For development.
     url.toLowerCase().startsWith('http://localhost:') ||

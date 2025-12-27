@@ -26,7 +26,16 @@
         "Not 100% yet :|",
         "say (Hello, world!) for (5) seconds",
 
-        "Subscribe to our TG channel - https://t.me/DashBlocks ;)"
+        "Subscribe to our TG channel - https://t.me/DashBlocks ;)",
+        "Äýø íàìíîãî ëó÷øå ÷åì Ñêðåò÷",
+        "Format C: complete!",
+        "Fixing bugs...",
+        "Hacking the Pentagon...",
+        "Crashing prod...",
+        "License has expired!",
+        "SyntaxError: Unexpected token",
+        "Implementing new round blocks...",
+        "Searching for an answer on stack overflow..."
     ],
     "ru": [
         "Раскрашиваем блоки...",
@@ -55,6 +64,15 @@
         "Ещё не 100% :|",
         "говорить (Привет, мир!) (5) секунд",
 
-        "Подпишись на наш ТГ канал - https://t.me/DashBlocks ;)"
+        "Подпишись на наш ТГ канал - https://t.me/DashBlocks ;)",
+        "Äýø íàìíîãî ëó÷øå ÷åì Ñêðåò÷",
+        "Фоматирование диска C: завершено!",
+        "Фиксим баги...",
+        "Взламываем пентагон...",
+        "Роняем прод...",
+        "Срока действия лицензии истек!",
+        "SyntaxError: Unexpected token",
+        "Реализовывем новые круглые блоки...",
+        "Ищем ответ на stack overflow..."
     ]
 }

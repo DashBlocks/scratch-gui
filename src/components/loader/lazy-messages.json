@@ -17,6 +17,7 @@
         "Translating Dash...",
         "Making new features...",
         "Welcome to Dash!",
+        "Implementing new round blocks...",
 
         "Keeping an eye on Dashy...",
         "Unbanning SpartanDav...",
@@ -25,17 +26,17 @@
         "*You found the \"12\"*",
         "Not 100% yet :|",
         "say (Hello, world!) for (5) seconds",
-
-        "Subscribe to our TG channel - https://t.me/DashBlocks ;)",
         "Äýø íàìíîãî ëó÷øå ÷åì Ñêðåò÷",
         "Format C: complete!",
-        "Fixing bugs...",
         "Hacking the Pentagon...",
         "Crashing prod...",
         "License has expired!",
         "SyntaxError: Unexpected token",
-        "Implementing new round blocks...",
-        "Searching for an answer on stack overflow..."
+        "Searching for an answer on Stack Overflow...",
+
+        "Fact: 05/21/2025 is Dashy's birthday",
+
+        "Subscribe to our TG channel - https://t.me/DashBlocks ;)"
     ],
     "ru": [
         "Раскрашиваем блоки...",
@@ -55,6 +56,7 @@
         "Переводим Dash...",
         "Делаем новые фичи...",
         "Добро пожаловать в Dash!",
+        "Реализовываем новые круглые блоки...",
 
         "Следим за Dashy...",
         "Разбаниваем SpartanDav...",
@@ -63,16 +65,16 @@
         "*Ты нашёл \"12\"*",
         "Ещё не 100% :|",
         "говорить (Привет, мир!) (5) секунд",
-
-        "Подпишись на наш ТГ канал - https://t.me/DashBlocks ;)",
         "Äýø íàìíîãî ëó÷øå ÷åì Ñêðåò÷",
         "Фоматирование диска C: завершено!",
-        "Фиксим баги...",
         "Взламываем пентагон...",
         "Роняем прод...",
-        "Срока действия лицензии истек!",
+        "Срок действия лицензии истек!",
         "SyntaxError: Unexpected token",
-        "Реализовывем новые круглые блоки...",
-        "Ищем ответ на stack overflow..."
+        "Ищем ответ на Stack Overflow...",
+        
+        "Факт: 21.05.2025 - день рождения Dashy",
+
+        "Подпишись на наш ТГК - https://t.me/DashBlocks ;)"
     ]
 }

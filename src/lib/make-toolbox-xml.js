@@ -966,7 +966,7 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         <block type="json_assign">
-            <mutation inputcount="2"></mutation>
+            <mutation inputcount="1"></mutation>
         </block>
         ${blockSeparator}
         <block type="json_get_by_path" />

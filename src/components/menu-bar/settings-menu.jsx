@@ -10,6 +10,7 @@ import TWAccentThemeMenu from './tw-theme-accent.jsx';
 import TWGuiThemeMenu from './tw-theme-gui.jsx';
 import TWBlocksThemeMenu from './tw-theme-blocks.jsx';
 import WallpaperThemeMenu from './dash-theme-wallpaper.jsx';
+import FontThemeMenu from './dash-theme-font.jsx';
 import TWDesktopSettings from './tw-desktop-settings.jsx';
 
 import menuBarStyles from './menu-bar.css';
@@ -69,6 +70,7 @@ const SettingsMenu = ({
                         <WallpaperThemeMenu
                             onOpenCustomSettings={onOpenCustomSettings}
                         />
+                        <FontThemeMenu />
                     </React.Fragment>
                 )}
                 {onClickDesktopSettings && <TWDesktopSettings onClick={onClickDesktopSettings} />}

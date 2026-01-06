@@ -1,4 +1,15 @@
-[
+[{
+        "name": "forest assets",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "6e0d93bc96bb7d23dea5cbb3db9c1e37",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "6e0d93bc96bb7d23dea5cbb3db9c1e37.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },
     {
         "name": "weapon assets",
         "tags": [

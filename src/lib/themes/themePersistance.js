@@ -66,7 +66,8 @@ const detectTheme = () => {
             parsed.accent || systemPreferences.accent,
             parsed.gui || systemPreferences.gui,
             parsed.blocks || systemPreferences.blocks,
-            parsed.wallpaper || null
+            parsed.wallpaper || null,
+            parsed.font || null
         );
         // If there's a stored custom accent color, apply it to CSS vars so custom accent evaluates correctly
         if (parsed.customAccentColor) {
@@ -103,6 +104,9 @@ const persistTheme = theme => {
     }
     if (theme.wallpaper.url !== null) {
         nonDefaultSettings.wallpaper = theme.wallpaper;
+    }
+    if (theme.font.font !== null) {
+        nonDefaultSettings.font = theme.font;
     }
 
     if (theme.accent === ACCENT_CUSTOM) {

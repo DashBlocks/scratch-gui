@@ -82,7 +82,7 @@ const BLOCKS_MAP = {
 let themeObjectsCreated = 0;
 
 class Theme {
-    constructor (accent, gui, blocks, wallpaper) {
+    constructor (accent, gui, blocks, wallpaper, font) {
         // do not modify these directly
         /** @readonly */
         this.id = ++themeObjectsCreated;
@@ -94,21 +94,25 @@ class Theme {
         this.blocks = Object.prototype.hasOwnProperty.call(BLOCKS_MAP, blocks) ? blocks : BLOCKS_DEFAULT;
         /** @readonly */
         this.wallpaper = wallpaper || {url: null, opaque: 0.6};
+        /** @readonly */
+        this.font = font || {font: null}
     }
 
-    static light = new Theme(ACCENT_DEFAULT, GUI_LIGHT, BLOCKS_DEFAULT, null);
-    static dark = new Theme(ACCENT_DEFAULT, GUI_DARK, BLOCKS_DEFAULT, null);
-    static highContrast = new Theme(ACCENT_DEFAULT, GUI_DEFAULT, BLOCKS_HIGH_CONTRAST, null);
+    static light = new Theme(ACCENT_DEFAULT, GUI_LIGHT, BLOCKS_DEFAULT, null, null);
+    static dark = new Theme(ACCENT_DEFAULT, GUI_DARK, BLOCKS_DEFAULT, null, null);
+    static highContrast = new Theme(ACCENT_DEFAULT, GUI_DEFAULT, BLOCKS_HIGH_CONTRAST, null, null);
 
     set (what, to) {
         if (what === 'accent') {
-            return new Theme(to, this.gui, this.blocks, this.wallpaper);
+            return new Theme(to, this.gui, this.blocks, this.wallpaper, this.font);
         } else if (what === 'gui') {
-            return new Theme(this.accent, to, this.blocks, this.wallpaper);
+            return new Theme(this.accent, to, this.blocks, this.wallpaper, this.font);
         } else if (what === 'blocks') {
-            return new Theme(this.accent, this.gui, to, this.wallpaper);
+            return new Theme(this.accent, this.gui, to, this.wallpaper, this.font);
         } else if (what === 'wallpaper') {
-            return new Theme(this.accent, this.gui, this.blocks, to);
+            return new Theme(this.accent, this.gui, this.blocks, to, this.font);
+        } else if (what === 'font') {
+            return new Theme(this.accent, this.gui, this.blocks, this.wallpaper, to);
         }
         throw new Error(`Unknown theme property: ${what}`);
     }

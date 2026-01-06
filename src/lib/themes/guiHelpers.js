@@ -165,6 +165,13 @@ const applyGuiColors = theme => {
         primary: evaluateCSS(guiColors['looks-secondary'])
     };
     AddonHooks.recolorCallbacks.forEach(i => i());
+
+    // Not a GUI color, but we apply it here anyway lol
+    const fontFace = new FontFace('customFont', `url(${theme.font.font})`);
+    fontFace.load().then((loadedFont) => {
+        document.fonts.add(loadedFont);
+        document.body.style.fontFamily = 'customFont, "Helvetica Neue", Helvetica, sans-serif';
+    }).catch(console.error);
 };
 
 export {

@@ -488,7 +488,6 @@ class Blocks extends React.Component {
         if (toolboxXML) {
             this.props.updateToolboxState(toolboxXML);
         }
-        this.props.vm.refreshWorkspace();
     }
     onWorkspaceUpdate (data) {
         // When we change sprites, update the toolbox to have the new sprite's blocks

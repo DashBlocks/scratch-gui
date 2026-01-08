@@ -47,10 +47,12 @@ a {
 }
 
 button {
-    padding: 0.5rem;
-    border: 0.0625rem solid $ui-black-transparent;
-    border-radius: 0.5rem;
-}
-button:hover {
-    border-color: $looks-secondary;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    background: $looks-secondary;
+    color: white;
+    border: 1px solid $looks-secondary;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
 }

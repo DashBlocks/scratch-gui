@@ -4,7 +4,7 @@ import styles from './new-year-mode.css';
 const isNewYearMode = () => {
     /* const now = new Date();
     return (now.getMonth() === 11 && now.getDate() >= 1) || (now.getMonth() === 0 && now.getDate() <= 10); */
-    const isEnabled = new URLSearchParams(window.location.search).has('newYearMode');
+    const isEnabled = false; // new URLSearchParams(window.location.search).has('newYearMode');
     return isEnabled;
 };
 

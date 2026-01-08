@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import {defineMessages} from 'react-intl';
 import bindAll from 'lodash.bindall';
 import {connect} from 'react-redux';
 import log from '../lib/log';
@@ -17,6 +18,29 @@ const readAsDataURL = blob => new Promise((resolve, reject) => {
     reader.onload = () => resolve(reader.result);
     reader.onerror = () => reject(new Error(`Could not read extension as data URL: ${reader.error}`));
     reader.readAsDataURL(blob);
+});
+
+const messages = defineMessages({
+    swapWarning: {
+        id: 'dash.customExtensionModal.swapWarning',
+        defaultMessage: 'If extensions swap will fail, it will cause the extension to be flatout removed, are you sure the inputed extension has matching id\'s and has no errors?',
+        description: 'Warning message when swapping (editing) extensions'
+    },
+    differentSwapId: {
+        id: 'dash.customExtensionModal.differentSwapId',
+        defaultMessage: 'The extension you used to for the edit had a different id to the one you where editing, so added it as new extension.',
+        description: 'Warning message when the extension being swapped has a different ID'
+    },
+    swapFailed: {
+        id: 'dash.customExtensionModal.swapFailed',
+        defaultMessage: 'The extension you used to for the edit has failed to load.',
+        description: 'Warning message when the extension being swapped fails to load'
+    },
+    extensionLoadFailed: {
+        id: 'dash.customExtensionModal.extensionLoadFailed',
+        defaultMessage: 'Failed to load extension.',
+        description: 'Generic warning message when an extension fails to load'
+    }
 });
 
 class CustomExtensionModal extends React.Component {
@@ -124,8 +148,8 @@ class CustomExtensionModal extends React.Component {
     async handleLoadExtension () {
         let failed = false;
         if (this.props.swapId) {
-            /* eslint-disable-next-line no-alert, max-len */
-            if (!confirm('If extensions swap will fail, it will cause the extension to be flatout removed, are you sure the inputed extension has matching id\'s and has no errors?')) {
+            /* eslint-disable-next-line no-alert */
+            if (!confirm(messages.swapWarning)) {
                 return;
             }
         }
@@ -147,11 +171,12 @@ class CustomExtensionModal extends React.Component {
                     const runtime = this.props.vm.runtime;
                     this.props.vm.extensionManager.prepareSwap(this.props.swapId);
                     let extIdx = runtime._blockInfo.findIndex(ext => ext.id === this.props.swapId);
-                    const loadedIds = await this.props.vm.extensionManager.loadExtensionURL(url);
+                    await this.props.vm.extensionManager.loadExtensionURL(url);
+                    const loadedIds = this.props.vm.extensionManager.extensionsIDs;
                     if (!loadedIds.includes(this.props.swapId)) {
                         for (const ext of loadedIds) this.props.vm.extensionManager.removeExtension(ext);
                         // eslint-disable-next-line no-alert
-                        alert('The extension you used to for the edit had a different id to the one you where editing.');
+                        alert(messages.differentSwapId);
                         return;
                     }
                     this.props.vm.runtime._removeExtensionPrimitive(this.props.swapId);
@@ -206,12 +231,12 @@ class CustomExtensionModal extends React.Component {
             if (failed) {
                 if (this.props.swapId) {
                     // eslint-disable-next-line no-alert
-                    alert('The extension you used to for the edit has failed to load.');
+                    alert(messages.swapFailed);
                     this.props.vm.runtime._removeExtensionPrimitive(this.props.swapId);
                     return;
                 }
                 // eslint-disable-next-line no-alert
-                alert('Failed to load extension.');
+                alert(messages.extensionLoadFailed);
             }
         }
     }
@@ -329,11 +354,13 @@ CustomExtensionModal.propTypes = {
             _removeExtensionPrimitive: PropTypes.func,
             _blockInfo: PropTypes.array
         })
-    })
+    }),
+    swapId: PropTypes.string
 };
 
 const mapStateToProps = state => ({
-    vm: state.scratchGui.vm
+    vm: state.scratchGui.vm,
+    swapId: state.scratchGui.modals.extensionSwapId
 });
 
 const mapDispatchToProps = dispatch => ({

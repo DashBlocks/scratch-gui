@@ -107,17 +107,17 @@ class Blocks extends React.Component {
         this.ScratchBlocks = VMScratchBlocks(props.vm, false);
         this.ScratchBlocks.Toolbox.registerMenu('extensionControls', [
             {
-                text: this.props.intl.formattedMessage(messages.removeExtension),
+                text: this.props.intl.formatMessage(messages.removeExtension),
                 enabled: true,
                 callback: ext => this.props.vm.extensionManager.removeExtension(ext)
             },
             {
-                text: this.props.intl.formattedMessage(messages.removeUnusedExtensions),
+                text: this.props.intl.formatMessage(messages.removeUnusedExtensions),
                 enabled: true,
                 callback: () => this.props.vm.extensionManager.removeUnusedExtensions()
             },
             {
-                text: this.props.intl.formattedMessage(messages.editExtension),
+                text: this.props.intl.formatMessage(messages.editExtension),
                 enabled: true,
                 callback: ext => this.props.reduxOnOpenCustomExtensionModal(ext)
             }

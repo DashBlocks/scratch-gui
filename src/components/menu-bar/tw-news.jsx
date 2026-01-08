@@ -25,14 +25,14 @@ class TWNews extends React.Component {
     constructor (props) {
         super(props);
         this.state = {
-            closed: getIsClosedInLocalStorage(props.key, props.id)
+            closed: getIsClosedInLocalStorage(props.item, props.id)
         };
         this.handleCloseNewCompiler = this.handleCloseNewCompiler.bind(this);
         this.handleCloseDevVersion = this.handleCloseDevVersion.bind(this);
         this.handleCloseNewYear = this.handleCloseNewYear.bind(this);
     }
     handleCloseNewCompiler () {
-        markAsClosedInLocalStorage(this.props.key, this.props.id);
+        markAsClosedInLocalStorage(this.props.item, this.props.id);
         this.setState({
             closed: true
         }, () => {
@@ -40,7 +40,7 @@ class TWNews extends React.Component {
         });
     }
     handleCloseDevVersion () {
-        markAsClosedInLocalStorage(this.props.key, this.props.id);
+        markAsClosedInLocalStorage(this.props.item, this.props.id);
         this.setState({
             closed: true
         }, () => {
@@ -48,7 +48,7 @@ class TWNews extends React.Component {
         });
     }
     handleCloseNewYear () {
-        markAsClosedInLocalStorage(this.props.key, this.props.id);
+        markAsClosedInLocalStorage(this.props.item, this.props.id);
         this.setState({
             closed: true
         }, () => {

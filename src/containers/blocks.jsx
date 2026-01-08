@@ -104,9 +104,9 @@ class Blocks extends React.Component {
             {
                 text: 'Edit Extension',
                 enabled: true,
-                callback: ext => this.props.onOpenCustomExtensionModal(ext)
+                callback: ext => this.props.reduxOnOpenCustomExtensionModal(ext)
             }
-        ], true);
+        ], false);
 
         window.ScratchBlocks = this.ScratchBlocks;
         AddonHooks.blockly = this.ScratchBlocks;
@@ -488,6 +488,7 @@ class Blocks extends React.Component {
         if (toolboxXML) {
             this.props.updateToolboxState(toolboxXML);
         }
+        this.props.vm.refreshWorkspace();
     }
     onWorkspaceUpdate (data) {
         // When we change sprites, update the toolbox to have the new sprite's blocks

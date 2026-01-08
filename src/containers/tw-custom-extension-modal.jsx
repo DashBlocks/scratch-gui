@@ -125,7 +125,7 @@ class CustomExtensionModal extends React.Component {
         let failed = false;
         if (this.props.swapId) {
             /* eslint-disable-next-line no-alert, max-len */
-            if (!confirm('Failure to swap extensions will cause the extension to be flatout removed, are you sure the inputed extension has matching id\'s and has no errors?')) {
+            if (!confirm('If extensions swap will fail, it will cause the extension to be flatout removed, are you sure the inputed extension has matching id\'s and has no errors?')) {
                 return;
             }
         }
@@ -152,6 +152,7 @@ class CustomExtensionModal extends React.Component {
                         for (const ext of loadedIds) this.props.vm.extensionManager.removeExtension(ext);
                         // eslint-disable-next-line no-alert
                         alert('The extension you used to for the edit had a different id to the one you where editing.');
+                        return;
                     }
                     this.props.vm.runtime._removeExtensionPrimitive(this.props.swapId);
                     loadedIds.forEach(extId => {

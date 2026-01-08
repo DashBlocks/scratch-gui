@@ -70,6 +70,21 @@ const messages = defineMessages({
         // eslint-disable-next-line max-len
         description: 'Button in extension list to learn how to use the "return" block from the Custom Reporters extension.',
         id: 'tw.blocks.PROCEDURES_DOCS'
+    },
+    removeExtension: {
+        defaultMessage: 'Remove Extension',
+        description: 'Button text to remove an extension from the current project.',
+        id: 'dash.blocks.removeExtension'
+    },
+    removeUnusedExtensions: {
+        defaultMessage: 'Remove Unused Extensions',
+        description: 'Button text to remove all extensions that are not currently used in the project.',
+        id: 'dash.blocks.removeUnusedExtensions'
+    },
+    editExtension: {
+        defaultMessage: 'Edit Extension',
+        description: 'Button text to open the custom extension editor for a custom extension in the project.',
+        id: 'dash.blocks.editExtension'
     }
 });
 
@@ -92,17 +107,17 @@ class Blocks extends React.Component {
         this.ScratchBlocks = VMScratchBlocks(props.vm, false);
         this.ScratchBlocks.Toolbox.registerMenu('extensionControls', [
             {
-                text: 'Remove Extension',
+                text: this.props.intl.formattedMessage(messages.removeExtension),
                 enabled: true,
                 callback: ext => this.props.vm.extensionManager.removeExtension(ext)
             },
             {
-                text: 'Remove Unused Extensions',
+                text: this.props.intl.formattedMessage(messages.removeUnusedExtensions),
                 enabled: true,
                 callback: () => this.props.vm.extensionManager.removeUnusedExtensions()
             },
             {
-                text: 'Edit Extension',
+                text: this.props.intl.formattedMessage(messages.editExtension),
                 enabled: true,
                 callback: ext => this.props.reduxOnOpenCustomExtensionModal(ext)
             }

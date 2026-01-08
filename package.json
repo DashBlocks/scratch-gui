@@ -1,13 +1,13 @@
 {
   "name": "scratch-gui",
   "version": "3.2.37",
-  "description": "Graphical User Interface for creating and running Scratch 3.0 projects",
-  "author": "Massachusetts Institute of Technology",
+  "description": "Graphical User Interface for creating and running Dash projects",
+  "author": "DashBlocks Team",
   "license": "GPL-3.0",
-  "homepage": "https://github.com/LLK/scratch-gui#readme",
+  "homepage": "https://github.com/DashBlocks/scratch-gui#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/LLK/scratch-gui.git"
+    "url": "https://github.com/DashBlocks/scratch-gui.git"
   },
   "main": "./dist/scratch-gui.js",
   "scripts": {

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {defineMessages} from 'react-intl';
+import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import bindAll from 'lodash.bindall';
 import {connect} from 'react-redux';
 import log from '../lib/log';
@@ -149,7 +149,7 @@ class CustomExtensionModal extends React.Component {
         let failed = false;
         if (this.props.swapId) {
             /* eslint-disable-next-line no-alert */
-            if (!confirm(messages.swapWarning)) {
+            if (!confirm(this.props.intl.formatMessage(messages.swapWarning))) {
                 return;
             }
         }
@@ -176,7 +176,7 @@ class CustomExtensionModal extends React.Component {
                     if (!loadedIds.includes(this.props.swapId)) {
                         for (const ext of loadedIds) this.props.vm.extensionManager.removeExtension(ext);
                         // eslint-disable-next-line no-alert
-                        alert(messages.differentSwapId);
+                        alert(this.props.intl.formatMessage(messages.differentSwapId));
                         return;
                     }
                     this.props.vm.runtime._removeExtensionPrimitive(this.props.swapId);
@@ -231,12 +231,12 @@ class CustomExtensionModal extends React.Component {
             if (failed) {
                 if (this.props.swapId) {
                     // eslint-disable-next-line no-alert
-                    alert(messages.swapFailed);
+                    alert(this.props.intl.formatMessage(messages.swapFailed));
                     this.props.vm.runtime._removeExtensionPrimitive(this.props.swapId);
                     return;
                 }
                 // eslint-disable-next-line no-alert
-                alert(messages.extensionLoadFailed);
+                alert(this.props.intl.formatMessage(messages.extensionLoadFailed));
             }
         }
     }
@@ -340,6 +340,7 @@ class CustomExtensionModal extends React.Component {
 }
 
 CustomExtensionModal.propTypes = {
+    intl: intlShape,
     onClose: PropTypes.func,
     vm: PropTypes.shape({
         extensionManager: PropTypes.shape({
@@ -367,7 +368,7 @@ const mapDispatchToProps = dispatch => ({
     onClose: () => dispatch(closeCustomExtensionModal())
 });
 
-export default connect(
+export default injectIntl(connect(
     mapStateToProps,
     mapDispatchToProps
-)(CustomExtensionModal);
+)(CustomExtensionModal));

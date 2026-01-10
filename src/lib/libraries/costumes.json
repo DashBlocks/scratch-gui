@@ -1,4 +1,15 @@
 [{
+        "name": "character",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "c5ee321f8161c521092d8a3c0ae25a35",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "c5ee321f8161c521092d8a3c0ae25a35.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },{
         "name": "forest assets",
         "tags": [
             "dash"

@@ -49,7 +49,7 @@ PseudoConsole.propTypes = {
         height: PropTypes.number,
         widthDefault: PropTypes.number,
         heightDefault: PropTypes.number
-    }).isRequired,,
+    }).isRequired,
     vm: PropTypes.instanceOf(VM)
 };
 

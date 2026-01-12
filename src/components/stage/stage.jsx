@@ -66,17 +66,17 @@ const StageComponent = props => {
                         ...transformStyle
                     }}
                 >
-                    {props.isConsoleMode ? <PseudoConsole
+                    {props.stageMode === 'console' ? <PseudoConsole
                         stageSize={stageDimensions}
                         vm={vm}
-                    /> : <DOMElementRenderer
+                    /> : props.stageMode === '2d' ? <DOMElementRenderer
                         domElement={canvas}
                         style={{
                             height: stageDimensions.height,
                             width: stageDimensions.width
                         }}
                         {...boxProps}
-                    />}
+                    /> : null}
                     <Box className={styles.customOverlays}>
                         <DOMElementRenderer domElement={props.overlay} />
                     </Box>
@@ -168,7 +168,7 @@ StageComponent.propTypes = {
     isPlayerOnly: PropTypes.bool,
     isRtl: PropTypes.bool,
     isStarted: PropTypes.bool,
-    isConsoleMode: PropTypes.bool,
+    stageMode: PropTypes.oneOf(['2d', 'console']),
     micIndicator: PropTypes.bool,
     onDeactivateColorPicker: PropTypes.func,
     onDoubleClick: PropTypes.func,

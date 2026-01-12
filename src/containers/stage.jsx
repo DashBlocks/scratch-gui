@@ -456,6 +456,7 @@ class Stage extends React.Component {
                 question={this.state.question}
                 onDoubleClick={this.handleDoubleClick}
                 onQuestionAnswered={this.handleQuestionAnswered}
+                vm={vm}
                 {...props}
             />
         );

@@ -25,10 +25,9 @@ class PseudoConsole extends React.Component {
     }
     addLine (line) {
         const splitted = line.split('\n').reduce((acc, value) => [...acc, ...value.match(new RegExp(`.{1,${this.state.symbols}}`, 'g'))], []);
-        this.state.lines.splice(
+        this.state.lines = [...this.state.lines, ...splitted].toSpliced(
             0,
-            Math.max(0, this.state.lines.length + splitted.length - this.state.linesCount),
-            splitted
+            Math.max(0, this.state.lines.length + splitted.length - this.state.linesCount)
         );
     }
     render () {

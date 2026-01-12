@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import bindAll from 'lodash.bindall';
-import PseudoConsoleComponent from '../components/dash-pseudo-console/pseudo-console.jsx';
 import VM from 'scratch-vm';
 
+import {STAGE_DISPLAY_SIZES} from '../lib/layout-constants';
+
+import PseudoConsoleComponent from '../components/dash-pseudo-console/pseudo-console.jsx';
 import errorBoundaryHOC from '../lib/error-boundary-hoc.jsx';
 
 class PseudoConsole extends React.Component {
@@ -37,12 +39,14 @@ class PseudoConsole extends React.Component {
                 lines={this.state.lines}
                 linesCount={this.state.linesCount}
                 symbols={this.state.symbols}
+                stageSize={this.props.stageSize}
             />
         );
     }
 }
 
 PseudoConsole.propTypes = {
+    stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES)).isRequired,
     vm: PropTypes.instanceOf(VM)
 };
 

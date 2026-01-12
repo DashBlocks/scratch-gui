@@ -9,6 +9,7 @@ import MonitorList from '../../containers/monitor-list.jsx';
 import TargetHighlight from '../../containers/target-highlight.jsx';
 import GreenFlagOverlay from '../../containers/green-flag-overlay.jsx';
 import Question from '../../containers/question.jsx';
+import PseudoConsole from '../../containers/dash-pseudo-console.jsx';
 import MicIndicator from '../mic-indicator/mic-indicator.jsx';
 import {STAGE_DISPLAY_SIZES} from '../../lib/layout-constants.js';
 import {getStageDimensions, getMinWidth} from '../../lib/screen-utils.js';
@@ -28,6 +29,7 @@ const StageComponent = props => {
         micIndicator,
         question,
         stageSize,
+        vm,
         useEditorDragStyle,
         onDeactivateColorPicker,
         onDoubleClick,
@@ -64,14 +66,17 @@ const StageComponent = props => {
                         ...transformStyle
                     }}
                 >
-                    <DOMElementRenderer
+                    {true /* For test. TODO: Replace with consoleMode */ ? <PseudoConsole
+                        stageSize={stageDimensions}
+                        vm={vm}
+                    /> : <DOMElementRenderer
                         domElement={canvas}
                         style={{
                             height: stageDimensions.height,
                             width: stageDimensions.width
                         }}
                         {...boxProps}
-                    />
+                    />}
                     <Box className={styles.customOverlays}>
                         <DOMElementRenderer domElement={props.overlay} />
                     </Box>

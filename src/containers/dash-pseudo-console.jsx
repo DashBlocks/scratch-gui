@@ -3,8 +3,6 @@ import React from 'react';
 import bindAll from 'lodash.bindall';
 import VM from 'scratch-vm';
 
-import {STAGE_DISPLAY_SIZES} from '../lib/layout-constants';
-
 import PseudoConsoleComponent from '../components/dash-pseudo-console/pseudo-console.jsx';
 import errorBoundaryHOC from '../lib/error-boundary-hoc.jsx';
 
@@ -46,7 +44,12 @@ class PseudoConsole extends React.Component {
 }
 
 PseudoConsole.propTypes = {
-    stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES)).isRequired,
+    stageSize: PropTypes.shape({
+        width: PropTypes.number,
+        height: PropTypes.number,
+        widthDefault: PropTypes.number,
+        heightDefault: PropTypes.number
+    }).isRequired,,
     vm: PropTypes.instanceOf(VM)
 };
 

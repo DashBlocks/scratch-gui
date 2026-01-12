@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import bindAll from 'lodash.bindall';
-import PseudoConsoleComponent from '../components/dash-pseudo-console/dash-pseudo-console.jsx';
+import PseudoConsoleComponent from '../components/dash-pseudo-console/pseudo-console.jsx';
 import VM from 'scratch-vm';
 
 import errorBoundaryHOC from '../lib/error-boundary-hoc.jsx';

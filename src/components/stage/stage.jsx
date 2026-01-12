@@ -66,7 +66,7 @@ const StageComponent = props => {
                         ...transformStyle
                     }}
                 >
-                    {true /* For test. TODO: Replace with consoleMode */ ? <PseudoConsole
+                    {props.isConsoleMode ? <PseudoConsole
                         stageSize={stageDimensions}
                         vm={vm}
                     /> : <DOMElementRenderer
@@ -168,6 +168,7 @@ StageComponent.propTypes = {
     isPlayerOnly: PropTypes.bool,
     isRtl: PropTypes.bool,
     isStarted: PropTypes.bool,
+    isConsoleMode: PropTypes.bool,
     micIndicator: PropTypes.bool,
     onDeactivateColorPicker: PropTypes.func,
     onDoubleClick: PropTypes.func,

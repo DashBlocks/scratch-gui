@@ -35,6 +35,8 @@ class PseudoConsole extends React.Component {
         return (
             <PseudoConsoleComponent
                 lines={this.state.lines}
+                linesCount={this.state.linesCount}
+                symbols={this.state.symbols}
             />
         );
     }

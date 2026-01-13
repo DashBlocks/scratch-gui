@@ -18,7 +18,7 @@ class PseudoConsole extends React.Component {
             linesCount: 25,
             symbols: 80,
         };
-        this.props.vm.console = this;
+        this.props.vm.runtime.console = this;
     }
     clear () {
         this.state.lines = new Array();

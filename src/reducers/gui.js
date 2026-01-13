@@ -20,7 +20,7 @@ import projectTitleReducer, {projectTitleInitialState} from './project-title';
 import fontsLoadedReducer, {fontsLoadedInitialState} from './fonts-loaded';
 import restoreDeletionReducer, {restoreDeletionInitialState} from './restore-deletion';
 import stageSizeReducer, {stageSizeInitialState} from './stage-size';
-import stageModeReducer, {stageModeInitialState} from './stage-mode';
+import dashReducer, {dashInitialState} from './dash';
 import targetReducer, {targetsInitialState} from './targets';
 import themeReducer, {themeInitialState} from './theme';
 import timeoutReducer, {timeoutInitialState} from './timeout';
@@ -46,6 +46,7 @@ const guiInitialState = {
     connectionModal: connectionModalInitialState,
     customStageSize: customStageSizeInitialState,
     customProcedures: customProceduresInitialState,
+    dash: dashInitialState,
     editorTab: editorTabInitialState,
     fontsLoaded: fontsLoadedInitialState,
     hoveredTarget: hoveredTargetInitialState,
@@ -60,7 +61,6 @@ const guiInitialState = {
     projectTitle: projectTitleInitialState,
     restoreDeletion: restoreDeletionInitialState,
     stageSize: stageSizeInitialState,
-    stageMode: stageModeInitialState,
     targets: targetsInitialState,
     theme: themeInitialState,
     timeout: timeoutInitialState,
@@ -153,6 +153,7 @@ const guiReducer = combineReducers({
     connectionModal: connectionModalReducer,
     customStageSize: customStageSizeReducer,
     customProcedures: customProceduresReducer,
+    dash: dashReducer,
     editorTab: editorTabReducer,
     fontsLoaded: fontsLoadedReducer,
     hoveredTarget: hoveredTargetReducer,
@@ -167,7 +168,6 @@ const guiReducer = combineReducers({
     projectTitle: projectTitleReducer,
     restoreDeletion: restoreDeletionReducer,
     stageSize: stageSizeReducer,
-    stageMode: stageModeReducer,
     targets: targetReducer,
     theme: themeReducer,
     timeout: timeoutReducer,

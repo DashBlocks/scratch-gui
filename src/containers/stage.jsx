@@ -98,6 +98,7 @@ class Stage extends React.Component {
             this.state.colorInfo !== nextState.colorInfo ||
             this.props.isFullScreen !== nextProps.isFullScreen ||
             this.props.isWindowFullScreen !== nextProps.isWindowFullScreen ||
+            this.props.stageMode !== nextProps.stageMode ||
             this.props.dimensions !== nextProps.dimensions ||
             this.state.question !== nextState.question ||
             this.props.micIndicator !== nextProps.micIndicator ||

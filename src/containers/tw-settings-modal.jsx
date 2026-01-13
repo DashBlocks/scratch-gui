@@ -7,7 +7,7 @@ import {closeSettingsModal} from '../reducers/modals';
 import SettingsModalComponent from '../components/tw-settings-modal/settings-modal.jsx';
 import {defaultStageSize} from '../reducers/custom-stage-size';
 import {setCloudHost} from '../reducers/tw.js';
-import {setStageMode} from '../reducers/stage-mode.js';
+import {setStageMode} from '../reducers/dash.js';
 
 const messages = defineMessages({
     newFramerate: {
@@ -114,6 +114,7 @@ class UsernameModal extends React.Component {
                 onRemoveFencingChange={this.handleRemoveFencingChange}
                 onRemoveLimitsChange={this.handleRemoveLimitsChange}
                 onWarpTimerChange={this.handleWarpTimerChange}
+                onStageModeChange={this.handleStageModeChange}
                 onStageWidthChange={this.handleStageWidthChange}
                 onStageHeightChange={this.handleStageHeightChange}
                 onDisableCompilerChange={this.handleDisableCompilerChange}
@@ -123,6 +124,7 @@ class UsernameModal extends React.Component {
                     this.props.customStageSize.width !== defaultStageSize.width ||
                     this.props.customStageSize.height !== defaultStageSize.height
                 }
+                stageMode={this.props.stageMode}
                 cloudHost={this.props.cloudHost}
                 onCloudHostChange={this.handleCloudHostChange}
                 customCloudVarServerEnabled={this.props.customCloudVarServerEnabled}
@@ -157,6 +159,7 @@ UsernameModal.propTypes = {
     removeFencing: PropTypes.bool,
     removeLimits: PropTypes.bool,
     warpTimer: PropTypes.bool,
+    stageMode: PropTypes.oneOf(['2d', 'console']),
     customStageSize: PropTypes.shape({
         width: PropTypes.number,
         height: PropTypes.number
@@ -176,6 +179,7 @@ const mapStateToProps = state => ({
     removeFencing: !state.scratchGui.tw.runtimeOptions.fencing,
     removeLimits: !state.scratchGui.tw.runtimeOptions.miscLimits,
     warpTimer: state.scratchGui.tw.compilerOptions.warpTimer,
+    stageMode: state.scratchGui.dash.stageMode,
     customStageSize: state.scratchGui.customStageSize,
     cloudHost: state.scratchGui.tw.cloudHost,
     customCloudVarServerEnabled: state.scratchGui.tw.cloud,

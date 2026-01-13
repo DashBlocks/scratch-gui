@@ -12,6 +12,8 @@ import BufferedInputHOC from '../forms/buffered-input-hoc.jsx';
 import DocumentationLink from '../tw-documentation-link/documentation-link.jsx';
 import styles from './settings-modal.css';
 import helpIcon from './help-icon.svg';
+import stageMode2DIcon from '!../../lib/tw-recolor/build!./icon--2d-stage-mode.svg';
+import stageModeConsoleIcon from '!../../lib/tw-recolor/build!./icon--console-stage-mode.svg';
 import {APP_NAME} from '../../lib/brand.js';
 
 /* eslint-disable react/no-multi-comp */

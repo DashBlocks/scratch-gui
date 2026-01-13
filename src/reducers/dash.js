@@ -1,4 +1,4 @@
-const SET_STAGE_MODE = 'scratch-gui/StageSize/SET_STAGE_MODE';
+const SET_STAGE_MODE = 'dash/SET_STAGE_MODE';
 
 const initialState = {
     stageMode: '2d'
@@ -25,6 +25,6 @@ const setStageMode = function (stageMode) {
 
 export {
     reducer as default,
-    initialState as stageModeInitialState,
+    initialState as dashInitialState,
     setStageMode
 };

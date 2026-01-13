@@ -11,7 +11,9 @@ const PseudoConsoleComponent = props => (
         className={styles.pseudoConsoleWrapper}
         style={{
             height: props.stageSize.height,
-            width: props.stageSize.width
+            width: props.stageSize.width,
+            fontSize: props.stageSize.height / props.linesCount,
+            lineHeight: props.stageSize.height / props.linesCount
         }}
     >
         {props.lines.map((line, i) => (

@@ -348,7 +348,7 @@ const StageModeButtons = ({
         <Setting
             active={true}
             primary={
-                <div className={styles.label}>
+                <div className={classNames(styles.label, styles.stageMode)}>
                     <FormattedMessage
                         defaultMessage="Stage Mode:"
                         description="Stage Mode option"

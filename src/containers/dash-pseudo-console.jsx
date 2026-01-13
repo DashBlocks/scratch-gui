@@ -56,7 +56,7 @@ PseudoConsole.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    lines: state.dash.consoleLines
+    lines: state.scratchGui.dash.consoleLines
 });
 
 const mapDispatchToProps = dispatch => ({

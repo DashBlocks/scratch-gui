@@ -350,7 +350,7 @@ const StageModeButtons = ({
             primary={
                 <div className={styles.label}>
                     <FormattedMessage
-                        defaultMessage="Stage Mode:"
+                        defaultMessage="Режим сцены: "
                         description="Stage Mode option"
                         id="dash.settingsModal.stageMode"
                     />
@@ -363,12 +363,11 @@ const StageModeButtons = ({
             help={
                 <FormattedMessage
                     // eslint-disable-next-line max-len
-                    defaultMessage="Changes rendering mode of the stage. Console mode allows for text output and pseudo-console functionality."
+                    defaultMessage="Изменяет рендеринг сцены. Режим консоли позволяет выводить текст и использовать псевдо-консоль."
                     description="Stage Mode option"
                     id="dash.settingsModal.stageModeHelp"
                 />
             }
-            slug="stage-mode"
         />
     );
 };

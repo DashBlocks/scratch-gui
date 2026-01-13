@@ -134,7 +134,7 @@ const fetchOtherExtensions = async () => {
         }),
         docsURI: extension.documentation ? `https://extensions.penguinmod.com/docs/${extension.documentation}` : null,
         samples: null,
-        incompatibleWithScratch: !extension.scratchCompatible || true,
+        incompatibleWithScratch: !(extension.scratchCompatible || false),
         featured: true
     }));
 };
@@ -174,7 +174,8 @@ const fetchLibrary = async () => {
             href: `${process.env.ROOT}editor?project_url=https://extensions.turbowarp.org/samples/${encodeURIComponent(sample)}.sb3`,
             text: sample
         })) :*/ null,
-        incompatibleWithScratch: !extension.scratchCompatible || true,
+        incompatibleWithScratch: !(extension.scratchCompatible || false),
+        internetConnectionRequired: extension.internetConnectionRequired || false,
         featured: true
     }));
 };

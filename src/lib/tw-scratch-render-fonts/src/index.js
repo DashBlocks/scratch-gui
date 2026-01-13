@@ -68,4 +68,3 @@ const loadFonts = function () {
 
 module.exports = getFonts;
 module.exports.loadFonts = loadFonts;
-

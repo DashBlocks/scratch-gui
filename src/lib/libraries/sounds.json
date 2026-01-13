@@ -1,4 +1,35 @@
-[
+[     {
+        "name": "Battle",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "9b7357b0d6c51516afffd11e5147c7df",
+        "dataFormat": "mp3",
+        "md5ext": "9b7357b0d6c51516afffd11e5147c7df.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    },{
+        "name": "sword",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "dcd0ac9a260219fae195abe3ea9ba8f2",
+        "dataFormat": "mp3",
+        "md5ext": "dcd0ac9a260219fae195abe3ea9ba8f2.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    },
+        {
+        "name": "soul drive",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "3d1438ca8df63bc70b61acac506eda45",
+        "dataFormat": "mp3",
+        "md5ext": "3d1438ca8df63bc70b61acac506eda45.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    },
     {
         "name": "yoru no zattou",
         "tags": [

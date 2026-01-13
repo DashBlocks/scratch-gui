@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import bindAll from 'lodash.bindall';
+import {connect} from 'react-redux';
 import VM from 'scratch-vm';
 
+import {setConsoleLines} from '../reducers/dash.js';
 import PseudoConsoleComponent from '../components/dash-pseudo-console/pseudo-console.jsx';
 import errorBoundaryHOC from '../lib/error-boundary-hoc.jsx';
 
@@ -14,28 +16,25 @@ class PseudoConsole extends React.Component {
             'addLine'
         ]);
         this.state = {
-            lines: new Array(),
             linesCount: 25,
             symbols: 80,
         };
         this.props.vm.runtime.console = this;
     }
     clear () {
-        this.setState({lines: new Array()});
+        this.props.setConsoleLines(new Array());
     }
     addLine (line) {
         const splitted = line.split('\n').reduce((acc, value) => [...acc, ...value.match(new RegExp(`.{1,${this.state.symbols}}`, 'g'))], []);
-        this.setState({
-            lines: [...this.state.lines, ...splitted].toSpliced(
-                0,
-                Math.max(0, this.state.lines.length + splitted.length - this.state.linesCount)
-            )
-        });
+        this.props.setConsoleLines([...this.state.lines, ...splitted].toSpliced(
+            0,
+            Math.max(0, this.state.lines.length + splitted.length - this.state.linesCount)
+        ));
     }
     render () {
         return (
             <PseudoConsoleComponent
-                lines={this.state.lines}
+                lines={this.props.lines}
                 linesCount={this.state.linesCount}
                 symbols={this.state.symbols}
                 stageSize={this.props.stageSize}
@@ -45,6 +44,8 @@ class PseudoConsole extends React.Component {
 }
 
 PseudoConsole.propTypes = {
+    lines: PropTypes.array,
+    setConsoleLines: PropTypes.func.isRequired,
     stageSize: PropTypes.shape({
         width: PropTypes.number,
         height: PropTypes.number,
@@ -54,4 +55,15 @@ PseudoConsole.propTypes = {
     vm: PropTypes.instanceOf(VM)
 };
 
-export default errorBoundaryHOC('Console')(PseudoConsole);
+const mapStateToProps = state => ({
+    lines: state.dash.consoleLines
+});
+
+const mapDispatchToProps = dispatch => ({
+    setConsoleLines: lines => dispatch(setConsoleLines(lines))
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(errorBoundaryHOC('Console')(PseudoConsole));

@@ -13,7 +13,7 @@ const PseudoConsoleComponent = props => (
             height: props.stageSize.height,
             width: props.stageSize.width,
             fontSize: props.stageSize.height / props.linesCount,
-            lineHeight: props.stageSize.height / props.linesCount
+            lineHeight: `${props.stageSize.height / props.linesCount}px`
         }}
     >
         {props.lines.map((line, i) => (

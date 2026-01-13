@@ -7,6 +7,7 @@ import {closeSettingsModal} from '../reducers/modals';
 import SettingsModalComponent from '../components/tw-settings-modal/settings-modal.jsx';
 import {defaultStageSize} from '../reducers/custom-stage-size';
 import {setCloudHost} from '../reducers/tw.js';
+import {setStageMode} from '../reducers/stage-mode.js';
 
 const messages = defineMessages({
     newFramerate: {
@@ -28,6 +29,7 @@ class UsernameModal extends React.Component {
             'handleRemoveFencingChange',
             'handleRemoveLimitsChange',
             'handleWarpTimerChange',
+            'handleStageModeChange',
             'handleStageWidthChange',
             'handleStageHeightChange',
             'handleCloudHostChange',
@@ -72,6 +74,9 @@ class UsernameModal extends React.Component {
         this.props.vm.setCompilerOptions({
             warpTimer: e.target.checked
         });
+    }
+    handleStageModeChange (value) {
+        this.props.onSetStageMode(value); // TODO: Do this via VM?
     }
     handleDisableCompilerChange (e) {
         this.props.vm.setCompilerOptions({
@@ -132,6 +137,7 @@ UsernameModal.propTypes = {
     intl: intlShape,
     onClose: PropTypes.func,
     onSetCloudHost: PropTypes.func,
+    onSetStageMode: PropTypes.func,
     vm: PropTypes.shape({
         renderer: PropTypes.shape({
             setUseHighQualityRender: PropTypes.func
@@ -178,6 +184,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     onSetCloudHost: cloudHost => dispatch(setCloudHost(cloudHost)),
+    onSetStageMode: stageMode => dispatch(setStageMode(stageMode)),
     onClose: () => dispatch(closeSettingsModal())
 });
 

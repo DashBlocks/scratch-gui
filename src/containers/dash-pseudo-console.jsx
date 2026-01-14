@@ -25,10 +25,10 @@ class PseudoConsole extends React.Component {
         this.props.setConsoleLines(new Array());
     }
     addLine (line) {
-        const splitted = line.split('\n').reduce((acc, value) => [...acc, ...value.match(new RegExp(`.{1,${this.state.symbols}}`, 'g'))], []);
-        this.props.setConsoleLines([...this.state.lines, ...splitted].toSpliced(
+        const splitted = String(line).split('\n').reduce((acc, value) => [...acc, ...value.match(new RegExp(`.{1,${this.state.symbols}}`, 'g'))], []);
+        this.props.setConsoleLines([...this.props.lines, ...splitted].toSpliced(
             0,
-            Math.max(0, this.state.lines.length + splitted.length - this.state.linesCount)
+            Math.max(0, this.props.lines.length + splitted.length - this.state.linesCount)
         ));
     }
     render () {

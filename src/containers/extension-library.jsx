@@ -2,7 +2,7 @@ import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
 import VM from 'scratch-vm';
-import {extensions, pmExtensions} from 'dash-extensions-gallery/src/lib/extensions.js';
+import {extensions, otherExtensions} from 'dash-extensions-gallery/src/lib/extensions.js';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import log from '../lib/log';
 
@@ -15,7 +15,7 @@ import extensionTags from '../lib/libraries/tw-extension-tags';
 
 import LibraryComponent from '../components/library/library.jsx';
 import extensionIcon from '../components/action-menu/icon--sprite.svg';
-import { isTrustedUrl, manuallyTrustExtension } from './tw-security-manager.jsx';
+import {isTrustedUrl, manuallyTrustExtension} from './tw-security-manager.jsx';
 
 const messages = defineMessages({
     extensionTitle: {
@@ -49,7 +49,7 @@ const translateGalleryItem = (extension, locale) => ({
 
 let cachedTwGallery = null;
 let twGalleryMirror = false;
-let cachedPmGallery = null;
+let cachedOtherExtensions = null;
 let cachedGallery = null;
 
 const fetchTwLibrary = async () => {
@@ -106,15 +106,15 @@ const fetchTwLibrary = async () => {
     }));
 };
 
-const fetchPmLibrary = async () => {
-    return pmExtensions.map((extension, index) => ({
+const fetchOtherExtensions = async () => {
+    return otherExtensions.map(extension => ({
         name: extension.name,
         nameTranslations: extension.nameTranslations || {},
         description: extension.description,
         descriptionTranslations: extension.descriptionTranslations || {},
         extensionId: extension.id,
-        extensionURL: `https://extensions.penguinmod.com/extensions/${extension.code}`,
-        iconURL: `https://extensions.penguinmod.com/images/${extension.banner || 'unknown.svg'}`,
+        extensionURL: extension.code.startsWith('http') ? extension.code : `https://extensions.penguinmod.com/extensions/${extension.code}`,
+        iconURL: extension.banner.startsWith('http') ? extension.banner : `https://extensions.penguinmod.com/images/${extension.banner || 'unknown.svg'}`,
         tags: ['other'],
         credits: [
             ...(typeof extension.creator == 'object' ? extension.creator : [extension.creator] || []),
@@ -134,7 +134,7 @@ const fetchPmLibrary = async () => {
         }),
         docsURI: extension.documentation ? `https://extensions.penguinmod.com/docs/${extension.documentation}` : null,
         samples: null,
-        incompatibleWithScratch: !extension.scratchCompatible || true,
+        incompatibleWithScratch: !(extension.scratchCompatible || false),
         featured: true
     }));
 };
@@ -169,12 +169,13 @@ const fetchLibrary = async () => {
             }),
             ...(extension.notes ? [extension.notes] : [])
         ],
-        docsURI: extension.documentation ? `https://dashblocks.github.io/dash-extensions-gallery/src/lib/Documentation/${extension.documentation}.md` : null,
+        docsURI: extension.documentation ? `https://dashblocks.github.io/dash-extensions-gallery/static/documentations/${extension.documentation}.md` : null,
         samples: /*extension.samples ? extension.samples.map(sample => ({
             href: `${process.env.ROOT}editor?project_url=https://extensions.turbowarp.org/samples/${encodeURIComponent(sample)}.sb3`,
             text: sample
         })) :*/ null,
-        incompatibleWithScratch: !extension.scratchCompatible || true,
+        incompatibleWithScratch: !(extension.scratchCompatible || false),
+        internetConnectionRequired: extension.internetConnectionRequired || false,
         featured: true
     }));
 };
@@ -186,7 +187,7 @@ class ExtensionLibrary extends React.PureComponent {
             'handleItemSelect'
         ]);
         this.state = {
-            pmGallery: cachedPmGallery,
+            otherExtensions: cachedOtherExtensions,
             twGallery: cachedTwGallery,
             gallery: cachedGallery,
             galleryError: null,
@@ -218,11 +219,11 @@ class ExtensionLibrary extends React.PureComponent {
                 });
 
             
-            fetchPmLibrary()
+            fetchOtherExtensions()
                 .then(gallery => {
-                    cachedPmGallery = gallery;
+                    cachedOtherExtensions = gallery;
                     this.setState({
-                        pmGallery: gallery
+                        otherExtensions: gallery
                     });
                     clearTimeout(timeout);
                 })
@@ -360,17 +361,17 @@ class ExtensionLibrary extends React.PureComponent {
 
         library.push('---');
 
-        if (this.state.pmGallery) {
-            const filteredPm = this.state.pmGallery
+        if (this.state.otherExtensions) {
+            const filteredOther = this.state.otherExtensions
                 .filter(item => !addedIds.has(item.extensionId))
                 .map(i => {
                     addedIds.add(i.extensionId);
                     return translateGalleryItem(i, locale);
                 });
-            library.push(...filteredPm.map(toLibraryItem));
-        } else if (this.state.galleryTimedOut && !this.state.pmGallery) {
+            library.push(...filteredOther.map(toLibraryItem));
+        } else if (this.state.galleryTimedOut && !this.state.otherExtensions) {
             library.push(toLibraryItem(galleryLoading));
-        } else if (this.state.galleryError && !this.state.pmGallery) {
+        } else if (this.state.galleryError && !this.state.otherExtensions) {
             library.push(toLibraryItem(galleryError));
         }
 

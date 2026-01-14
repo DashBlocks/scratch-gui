@@ -20,6 +20,7 @@ import projectTitleReducer, {projectTitleInitialState} from './project-title';
 import fontsLoadedReducer, {fontsLoadedInitialState} from './fonts-loaded';
 import restoreDeletionReducer, {restoreDeletionInitialState} from './restore-deletion';
 import stageSizeReducer, {stageSizeInitialState} from './stage-size';
+import dashReducer, {dashInitialState} from './dash';
 import targetReducer, {targetsInitialState} from './targets';
 import themeReducer, {themeInitialState} from './theme';
 import timeoutReducer, {timeoutInitialState} from './timeout';
@@ -45,10 +46,11 @@ const guiInitialState = {
     connectionModal: connectionModalInitialState,
     customStageSize: customStageSizeInitialState,
     customProcedures: customProceduresInitialState,
+    dash: dashInitialState,
     editorTab: editorTabInitialState,
-    mode: modeInitialState,
+    fontsLoaded: fontsLoadedInitialState,
     hoveredTarget: hoveredTargetInitialState,
-    stageSize: stageSizeInitialState,
+    mode: modeInitialState,
     menus: menuInitialState,
     micIndicator: micIndicatorInitialState,
     modals: modalsInitialState,
@@ -57,8 +59,8 @@ const guiInitialState = {
     projectChanged: projectChangedInitialState,
     projectState: projectStateInitialState,
     projectTitle: projectTitleInitialState,
-    fontsLoaded: fontsLoadedInitialState,
     restoreDeletion: restoreDeletionInitialState,
+    stageSize: stageSizeInitialState,
     targets: targetsInitialState,
     theme: themeInitialState,
     timeout: timeoutInitialState,
@@ -151,10 +153,11 @@ const guiReducer = combineReducers({
     connectionModal: connectionModalReducer,
     customStageSize: customStageSizeReducer,
     customProcedures: customProceduresReducer,
+    dash: dashReducer,
     editorTab: editorTabReducer,
-    mode: modeReducer,
+    fontsLoaded: fontsLoadedReducer,
     hoveredTarget: hoveredTargetReducer,
-    stageSize: stageSizeReducer,
+    mode: modeReducer,
     menus: menuReducer,
     micIndicator: micIndicatorReducer,
     modals: modalReducer,
@@ -163,8 +166,8 @@ const guiReducer = combineReducers({
     projectChanged: projectChangedReducer,
     projectState: projectStateReducer,
     projectTitle: projectTitleReducer,
-    fontsLoaded: fontsLoadedReducer,
     restoreDeletion: restoreDeletionReducer,
+    stageSize: stageSizeReducer,
     targets: targetReducer,
     theme: themeReducer,
     timeout: timeoutReducer,

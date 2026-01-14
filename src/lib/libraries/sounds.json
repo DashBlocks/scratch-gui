@@ -1,4 +1,47 @@
-[   {
+[     {
+        "name": "Battle",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "9b7357b0d6c51516afffd11e5147c7df",
+        "dataFormat": "mp3",
+        "md5ext": "9b7357b0d6c51516afffd11e5147c7df.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    },{
+        "name": "sword",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "dcd0ac9a260219fae195abe3ea9ba8f2",
+        "dataFormat": "mp3",
+        "md5ext": "dcd0ac9a260219fae195abe3ea9ba8f2.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    },
+        {
+        "name": "soul drive",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "3d1438ca8df63bc70b61acac506eda45",
+        "dataFormat": "mp3",
+        "md5ext": "3d1438ca8df63bc70b61acac506eda45.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    },
+    {
+        "name": "yoru no zattou",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "8e1865e61f38bc9d5aafab4fe0feca99",
+        "dataFormat": "mp3",
+        "md5ext": "8e1865e61f38bc9d5aafab4fe0feca99.mp3",
+        "sampleCount": 56320,
+        "rate": 44100
+    },
+    {
         "name": "Jingle-bells",
         "tags": [
             "dash"
@@ -8,7 +51,8 @@
         "md5ext": "a4ef7da2a60cfcc6f78a1d7d87c28de2.mp3",
         "sampleCount": 56320,
         "rate": 44100
-    },{
+    },
+    {
         "name": "EpicMusic",
         "tags": [
             "dash"
@@ -18,7 +62,8 @@
         "md5ext": "41f499663fa051d600440e80b9f6068e.wav",
         "sampleCount": 56320,
         "rate": 44100
-    },{
+    },
+    {
         "name": "EpicMusic",
         "tags": [
             "dash"
@@ -28,7 +73,8 @@
         "md5ext": "41f499663fa051d600440e80b9f6068e.wav",
         "sampleCount": 56320,
         "rate": 44100
-    },{
+    },
+    {
         "name": "click 2",
         "tags": [
             "dash"
@@ -38,7 +84,8 @@
         "md5ext": "dd51db0d161223caa27d241cb8ccd46c.mp3",
         "sampleCount": 56320,
         "rate": 44100
-    }, {
+    },
+    {
         "name": "click",
         "tags": [
             "dash"
@@ -48,7 +95,8 @@
         "md5ext": "1d8c82912d2cb0cfeee3c6295d0d87b2.wav",
         "sampleCount": 56320,
         "rate": 44100
-    },{
+    },
+    {
         "name": "Всплеск",
         "tags": [
             "dash"
@@ -58,7 +106,8 @@
         "md5ext": "605552b1d4ae1efa6a853b51ec73a786.mp3",
         "sampleCount": 56320,
         "rate": 44100
-    },{
+    },
+    {
         "name": "repair/construction",
         "tags": [
             "dash"
@@ -68,7 +117,8 @@
         "md5ext": "d0fc4a4aa49b56dc5f61f02f05f5338e.mp3",
         "sampleCount": 56320,
         "rate": 44100
-    },{
+    },
+    {
         "name": "Coins",
         "tags": [
             "dash"

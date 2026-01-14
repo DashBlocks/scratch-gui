@@ -1,4 +1,28 @@
-[{
+[    {
+        "name": "cat assets",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "1e540c41038f61cabd387bad112d85ca",
+        "bitmapResolution": 1,
+        "dataFormat": "png",
+        "md5ext": "1e540c41038f61cabd387bad112d85ca.png",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },
+    {
+        "name": "character",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "c5ee321f8161c521092d8a3c0ae25a35",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "c5ee321f8161c521092d8a3c0ae25a35.svg",
+        "rotationCenterX": 40,
+        "rotationCenterY": 60
+    },
+    {
         "name": "forest assets",
         "tags": [
             "dash"
@@ -43,8 +67,8 @@
         "bitmapResolution": 1,
         "dataFormat": "png",
         "md5ext": "96dccacaad22499fae4ce64a9eefd76c.png",
-        "rotationCenterX": 0,
-        "rotationCenterY": 0
+        "rotationCenterX": 111,
+        "rotationCenterY": 174
     },
     {
         "name": "Snow globe",

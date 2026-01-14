@@ -1,0 +1,8 @@
+.pseudo-console-wrapper {
+    font-family: monospace;
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+    color: white;
+    overflow: auto;
+}

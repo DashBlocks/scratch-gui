@@ -98,6 +98,7 @@ class Stage extends React.Component {
             this.state.colorInfo !== nextState.colorInfo ||
             this.props.isFullScreen !== nextProps.isFullScreen ||
             this.props.isWindowFullScreen !== nextProps.isWindowFullScreen ||
+            this.props.stageMode !== nextProps.stageMode ||
             this.props.dimensions !== nextProps.dimensions ||
             this.state.question !== nextState.question ||
             this.props.micIndicator !== nextProps.micIndicator ||
@@ -456,6 +457,7 @@ class Stage extends React.Component {
                 question={this.state.question}
                 onDoubleClick={this.handleDoubleClick}
                 onQuestionAnswered={this.handleQuestionAnswered}
+                vm={vm}
                 {...props}
             />
         );
@@ -475,6 +477,7 @@ Stage.propTypes = {
     isPlayerOnly: PropTypes.bool,
     isRtl: PropTypes.bool,
     isWindowFullScreen: PropTypes.bool,
+    stageMode: PropTypes.oneOf(['2d', 'console']),
     dimensions: PropTypes.arrayOf(PropTypes.number),
     isStarted: PropTypes.bool,
     micIndicator: PropTypes.bool,
@@ -502,6 +505,7 @@ const mapStateToProps = state => ({
     isPlayerOnly: state.scratchGui.mode.isPlayerOnly,
     isRtl: state.locales.isRtl,
     isWindowFullScreen: state.scratchGui.tw.isWindowFullScreen,
+    stageMode: state.scratchGui.dash.stageMode,
     dimensions: state.scratchGui.tw.dimensions,
     isStarted: state.scratchGui.vmStatus.started,
     micIndicator: state.scratchGui.micIndicator,

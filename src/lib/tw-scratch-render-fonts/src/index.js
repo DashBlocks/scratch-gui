@@ -31,7 +31,12 @@ const getFonts = function () {
         'Minecrafter': require('base64-loader!./Minecrafter.Reg.ttf'),
         'Obelix Pro': require('base64-loader!./obelix_pro.ttf'),
         'Jet Brains Mono': require('base64-loader!./JetBrainsMono-Light.ttf'),
-        'Rubik': require('base64-loader!./Rubik.ttf')
+        'Rubik': require('base64-loader!./Rubik.ttf'),
+        'Scratch Savers': require('base64-loader!./ScratchSavers_b2.ttf'),
+        'LibreBaskerville': require('base64-loader!./LibreBaskerville-Regular.ttf'),
+        'OpenSans': require('base64-loader!./OpenSans-Regular.ttf'),
+        'YujiBoku': require('base64-loader!./YujiBoku-Regular.ttf'),
+        'Shadows Into Light': require('base64-loader!./ShadowsIntoLight-Regular.ttf')
     };
     /* eslint-enable global-require */
 

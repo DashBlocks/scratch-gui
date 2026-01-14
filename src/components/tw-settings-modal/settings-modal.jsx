@@ -7,10 +7,13 @@ import Box from '../box/box.jsx';
 import Modal from '../../containers/modal.jsx';
 import FancyCheckbox from '../tw-fancy-checkbox/checkbox.jsx';
 import Input from '../forms/input.jsx';
+import ToggleButtons from '../toggle-buttons/toggle-buttons.jsx';
 import BufferedInputHOC from '../forms/buffered-input-hoc.jsx';
 import DocumentationLink from '../tw-documentation-link/documentation-link.jsx';
 import styles from './settings-modal.css';
 import helpIcon from './help-icon.svg';
+import stageMode2DIcon from '!../../lib/tw-recolor/build!./icon--2d-stage-mode.svg';
+import stageModeConsoleIcon from '!../../lib/tw-recolor/build!./icon--console-stage-mode.svg';
 import {APP_NAME} from '../../lib/brand.js';
 
 /* eslint-disable react/no-multi-comp */
@@ -27,6 +30,16 @@ const messages = defineMessages({
         defaultMessage: 'Click for help',
         description: 'Hover text of help icon in settings',
         id: 'tw.settingsModal.help'
+    },
+    stageMode2DTitle: {
+        defaultMessage: '2D Stage Mode',
+        description: 'Title for 2D stage mode button',
+        id: 'dash.settingsModal.stageMode2DTitle'
+    },
+    stageModeConsoleTitle: {
+        defaultMessage: 'Console Stage Mode',
+        description: 'Title for Console stage mode button',
+        id: 'dash.settingsModal.stageModeConsoleTitle'
     }
 });
 
@@ -312,6 +325,58 @@ const WarpTimer = props => (
     />
 );
 
+const StageModeButtons = ({
+    stageMode,
+    onStageModeChange,
+    intl
+}) => {
+    const buttons = [
+        {
+            handleClick: () => onStageModeChange('2d'),
+            icon: stageMode2DIcon,
+            isSelected: stageMode === '2d',
+            title: intl.formatMessage(messages.stageMode2DTitle)
+        },
+        {
+            handleClick: () => onStageModeChange('console'),
+            icon: stageModeConsoleIcon,
+            isSelected: stageMode === 'console',
+            title: intl.formatMessage(messages.stageModeConsoleTitle)
+        }
+    ];
+    return (
+        <Setting
+            active={true}
+            primary={
+                <div className={classNames(styles.label, styles.stageMode)}>
+                    <FormattedMessage
+                        defaultMessage="Stage Mode:"
+                        description="Stage Mode option"
+                        id="dash.settingsModal.stageMode"
+                    />
+                    <ToggleButtons
+                        buttons={buttons}
+                        className={styles.stageModeToggleButtons}
+                    />
+                </div>
+            }
+            help={
+                <FormattedMessage
+                    // eslint-disable-next-line max-len
+                    defaultMessage="Changes rendering mode of the stage. Console mode allows for text output and pseudo-console functionality."
+                    description="Stage Mode option"
+                    id="dash.settingsModal.stageModeHelp"
+                />
+            }
+        />
+    );
+};
+StageModeButtons.propTypes = {
+    stageMode: PropTypes.oneOf(['2d', 'console']),
+    onStageModeChange: PropTypes.func,
+    intl: intlShape
+};
+
 const DisableCompiler = props => (
     <BooleanSetting
         {...props}
@@ -515,6 +580,11 @@ const SettingsModalComponent = props => (
             <WarpTimer
                 value={props.warpTimer}
                 onChange={props.onWarpTimerChange}
+            />
+            <StageModeButtons
+                stageMode={props.stageMode}
+                onStageModeChange={props.onStageModeChange}
+                intl={props.intl}
             />
             <Header>
                 <FormattedMessage

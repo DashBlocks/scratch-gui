@@ -88,6 +88,10 @@
     width: 50px;
 }
 
+.stage-mode > * {
+    margin-right: 0.5rem;
+}
+
 .custom-stage-size > * {
     margin-right: 0.5rem;
 }

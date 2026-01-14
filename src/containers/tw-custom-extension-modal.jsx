@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import bindAll from 'lodash.bindall';
 import {connect} from 'react-redux';
 import log from '../lib/log';
@@ -17,6 +18,29 @@ const readAsDataURL = blob => new Promise((resolve, reject) => {
     reader.onload = () => resolve(reader.result);
     reader.onerror = () => reject(new Error(`Could not read extension as data URL: ${reader.error}`));
     reader.readAsDataURL(blob);
+});
+
+const messages = defineMessages({
+    swapWarning: {
+        id: 'dash.customExtensionModal.swapWarning',
+        defaultMessage: 'If extensions swap will fail, it will cause the extension to be flatout removed, are you sure the inputed extension has matching id\'s and has no errors?',
+        description: 'Warning message when swapping (editing) extensions'
+    },
+    differentSwapId: {
+        id: 'dash.customExtensionModal.differentSwapId',
+        defaultMessage: 'The extension you used to for the edit had a different id to the one you where editing, so added it as new extension.',
+        description: 'Warning message when the extension being swapped has a different ID'
+    },
+    swapFailed: {
+        id: 'dash.customExtensionModal.swapFailed',
+        defaultMessage: 'The extension you used to for the edit has failed to load.',
+        description: 'Warning message when the extension being swapped fails to load'
+    },
+    extensionLoadFailed: {
+        id: 'dash.customExtensionModal.extensionLoadFailed',
+        defaultMessage: 'Failed to load extension.',
+        description: 'Generic warning message when an extension fails to load'
+    }
 });
 
 class CustomExtensionModal extends React.Component {
@@ -40,10 +64,10 @@ class CustomExtensionModal extends React.Component {
         ]);
 
         this.state = {
-            type: 'url',
-            url: '',
+            type: this.props.swapId ? 'text' : 'url',
+            url: this.fetchSwapURL(),
             files: null,
-            text: '',
+            text: this.fetchSwapText(),
             unsandboxed: getPersistedUnsandboxed(),
             isTwGalleryMirror: false
         };
@@ -122,6 +146,13 @@ class CustomExtensionModal extends React.Component {
     }
 
     async handleLoadExtension () {
+        let failed = false;
+        if (this.props.swapId) {
+            /* eslint-disable-next-line no-alert */
+            if (!confirm(this.props.intl.formatMessage(messages.swapWarning))) {
+                return;
+            }
+        }
         this.handleClose();
         try {
             const urls = await this.getExtensionURLs();
@@ -136,10 +167,43 @@ class CustomExtensionModal extends React.Component {
             }
 
             for (const url of urls) {
-                if (url.startsWith('https://extensions.turbowarp.org/')) {
-                    try {
-                        const res = await fetch(url);
-                        if (!res.ok) {
+                if (this.props.swapId) {
+                    const runtime = this.props.vm.runtime;
+                    this.props.vm.extensionManager.prepareSwap(this.props.swapId);
+                    let extIdx = runtime._blockInfo.findIndex(ext => ext.id === this.props.swapId);
+                    await this.props.vm.extensionManager.loadExtensionURL(url);
+                    const loadedIds = this.props.vm.extensionManager.extensionsIDs;
+                    if (!loadedIds.includes(this.props.swapId)) {
+                        for (const ext of loadedIds) this.props.vm.extensionManager.removeExtension(ext);
+                        // eslint-disable-next-line no-alert
+                        alert(this.props.intl.formatMessage(messages.differentSwapId));
+                        return;
+                    }
+                    this.props.vm.runtime._removeExtensionPrimitive(this.props.swapId);
+                    loadedIds.forEach(extId => {
+                        const idx = runtime._blockInfo.findLastIndex(ext => ext.id === extId);
+                        const ext = runtime._blockInfo[idx];
+                        runtime._blockInfo.splice(idx, 1);
+                        runtime._blockInfo.splice(extIdx, 0, ext);
+                        extIdx++;
+                    });
+                } else {
+                    if (url.startsWith('https://extensions.turbowarp.org/')) {
+                        try {
+                            const res = await fetch(url);
+                            if (!res.ok) {
+                                this.setState({
+                                    isTwGalleryMirror: true
+                                });
+                                await this.props.vm.extensionManager.loadExtensionURL(
+                                    url.replace(
+                                        'https://extensions.turbowarp.org/',
+                                        'https://dashblocks.github.io/tw-extensions/'
+                                    )
+                                );
+                                return;
+                            }
+                        } catch (_) {
                             this.setState({
                                 isTwGalleryMirror: true
                             });
@@ -151,28 +215,29 @@ class CustomExtensionModal extends React.Component {
                             );
                             return;
                         }
-                    } catch (_) {
-                        this.setState({
-                            isTwGalleryMirror: true
-                        });
-                        await this.props.vm.extensionManager.loadExtensionURL(
-                            url.replace(
-                                'https://extensions.turbowarp.org/',
-                                'https://dashblocks.github.io/tw-extensions/'
-                            )
-                        );
-                        return;
                     }
+                    this.setState({
+                        isTwGalleryMirror: false
+                    });
+                    await this.props.vm.extensionManager.loadExtensionURL(url);
                 }
-                this.setState({
-                    isTwGalleryMirror: false
-                });
-                await this.props.vm.extensionManager.loadExtensionURL(url);
             }
         } catch (err) {
+            failed = true;
             log.error(err);
             // eslint-disable-next-line no-alert
             alert(err);
+        } finally {
+            if (failed) {
+                if (this.props.swapId) {
+                    // eslint-disable-next-line no-alert
+                    alert(this.props.intl.formatMessage(messages.swapFailed));
+                    this.props.vm.runtime._removeExtensionPrimitive(this.props.swapId);
+                    return;
+                }
+                // eslint-disable-next-line no-alert
+                alert(this.props.intl.formatMessage(messages.extensionLoadFailed));
+            }
         }
     }
 
@@ -239,6 +304,14 @@ class CustomExtensionModal extends React.Component {
         });
     }
 
+    fetchSwapURL () {
+        return this.props.vm.extensionManager.extensionURLFromId(this.props.swapId) ?? '';
+    }
+
+    fetchSwapText () {
+        return this.props.vm.extensionManager.extensionsURLCodes[this.fetchSwapURL()] ?? '';
+    }
+
     render () {
         return (
             <CustomExtensionModalComponent
@@ -267,23 +340,35 @@ class CustomExtensionModal extends React.Component {
 }
 
 CustomExtensionModal.propTypes = {
+    intl: intlShape,
     onClose: PropTypes.func,
     vm: PropTypes.shape({
         extensionManager: PropTypes.shape({
-            loadExtensionURL: PropTypes.func
+            loadExtensionURL: PropTypes.func,
+            getExtensionURLs: PropTypes.func,
+            extensionsURLCodes: PropTypes.object,
+            prepareSwap: PropTypes.func,
+            extensionURLFromId: PropTypes.func,
+            removeExtension: PropTypes.func
+        }),
+        runtime: PropTypes.shape({
+            _removeExtensionPrimitive: PropTypes.func,
+            _blockInfo: PropTypes.array
         })
-    })
+    }),
+    swapId: PropTypes.string
 };
 
 const mapStateToProps = state => ({
-    vm: state.scratchGui.vm
+    vm: state.scratchGui.vm,
+    swapId: state.scratchGui.modals.extensionSwapId
 });
 
 const mapDispatchToProps = dispatch => ({
     onClose: () => dispatch(closeCustomExtensionModal())
 });
 
-export default connect(
+export default injectIntl(connect(
     mapStateToProps,
     mapDispatchToProps
-)(CustomExtensionModal);
+)(CustomExtensionModal));

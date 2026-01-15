@@ -1,4 +1,16 @@
 [    {
+        "name": "таблица",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "6644b752ae9f1d72fb4f05ac6e6d997b",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "6644b752ae9f1d72fb4f05ac6e6d997b.svg",
+        "rotationCenterX": 40,
+        "rotationCenterY": 60
+    },
+    {
         "name": "cat assets",
         "tags": [
             "dash"
@@ -9,6 +21,18 @@
         "md5ext": "1e540c41038f61cabd387bad112d85ca.png",
         "rotationCenterX": 0,
         "rotationCenterY": 0
+    },
+    {
+        "name": "character 2",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "617fbacc3b600566459dda449e7a7fd3",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "617fbacc3b600566459dda449e7a7fd3.svg",
+        "rotationCenterX": 40,
+        "rotationCenterY": 60
     },
     {
         "name": "character",

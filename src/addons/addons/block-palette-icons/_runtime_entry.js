@@ -11,6 +11,7 @@ import _asset8 from "!url-loader!./icons/sensing_icon.svg";
 import _asset9 from "!url-loader!./icons/sound_icon.svg";
 import _asset10 from "!url-loader!./icons/variables_icon.svg";
 import _asset11 from "!url-loader!./icons/json_icon.svg";
+import _asset12 from "!url-loader!./icons/console_icon.svg";
 export const resources = {
   "userstyle.css": _css,
   "icons/block_icon.svg": _asset,
@@ -24,4 +25,5 @@ export const resources = {
   "icons/sound_icon.svg": _asset9,
   "icons/variables_icon.svg": _asset10,
   "icons/json_icon.svg": _asset11,
+  "icons/console_icon.svg": _asset12,
 };

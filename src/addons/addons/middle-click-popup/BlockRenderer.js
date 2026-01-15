@@ -269,6 +269,8 @@ function _renderBlock(block, container, parentCategory, isVertical) {
     "data",
     "data-lists",
     "list",
+    "json",
+    "console",
     "more",
     "pen",
     "addon-custom-block"

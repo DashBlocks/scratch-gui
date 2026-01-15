@@ -22,7 +22,7 @@ const WelcomeModalComponent = props => (
                 <b>Dash</b> is based on <b>Scratch</b> and adds stuff like <b>JSON category</b>, <b>new blocks</b>, <b>extensions</b>, <b>accent colors</b>, and <b>other features</b>.
                 <br />
                 <br />
-                <b>Dash features are available only in English (at the moment)</b>, so consider setting language to English.
+                <b>Dash features are available only in English and Russian (at the moment).</b>
             </p>
             <br />
             <img

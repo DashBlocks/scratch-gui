@@ -1,4 +1,4 @@
-import {defineMessages, FormattedMessage, intlShape, injectIntl} from 'react-intl';
+647import {defineMessages, FormattedMessage, intlShape, injectIntl} from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Box from '../box/box.jsx';
@@ -35,7 +35,7 @@ const WelcomeModalComponent = props => (
                 <br />
                 View all contributors on <a href={`${process.env.ROOT}credits.html`}>credits page</a>.
                 <br />
-                Customize dashblocks to your liking on the <a href="https://dashblocks.github.io/addons.html">addons page</a>.
+                Customize editor to your preference on the <a href={`${process.env.ROOT}addons.html`}>addons page</a>.
             </p>
         </Box>
         <Box className={styles.buttonRow}>

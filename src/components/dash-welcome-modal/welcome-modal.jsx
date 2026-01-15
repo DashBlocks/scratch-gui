@@ -1,4 +1,4 @@
-647import {defineMessages, FormattedMessage, intlShape, injectIntl} from 'react-intl';
+import {defineMessages, FormattedMessage, intlShape, injectIntl} from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Box from '../box/box.jsx';

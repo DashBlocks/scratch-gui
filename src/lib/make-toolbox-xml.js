@@ -1149,6 +1149,18 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
     `;
 };
 
+const console = function (isInitialSetup, isStage, targetId, colors) {
+    // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
+    return `
+    <category
+        name="%{BKY_CATEGORY_CONSOLE}"
+        id="console"
+        colour="${colors.primary}"
+        secondaryColour="${colors.tertiary}">
+    </category>
+    `;
+};
+
 const myBlocks = function (isInitialSetup, isStage, targetId, colors) {
     // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
     return `
@@ -1217,6 +1229,7 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
     const operatorsXML = moveCategory('operators') || operators(isInitialSetup, isStage, targetId, colors.operators);
     const variablesXML = moveCategory('data') || variables(isInitialSetup, isStage, targetId, colors.data);
     const jsonXML = moveCategory('json') || json(isInitialSetup, isStage, targetId, colors.json);
+    const consoleXML = moveCategory('console') || console(isInitialSetup, isStage, targetId, colors.console);
     const myBlocksXML = moveCategory('procedures') || myBlocks(isInitialSetup, isStage, targetId, colors.more);
 
     // Always display TurboWarp blocks as the first extension, if it exists,
@@ -1237,6 +1250,7 @@ const makeToolboxXML = function (isInitialSetup, isStage = true, targetId, categ
         operatorsXML, gap,
         variablesXML, gap,
         jsonXML, gap,
+        consoleXML, gap,
         myBlocksXML
     ];
 

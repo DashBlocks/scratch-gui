@@ -80,7 +80,14 @@
   --sa-block-background-primary: var(--editorTheme3-json-primary, #748bee);
   --sa-block-background-secondary: var(--editorTheme3-json-secondary, #687dd6);
   --sa-block-background-tertiary: var(--editorTheme3-json-tertiary, #5c6fbe);
-  --sa-block-field-background: var(--editorTheme3-json-field, #5563a7);
+  --sa-block-field-background: var(--editorTheme3-json-field, #5c6fbe);
+}
+
+.sa-block-color-console {
+  --sa-block-background-primary: var(--editorTheme3-console-primary, #6b8e5d);
+  --sa-block-background-secondary: var(--editorTheme3-console-secondary, #57734c);
+  --sa-block-background-tertiary: var(--editorTheme3-console-tertiary, #56724a);
+  --sa-block-field-background: var(--editorTheme3-console-field, #56724a);
 }
 
 .sa-block-color-more,

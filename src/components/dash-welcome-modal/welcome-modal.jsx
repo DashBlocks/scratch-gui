@@ -19,10 +19,10 @@ const WelcomeModalComponent = props => (
     >
         <Box className={styles.body}>
             <p className={styles.text}>
-                <b>Dash</b> is based on <b>Scratch</b> and adds stuff like <b>JSON category</b>, <b>new blocks</b>, <b>extensions</b>, <b>accent colors</b>, and <b>other features</b>.
+                <b>Dash</b> is based on <b>TurboWarp</b> and adds stuff like <b>JSON category</b>, <b>console mode</b>, <b>new blocks</b>, <b>extensions</b>, <b>editor customization</b>, and <b>other features</b>.
                 <br />
                 <br />
-                <b>Dash features are available only in English (at the moment)</b>, so consider setting language to English.
+                <b>Dash features are available only in English and Russian (at the moment).</b>
             </p>
             <br />
             <img
@@ -35,7 +35,7 @@ const WelcomeModalComponent = props => (
                 <br />
                 View all contributors on <a href={`${process.env.ROOT}credits.html`}>credits page</a>.
                 <br />
-                Customize dashblocks to your liking on the <a href="https://dashblocks.github.io/addons.html">addons page</a>.
+                Customize editor to your preference on the <a href={`${process.env.ROOT}addons.html`}>addons page</a>.
             </p>
         </Box>
         <Box className={styles.buttonRow}>

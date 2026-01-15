@@ -87,6 +87,13 @@ const manifest = {
     },
     {
       "dynamic": true,
+      "name": "Console blocks",
+      "id": "console",
+      "type": "boolean",
+      "default": true
+    },
+    {
+      "dynamic": true,
       "name": "Extension blocks",
       "id": "extension",
       "type": "boolean",

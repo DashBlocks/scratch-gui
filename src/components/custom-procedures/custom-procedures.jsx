@@ -75,6 +75,7 @@ const CustomProcedures = (props) => {
         "data",
         "data_lists",
         "json",
+        "console",
         "more",
         "pen",
     ];

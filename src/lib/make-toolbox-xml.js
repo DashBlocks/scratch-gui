@@ -1151,12 +1151,22 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
 
 const console = function (isInitialSetup, isStage, targetId, colors) {
     // Note: the category's secondaryColour matches up with the blocks' tertiary color, both used for border color.
+    const hello = translate('LOOKS_HELLO', 'Hello!');
     return `
     <category
         name="%{BKY_CATEGORY_CONSOLE}"
         id="console"
         colour="${colors.primary}"
         secondaryColour="${colors.tertiary}">
+        <block type="console_clear" />
+        <block type="console_addline">
+            <value name="LINE">
+                <shadow type="text">
+                    <field name="TEXT">${hello}</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="console_of" />
     </category>
     `;
 };

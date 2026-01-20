@@ -24,8 +24,6 @@ class PseudoConsole extends React.Component {
         this.props.vm.runtime.console = this;
     }
     get realCursor () {
-        console.log('realCursor', this.props.cursor);
-        console.log('state', this.state);
         return {
             row: Math.max(0, Math.min(this.state.linesCount - 1, Math.round(+this.props.cursor.row))),
             symbol: Math.max(0, Math.min(this.state.symbols - 1, Math.round(+this.props.cursor.symbol)))

@@ -12,8 +12,11 @@ class PseudoConsole extends React.Component {
     constructor (props) {
         super(props);
         bindAll(this, [
+            'realCursor',
             'clear',
-            'addLine'
+            'addLine',
+            'editLine',
+            'editSymbol',
         ]);
         this.state = {
             linesCount: 25,
@@ -21,7 +24,7 @@ class PseudoConsole extends React.Component {
         };
         this.props.vm.runtime.console = this;
     }
-    realCursor () {
+    get realCursor () {
         return {
             row: Math.max(0, Math.min(this.state.linesCount - 1, Math.round(+this.props.cursor.row))),
             symbol: Math.max(0, Math.min(this.state.symbols - 1, Math.round(+this.props.cursor.symbol)))
@@ -35,20 +38,20 @@ class PseudoConsole extends React.Component {
         const splitted = String(line)
             .split('\n')
             .reduce((acc, value) => [...acc, ...value.match(new RegExp(`.{1,${this.state.symbols}}`, 'g'))], []);
-        const newLines = this.props.lines.toSpliced(this.realCursor().row, 0, ...splitted);
+        const newLines = this.props.lines.toSpliced(this.realCursor.row, 0, ...splitted);
         this.props.setConsoleLines(newLines.toSpliced(
             0,
             Math.max(0, newLines.length - (this.state.linesCount - 1))
         ));
         if (cursor2NextLine) {
             this.props.setConsoleCursor(
-                this.realCursor().row + splitted.length - Math.max(0, newLines.length - (this.state.linesCount - 1)),
+                this.realCursor.row + splitted.length - Math.max(0, newLines.length - (this.state.linesCount - 1)),
                 0
             );
         } else {
             this.props.setConsoleCursor(
-                this.realCursor().row - Math.max(0, newLines.length - (this.state.linesCount - 1)),
-                this.realCursor().symbol
+                this.realCursor.row - Math.max(0, newLines.length - (this.state.linesCount - 1)),
+                this.realCursor.symbol
             );
         }
     }
@@ -56,29 +59,29 @@ class PseudoConsole extends React.Component {
         const splitted = String(line)
             .split('\n')
             .reduce((acc, value) => [...acc, ...value.match(new RegExp(`.{1,${this.state.symbols}}`, 'g'))], []);
-        const newLines = this.props.lines.toSpliced(this.realCursor().row, 1, ...splitted);
+        const newLines = this.props.lines.toSpliced(this.realCursor.row, 1, ...splitted);
         this.props.setConsoleLines(newLines.toSpliced(
             0,
             Math.max(0, newLines.length - (this.state.linesCount - 1))
         ));
         this.props.setConsoleCursor(
-            this.realCursor().row - Math.max(0, newLines.length - (this.state.linesCount - 1)),
-            this.realCursor().symbol
+            this.realCursor.row - Math.max(0, newLines.length - (this.state.linesCount - 1)),
+            this.realCursor.symbol
         );
     }
     editSymbol (value) {
         const symbol = String(value)[0];
-        const line = (this.props.lines[this.realCursor().row] || '').padEnd(this.realCursor().symbol + 1, ' ');
+        const line = (this.props.lines[this.realCursor.row] || '').padEnd(this.realCursor.symbol + 1, ' ');
         this.props.setConsoleLines(this.props.lines.toSpliced(
-            this.realCursor().row,
+            this.realCursor.row,
             1,
-            line.substring(0, this.realCursor().symbol) + symbol + line.substring(this.realCursor().symbol + 1, line.length)
+            line.substring(0, this.realCursor.symbol) + symbol + line.substring(this.realCursor.symbol + 1, line.length)
         ));
     }
     render () {
         return (
             <PseudoConsoleComponent
-                cursor={this.realCursor()}
+                cursor={this.realCursor}
                 lines={this.props.lines}
                 linesCount={this.state.linesCount}
                 symbols={this.state.symbols}

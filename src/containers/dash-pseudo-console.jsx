@@ -15,7 +15,7 @@ class PseudoConsole extends React.Component {
             'clear',
             'addLine',
             'editLine',
-            'editSymbol',
+            'editSymbol'
         ]);
         this.state = {
             linesCount: 25,

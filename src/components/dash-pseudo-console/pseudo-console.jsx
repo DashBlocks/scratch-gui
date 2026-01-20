@@ -25,6 +25,10 @@ const PseudoConsoleComponent = props => (
 );
 
 PseudoConsoleComponent.propTypes = {
+    cursor: PropTypes.shape({
+        row: PropTypes.number,
+        symbol: PropTypes.number
+    }).isRequired,
     lines: PropTypes.arrayOf(PropTypes.string),
     linesCount: PropTypes.number,
     stageSize: PropTypes.shape({

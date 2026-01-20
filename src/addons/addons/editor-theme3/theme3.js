@@ -67,6 +67,11 @@ const categories = [
     colorId: "json",
   },
   {
+    categoryId: "console",
+    settingId: "console-color",
+    colorId: "console",
+  },
+  {
     categoryId: "myBlocks",
     settingId: "custom-color",
     colorId: "more",

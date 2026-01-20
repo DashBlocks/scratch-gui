@@ -1,4 +1,4 @@
-[{
+[{"isStage":false,"name":"eat","variables":{},"lists":{},"broadcasts":{},"blocks":{},"comments":{},"currentCostume":2,"costumes":[{"name":"waffle","bitmapResolution":1,"dataFormat":"svg","assetId":"ad911fee4fa53d9c78ba6732106cac64","md5ext":"ad911fee4fa53d9c78ba6732106cac64.svg","rotationCenterX":28.810754876988113,"rotationCenterY":27.903878155123294},{"name":"cookie","bitmapResolution":1,"dataFormat":"svg","assetId":"c4bafe3b80c67b10e4e12ad75c8398f8","md5ext":"c4bafe3b80c67b10e4e12ad75c8398f8.svg","rotationCenterX":34.05820083618164,"rotationCenterY":30.737030029296875},{"name":"Pizza","bitmapResolution":1,"dataFormat":"svg","assetId":"b881173abada5b5582128aee1a79a8b7","md5ext":"b881173abada5b5582128aee1a79a8b7.svg","rotationCenterX":42.665497909359516,"rotationCenterY":44.00055512969354}],"sounds":[{"name":"Мяу","assetId":"83c36d806dc92327b9e7049a565c6bff","dataFormat":"wav","format":"","rate":48000,"sampleCount":40681,"md5ext":"83c36d806dc92327b9e7049a565c6bff.wav"}],"volume":100,"visible":true,"x":0,"y":0,"size":100,"direction":90,"draggable":false,"rotationStyle":"all around"},{
    "isStage":false,
    "name":"Explosion",
    "variables":{

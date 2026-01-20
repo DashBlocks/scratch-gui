@@ -1,8 +1,8 @@
 const checkForTests = () => {
     if (window.location.href == "https://dashblocks.github.io/scratch-gui") {
-        const url = new URL(window.location.href);
-        const params = url.searchParams;
+        const params = new URLSearchParams(window.location.href);
         params.append('enabletests', '');
+        window.location.href = `https://dashblocks.github.io/scratch-gui?${params.toString()}`;
     }
 }
 

@@ -54,6 +54,10 @@
   background-image: url(icons/json_icon.svg);
 }
 
+.scratchCategoryId-console .scratchCategoryItemBubble::after {
+  background-image: url(icons/console_icon.svg);
+}
+
 .scratchCategoryId-myBlocks .scratchCategoryItemBubble::after {
   background-image: url(icons/block_icon.svg);
 }

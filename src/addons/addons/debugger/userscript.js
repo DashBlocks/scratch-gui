@@ -490,6 +490,7 @@ export default async function ({ addon, console, msg }) {
       "data-lists",
       "list",
       "json",
+      "console",
       "more",
       "pen",
       "addon-custom-block"

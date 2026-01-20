@@ -19,6 +19,8 @@ import {
 
 import {setHighQualityPenState} from '../reducers/tw';
 
+import {setStageMode} from '../reducers/dash.js';
+
 const colorPickerRadius = 20;
 const dragThreshold = 3; // Same as the block drag threshold
 
@@ -85,6 +87,9 @@ class Stage extends React.Component {
             this.props.vm.renderer.on('UseHighQualityRenderChanged', this.props.onHighQualityPenChanged);
         }
         this.props.vm.attachV2BitmapAdapter(new V2BitmapAdapter());
+        this.props.vm.runtime.on('STAGE_MODE_CHANGED', stageMode => {
+            this.props.onSetStageMode(stageMode);
+        });
     }
     componentDidMount () {
         this.attachRectEvents();
@@ -478,6 +483,7 @@ Stage.propTypes = {
     isRtl: PropTypes.bool,
     isWindowFullScreen: PropTypes.bool,
     stageMode: PropTypes.oneOf(['2d', 'console']),
+    onSetStageMode: PropTypes.func,
     dimensions: PropTypes.arrayOf(PropTypes.number),
     isStarted: PropTypes.bool,
     micIndicator: PropTypes.bool,
@@ -517,7 +523,8 @@ const mapDispatchToProps = dispatch => ({
     // tw: handler for syncing high quality pen option changes
     onHighQualityPenChanged: enabled => dispatch(setHighQualityPenState(enabled)),
     onActivateColorPicker: () => dispatch(activateColorPicker()),
-    onDeactivateColorPicker: color => dispatch(deactivateColorPicker(color))
+    onDeactivateColorPicker: color => dispatch(deactivateColorPicker(color)),
+    onSetStageMode: stageMode => dispatch(setStageMode(stageMode)),
 });
 
 export default connect(

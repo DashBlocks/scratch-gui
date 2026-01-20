@@ -97,6 +97,7 @@ export default async function ({ addon, msg, console }) {
       "variables",
       "lists",
       "json",
+      "console",
       "myBlocks",
     ];
     const extensionsNodes = [];

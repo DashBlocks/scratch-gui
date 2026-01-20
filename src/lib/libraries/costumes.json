@@ -1,4 +1,37 @@
 [    {
+        "name": "waffle",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "ad911fee4fa53d9c78ba6732106cac64",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "ad911fee4fa53d9c78ba6732106cac64.svg",
+        "rotationCenterX": 40,
+        "rotationCenterY": 60
+    },{
+        "name": "cookie",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "c4bafe3b80c67b10e4e12ad75c8398f8",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "c4bafe3b80c67b10e4e12ad75c8398f8.svg",
+        "rotationCenterX": 40,
+        "rotationCenterY": 60
+    },{
+        "name": "pizza",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "b881173abada5b5582128aee1a79a8b7",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "b881173abada5b5582128aee1a79a8b7.svg",
+        "rotationCenterX": 40,
+        "rotationCenterY": 60
+    },{
         "name": "таблица",
         "tags": [
             "dash"

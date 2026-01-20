@@ -12,7 +12,6 @@ class PseudoConsole extends React.Component {
     constructor (props) {
         super(props);
         bindAll(this, [
-            'realCursor',
             'clear',
             'addLine',
             'editLine',
@@ -20,11 +19,13 @@ class PseudoConsole extends React.Component {
         ]);
         this.state = {
             linesCount: 25,
-            symbols: 80,
+            symbols: 80
         };
         this.props.vm.runtime.console = this;
     }
     get realCursor () {
+        console.log('realCursor', this.props.cursor);
+        console.log('state', this.state);
         return {
             row: Math.max(0, Math.min(this.state.linesCount - 1, Math.round(+this.props.cursor.row))),
             symbol: Math.max(0, Math.min(this.state.symbols - 1, Math.round(+this.props.cursor.symbol)))

@@ -34,6 +34,7 @@ class PseudoConsole extends React.Component {
         this.props.setConsoleCursor(0, 0);
     }
     addLine (line, cursor2NextLine) {
+        if (!String(line)) return;
         const splitted = String(line)
             .split('\n')
             .reduce((acc, value) => [...acc, ...value.match(new RegExp(`.{1,${this.state.symbols}}`, 'g'))], []);
@@ -55,6 +56,7 @@ class PseudoConsole extends React.Component {
         }
     }
     editLine (line) {
+        if (!String(line)) return;
         const splitted = String(line)
             .split('\n')
             .reduce((acc, value) => [...acc, ...value.match(new RegExp(`.{1,${this.state.symbols}}`, 'g'))], []);
@@ -69,6 +71,7 @@ class PseudoConsole extends React.Component {
         );
     }
     editSymbol (value) {
+        if (!String(value)?.[0]) return;
         const symbol = String(value)[0];
         const line = (this.props.lines[this.realCursor.row] || '').padEnd(this.realCursor.symbol + 1, ' ');
         this.props.setConsoleLines(this.props.lines.toSpliced(

@@ -4,10 +4,10 @@
   "description": "Graphical User Interface for creating and running Dash projects",
   "author": "DashBlocks Team",
   "license": "GPL-3.0",
-  "homepage": "https://github.com/DashBlocks/scratch-gui#readme",
+  "homepage": "https://github.com/T-SMod/scratch-gui#readme",
   "repository": {
     "type": "git",
-    "url": "https://github.com/DashBlocks/scratch-gui.git"
+    "url": "https://github.com/T-SMod/scratch-gui.git"
   },
   "main": "./dist/scratch-gui.js",
   "scripts": {

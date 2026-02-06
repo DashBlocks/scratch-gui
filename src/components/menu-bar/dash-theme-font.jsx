@@ -13,6 +13,7 @@ import {Theme} from '../../lib/themes/index.js';
 import {openFontThemeMenu, fontThemeMenuOpen, closeSettingsMenu} from '../../reducers/menus.js';
 import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
+import customFontIcon from './dash-custom-font.svg';
 import styles from './settings-menu.css';
 
 class FontThemeMenu extends React.Component {
@@ -111,11 +112,11 @@ class FontThemeMenu extends React.Component {
                         className={styles.option}
                         onClick={onOpenMenu}
                     >
-                        {/* <img
-                            src={fontIcon}
+                        <img
+                            src={customFontIcon}
                             draggable={false}
                             width={24}
-                        /> */}
+                        />
                         <span className={styles.submenuLabel}>
                             <FormattedMessage
                                 defaultMessage="Custom Font"

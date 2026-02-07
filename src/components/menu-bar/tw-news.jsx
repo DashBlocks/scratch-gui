@@ -66,7 +66,7 @@ class TWNews extends React.Component {
                         {/* eslint-disable-next-line max-len */}
                         {`We rewrote the ${APP_NAME} compiler to make projects run even faster. Bugs are possible. `}
                         <a
-                            href="https://docs.turbowarp.org/new-compiler"
+                            href="https://dashblocks.github.io/docs/new-compiler"
                             target="_blank"
                             rel="noreferrer"
                         >

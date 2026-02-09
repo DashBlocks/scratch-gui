@@ -13,7 +13,7 @@ export function modifiedCreateAllInputs(connectionMap) {
     // Don't treat %l as an argument
     if (component.substring(0, 1) == "%" && component.substring(1, 2) !== "l") {
       var argumentType = component.substring(1, 2);
-      if (!(argumentType == "n" || argumentType == "b" || argumentType == "s")) {
+      if (!(argumentType == 'n' || argumentType == 'b' || argumentType == 'a' || argumentType == 'o' || argumentType == 's')) {
         throw new Error("Found an custom procedure with an invalid type: " + argumentType);
       }
       labelText = component.substring(2).trim();
@@ -21,8 +21,12 @@ export function modifiedCreateAllInputs(connectionMap) {
       var id = this.argumentIds_[argumentCount];
 
       var input = this.appendValueInput(id);
-      if (argumentType == "b") {
-        input.setCheck("Boolean");
+      if (argumentType == 'b') {
+        input.setCheck('Boolean');
+      } else if (argumentType == 'a') {
+        input.setCheck('Array');
+      } else if (argumentType == 'o') {
+        input.setCheck('Object');
       }
       this.populateArgument_(argumentType, argumentCount, connectionMap, id, input);
       argumentCount++;
@@ -47,18 +51,22 @@ export function modifiedUpdateDeclarationProcCode(prefixLabels = false) {
     }
     var input = this.inputList[i];
     if (input.type == 5) {
-      // replaced Blocky.DUMMY_VALUE with 5
+      // replaced Blockly.DUMMY_VALUE with 5
       this.procCode_ += (prefixLabels ? "%l " : "") + input.fieldRow[0].getValue(); // modified to prepend %l delimiter, which prevents label merging
     } else if (input.type == 1) {
-      // replaced Blocky.INPUT_VALUE with 1
+      // replaced Blockly.INPUT_VALUE with 1
       // Inspect the argument editor.
       var target = input.connection.targetBlock();
       this.displayNames_.push(target.getFieldValue("TEXT"));
       this.argumentIds_.push(input.name);
-      if (target.type == "argument_editor_boolean") {
-        this.procCode_ += "%b";
+      if (target.type == 'argument_editor_boolean') {
+        this.procCode_ += '%b';
+      } else if (target.type == 'argument_editor_array') {
+        this.procCode_ += '%a';
+      } else if (target.type == 'argument_editor_object') {
+        this.procCode_ += '%o';
       } else {
-        this.procCode_ += "%s";
+        this.procCode_ += '%s';
       }
     } else {
       throw new Error("Unexpected input type on a procedure mutator root: " + input.type);

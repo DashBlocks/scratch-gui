@@ -273,21 +273,21 @@ const Footer = () => (
                         {/* Do not translate */}
                         {'Dash Packager'}
                     </a>
-                    <a href="https://docs.turbowarp.org/embedding">
+                    <a href="https://dashblocks.github.io/docs/embedding">
                         <FormattedMessage
                             defaultMessage="Embedding"
                             description="Link in footer to embedding documentation for embedding link"
                             id="tw.footer.embed"
                         />
                     </a>
-                    <a href="https://docs.turbowarp.org/url-parameters">
+                    <a href="https://dashblocks.github.io/docs/url-parameters">
                         <FormattedMessage
                             defaultMessage="URL Parameters"
                             description="Link in footer to URL parameters documentation"
                             id="tw.footer.parameters"
                         />
                     </a>
-                    <a href="https://docs.turbowarp.org/">
+                    <a href="https://dashblocks.github.io/docs/">
                         <FormattedMessage
                             defaultMessage="Documentation"
                             description="Link in footer to additional documentation"
@@ -642,11 +642,11 @@ class Interface extends React.PureComponent {
                                                             values={{
                                                                 link: (
                                                                     <a
-                                                                        href="https://docs.turbowarp.org/unshared-projects"
+                                                                        href="https://dashblocks.github.io/docs/unshared-projects"
                                                                         target="_blank"
                                                                         rel="noopener noreferrer"
                                                                     >
-                                                                        {'https://docs.turbowarp.org/unshared-projects'}
+                                                                        {'https://dashblocks.github.io/docs/unshared-projects'}
                                                                     </a>
                                                                 )
                                                             }}

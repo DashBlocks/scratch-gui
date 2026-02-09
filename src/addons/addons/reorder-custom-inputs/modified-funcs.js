@@ -1,7 +1,7 @@
 // https://github.com/scratchfoundation/scratch-blocks/blob/f210e042988b91bcdc2abeca7a2d85e178edadb2/blocks_vertical/procedures.js#L205
 export function modifiedCreateAllInputs(connectionMap) {
-  // Split the proc into components, by %n, %b, %s and %l (ignoring escaped).
-  var procComponents = this.procCode_.split(/(?=[^\\]%[nbsl])/);
+  // Split the proc into components, by %n, %b, %a, %o, %s and %l (ignoring escaped).
+  var procComponents = this.procCode_.split(/(?=[^\\]%[nbaosl])/);
   procComponents = procComponents.map(function (c) {
     return c.trim(); // Strip whitespace.
   });

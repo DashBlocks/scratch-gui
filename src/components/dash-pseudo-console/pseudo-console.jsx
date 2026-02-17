@@ -12,8 +12,8 @@ const PseudoConsoleComponent = props => (
         style={{
             height: props.stageSize.height,
             width: props.stageSize.width,
-            fontSize: props.stageSize.height / props.linesCount,
-            lineHeight: `${props.stageSize.height / props.linesCount}px`
+            fontSize: props.stageSize.height / props.shownLinesCount,
+            lineHeight: `${props.stageSize.height / props.shownLinesCount}px`
         }}
     >
         {props.lines.map((line, i) => (
@@ -31,13 +31,13 @@ PseudoConsoleComponent.propTypes = {
     }).isRequired,
     lines: PropTypes.arrayOf(PropTypes.string),
     linesCount: PropTypes.number,
+    shownLinesCount: PropTypes.number,
     stageSize: PropTypes.shape({
         width: PropTypes.number,
         height: PropTypes.number,
         widthDefault: PropTypes.number,
         heightDefault: PropTypes.number
-    }).isRequired,
-    symbols: PropTypes.number
+    }).isRequired
 };
 
 export default PseudoConsoleComponent;

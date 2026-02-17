@@ -69,37 +69,39 @@ const StageComponent = props => {
                     {props.stageMode === 'console' ? <PseudoConsole
                         stageSize={stageDimensions}
                         vm={vm}
-                    /> : props.stageMode === '2d' ? <DOMElementRenderer
-                        domElement={canvas}
-                        style={{
-                            height: stageDimensions.height,
-                            width: stageDimensions.width
-                        }}
-                        {...boxProps}
-                    /> : null}
-                    <Box className={styles.customOverlays}>
-                        <DOMElementRenderer domElement={props.overlay} />
-                    </Box>
-                    <Box className={styles.monitorWrapper}>
-                        <MonitorList
-                            draggable={useEditorDragStyle}
-                            stageSize={stageDimensions}
+                    /> : props.stageMode === '2d' ? <React.Fragment>
+                        <DOMElementRenderer
+                            domElement={canvas}
+                            style={{
+                                height: stageDimensions.height,
+                                width: stageDimensions.width
+                            }}
+                            {...boxProps}
                         />
-                    </Box>
-                    <Box className={styles.frameWrapper}>
-                        <TargetHighlight
-                            className={styles.frame}
-                            stageHeight={stageDimensions.height}
-                            stageWidth={stageDimensions.width}
-                        />
-                    </Box>
-                    {isColorPicking && colorInfo ? (
-                        <Loupe colorInfo={colorInfo} />
-                    ) : null}
+                        <Box className={styles.customOverlays}>
+                            <DOMElementRenderer domElement={props.overlay} />
+                        </Box>
+                        <Box className={styles.monitorWrapper}>
+                            <MonitorList
+                                draggable={useEditorDragStyle}
+                                stageSize={stageDimensions}
+                            />
+                        </Box>
+                        <Box className={styles.frameWrapper}>
+                            <TargetHighlight
+                                className={styles.frame}
+                                stageHeight={stageDimensions.height}
+                                stageWidth={stageDimensions.width}
+                            />
+                        </Box>
+                        {isColorPicking && colorInfo ? (
+                            <Loupe colorInfo={colorInfo} />
+                        ) : null}
+                    </React.Fragment> : null}
                 </Box>
 
                 {/* `stageOverlays` is for items that should *not* have their overflow contained within the stage */}
-                <Box
+                {props.stageMode === '2d' ? <Box
                     className={classNames(
                         styles.stageOverlays,
                         {[styles.fullScreen]: isFullScreen}
@@ -137,7 +139,7 @@ const StageComponent = props => {
                         ref={dragRef}
                         width={0}
                     />
-                </Box>
+                </Box> : null}
                 {isStarted ? null : (
                     <GreenFlagOverlay
                         className={styles.greenFlagOverlay}

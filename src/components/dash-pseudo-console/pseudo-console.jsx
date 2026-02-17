@@ -8,6 +8,24 @@ import styles from './pseudo-console.css';
 
 const escCodeMatch = /\x1B\[[0-9;]+m/g; // Partly support for "Graphic Mode" ESC codes
 const escCodeValid = /\x1B\[\d+(;\d+)*m/;
+const colors = {
+    30: 'rgb(0, 0, 0)', // Black
+    31: 'rgb(196, 0, 0)', // Red
+    32: 'rgb(0, 128, 0)', // Green
+    33: 'rgb(128, 128, 0)', // Yellow
+    34: 'rgb(0, 0, 128)', // Blue
+    35: 'rgb(128, 0, 128)', // Magenta
+    36: 'rgb(0, 128, 128)', // Cyan
+    37: 'rgb(192, 192, 192)', // Light gray
+    90: 'rgb(128, 128, 128)', // Gray
+    91: 'rgb(255, 0, 0)', // Bright red
+    92: 'rgb(0, 255, 0)', // Bright green
+    93: 'rgb(255, 255, 0)', // Bright yellow
+    94: 'rgb(0, 0, 255)', // Bright blue
+    95: 'rgb(255, 0, 255)', // Bright magenta
+    96: 'rgb(0, 255, 255)', // Bright cyan
+    97: 'rgb(255, 255, 255)' // White
+};
 const styleByEscCode = (escCode, style) => {
     const params = escCode.match(/\d+/g);
     switch (params[0]) {
@@ -23,11 +41,27 @@ const styleByEscCode = (escCode, style) => {
     case '22': return {...style, fontWeight: null};
     case '23': return {...style, fontStyle: null};
     case '24': return {...style, textDecoration: (style.textDecoration ? style.textDecoration.split(' ') : []).filter((v) => v !== 'underline').join('')};
-    case '28': return {...style, opacity: 0};
+    case '28': return {...style, opacity: null};
     case '29': return {...style, textDecoration: (style.textDecoration ? style.textDecoration.split(' ') : []).filter((v) => v !== 'line-through').join('')};
-    default: return style;
+
+    default: {
+        if (
+            // Foreground colors
+            (30 <= +params[0] && +params[0] <= 37) ||
+            (90 <= +params[0] && +params[0] <= 97)
+        ) {
+            return {...style, color: colors[params[0]]};
+        }
+        if (
+            // Background colors
+            (40 <= +params[0] && +params[0] <= 47) ||
+            (100 <= +params[0] && +params[0] <= 107)
+        ) {
+            return {...style, backgroundColor: colors[+params[0] - 10]};
+        }
+        return style;
     }
-    
+    }
 };
 
 const PseudoConsoleComponent = props => (

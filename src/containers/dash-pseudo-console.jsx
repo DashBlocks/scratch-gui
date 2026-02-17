@@ -30,7 +30,7 @@ class PseudoConsole extends React.Component {
         ));
         return {
             row,
-            symbol: Math.max(0, Math.min(this.props.lines[row].length - 1, Math.round(+this.props.cursor.symbol)))
+            symbol: Math.max(0, Math.min((this.props.lines[row] || '').length - 1, Math.round(+this.props.cursor.symbol)))
         };
     }
     clear () {

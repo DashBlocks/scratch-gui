@@ -18,7 +18,8 @@ class PseudoConsole extends React.Component {
             'editSymbol'
         ]);
         this.state = {
-            linesCount: 200
+            linesCount: 200,
+            shownLinesCount: 25
         };
         this.props.vm.runtime.console = this;
     }
@@ -85,6 +86,7 @@ class PseudoConsole extends React.Component {
                 cursor={this.realCursor}
                 lines={this.props.lines}
                 linesCount={this.state.linesCount}
+                shownLinesCount={this.state.shownLinesCount}
                 stageSize={this.props.stageSize}
             />
         );

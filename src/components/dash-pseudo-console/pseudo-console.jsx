@@ -44,21 +44,45 @@ const styleByEscCode = (escCode, style) => {
     case '28': return {...style, opacity: null};
     case '29': return {...style, textDecoration: (style.textDecoration ? style.textDecoration.split(' ') : []).filter((v) => v !== 'line-through').join('')};
 
+    // Non-table colors
+    case '38':
+    case '48': {
+        const styleName = params[0] === '38' ? 'color' : 'backgroundColor';
+        if (params[1] === '2') {
+            if (
+                0 <= +params[2] && +params[2] <= 255 &&
+                0 <= +params[3] && +params[3] <= 255 &&
+                0 <= +params[4] && +params[4] <= 255
+            ) return {...style, [styleName]: `rgb(${params[2]}, ${params[3]}, ${params[4]})`};
+        }
+        if (params[1] === '5') {
+            if (0 <= +params[2] && +params[2] <= 7) return {...style, [styleName]: colors[+params[2] + 30]};
+            if (8 <= +params[2] && +params[2] <= 15) return {...style, [styleName]: colors[+params[2] + 82]};
+            if (16 <= +params[2] && +params[2] <= 231) {
+                let id = +params[2] - 16, r, g, b;
+                r = Math.min(5, Math.floor(id / 36));
+                g = Math.min(5, Math.floor((id - r * 36) / 6));
+                b = id % 6;
+                return {...style, [styleName]: `rgb(${r * 255 / 5}, ${g * 255 / 5}, ${b * 255 / 5})`};
+            }
+            if (232 <= +params[2] && +params[2] <= 255) {
+                const grayscale = (+params[2] - 232) * 255 / 24;
+                return {...style, [styleName]: `rgb(${grayscale}, ${grayscale}, ${grayscale})`};
+            }
+        }
+    }
+
     default: {
         if (
             // Foreground colors
             (30 <= +params[0] && +params[0] <= 37) ||
             (90 <= +params[0] && +params[0] <= 97)
-        ) {
-            return {...style, color: colors[params[0]]};
-        }
+        ) return {...style, color: colors[params[0]]};
         if (
             // Background colors
             (40 <= +params[0] && +params[0] <= 47) ||
             (100 <= +params[0] && +params[0] <= 107)
-        ) {
-            return {...style, backgroundColor: colors[+params[0] - 10]};
-        }
+        ) return {...style, backgroundColor: colors[+params[0] - 10]};
         return style;
     }
     }

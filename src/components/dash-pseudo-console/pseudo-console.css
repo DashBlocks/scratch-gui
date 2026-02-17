@@ -4,4 +4,6 @@
     flex-direction: column;
     background-color: black;
     color: white;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }

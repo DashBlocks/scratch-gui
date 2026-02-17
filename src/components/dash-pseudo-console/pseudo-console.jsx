@@ -98,11 +98,21 @@ const PseudoConsoleComponent = props => (
             lineHeight: `${props.stageSize.height / props.shownLinesCount}px`
         }}
     >
-        {props.lines.map((line, i) => (
-            <span key={i}>
-                {line}
-            </span>
-        ))}
+        {props.lines.map((line, i1) => {
+            const splitted = line.split(escCodeMatch);
+            const escCodes = line.match(escCodeMatch);
+            let style = {};
+            return (
+                <span key={i1}>
+                    {splitted.map((value, i2) => {
+                        if (i2 > 0 && escCodeValid.test(escCodes[i2 - 1])) {
+                            style = styleByEscCode(escCodes[i2 - 1], style);
+                        }
+                        return (<span key={i2} style={style}>{value}</span>);
+                    })}
+                </span>
+            );
+        })}
     </Box>
 );
 

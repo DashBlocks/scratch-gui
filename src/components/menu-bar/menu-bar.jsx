@@ -297,7 +297,9 @@ class MenuBar extends React.Component {
                 const session = await getSession();
                 if (session) {
                     const formData = new FormData();
-                    formData.append("file", this.props.vm.saveProjectSb3().then(content => new Blob([content], {type: 'application/x.dash.dbp'})));
+                    const content = await this.props.vm.saveProjectSb3();
+                    const fileBlob = new Blob([content], {type: 'application/x.dash.dbp'});
+                    formData.append("file", fileBlob, `${this.props.projectTitle}.dbp`);
                     formData.append("name", this.props.projectTitle);
                     formData.append("userId", session.userId);
                     formData.append("password", session.password);
@@ -308,12 +310,14 @@ class MenuBar extends React.Component {
                     });
                     const result = await response.json();
                     if (response.ok) {
-                        window.location.href = `/#${result.projectId}`;
+                        window.location.hash = result.projectId;
                     } else {
                         alert(result.error);
                     }
+                    return;
                 }
-                return alert("Log in first");
+                alert("Log in first");
+                return;
             }
             if (this.props.canSave) { // save before transitioning to project page
                 this.props.autoUpdateProject();

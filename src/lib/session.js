@@ -11,7 +11,7 @@ const getSession = async (userId, password) => {
     }
 
     try {
-        const res = await fetch("https://dashblocks-server.vercel.app/auth/me", {credentials: "include"});
+        const res = await fetch("https://dashblocks-server.vercel.app/session", {credentials: "include"});
         if (res.ok) {
             const data = await res.json();
             return data;

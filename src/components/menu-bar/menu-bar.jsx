@@ -34,6 +34,7 @@ import CloudVariablesToggler from '../../containers/tw-cloud-toggler.jsx';
 import TWSaveStatus from './tw-save-status.jsx';
 import TWNews from './tw-news.jsx';
 import {isNewYearMode} from '../../components/dash-new-year-mode/new-year-mode.jsx';
+import getSession from '../../lib/session';
 
 import {openTipsLibrary, openSettingsModal, openRestorePointModal} from '../../reducers/modals';
 import {setPlayer} from '../../reducers/mode';
@@ -290,10 +291,29 @@ class MenuBar extends React.Component {
             waitForUpdate(false); // immediately transition to project page
         }
     }
-    handleClickShare (waitForUpdate) {
+    async handleClickShare (waitForUpdate) {
         if (!this.props.isShared) {
             if (this.props.canShare) { // save before transitioning to project page
-                this.props.onShare();
+                const session = await getSession();
+                if (session) {
+                    const formData = new FormData();
+                    formData.append("file", this.props.vm.saveProjectSb3().then(content => new Blob([content], {type: 'application/x.dash.dbp'})));
+                    formData.append("name", this.props.projectTitle);
+                    formData.append("userId", session.userId);
+                    formData.append("password", session.password);
+
+                    const response = await fetch("https://dashblocks-server.vercel.app/save-project", {
+                        method: "POST",
+                        body: formData,
+                    });
+                    const result = await response.json();
+                    if (response.ok) {
+                        window.location.href = `/#${result.projectId}`;
+                    } else {
+                        alert(result.error);
+                    }
+                }
+                return alert("Log in first");
             }
             if (this.props.canSave) { // save before transitioning to project page
                 this.props.autoUpdateProject();

@@ -8,7 +8,7 @@ import {defaultProjectId} from '../../reducers/project-state';
 import styles from './project-input.css';
 import {setProjectId} from '../../lib/tw-navigation-utils';
 
-const PROJECT_BASE = 'https://scratch.mit.edu/projects/';
+const PROJECT_BASE = 'https://dashblocks.github.io/#';
 
 const messages = defineMessages({
     tooltip: {

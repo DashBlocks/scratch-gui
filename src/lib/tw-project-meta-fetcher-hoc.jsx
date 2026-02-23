@@ -59,6 +59,8 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
                 if (projectId === '0') {
                     // don't try to get metadata
                 } else {
+                    // Soon
+                    return;
                     fetchProjectMeta(projectId).then(data => {
                         // If project ID changed, ignore the results.
                         if (this.props.reduxProjectId !== projectId) {
@@ -69,8 +71,9 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
                         if (title) {
                             this.props.onSetProjectTitle(title);
                         }
-                        const authorName = data.author.username;
-                        const authorThumbnail = `https://trampoline.turbowarp.org/avatars/${data.author.id}`;
+                        const authorName = "test";
+                        // Avatars will come soon, so use a placeholder for now
+                        const authorThumbnail = `https://placehold.co/60`;
                         this.props.onSetAuthor(authorName, authorThumbnail);
                         const instructions = data.instructions || '';
                         const credits = data.description || '';

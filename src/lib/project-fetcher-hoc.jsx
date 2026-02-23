@@ -127,12 +127,22 @@ const ProjectFetcherHOC = function (WrappedComponent) {
                     })
                     .then(buffer => ({data: buffer}));
             } else {
-                // TW: Temporary hack for project tokens
-                assetPromise = fetchProjectToken(projectId)
-                    .then(token => {
-                        storage.setProjectToken(token);
-                        return storage.load(storage.AssetType.Project, projectId, storage.DataFormat.JSON);
-                    });
+                if (projectId === '0') {
+                    assetPromise = fetchProjectToken(projectId)
+                        .then(token => {
+                            storage.setProjectToken(token);
+                            return storage.load(storage.AssetType.Project, projectId, storage.DataFormat.JSON);
+                        });
+                } else {
+                    assetPromise = fetch(`https://dashblocks-server.vercel.app/get-project/${projectId}`)
+                        .then(r => {
+                            if (!r.ok) {
+                                throw new Error(`Request returned status ${r.status}`);
+                            }
+                            return r.arrayBuffer();
+                        })
+                        .then(buffer => ({data: buffer}));
+                }
             }
 
             return assetPromise

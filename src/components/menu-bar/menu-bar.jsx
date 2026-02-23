@@ -298,11 +298,9 @@ class MenuBar extends React.Component {
                 if (session) {
                     const formData = new FormData();
                     const content = await this.props.vm.saveProjectSb3();
-                    const fileBlob = new Blob([content], {type: 'application/x.dash.dbp'});
+                    const fileBlob = new Blob([content], { type: 'application/x.dash.dbp' });
                     formData.append("file", fileBlob, `${this.props.projectTitle}.dbp`);
                     formData.append("name", this.props.projectTitle);
-                    formData.append("userId", session.userId);
-                    formData.append("password", session.password);
 
                     const response = await fetch("https://dashblocks-server.vercel.app/save-project", {
                         method: "POST",

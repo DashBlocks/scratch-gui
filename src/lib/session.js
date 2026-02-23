@@ -1,26 +1,28 @@
 const getSession = async (userId, password) => {
-    if (localStorage.getItem("session")) return JSON.parse(localStorage.getItem("session"));
-    if (!userId || !password) return null;
-
-    const res = await fetch("https://dashblocks-server.vercel.app/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, password })
-    });
-
-    const result = await res.json();
-    if (res.ok) {
-        localStorage.setItem("session",
-            JSON.stringify({
-                userId: userId,
-                password: password,
-                username: result.username
-            })
+    if (userId && password) {
+        const res = await fetch(
+            "https://dashblocks-server.vercel.app/auth/login",
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ userId, password }),
+            },
         );
-        return JSON.parse(localStorage.getItem("session"));
-    } else {
+        if (res.ok) return await res.json();
         return null;
     }
+
+    try {
+        const res = await fetch("https://dashblocks-server.vercel.app/auth/me");
+        if (res.ok) {
+            const data = await res.json();
+            return data;
+        }
+    } catch (e) {
+        console.error("Session failed", e);
+    }
+
+    return null;
 };
 
 export default getSession;

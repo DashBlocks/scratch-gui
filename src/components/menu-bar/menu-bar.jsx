@@ -305,6 +305,7 @@ class MenuBar extends React.Component {
                     const response = await fetch("https://dashblocks-server.vercel.app/save-project", {
                         method: "POST",
                         body: formData,
+                        credentials: "include"
                     });
                     const result = await response.json();
                     if (response.ok) {

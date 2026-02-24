@@ -122,7 +122,7 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
                             this.props.onSetAuthor(authorName, authorThumbnail);
                             const description = data.description || '';
                             if (description) {
-                                this.props.onSetDescription(description, '');
+                                this.props.onSetDescription(description, '', true);
                             }
                             setIndexable(true);
                         })
@@ -166,9 +166,10 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
             username,
             thumbnail
         })),
-        onSetDescription: (instructions, credits) => dispatch(setDescription({
+        onSetDescription: (instructions, credits, isDashProject) => dispatch(setDescription({
             instructions,
-            credits
+            credits,
+            isDashProject
         })),
         onSetProjectTitle: title => dispatch(setProjectTitle(title))
     });

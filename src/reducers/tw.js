@@ -41,7 +41,8 @@ export const initialState = {
     },
     description: {
         instructions: '',
-        credits: ''
+        credits: '',
+        isDashProject: false
     },
     compileErrors: [],
     fileHandle: null,

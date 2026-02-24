@@ -301,6 +301,9 @@ class MenuBar extends React.Component {
                     const fileBlob = new Blob([content], { type: 'application/x.dash.dbp' });
                     formData.append("file", fileBlob, `${this.props.projectTitle}.dbp`);
                     formData.append("name", this.props.projectTitle);
+                    // TODO: Description input UI than a prompt
+                    const description = prompt("Enter a description for your project:") || '';
+                    formData.append("description", description);
 
                     const response = await fetch("https://dashblocks-server.vercel.app/save-project", {
                         method: "POST",

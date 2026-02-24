@@ -299,16 +299,16 @@ class MenuBar extends React.Component {
                     const formData = new FormData();
                     const content = await this.props.vm.saveProjectSb3();
                     const fileBlob = new Blob([content], { type: 'application/x.dash.dbp' });
-                    formData.append("file", fileBlob, `${this.props.projectTitle}.dbp`);
-                    formData.append("name", this.props.projectTitle);
-                    // TODO: Description input UI than a prompt
-                    const description = prompt("Enter a description for your project:") || '';
-                    formData.append("description", description);
+                    formData.append('file', fileBlob, `${this.props.projectTitle}.dbp`);
+                    formData.append('name', this.props.projectTitle);
+                    // TODO: Description input instead of prompt
+                    const description = prompt('Enter a description for your project:') || '';
+                    formData.append('description', description);
 
-                    const response = await fetch("https://dashblocks-server.vercel.app/save-project", {
-                        method: "POST",
+                    const response = await fetch('https://dashblocks-server.vercel.app/save-project', {
+                        method: 'POST',
                         body: formData,
-                        credentials: "include"
+                        credentials: 'include'
                     });
                     const result = await response.json();
                     if (response.ok) {
@@ -318,7 +318,7 @@ class MenuBar extends React.Component {
                     }
                     return;
                 }
-                alert("Log in first");
+                alert('Log in first');
                 return;
             }
             if (this.props.canSave) { // save before transitioning to project page

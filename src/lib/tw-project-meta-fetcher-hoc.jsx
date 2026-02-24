@@ -6,21 +6,37 @@ import log from './log';
 import {setProjectTitle} from '../reducers/project-title';
 import {setAuthor, setDescription} from '../reducers/tw';
 
-export const fetchProjectMeta = async projectId => {
-    const urls = [
-        `https://trampoline.turbowarp.org/api/projects/${projectId}`,
-        `https://trampoline.turbowarp.xyz/api/projects/${projectId}`
-    ];
+export const fetchProjectMeta = async (projectId, reduxProjectId = projectId) => {
     let firstError;
-    for (const url of urls) {
+    if (reduxProjectId.includes('s')) {
+        const urls = [
+            `https://trampoline.turbowarp.org/api/projects/${projectId}`,
+            `https://trampoline.turbowarp.xyz/api/projects/${projectId}`
+        ];
+        for (const url of urls) {
+            try {
+                const res = await fetch(url);
+                const data = await res.json();
+                if (res.ok) {
+                    return data;
+                }
+                if (res.status === 404) {
+                    throw new Error('Project is probably unshared');
+                }
+                throw new Error(`Unexpected status code: ${res.status}`);
+            } catch (err) {
+                if (!firstError) {
+                    firstError = err;
+                }
+            }
+        }
+        throw firstError;
+    } else {
         try {
-            const res = await fetch(url);
+            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${projectId}`);
             const data = await res.json();
             if (res.ok) {
                 return data;
-            }
-            if (res.status === 404) {
-                throw new Error('Project is probably unshared');
             }
             throw new Error(`Unexpected status code: ${res.status}`);
         } catch (err) {
@@ -28,8 +44,9 @@ export const fetchProjectMeta = async projectId => {
                 firstError = err;
             }
         }
+        throw firstError;
     }
-    throw firstError;
+
 };
 
 const getNoIndexTag = () => document.querySelector('meta[name="robots"][content="noindex"]');
@@ -61,34 +78,60 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
                 } else {
                     if (projectId.includes('s')) {
                         projectId = projectId.replace('s', '');
-                    } else return;
-                    fetchProjectMeta(projectId).then(data => {
-                        // If project ID changed, ignore the results.
-                        if (this.props.reduxProjectId.replace('s', '') !== projectId) {
-                            return;
-                        }
-
-                        const title = data.title;
-                        if (title) {
-                            this.props.onSetProjectTitle(title);
-                        }
-                        const authorName = data.author.username;
-                        const authorThumbnail = `https://trampoline.turbowarp.org/avatars/${data.author.id}`;
-                        this.props.onSetAuthor(authorName, authorThumbnail);
-                        const instructions = data.instructions || '';
-                        const credits = data.description || '';
-                        if (instructions || credits) {
-                            this.props.onSetDescription(instructions, credits);
-                        }
-                        setIndexable(true);
-                    })
-                        .catch(err => {
-                            setIndexable(false);
-                            if (`${err}`.includes('unshared')) {
-                                this.props.onSetDescription('unshared', 'unshared');
+                        fetchProjectMeta(projectId).then(data => {
+                            // If project ID changed, ignore the results.
+                            if (this.props.reduxProjectId.replace('s', '') !== projectId) {
+                                return;
                             }
-                            log.warn('cannot fetch project meta', err);
-                        });
+
+                            const title = data.title;
+                            if (title) {
+                                this.props.onSetProjectTitle(title);
+                            }
+                            const authorName = data.author.username;
+                            const authorThumbnail = `https://trampoline.turbowarp.org/avatars/${data.author.id}`;
+                            this.props.onSetAuthor(authorName, authorThumbnail);
+                            const instructions = data.instructions || '';
+                            const credits = data.description || '';
+                            if (instructions || credits) {
+                                this.props.onSetDescription(instructions, credits);
+                            }
+                            setIndexable(true);
+                        })
+                            .catch(err => {
+                                setIndexable(false);
+                                if (`${err}`.includes('unshared')) {
+                                    this.props.onSetDescription('unshared', 'unshared');
+                                }
+                                log.warn('cannot fetch project meta', err);
+                            });
+                    } else {
+                        fetchProjectMeta(projectId, this.props.reduxProjectId).then(data => {
+                            // If project ID changed, ignore the results.
+                            if (this.props.reduxProjectId !== projectId) {
+                                return;
+                            }
+
+                            const title = data.name;
+                            if (title) {
+                                this.props.onSetProjectTitle(title);
+                            }
+                            const authorName = data.author.username;
+                            // Dash: We don't have thumbnails, so use a placeholder with the author's name instead
+                            const authorThumbnail = `https://placehold.co/60?text=${authorName}`;
+                            this.props.onSetAuthor(authorName, authorThumbnail);
+                            const description = data.description || '';
+                            if (description) {
+                                this.props.onSetDescription(description, '');
+                            }
+                            setIndexable(true);
+                        })
+                            .catch(err => {
+                                setIndexable(false);
+                                log.warn('cannot fetch project meta', err);
+                            });
+                    };
+
                 }
             }
         }

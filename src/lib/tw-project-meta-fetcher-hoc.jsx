@@ -54,16 +54,17 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
             if (this.props.reduxProjectId !== prevProps.reduxProjectId) {
                 this.props.onSetAuthor('', '');
                 this.props.onSetDescription('', '');
-                const projectId = this.props.reduxProjectId;
+                let projectId = this.props.reduxProjectId;
 
                 if (projectId === '0') {
                     // don't try to get metadata
                 } else {
-                    // Soon
-                    return;
+                    if (projectId.includes('s')) {
+                        projectId = projectId.replace('s', '');
+                    } else return;
                     fetchProjectMeta(projectId).then(data => {
                         // If project ID changed, ignore the results.
-                        if (this.props.reduxProjectId !== projectId) {
+                        if (this.props.reduxProjectId.replace('s', '') !== projectId) {
                             return;
                         }
 
@@ -71,9 +72,8 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
                         if (title) {
                             this.props.onSetProjectTitle(title);
                         }
-                        const authorName = "test";
-                        // Avatars will come soon, so use a placeholder for now
-                        const authorThumbnail = `https://placehold.co/60`;
+                        const authorName = data.author.username;
+                        const authorThumbnail = `https://trampoline.turbowarp.org/avatars/${data.author.id}`;
                         this.props.onSetAuthor(authorName, authorThumbnail);
                         const instructions = data.instructions || '';
                         const credits = data.description || '';

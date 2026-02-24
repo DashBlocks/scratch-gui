@@ -98,7 +98,7 @@ const ProjectFetcherHOC = function (WrappedComponent) {
                 this.props.onActivateTab(BLOCKS_TAB_INDEX);
             }
         }
-        fetchProject (projectId, loadingState) {
+        fetchProject (id, loadingState) {
             // tw: clear and stop the VM before fetching
             // these will also happen later after the project is fetched, but fetching may take a while and
             // the project shouldn't be running while fetching the new project
@@ -106,6 +106,8 @@ const ProjectFetcherHOC = function (WrappedComponent) {
             this.props.vm.quit();
 
             let assetPromise;
+            // ID could start with 's' if it's a Scratch project, so actually `id` isn't real ID
+            let projectId = id;
             // In case running in node...
             let projectUrl = typeof URLSearchParams === 'undefined' ?
                 null :
@@ -127,7 +129,9 @@ const ProjectFetcherHOC = function (WrappedComponent) {
                     })
                     .then(buffer => ({data: buffer}));
             } else {
-                if (projectId === '0') {
+                if (projectId.includes('s') || projectId === '0') {
+                    if (projectId.includes('s'))
+                        projectId = projectId.replace('s', '');
                     assetPromise = fetchProjectToken(projectId)
                         .then(token => {
                             storage.setProjectToken(token);

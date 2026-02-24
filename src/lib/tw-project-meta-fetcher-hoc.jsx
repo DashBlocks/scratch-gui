@@ -36,7 +36,7 @@ export const fetchProjectMeta = async (projectId, reduxProjectId = projectId) =>
             const res = await fetch(`https://dashblocks-server.vercel.app/projects/${projectId}`);
             const data = await res.json();
             if (res.ok) {
-                return data;
+                return data.project;
             }
             throw new Error(`Unexpected status code: ${res.status}`);
         } catch (err) {

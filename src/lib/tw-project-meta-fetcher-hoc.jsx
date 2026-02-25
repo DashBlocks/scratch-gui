@@ -112,13 +112,13 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
                                 return;
                             }
 
+                            const userData = fetch(`https://dashblocks-server.vercel.app/users/${data.authorId}`).then(res => res.json());
                             const title = data.name;
                             if (title) {
                                 this.props.onSetProjectTitle(title);
                             }
                             const authorName = data.author.username;
-                            // Dash: We don't have thumbnails, so use a placeholder with the author's name instead
-                            const authorThumbnail = `https://placehold.co/60?text=${authorName}`;
+                            const authorThumbnail = userData.then(user => `https://dashblocks-server.vercel.app/users/avatars/${user.user.profile.avatarId}`);
                             this.props.onSetAuthor(authorName, authorThumbnail);
                             const description = data.description || '';
                             if (description) {

@@ -299,7 +299,7 @@ class MenuBar extends React.Component {
             if (this.props.canShare) { // save before transitioning to project page
                 const session = await getSession();
                 if (session) {
-                    const formData = new FormData();
+                    let formData = new FormData();
                     const content = await this.props.vm.saveProjectSb3();
                     const fileBlob = new Blob([content], { type: 'application/x.dash.dbp' });
                     formData.append('file', fileBlob, `${this.props.projectTitle}.dbp`);
@@ -315,6 +315,23 @@ class MenuBar extends React.Component {
                     });
                     const result = await response.json();
                     if (response.ok) {
+                        formData = new FormData();
+                        this.props.vm.postIOData('video', {forceTransparentPreview: true});
+                        this.props.vm.renderer.requestSnapshot(dataURI => {
+                            this.props.vm.postIOData('video', {forceTransparentPreview: false});
+                            const blob = fetch(dataURI).then(res => res.blob());
+                            formData.append('thumbnail', blob);
+                        });
+                        const thumbnailResponse = await fetch(`https://dashblocks-server.vercel.app/projects/${result.projectId}/upload-thumbnail`, {
+                            method: 'POST',
+                            body: formData,
+                            credentials: 'include'
+                        });
+                        if (thumbnailResponse.ok) {
+                            alert('Project shared successfully!');
+                        } else {
+                            alert('Project was shared but thumbnail upload failed');
+                        }
                         window.location.hash = result.projectId;
                     } else {
                         alert(result.error);

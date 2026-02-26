@@ -1131,129 +1131,78 @@ class MenuBar extends React.Component {
                         </a>
                     </div>}
                 </div>
-
-                {!this.props.isPlayerOnly && (
-                    <div className={styles.accountInfoGroup}>
-                        <div className={styles.menuBarItem}>
-                            <TWSaveStatus
-                                showSaveFilePicker={this.props.showSaveFilePicker}
-                            />
-                        </div>
-                        {this.props.sessionExists ? (
-                            this.props.username ? (
-                                // ************ user is logged in ************
-                                <React.Fragment>
-                                    <a href="/mystuff/">
-                                        <div
-                                            className={classNames(
-                                                styles.menuBarItem,
-                                                styles.hoverable,
-                                                styles.mystuffButton
-                                            )}
-                                        >
-                                            <img
-                                                className={styles.mystuffIcon}
-                                                src={mystuffIcon}
-                                            />
-                                        </div>
-                                    </a>
-                                    <AccountNav
-                                        className={classNames(
-                                            styles.menuBarItem,
-                                            styles.hoverable,
-                                            {[styles.active]: this.props.accountMenuOpen}
-                                        )}
-                                        isOpen={this.props.accountMenuOpen}
-                                        isRtl={this.props.isRtl}
-                                        menuBarMenuClassName={classNames(styles.menuBarMenu)}
-                                        onClick={this.props.onClickAccount}
-                                        onClose={this.props.onRequestCloseAccount}
-                                        onLogOut={this.props.onLogOut}
+                <div className={styles.accountInfoGroup}>
+                    {!this.props.isPlayerOnly && <div className={styles.menuBarItem}>
+                        <TWSaveStatus
+                            showSaveFilePicker={this.props.showSaveFilePicker}
+                        />
+                    </div>}
+                    {this.props.sessionExists && this.props.username ? (
+                        // ************ user is logged in ************
+                        <React.Fragment>
+                            <a href="/mystuff/">
+                                <div
+                                    className={classNames(
+                                        styles.menuBarItem,
+                                        styles.hoverable,
+                                        styles.mystuffButton
+                                    )}
+                                >
+                                    <img
+                                        className={styles.mystuffIcon}
+                                        src={mystuffIcon}
                                     />
-                                </React.Fragment>
-                            ) : (
-                                // ********* user not logged in, but a session exists
-                                // ********* so they can choose to log in
-                                <React.Fragment>
-                                    <div
-                                        className={classNames(
-                                            styles.menuBarItem,
-                                            styles.hoverable
-                                        )}
-                                        key="join"
-                                        onMouseUp={() => window.open("/register.html", '_blank')}
-                                    >
-                                        <FormattedMessage
-                                            defaultMessage="Join Dash"
-                                            description="Link for creating a Dash account"
-                                            id="dash.menuBar.joinDash"
-                                        />
-                                    </div>
-                                    <div
-                                        className={classNames(
-                                            styles.menuBarItem,
-                                            styles.hoverable
-                                        )}
-                                        key="login"
-                                        onMouseUp={() => window.open("/login.html", '_blank')}
-                                    >
-                                        <FormattedMessage
-                                            defaultMessage="Sign in"
-                                            description="Link for signing in to your Dash account"
-                                            id="dash.menuBar.signIn"
-                                        />
-                                    </div>
-                                </React.Fragment>
-                            )
-                        ) : (
-                            // ******** no login session is available, so don't show login stuff
-                            <React.Fragment>
-                                {this.props.showComingSoon ? (
-                                    <React.Fragment>
-                                        <MenuBarItemTooltip id="mystuff">
-                                            <div
-                                                className={classNames(
-                                                    styles.menuBarItem,
-                                                    styles.hoverable,
-                                                    styles.mystuffButton
-                                                )}
-                                            >
-                                                <img
-                                                    className={styles.mystuffIcon}
-                                                    src={mystuffIcon}
-                                                />
-                                            </div>
-                                        </MenuBarItemTooltip>
-                                        <MenuBarItemTooltip
-                                            id="account-nav"
-                                            place={this.props.isRtl ? 'right' : 'left'}
-                                        >
-                                            <div
-                                                className={classNames(
-                                                    styles.menuBarItem,
-                                                    styles.hoverable,
-                                                    styles.accountNavMenu
-                                                )}
-                                            >
-                                                <img
-                                                    className={styles.profileIcon}
-                                                    src={profileIcon}
-                                                />
-                                                <span>
-                                                    {'scratch-cat'}
-                                                </span>
-                                                <img
-                                                    className={styles.dropdownCaretIcon}
-                                                    src={dropdownCaret}
-                                                />
-                                            </div>
-                                        </MenuBarItemTooltip>
-                                    </React.Fragment>
-                                ) : []}
-                            </React.Fragment>
-                        )}
+                                </div>
+                            </a>
+                            <AccountNav
+                                className={classNames(
+                                    styles.menuBarItem,
+                                    styles.hoverable,
+                                    {[styles.active]: this.props.accountMenuOpen}
+                                )}
+                                isOpen={this.props.accountMenuOpen}
+                                isRtl={this.props.isRtl}
+                                menuBarMenuClassName={classNames(styles.menuBarMenu)}
+                                onClick={this.props.onClickAccount}
+                                onClose={this.props.onRequestCloseAccount}
+                                onLogOut={this.props.onLogOut}
+                            />
+                        </React.Fragment>
+                    ) : (
+                        // ********* user not logged in
+                        <React.Fragment>
+                            <div
+                                className={classNames(
+                                    styles.menuBarItem,
+                                    styles.hoverable
+                                )}
+                                key="join"
+                                onMouseUp={() => window.open("/register.html", '_blank')}
+                            >
+                                <FormattedMessage
+                                    defaultMessage="Join Dash"
+                                    description="Link for creating a Dash account"
+                                    id="dash.menuBar.joinDash"
+                                />
+                            </div>
+                            <div
+                                className={classNames(
+                                    styles.menuBarItem,
+                                    styles.hoverable
+                                )}
+                                key="login"
+                                onMouseUp={() => window.open("/login.html", '_blank')}
+                            >
+                                <FormattedMessage
+                                    defaultMessage="Sign in"
+                                    description="Link for signing in to your Dash account"
+                                    id="dash.menuBar.signIn"
+                                />
+                            </div>
+                        </React.Fragment>
+                    )}
                     </div>
-                )}
+                )
 
                 {aboutButton}
             </Box>

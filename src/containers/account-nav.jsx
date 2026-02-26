@@ -30,12 +30,12 @@ AccountNav.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    profileUrl: state.session && state.session.userId ?
-        `https://dashblocks-server.vercel.app/users/${state.session.userId}` : '',
-    thumbnailUrl: state.session && state.session.profile && state.session.profile.avatarId ?
-        `https://dashblocks-server.vercel.app/users/avatars/${state.session.profile.avatarId}` : '',
-    username: state.session && state.session.username ?
-        state.session.username : ''
+    profileUrl: state.scratchGui.dash.session && state.scratchGui.dash.session.userId ?
+        `https://dashblocks-server.vercel.app/users/${state.scratchGui.dash.session.userId}` : '',
+    thumbnailUrl: state.scratchGui.dash.session && state.scratchGui.dash.session.profile && state.scratchGui.dash.session.profile.avatarId ?
+        `https://dashblocks-server.vercel.app/users/avatars/${state.scratchGui.dash.session.profile.avatarId}` : '',
+    username: state.scratchGui.dash.session && state.scratchGui.dash.session.username ?
+        state.scratchGui.dash.session.username : ''
 });
 
 const mapDispatchToProps = () => ({});

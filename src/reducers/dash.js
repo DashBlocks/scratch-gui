@@ -2,13 +2,16 @@ const SET_STAGE_MODE = 'dash/SET_STAGE_MODE';
 const SET_CONSOLE_LINES = 'dash/SET_CONSOLE_LINES';
 const SET_CONSOLE_CURSOR = 'dash/SET_CONSOLE_CURSOR';
 
+const SET_SESSION = 'dash/SET_SESSION';
+
 const initialState = {
     stageMode: '2d',
     consoleLines: new Array(),
     consoleCursor: {
         row: 0,
         symbol: 0
-    }
+    },
+    session: null
 };
 
 const reducer = function (state, action) {
@@ -25,6 +28,10 @@ const reducer = function (state, action) {
     case SET_CONSOLE_CURSOR:
         return Object.assign({}, state, {
             consoleCursor: Object.assign({}, state.consoleCursor, action.cursorPos)
+        });
+    case SET_SESSION:
+        return Object.assign({}, state, {
+            session: action.session
         });
     default:
         return state;
@@ -52,10 +59,16 @@ const setConsoleCursor = function (cursorPos) {
     };
 }
 
+const setSession = session => ({
+    type: SET_SESSION,
+    session: session
+});
+
 export {
     reducer as default,
     initialState as dashInitialState,
     setStageMode,
     setConsoleLines,
-    setConsoleCursor
+    setConsoleCursor,
+    setSession
 };

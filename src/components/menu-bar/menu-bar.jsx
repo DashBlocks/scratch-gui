@@ -39,7 +39,7 @@ import getSession from '../../lib/session';
 
 import {openTipsLibrary, openSettingsModal, openRestorePointModal} from '../../reducers/modals';
 import {setPlayer} from '../../reducers/mode';
-import {setSession} from '../../reducers/session';
+import {setSession} from '../../reducers/dash';
 import {
     isTimeTravel220022BC,
     isTimeTravel1920,
@@ -241,21 +241,6 @@ class MenuBar extends React.Component {
     }
     componentWillUnmount () {
         document.removeEventListener('keydown', this.handleKeyPress);
-    }
-    componentDidUpdate (prevProps) {
-        if (prevProps.session !== this.props.session) {
-            if (this.props.session) {
-                getSession().then(session => {
-                    if (session) {
-                        alert(session);
-                        this.props.setSession(session);
-                    }
-                });
-            } else {
-                // Logged out
-                this.props.setSession(null);
-            }
-        }
     }
     handleClickNew () {
         // if the project is dirty, and user owns the project, we will autosave.
@@ -1344,8 +1329,7 @@ MenuBar.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => {
     const loadingState = state.scratchGui.projectState.loadingState;
-    const session = state.session;
-    alert(JSON.stringify(session || {}));
+    const session = state.scratchGui.dash.session;
     return {
         authorUsername: state.scratchGui.tw.author.username,
         authorThumbnailUrl: state.scratchGui.tw.author.thumbnail,
@@ -1365,7 +1349,7 @@ const mapStateToProps = (state, ownProps) => {
         loginMenuOpen: loginMenuOpen(state),
         modeMenuOpen: modeMenuOpen(state),
         projectTitle: state.scratchGui.projectTitle,
-        sessionExists: state.session !== null,
+        sessionExists: state.scratchGui.dash.session !== null,
         settingsMenuOpen: settingsMenuOpen(state),
         session: session || null,
         userOwnsProject: ownProps.authorUsername && session &&

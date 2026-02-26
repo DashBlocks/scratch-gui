@@ -22,7 +22,7 @@ jobs:
         run: npm update --legacy-peer-deps
 
       - name: Build Scratch
-        run: NODE_ENV=production npm run build
+        run: npm run build
       
       - name: Upload the pages artifact
         uses: actions/upload-pages-artifact@v3

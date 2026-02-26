@@ -1,0 +1,66 @@
+@import '../../css/colors.css';
+
+.login {
+    padding: 10px;
+    width: 200px;
+    line-height: 1.5rem;
+    white-space: normal;
+    color: $ui-white;
+    font-size: .8125rem;
+
+    .button {
+        padding: .75em;
+    }
+
+    .row {
+        margin-bottom: 1.25rem;
+    }
+
+    .input {
+        margin-bottom: 12px;
+        width: calc(100% - 30px);
+        height: 2.25rem;
+    }
+
+    label {
+        padding-top: 5px;
+        font-weight: bold;
+    }
+
+    .spinner {
+        margin: 0 .8rem;
+        width: 1rem;
+        vertical-align: middle;
+    }
+    
+    .submit-row {
+        justify-content: space-between;
+        flex-direction: row;
+    }
+
+    .submit-button {
+        margin-top: 5px;
+    }
+
+    a {
+        margin: auto 0;
+        color: colors.$ui-white;
+
+        &:link,
+        &:visited,
+        &:active {
+            color: colors.$ui-white;
+        }
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+
+    .error {
+        border: 1px solid colors.$active-dark-gray;
+        border-radius: 5px;
+        background-color: colors.$ui-orange;
+        padding: .75em 1em;
+    }
+}

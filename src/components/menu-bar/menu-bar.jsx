@@ -28,7 +28,6 @@ import TurboMode from '../../containers/turbo-mode.jsx';
 import MenuBarHOC from '../../containers/menu-bar-hoc.jsx';
 import SettingsMenu from './settings-menu.jsx';
 import AccountNav from './account-nav.jsx';
-import LoginDropdown from './login-dropdown.jsx';
 
 import FramerateChanger from '../../containers/tw-framerate-changer.jsx';
 import ChangeUsername from '../../containers/tw-change-username.jsx';
@@ -1182,12 +1181,12 @@ class MenuBar extends React.Component {
                                             styles.hoverable
                                         )}
                                         key="join"
-                                        onMouseUp={this.props.onOpenRegistration}
+                                        onMouseUp={() => window.open("/register.html", '_blank')}
                                     >
                                         <FormattedMessage
-                                            defaultMessage="Join Scratch"
-                                            description="Link for creating a Scratch account"
-                                            id="gui.menuBar.joinScratch"
+                                            defaultMessage="Join Dash"
+                                            description="Link for creating a Dash account"
+                                            id="dash.menuBar.joinDash"
                                         />
                                     </div>
                                     <div
@@ -1196,19 +1195,12 @@ class MenuBar extends React.Component {
                                             styles.hoverable
                                         )}
                                         key="login"
-                                        onMouseUp={this.props.onClickLogin}
+                                        onMouseUp={() => window.open("/login.html", '_blank')}
                                     >
                                         <FormattedMessage
                                             defaultMessage="Sign in"
-                                            description="Link for signing in to your Scratch account"
-                                            id="gui.menuBar.signIn"
-                                        />
-                                        <LoginDropdown
-                                            className={classNames(styles.menuBarMenu)}
-                                            isOpen={this.props.loginMenuOpen}
-                                            isRtl={this.props.isRtl}
-                                            renderLogin={this.props.renderLogin}
-                                            onClose={this.props.onRequestCloseLogin}
+                                            description="Link for signing in to your Dash account"
+                                            id="dash.menuBar.signIn"
                                         />
                                     </div>
                                 </React.Fragment>

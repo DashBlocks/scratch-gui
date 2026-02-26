@@ -27,7 +27,7 @@ import DeletionRestorer from '../../containers/deletion-restorer.jsx';
 import TurboMode from '../../containers/turbo-mode.jsx';
 import MenuBarHOC from '../../containers/menu-bar-hoc.jsx';
 import SettingsMenu from './settings-menu.jsx';
-import AccountNav from './account-nav.jsx';
+import AccountNav from '../../containers/account-nav.jsx';
 
 import FramerateChanger from '../../containers/tw-framerate-changer.jsx';
 import ChangeUsername from '../../containers/tw-change-username.jsx';
@@ -1039,7 +1039,7 @@ class MenuBar extends React.Component {
                                 />
                             </MenuBarItemTooltip>
                         </div>
-                    ) : ((this.props.authorUsername && this.props.authorUsername !== this.props.username) ? (
+                    ) : ((this.props.authorUsername && this.props.authorUsername !== this.props.session.username) ? (
                         <AuthorInfo
                             className={styles.authorInfo}
                             imageUrl={this.props.authorThumbnailUrl}
@@ -1137,7 +1137,7 @@ class MenuBar extends React.Component {
                             showSaveFilePicker={this.props.showSaveFilePicker}
                         />
                     </div>}
-                    {this.props.sessionExists && this.props.username ? (
+                    {this.props.sessionExists && this.props.session.username ? (
                         // ************ user is logged in ************
                         <React.Fragment>
                             <a href="/mystuff/">
@@ -1349,7 +1349,7 @@ const mapStateToProps = (state, ownProps) => {
         projectTitle: state.scratchGui.projectTitle,
         sessionExists: state.session !== null,
         settingsMenuOpen: settingsMenuOpen(state),
-        username: session ? session.username : null,
+        session: session || null,
         userOwnsProject: ownProps.authorUsername && session &&
             (ownProps.authorUsername === session.username),
         vm: state.scratchGui.vm,

@@ -317,11 +317,15 @@ class MenuBar extends React.Component {
                     if (response.ok) {
                         formData = new FormData();
                         this.props.vm.postIOData('video', {forceTransparentPreview: true});
-                        this.props.vm.renderer.requestSnapshot(dataURI => {
-                            this.props.vm.postIOData('video', {forceTransparentPreview: false});
-                            const blob = fetch(dataURI).then(res => res.blob());
-                            formData.append('thumbnail', blob);
+                        const thumbnailBlob = await new Promise(resolve => {
+                            this.props.vm.renderer.requestSnapshot(async dataURI => {
+                                this.props.vm.postIOData('video', {forceTransparentPreview: false});
+                                const res = await fetch(dataURI);
+                                const blob = await res.blob();
+                                resolve(blob);
+                            });
                         });
+                        formData.append('thumbnail', thumbnailBlob, 'thumbnail.png');
                         const thumbnailResponse = await fetch(`https://dashblocks-server.vercel.app/projects/${result.projectId}/upload-thumbnail`, {
                             method: 'POST',
                             body: formData,

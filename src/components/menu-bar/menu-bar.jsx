@@ -1201,8 +1201,7 @@ class MenuBar extends React.Component {
                             </div>
                         </React.Fragment>
                     )}
-                    </div>
-                )
+                </div>
 
                 {aboutButton}
             </Box>

@@ -243,10 +243,11 @@ class MenuBar extends React.Component {
         document.removeEventListener('keydown', this.handleKeyPress);
     }
     componentDidUpdate (prevProps) {
-        if (prevProps.sessionExists !== this.props.sessionExists) {
-            if (this.props.sessionExists) {
+        if (prevProps.session !== this.props.session) {
+            if (this.props.session) {
                 getSession().then(session => {
                     if (session) {
+                        alert(session);
                         this.props.setSession(session);
                     }
                 });
@@ -1344,6 +1345,7 @@ MenuBar.defaultProps = {
 const mapStateToProps = (state, ownProps) => {
     const loadingState = state.scratchGui.projectState.loadingState;
     const session = state.session;
+    alert(JSON.stringify(session || {}));
     return {
         authorUsername: state.scratchGui.tw.author.username,
         authorThumbnailUrl: state.scratchGui.tw.author.thumbnail,

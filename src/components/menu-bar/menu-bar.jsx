@@ -229,6 +229,7 @@ class MenuBar extends React.Component {
             'handleClickRestorePoints',
             'handleClickSeeCommunity',
             'handleClickShare',
+            'handleClickLogOut',
             'handleSetMode',
             'handleKeyPress',
             'handleRestoreOption',
@@ -330,6 +331,13 @@ class MenuBar extends React.Component {
                 waitForUpdate(false); // immediately transition to project page
             }
         }
+    }
+    async handleClickLogOut () {
+        const response = await fetch('https://dashblocks-server.vercel.app/auth/logout', {credentials: 'include'});
+        if (!response.ok)
+            return alert('Logout failed');
+        this.props.setSession(null);
+        window.location.reload();
     }
     handleSetMode (mode) {
         return () => {
@@ -1141,7 +1149,7 @@ class MenuBar extends React.Component {
                     {this.props.sessionExists && this.props.session?.username ? (
                         // ************ user is logged in ************
                         <React.Fragment>
-                            <a href="/mystuff/">
+                            <a href="/mystuff.html">
                                 <div
                                     className={classNames(
                                         styles.menuBarItem,
@@ -1166,7 +1174,7 @@ class MenuBar extends React.Component {
                                 menuBarMenuClassName={classNames(styles.menuBarMenu)}
                                 onClick={this.props.onClickAccount}
                                 onClose={this.props.onRequestCloseAccount}
-                                onLogOut={this.props.onLogOut}
+                                onLogOut={this.handleClickLogOut}
                             />
                         </React.Fragment>
                     ) : (

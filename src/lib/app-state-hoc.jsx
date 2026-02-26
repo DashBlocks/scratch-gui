@@ -8,6 +8,8 @@ import AddonHooks from '../addons/hooks';
 import localesReducer, {initLocale, localesInitialState} from '../reducers/locales';
 
 import {setPlayer, setFullScreen} from '../reducers/mode.js';
+import {setSession} from '../reducers/session.js';
+import getSession from './session';
 
 import locales from '@turbowarp/scratch-l10n';
 import {detectLocale} from './detect-locale';
@@ -104,6 +106,12 @@ const AppStateHOC = function (WrappedComponent, localesOnly) {
             if (prevProps.isFullScreen !== this.props.isFullScreen) {
                 this.store.dispatch(setFullScreen(this.props.isFullScreen));
             }
+        }
+        componentDidMount () {
+            if (this.props.isEmbedded) return;
+            getSession().then(session => {
+                this.store.dispatch(setSession(session));
+            });
         }
         render () {
             const {

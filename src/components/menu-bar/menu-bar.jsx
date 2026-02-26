@@ -39,6 +39,7 @@ import getSession from '../../lib/session';
 
 import {openTipsLibrary, openSettingsModal, openRestorePointModal} from '../../reducers/modals';
 import {setPlayer} from '../../reducers/mode';
+import {setSession} from '../../reducers/session';
 import {
     isTimeTravel220022BC,
     isTimeTravel1920,
@@ -240,6 +241,20 @@ class MenuBar extends React.Component {
     }
     componentWillUnmount () {
         document.removeEventListener('keydown', this.handleKeyPress);
+    }
+    componentDidUpdate (prevProps) {
+        if (prevProps.sessionExists !== this.props.sessionExists) {
+            if (this.props.sessionExists) {
+                getSession().then(session => {
+                    if (session) {
+                        this.props.setSession(session);
+                    }
+                });
+            } else {
+                // Logged out
+                this.props.setSession(null);
+            }
+        }
     }
     handleClickNew () {
         // if the project is dirty, and user owns the project, we will autosave.
@@ -1039,7 +1054,7 @@ class MenuBar extends React.Component {
                                 />
                             </MenuBarItemTooltip>
                         </div>
-                    ) : ((this.props.authorUsername && this.props.authorUsername !== this.props.session.username) ? (
+                    ) : ((this.props.authorUsername && this.props.authorUsername !== this.props.session?.username) ? (
                         <AuthorInfo
                             className={styles.authorInfo}
                             imageUrl={this.props.authorThumbnailUrl}
@@ -1137,7 +1152,7 @@ class MenuBar extends React.Component {
                             showSaveFilePicker={this.props.showSaveFilePicker}
                         />
                     </div>}
-                    {this.props.sessionExists && this.props.session.username ? (
+                    {this.props.sessionExists && this.props.session?.username ? (
                         // ************ user is logged in ************
                         <React.Fragment>
                             <a href="/mystuff/">
@@ -1316,6 +1331,7 @@ MenuBar.propTypes = {
     shouldSaveBeforeTransition: PropTypes.func,
     showSaveFilePicker: PropTypes.func,
     showComingSoon: PropTypes.bool,
+    setSession: PropTypes.func,
     username: PropTypes.string,
     userOwnsProject: PropTypes.bool,
     vm: PropTypes.instanceOf(VM).isRequired
@@ -1394,7 +1410,8 @@ const mapDispatchToProps = dispatch => ({
     onClickSave: () => dispatch(manualUpdateProject()),
     onClickSaveAsCopy: () => dispatch(saveProjectAsCopy()),
     onSeeCommunity: () => dispatch(setPlayer(true)),
-    onSetTimeTravelMode: mode => dispatch(setTimeTravel(mode))
+    onSetTimeTravelMode: mode => dispatch(setTimeTravel(mode)),
+    setSession: session => dispatch(setSession(session))
 });
 
 export default compose(

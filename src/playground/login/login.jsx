@@ -5,9 +5,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Form from '../forms/form.jsx';
-import Input from '../forms/input.jsx';
-import Button from '../forms/button.jsx';
-import Spinner from '../spinner/spinner.jsx';
+import Input from '../../components/forms/input.jsx';
+import Spinner from '../../components/spinner/spinner.jsx';
 
 import styles from './login-dropdown.css';
 
@@ -111,12 +110,12 @@ class Login extends React.Component {
                                 <FormattedMessage id="general.signIn" />
                             </Button>
                         ]}
-                        <a
+                        {/* <a
                             href="/accounts/password_reset/"
                             key="passwordResetLink"
                         >
                             <FormattedMessage id="login.needHelp" />
-                        </a>
+                        </a> */}
                     </div>
                     {error}
                 </Form>

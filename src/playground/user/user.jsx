@@ -45,7 +45,7 @@ const User = () => {
     async function handleChangeAvatar (e) {
         const reader = new FileReader();
         reader.onload = async () => {
-            await fetch("htts://dashblocks-server.vercel.app/users/upload-avatar", {
+            await fetch("https://dashblocks-server.vercel.app/users/upload-avatar", {
                 method: "POST",
                 body: {
                     avatar: reader.result

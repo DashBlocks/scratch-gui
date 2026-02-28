@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useRef, useEffect} from 'react';
 import render from '../app-target';
 import styles from './user.css';
 
@@ -17,6 +17,7 @@ const User = () => {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const fileInputRef = useRef(null);
 
     useEffect(() => {
         const fetchFullProfile = async () => {
@@ -41,6 +42,20 @@ const User = () => {
         fetchFullProfile();
     }, [id]);
 
+    async function handleChangeAvatar (e) {
+        const reader = new FileReader();
+        reader.onload = async () => {
+            await fetch("htts://dashblocks-server.vercel.app/users/upload-avatar", {
+                method: "POST",
+                body: {
+                    avatar: reader.result
+                },
+                credentials: "include"
+            });
+        };
+        reader.readAsDataURL(e.target.files[0]);
+    }
+
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
     if (!userData) return null;
@@ -48,9 +63,16 @@ const User = () => {
     return (
         <div className={styles.userContainer}>
             <header className={styles.profileHeader}>
+                <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleChangeAvatar}
+                    style={{display: "none"}}
+                />
                 <img
                     src={`https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId}`}
                     alt={userData.username}
+                    onClick={() => fileInputRef.current.click()}
                     className={styles.avatarImg}
                 />
                 <div className={styles.headerText}>

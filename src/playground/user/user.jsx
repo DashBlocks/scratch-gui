@@ -43,11 +43,15 @@ const User = () => {
     }, [id]);
 
     async function handleChangeAvatar (e) {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const formData = new FormData();
+        formData.append("avatar", file);
+
         await fetch("https://dashblocks-server.vercel.app/users/upload-avatar", {
             method: "POST",
-            body: {
-                avatar: e.target.files[0]
-            },
+            body: formData,
             credentials: "include"
         });
     }

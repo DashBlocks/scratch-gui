@@ -43,17 +43,13 @@ const User = () => {
     }, [id]);
 
     async function handleChangeAvatar (e) {
-        const reader = new FileReader();
-        reader.onload = async () => {
-            await fetch("https://dashblocks-server.vercel.app/users/upload-avatar", {
-                method: "POST",
-                body: {
-                    avatar: reader.result
-                },
-                credentials: "include"
-            });
-        };
-        reader.readAsDataURL(e.target.files[0]);
+        await fetch("https://dashblocks-server.vercel.app/users/upload-avatar", {
+            method: "POST",
+            body: {
+                avatar: e.target.files[0]
+            },
+            credentials: "include"
+        });
     }
 
     if (loading) return <div>Loading...</div>;

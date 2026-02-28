@@ -16,7 +16,6 @@ applyGuiColors(theme);
 
 const User = () => {
     const id = window.location.hash.replace('#', '');
-    const [session, setSession] = useState(null);
     const [userData, setUserData] = useState(null);
     const [projects, setProjects] = useState([]);
     const [isMyProfile, setIsMyProfile] = useState(false);

@@ -78,16 +78,20 @@ body {
     border: 0.0625rem solid $ui-black-transparent;
 }
 
-.user-info {
+.user-header {
     display: flex;
     align-items: center;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
 }
 
 .avatar-img {
     width: 5rem;
     height: 5rem;
     border-radius: 0.5rem;
-    object-fit: cover;
     cursor: pointer;
 }
 

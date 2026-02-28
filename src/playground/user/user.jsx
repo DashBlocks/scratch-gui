@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, {useState, useRef, useEffect} from 'react';
 import render from '../app-target';
 import styles from './user.css';
@@ -61,56 +62,57 @@ const User = () => {
     if (!userData) return null;
 
     return (
-        <div className={styles.userContainer}>
-            <header className={styles.profileHeader}>
-                <input
-                    type="file"
-                    accept=".png,.jpg,.jpeg,.img,.gif"
-                    ref={fileInputRef}
-                    onChange={handleChangeAvatar}
-                    style={{display: "none"}}
-                />
-                <img
-                    src={`https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId}`}
-                    alt={userData.username}
-                    onClick={() => fileInputRef.current.click()}
-                    className={styles.avatarImg}
-                />
-                <div className={styles.headerText}>
-                    <h1 className={styles.username}>{userData.username}</h1>
+        <div className={styles.container}>
+            <div className={styles.userWrapper}>
+                <div className={classNames(styles.section, styles.userHeader)}>
+                    <input
+                        type="file"
+                        accept=".png,.jpg,.jpeg,.img,.gif"
+                        ref={fileInputRef}
+                        onChange={handleChangeAvatar}
+                        style={{display: "none"}}
+                    />
+                    <img
+                        src={`https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId}`}
+                        alt={userData.username}
+                        onClick={() => fileInputRef.current.click()}
+                        className={styles.avatarImg}
+                    />
                     <div className={styles.userInfo}>
-                        <span className={styles.roleBadge}>{
-                            userData.role === "dashteam" ? "Dash Team" :
-                            (userData === "dasher+" ? "Dasher+" : "Dasher")
-                        }</span>
-                        <hr className={styles.divider} />
-                        <p>Joined: <strong>{userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : "Unknown"}</strong></p>
-                        <hr className={styles.divider} />
-                        <p>Last Active: <strong>{userData.lastActive ? new Date(userData.lastActive).toLocaleDateString() : "Unknown"}</strong></p>
+                        <h2>{userData.username}</h2>
+                        <div>
+                            <span className={styles.roleBadge}>{
+                                userData.role === "dashteam" ? "Dash Team" :
+                                (userData === "dasher+" ? "Dasher+" : "Dasher")
+                            }</span>
+                            <span>Joined: {userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : "Unknown"}</span>
+                            <span>Last Active: {userData.lastActive ? new Date(userData.lastActive).toLocaleDateString() : "Unknown"}</span>
+                        </div>
                     </div>
                 </div>
-            </header>
-
-            <h2 className={styles.sectionTitle}>Projects ({userData.projects.length})</h2>
-            <div className={styles.projectGrid}>
-                {projects.map((project) => (
-                    <div
-                        key={project.id}
-                        className={styles.projectCard}
-                        onClick={() => window.open(`https://dashblocks.github.io/#${project.id}`, "_blank")}
-                    >
-                        <div className={styles.thumbWrapper}>
-                            <img
-                                src={`https://dashblocks-server.vercel.app/projects/thumbnails/${project.thumbnailId || 1}`}
-                                alt={project.id}
-                            />
-                        </div>
-                        <div className={styles.projectInfo}>
-                            <h3>{project.name}</h3>
-                            <p>by {userData.username}</p>
-                        </div>
+                <div className={styles.section}>
+                    <h2 className={styles.sectionTitle}>Projects ({userData.projects.length})</h2>
+                    <div className={styles.projectGrid}>
+                        {projects.map((project) => (
+                            <div
+                                key={project.id}
+                                className={styles.projectCard}
+                                onClick={() => window.open(`https://dashblocks.github.io/#${project.id}`, "_blank")}
+                            >
+                                <div className={styles.thumbWrapper}>
+                                    <img
+                                        src={`https://dashblocks-server.vercel.app/projects/thumbnails/${project.thumbnailId || 1}`}
+                                        alt={project.id}
+                                    />
+                                </div>
+                                <div className={styles.projectInfo}>
+                                    <h3>{project.name}</h3>
+                                    <p>by {userData.username}</p>
+                                </div>
+                            </div>
+                        ))}
                     </div>
-                ))}
+                </div>
             </div>
         </div>
     );

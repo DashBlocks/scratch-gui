@@ -6,6 +6,8 @@ import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 
+/* eslint-disable react/jsx-no-literals */
+
 const theme = detectTheme();
 applyGuiColors(theme);
 
@@ -39,20 +41,25 @@ const User = () => {
         fetchFullProfile();
     }, [id]);
 
-    if (loading) return <div className={styles.loadingState}>Loading...</div>;
-    if (error) return <div className={styles.errorState}>Error: {error}</div>;
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
     if (!userData) return null;
-
-    const avatarUrl = `https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId}`;
 
     return (
         <div className={styles.userContainer}>
             <header className={styles.profileHeader}>
-                <img src={avatarUrl} alt={userData.username} className={styles.avatarImg} />
+                <img
+                    src={`https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId}`}
+                    alt={userData.username}
+                    className={styles.avatarImg}
+                />
                 <div className={styles.headerText}>
                     <h1 className={styles.username}>{userData.username}</h1>
                     <div className={styles.userInfo}>
-                        <span className={styles.roleBadge}>{userData.role === "dashteam" ? "Dash Team" : (userData === "dasher+" ? "Dasher+" : "Dasher")}</span>
+                        <span className={styles.roleBadge}>{
+                            userData.role === "dashteam" ? "Dash Team" :
+                            (userData === "dasher+" ? "Dasher+" : "Dasher")
+                        }</span>
                         <hr className={styles.divider} />
                         <p>Joined: <strong>{userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : "Unknown"}</strong></p>
                         <hr className={styles.divider} />
@@ -64,7 +71,11 @@ const User = () => {
             <h2 className={styles.sectionTitle}>Projects ({userData.projects.length})</h2>
             <div className={styles.projectGrid}>
                 {projects.map((project) => (
-                    <div key={project.id} className={styles.projectCard} onClick={() => window.open(`https://dashblocks.github.io/#${project.id}`, "_blank")}>
+                    <div
+                        key={project.id}
+                        className={styles.projectCard}
+                        onClick={() => window.open(`https://dashblocks.github.io/#${project.id}`, "_blank")}
+                    >
                         <div className={styles.thumbWrapper}>
                             <img
                                 src={`https://dashblocks-server.vercel.app/projects/thumbnails/${project.thumbnailId || 1}`}

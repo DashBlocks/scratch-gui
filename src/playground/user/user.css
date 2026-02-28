@@ -1,52 +1,81 @@
 @import "../../css/colors.css";
 
+/* Base styles used by Scratch https://github.com/LLK/scratch-www/blob/develop/src/main.scss */
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: bold;
+    line-height: 1.7em;
+}
+h1 {
+    font-weight: 2.5rem;
+}
+h2 {
+    font-weight: 2rem;
+}
+h3 {
+    font-size: 1.4rem;
+}
+h4 {
+    font-size: 1rem;
+}
+a {
+    color: $link-color;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 * {
     box-sizing: border-box;
 }
 
 body {
     font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial;
-    margin: 2rem auto;
-    padding: 1.5rem;
+    margin: 0px;
+}
+
+.container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-width: fit-content;
     background: $page-background;
     color: $page-foreground;
 }
 
-.user-container {
-    border-radius: 12px;
-    max-width: 900px;
+.user-wrapper {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    margin: 0 auto;
+    align-items: center;
+    gap: 0.5rem;
+    background: $ui-primary;
+    margin: 0px;
+    padding: 0.5rem;
+    min-width: calc(100% - 1rem);
 }
 
-.profile-header {
-    display: flex;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.avatar-img {
-    width: 80px;
-    height: 80px;
-    border-radius: 12px;
-    object-fit: cover;
-    cursor: pointer;
-}
-
-.username {
-    margin: 0;
-    font-size: 1.8rem;
-}
-
-.role-badge {
-    background: $looks-secondary;
-    color: white;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    height: 25px;
+.section {
+    width: calc(100% - 1rem);
+    min-width: fit-content;
+    max-width: 900px;
+    background: $ui-white;
+    margin: 0px;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 0.0625rem solid $ui-black-transparent;
 }
 
 .user-info {
@@ -54,10 +83,12 @@ body {
     align-items: center;
 }
 
-.divider {
-    height: 15px;
-    margin: 10px;
-    color: #4b5563;
+.avatar-img {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 0.5rem;
+    object-fit: cover;
+    cursor: pointer;
 }
 
 .project-grid {

@@ -65,6 +65,7 @@ const User = () => {
             <header className={styles.profileHeader}>
                 <input
                     type="file"
+                    accept=".png,.jpg,.jpeg,.img,.gif"
                     ref={fileInputRef}
                     onChange={handleChangeAvatar}
                     style={{display: "none"}}

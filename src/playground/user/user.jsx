@@ -1,7 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import render from '../app-target';
 import styles from './user.css';
+
 import {APP_NAME} from '../../lib/brand';
+import {applyGuiColors} from '../../lib/themes/guiHelpers';
+import {detectTheme} from '../../lib/themes/themePersistance';
+
+const theme = detectTheme();
+applyGuiColors(theme);
 
 const User = () => {
     const id = window.location.hash.replace('#', '');
@@ -21,13 +27,7 @@ const User = () => {
                 document.title = `${userData.user.username} - ${APP_NAME}`
                 setUserData(userData.user);
 
-                const projectDetailsPromises = userData.user.projects.slice(0, 10).map(async (project) => {
-                    const projectRes = await fetch(`https://dashblocks-server.vercel.app/projects/${project.id}`);
-                    const projectData = await projectRes.json();
-                    return {...projectData.project};
-                });
-
-                const projects = await Promise.all(projectDetailsPromises);
+                const projects = userData.user.projects.slice(0, 10);
                 setProjects(projects);
             } catch (error) {
                 setError(error.message);
@@ -51,30 +51,29 @@ const User = () => {
                 <img src={avatarUrl} alt={userData.username} className={styles.avatarImg} />
                 <div className={styles.headerText}>
                     <h1 className={styles.username}>{userData.username}</h1>
-                    <span className={styles.roleBadge}>{userData.role}</span>
+                    <div className={styles.userInfo}>
+                        <span className={styles.roleBadge}>{userData.role === "dashteam" ? "Dash Team" : (userData === "dasher+" ? "Dasher+" : "Dasher")}</span>
+                        <hr className={styles.divider} />
+                        <p>Joined: <strong>{userData.joinedAt ? new Date(userData.joinedAt).toLocaleDateString() : "Unknown"}</strong></p>
+                        <hr className={styles.divider} />
+                        <p>Last Active: <strong>{userData.lastActive ? new Date(userData.lastActive).toLocaleDateString() : "Unknown"}</strong></p>
+                    </div>
                 </div>
             </header>
 
-            <section className={styles.statsSection}>
-                <p>Joined: <strong>{new Date(userData.joinedAt).toLocaleDateString()}</strong></p>
-                <p>Last Active: <strong>{new Date(userData.lastActive).toLocaleDateString()}</strong></p>
-            </section>
-
-            <hr className={styles.divider} />
-
-            <h2 className={styles.sectionTitle}>Projects</h2>
+            <h2 className={styles.sectionTitle}>Projects ({userData.projects.length})</h2>
             <div className={styles.projectGrid}>
                 {projects.map((project) => (
-                    <div key={project.id} className={styles.projectCard}>
+                    <div key={project.id} className={styles.projectCard} onClick={() => window.open(`https://dashblocks.github.io/#${project.id}`, "_blank")}>
                         <div className={styles.thumbWrapper}>
                             <img
-                                src={`https://dashblocks-server.vercel.app/projects/thumbnails/${project.thumbnailId}`}
+                                src={`https://dashblocks-server.vercel.app/projects/thumbnails/${project.thumbnailId || 1}`}
                                 alt={project.id}
                             />
                         </div>
                         <div className={styles.projectInfo}>
                             <h3>{project.name}</h3>
-                            <p>by {project.author.username}</p>
+                            <p>by {userData.username}</p>
                         </div>
                     </div>
                 ))}

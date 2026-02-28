@@ -81,12 +81,17 @@ body {
 .user-header {
     display: flex;
     align-items: center;
+    gap: 0.5rem;
 }
 
 .user-info {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+}
+
+.user-info-row {
+    display: flex;
+    align-items: center;
 }
 
 .avatar-img {

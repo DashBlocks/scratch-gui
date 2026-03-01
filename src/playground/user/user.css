@@ -82,6 +82,8 @@ body {
     display: flex;
     align-items: center;
     gap: 1rem;
+    background-size: cover;
+    background-position: center;
 }
 
 .avatar-img {

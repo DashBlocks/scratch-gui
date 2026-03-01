@@ -81,7 +81,13 @@ body {
 .user-header {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
+}
+
+.avatar-img {
+    width: 5rem;
+    height: 5rem;
+    border-radius: 0.5rem;
 }
 
 .user-info {
@@ -92,12 +98,21 @@ body {
 .user-info-row {
     display: flex;
     align-items: center;
+    gap: 0.5rem;
 }
 
-.avatar-img {
-    width: 5rem;
-    height: 5rem;
-    border-radius: 0.5rem;
+.user-info-divider {
+    height: 100%;
+    border-right: 0.0625rem solid $ui-black-transparent;
+}
+
+.role-badge {
+    background-color: $motion-tertiary;
+    color: $ui-white;
+    border: 1px solid $ui-black-transparent;
+    padding: 0.25rem 0.5rem;
+    border-radius: 1rem;
+    width: fit-content;
 }
 
 .project-grid {

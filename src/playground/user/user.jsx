@@ -118,7 +118,13 @@ const User = (props) => {
             dir={props.isRtl ? 'rtl' : 'ltr'}
         >
             <div className={styles.userWrapper}>
-                <div className={classNames(styles.section, styles.userHeader)}>
+                <div
+                    className={classNames(styles.section, styles.userHeader)}
+                    style={{
+                        background-image: `linear-gradient(to ${props.isRtl ? 'left' : 'right'}, var(--ui-white) 35%, transparent 100%),
+                            url(https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId})`
+                    }}
+                >
                     <input
                         type='file'
                         accept='.png,.jpg,.jpeg,.img,.gif'

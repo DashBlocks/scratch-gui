@@ -60,7 +60,7 @@ const User = (props) => {
             setLoading(true);
             try {
                 const session = await getSession();
-                setIsMyProfile(session.userId.toString() === id);
+                setIsMyProfile(session?.userId.toString() === id);
                 const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}`);
                 const userData = await userRes.json();
 
@@ -87,11 +87,23 @@ const User = (props) => {
         const formData = new FormData();
         formData.append('avatar', file);
 
-        await fetch('https://dashblocks-server.vercel.app/users/upload-avatar', {
+        const response = await fetch('https://dashblocks-server.vercel.app/users/upload-avatar', {
             method: 'POST',
             body: formData,
             credentials: 'include'
         });
+        const data = await response.json();
+        if (data.ok) {
+            setUserData(prev => ({
+                ...prev,
+                profile: {
+                    ...prev.profile,
+                    avatarId: data.avatarId
+                }
+            }));
+        } else {
+            alert(data.error);
+        }
     }
 
     if (loading) return <div>Loading...</div>;

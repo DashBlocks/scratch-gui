@@ -217,4 +217,4 @@ const mapDispatchToProps = () => ({});
 render(injectIntl(connect(
     mapStateToProps,
     mapDispatchToProps
-)(<User />)));
+)(User)));

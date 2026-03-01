@@ -214,7 +214,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = () => ({});
 
-render(injectIntl(connect(
+const ConnectedUser = injectIntl(connect(
     mapStateToProps,
     mapDispatchToProps
-)(User)));
+)(User));
+
+render(<ConnectedUser />);

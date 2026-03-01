@@ -121,7 +121,7 @@ const User = (props) => {
                 <div
                     className={classNames(styles.section, styles.userHeader)}
                     style={{
-                        background-image: `linear-gradient(to ${props.isRtl ? 'left' : 'right'}, var(--ui-white) 35%, transparent 100%),
+                        backgroundImage: `linear-gradient(to ${props.isRtl ? 'left' : 'right'}, var(--ui-white) 35%, transparent 100%),
                             url(https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId})`
                     }}
                 >

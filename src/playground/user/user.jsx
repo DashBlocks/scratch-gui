@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, {useState, useRef, useEffect} from 'react';
 import {connect} from 'react-redux';
-import {FormattedMessage, FormattedDate, FormattedTime, FormattedRelative, defineMessages, injectIntl, intlShape} from 'react-intl';
+import {FormattedMessage, FormattedDate, FormattedRelative, defineMessages, injectIntl, intlShape} from 'react-intl';
 import render from '../app-target';
 import styles from './user.css';
 
@@ -183,7 +183,7 @@ const User = (props) => {
                                 </div>
                                 <div className={styles.projectInfo}>
                                     <h3>{project.name}</h3>
-                                    <p
+                                    <p>
                                         <FormattedMessage
                                             defaultMessage="by {author}"
                                             description="Displayed under project title to credit creator"

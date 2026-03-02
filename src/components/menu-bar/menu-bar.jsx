@@ -921,7 +921,10 @@ class MenuBar extends React.Component {
                                         </MenuItem>
                                     )}</FramerateChanger>
                                     <ChangeUsername>{changeUsername => (
-                                        <MenuItem onClick={changeUsername}>
+                                        <MenuItem
+                                            className={classNames({[styles.disabled]: !!this.props.session?.username})}
+                                            onClick={changeUsername}
+                                        >
                                             <FormattedMessage
                                                 defaultMessage="Change Username"
                                                 description="Menu bar item for changing the username"

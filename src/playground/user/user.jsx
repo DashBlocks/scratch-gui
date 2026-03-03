@@ -48,6 +48,7 @@ const User = (props) => {
     const id = window.location.hash.replace('#', '');
     const [userData, setUserData] = useState(null);
     const [projects, setProjects] = useState([]);
+    const [avgGradient, setAvgGradient] = useState([]);
     const [isMyProfile, setIsMyProfile] = useState(false);
 
     const [loading, setLoading] = useState(true);
@@ -56,13 +57,60 @@ const User = (props) => {
     const fileInputRef = useRef(null);
 
     useEffect(() => {
+        const avgGradientByImgSections = async (src, sections, points) => {
+            const img = new Image();
+            img.src = src;
+            await img.decode();
+
+            const canvas = document.createElement("canvas");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0);
+            const imgData = ctx.getImageData(0, 0, img.width, img.height).data;
+            
+            const avgCssColors = [];
+            for (let section = 0; section < sections; section++) {
+                const colors = [];
+                for (let x = 0; x < points; x++) {
+                    for (let y = 0; y < points * sections; y++) {
+                        const realX = Math.round((section * points + x) * img.width / (sections * points - 1));
+                        const realY = Math.round(y * img.height / (sections * points - 1));
+                        const i = (realY * img.width + realX) * 4;
+                        // Check that the color isn't completely transparent
+                        if (imgData[i + 3] > 0) {
+                            colors.push([
+                                imgData[i],
+                                imgData[i + 1],
+                                imgData[i + 2],
+                                imgData[i + 3]
+                            ]);
+                        }
+                    }
+                }
+                if (colors.length > 0) {
+                    const [r, g, b, a] = colors
+                        .reduce(
+                            ([r1, g1, b1, a1], [r2, g2, b2, a2]) => [r1 + r2, g1 + g2, b1 + b2, a1 + a2],
+                            [0, 0, 0, 0]
+                        )
+                        .map((v) => v / colors.length);
+                    avgCssColors.push(`color-mix(in srgb, rgb(${r}, ${g}, ${b}), var(--ui-white) ${50 + a / 2.55 / 2}%)`);
+                } else {
+                    avgCssColors.push("var(--ui-white)");
+                }
+            }
+            return avgCssColors;
+        }
+        
         const fetchFullProfile = async () => {
             setLoading(true);
+            let userData;
             try {
                 const session = await getSession();
                 setIsMyProfile(session?.userId.toString() === id);
                 const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}`);
-                const userData = await userRes.json();
+                userData = await userRes.json();
 
                 if (!userData.ok) throw new Error(userData.error);
                 document.title = `${userData.user.username} - ${APP_NAME}`
@@ -74,6 +122,11 @@ const User = (props) => {
                 setError(error.message);
             } finally {
                 setLoading(false);
+                if (userData?.ok) setAvgGradient(await avgGradientByImgSections(
+                    `https://dashblocks-server.vercel.app/users/avatars/${userData.user.profile.avatarId}`,
+                    3,
+                    3
+                ));
             }
         };
 
@@ -120,10 +173,9 @@ const User = (props) => {
             <div className={styles.userWrapper}>
                 <div
                     className={classNames(styles.section, styles.userHeader)}
-                    style={{
-                        backgroundImage: `linear-gradient(to ${props.isRtl ? 'left' : 'right'}, var(--ui-white) 35%, transparent 100%),
-                            url(https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId})`
-                    }}
+                    style={avgGradient.length > 0 ? {
+                        backgroundImage: `linear-gradient(to right, ${avgGradient.join(', ')})`
+                    } : {}}
                 >
                     <input
                         type='file'

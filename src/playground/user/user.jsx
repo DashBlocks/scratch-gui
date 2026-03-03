@@ -59,6 +59,7 @@ const User = (props) => {
     useEffect(() => {
         const avgGradientByImgSections = async (src, sections, points) => {
             const img = new Image();
+            img.crossOrigin = "Anonymous";
             img.src = src;
             await img.decode();
 

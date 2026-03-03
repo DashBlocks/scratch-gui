@@ -96,7 +96,7 @@ const User = (props) => {
                             [0, 0, 0, 0]
                         )
                         .map((v) => v / colors.length);
-                    avgCssColors.push(`color-mix(in srgb, rgb(${r}, ${g}, ${b}), var(--ui-white) ${50 + a / 2.55 / 2}%)`);
+                    avgCssColors.push(`color-mix(in srgb, rgb(${r}, ${g}, ${b}), var(--ui-white) ${60 + (a - 255) / 2.55 * 0.4}%)`);
                 } else {
                     avgCssColors.push("var(--ui-white)");
                 }

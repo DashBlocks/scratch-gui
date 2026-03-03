@@ -254,7 +254,7 @@ const User = (props) => {
                                     />
                                 </div>
                                 <div className={styles.projectInfo}>
-                                    <h3>{project.name}</h3>
+                                    <h4>{project.name}</h4>
                                     <p>
                                         <FormattedMessage
                                             defaultMessage="by {author}"

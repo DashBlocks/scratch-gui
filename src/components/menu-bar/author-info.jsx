@@ -33,7 +33,7 @@ const ActualAuthorInfo = ({
                     <FormattedMessage
                         defaultMessage="by {username}"
                         description="Shows that a project was created by this user"
-                        id="gui.authorInfo.byUser"
+                        id="tw.studioview.authorAttribution"
                         values={{
                             username: <span className={styles.username}>{username}</span>
                         }}

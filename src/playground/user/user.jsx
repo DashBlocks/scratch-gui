@@ -191,6 +191,9 @@ const User = (props) => {
         try {
             const response = await fetch('https://dashblocks-server.vercel.app/users/set-description', {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
                 body: JSON.stringify({description}),
                 credentials: 'include'
             });
@@ -208,7 +211,7 @@ const User = (props) => {
                     prevDescription
                 }
             }));
-            alert(data.error);
+            alert(error.message);
         } finally {
             setDescriptionDisabled(false);
         }

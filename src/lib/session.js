@@ -16,8 +16,8 @@ const getSession = async (userId, password) => {
             const data = await res.json();
             return data;
         }
-    } catch (e) {
-        console.error("Session failed", e);
+    } catch (error) {
+        throw new Error(error.message);
     }
 
     return null;

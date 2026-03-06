@@ -44,12 +44,12 @@
 
     a {
         margin: auto 0;
-        color: colors.$ui-white;
+        color: $ui-white;
 
         &:link,
         &:visited,
         &:active {
-            color: colors.$ui-white;
+            color: $ui-white;
         }
 
         &:hover {
@@ -58,9 +58,9 @@
     }
 
     .error {
-        border: 1px solid colors.$active-dark-gray;
+        border: 1px solid $ui-black-transparent;
         border-radius: 5px;
-        background-color: colors.$ui-orange;
+        background-color: $ui-primary;
         padding: .75em 1em;
     }
 }

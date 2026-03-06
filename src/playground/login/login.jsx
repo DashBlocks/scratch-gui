@@ -1,40 +1,24 @@
+import React from 'react';
+import PropTypes from 'prop-types';
 import bindAll from 'lodash.bindall';
 import classNames from 'classnames';
-import {FormattedMessage, defineMessages} from 'react-intl';
-import PropTypes from 'prop-types';
-import React from 'react';
+import {connect} from 'react-redux';
+import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
+import AppStateHOC from '../../lib/app-state-hoc.jsx';
+import getSession from '../../lib/session.js';
+import render from '../app-target';
 
-import Form from '../forms/form.jsx';
 import Input from '../../components/forms/input.jsx';
+import Button from '../../components/button/button.jsx';
 import Spinner from '../../components/spinner/spinner.jsx';
 
-import styles from './login-dropdown.css';
+import styles from './login.css';
 
-const LoginMessages = defineMessages({
-    username: {
-        defaultMessage: 'Username',
-        description: 'Label for login username input',
-        id: 'general.username'
-    },
-    password: {
-        defaultMessage: 'Password',
-        description: 'Label for login password input',
-        id: 'general.password'
-    },
-    signin: {
-        defaultMessage: 'Sign in',
-        description: 'Button text for user to sign in',
-        id: 'general.signIn'
-    },
-    needhelp: {
+const messages = defineMessages({
+    needHelp: {
         defaultMessage: 'Need Help?',
         description: 'Button text for user to indicate that they need help',
         id: 'login.needHelp'
-    },
-    validationRequired: {
-        defaultMessage: 'This field is required',
-        description: 'Message to tell user they must enter text in a form field',
-        id: 'form.validationRequired'
     }
 });
 
@@ -42,90 +26,125 @@ class Login extends React.Component {
     constructor (props) {
         super(props);
         bindAll(this, [
-            'handleSubmit'
+            'handleSubmit',
+            'handleChange'
         ]);
         this.state = {
+            userId: '',
+            password: '',
             waiting: false,
             error: null
         };
     }
-    handleSubmit (formData) {
-        this.setState({waiting: true});
-        this.props.onLogIn(formData, () => {
-            this.setState({waiting: false});
-        });
+
+    handleChange (e) {
+        this.setState({[e.target.name]: e.target.value});
     }
-    render () {
-        let error;
-        if (this.state.error) {
-            error = <div className={styles.error}>{this.state.error}</div>;
+
+    async handleSubmit (e) {
+        e.preventDefault();
+        this.setState({waiting: true, error: null});
+
+        const {userId, password} = this.state;
+        try {
+            const session = await getSession(userId, password);
+            if (!session || !session.username) throw new Error('Session failed');
+            window.location.href = '/';
+        } catch (error) {
+            this.setState({error: error.message});
+        } finally {
+            this.setState({waiting: false});
         }
+    }
+
+    render () {
         return (
-            <div className={styles.login}>
-                <Form onSubmit={this.handleSubmit}>
-                    <label
-                        htmlFor="username"
-                        key="usernameLabel"
-                    >
-                        <FormattedMessage id="general.username" />
-                    </label>
-                    <Input
-                        required
-                        key="usernameInput"
-                        maxLength="30"
-                        name="username"
-                        type="text"
+            <>
+                {this.props.session && Object.keys(this.props.session).length > 2 ? window.location.href = "/" : null}
+                <h1>
+                    <FormattedMessage
+                        defaultMessage="Sign in"
+                        description="Log in page header"
+                        id="general.signIn"
                     />
-                    <label
-                        htmlFor="password"
-                        key="passwordLabel"
-                    >
-                        <FormattedMessage id="general.password" />
+                </h1>
+                <form
+                    className={styles.login}
+                    onSubmit={this.handleSubmit}
+                >
+                    <label htmlFor="userId">
+                        <FormattedMessage
+                            defaultMessage="User ID"
+                            description="Label for login user ID input"
+                            id="dash.login.userId"
+                        />
                     </label>
                     <Input
                         required
-                        key="passwordInput"
+                        name="userId"
+                        type="number"
+                        value={this.state.userId}
+                        onChange={this.handleChange}
+                    />
+
+                    <label htmlFor="password">
+                        <FormattedMessage
+                            defaultMessage="Password"
+                            description="Label for login password input"
+                            id="general.password"
+                        />
+                    </label>
+                    <Input
+                        required
                         name="password"
                         type="password"
+                        value={this.state.password}
+                        onChange={this.handleChange}
                     />
+
                     <div className={styles.submitRow}>
-                        {this.state.waiting ? [
-                            <Button
-                                className={classNames(styles.submitButton, 'white')}
-                                disabled="disabled"
-                                key="submitButton"
-                                type="submit"
-                            >
-                                <Spinner
-                                    className={styles.spinner}
-                                    color="blue"
-                                />
-                            </Button>
-                        ] : [
-                            <Button
-                                className={classNames(styles.submitButton, 'white')}
-                                key="submitButton"
-                                type="submit"
-                            >
-                                <FormattedMessage id="general.signIn" />
-                            </Button>
-                        ]}
-                        {/* <a
-                            href="/accounts/password_reset/"
-                            key="passwordResetLink"
+                        <Button
+                            className={classNames(styles.submitButton, 'white')}
+                            disabled={this.state.waiting}
+                            type="submit"
+                            onClick={this.handleSubmit}
                         >
-                            <FormattedMessage id="login.needHelp" />
-                        </a> */}
+                            {this.state.waiting ? (
+                                <Spinner className={styles.spinner} level="primary" />
+                            ) : (
+                                <FormattedMessage
+                                    defaultMessage="Submit"
+                                    description="Button text for user to sign in"
+                                    id="dash.login.submit"
+                                />
+                            )}
+                        </Button>
                     </div>
-                    {error}
-                </Form>
-            </div>
+
+                    {this.state.error && (
+                        <div className={styles.error}>{this.state.error}</div>
+                    )}
+                </form>
+            </>
         );
     }
 }
 
 Login.propTypes = {
-    onLogIn: PropTypes.func
+    intl: intlShape,
+    isRtl: PropTypes.bool,
+    session: PropTypes.object
 };
 
-export default Login;
+const mapStateToProps = state => ({
+    isRtl: state.locales.isRtl,
+    session: state.scratchGui.dash.session
+});
+
+const ConnectedLogin = injectIntl(connect(
+    mapStateToProps
+)(Login));
+
+const WrappedLogin = AppStateHOC(ConnectedLogin);
+
+render(<WrappedLogin />);

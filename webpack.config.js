@@ -149,7 +149,8 @@ module.exports = [
             'addon-settings': './src/playground/addon-settings.jsx',
             'credits': './src/playground/credits/credits.jsx',
             'desktop': './src/playground/desktop/desktop.jsx',
-            'user': './src/playground/user/user.jsx'
+            'user': './src/playground/user/user.jsx',
+            'login': './src/playground/login/login.jsx'
         },
         output: {
             path: path.resolve(__dirname, 'build')
@@ -240,6 +241,13 @@ module.exports = [
                 template: 'src/playground/simple.ejs',
                 filename: 'user.html',
                 title: `User - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['login'],
+                template: 'src/playground/simple.ejs',
+                filename: 'login.html',
+                title: `Sign in - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

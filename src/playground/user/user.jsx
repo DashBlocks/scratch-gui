@@ -8,10 +8,16 @@ import render from '../app-target';
 import styles from './user.css';
 
 import {APP_NAME} from '../../lib/brand';
+import Spinner from '../../components/spinner/spinner.jsx';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 
 import getSession from '../../lib/session';
+
+import BufferedInputHOC from '../../components/forms/buffered-input-hoc.jsx';
+import Input from '../../components/forms/input.jsx';
+const BufferedInput = BufferedInputHOC(Input);
+
 
 /* eslint-disable react/jsx-no-literals */
 
@@ -41,12 +47,18 @@ const messages = defineMessages({
         defaultMessage: '{title} by {author}',
         description: 'Displayed when hovering on a project',
         id: 'tw.studioview.hoverText'
+    },
+    descriptionPlaceholder: {
+        id: 'dash.user.description.placeholder',
+        description: 'Placeholder for user\'s description when blank',
+        defaultMessage: 'Who are you? What are you working on? ...'
     }
 });
 
 const User = (props) => {
     const id = window.location.hash.replace('#', '');
     const [userData, setUserData] = useState(null);
+    const [descriptionDisabled, setDescriptionDisabled] = useState(false);
     const [projects, setProjects] = useState([]);
     const [avgGradient, setAvgGradient] = useState([]);
     const [isMyProfile, setIsMyProfile] = useState(false);
@@ -160,7 +172,50 @@ const User = (props) => {
         }
     }
 
-    if (loading) return <div>Loading...</div>;
+    async function handleChangeDescription (e) {
+        const description = e.target.value;
+        const prevDescription = userData.profile.description;
+        if (!description) return;
+
+        setDescriptionDisabled(true);
+        setUserData(prev => ({
+            ...prev,
+            profile: {
+                ...prev.profile,
+                description
+            }
+        }));
+        try {
+            const response = await fetch('https://dashblocks-server.vercel.app/users/set-description', {
+                method: 'POST',
+                body: {description},
+                credentials: 'include'
+            });
+            const data = response.json();
+            if (data.ok) {
+                setUserData(data.user);
+            } else {
+                throw new Error(data.error);
+            }
+        } catch (error) {
+            setUserData(prev => ({
+                ...prev,
+                profile: {
+                    ...prev.profile,
+                    prevDescription
+                }
+            }));
+            alert(data.error);
+        } finally {
+            setDescriptionDisabled(false);
+        }
+    }
+
+    if (loading) return (
+        <div className={styles.spinner}>
+            <Spinner level={'primary'} large />
+        </div>
+    );
     if (error) return <div>Error: {error}</div>;
     if (!userData) return null;
 
@@ -232,6 +287,25 @@ const User = (props) => {
                             />
                         </div>
                     </div>
+                </div>
+                <div className={styles.section}>
+                    <h2 className={styles.sectionTitle}>Description</h2>
+                    {isMyProfile ? (
+                        <BufferedInput
+                            className={classNames(styles.descriptionField)}
+                            maxLength="1000"
+                            multiline
+                            placeholder={props.intl.formatMessage(messages.descriptionPlaceholder)}
+                            tabIndex="0"
+                            value={userData.profile.description}
+                            onSubmit={handleChangeDescription}
+                            disabled={descriptionDisabled}
+                        />
+                    ) : (
+                        <div className={styles.description}>
+                            <p>{userData.profile.description}</p>
+                        </div>
+                    )}
                 </div>
                 <div className={styles.section}>
                     <h2 className={styles.sectionTitle}>Projects ({userData.projects.length})</h2>

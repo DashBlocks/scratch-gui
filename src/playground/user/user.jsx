@@ -295,7 +295,13 @@ const User = (props) => {
                     </div>
                 </div>
                 <div className={styles.section}>
-                    <h2 className={styles.sectionTitle}>Description</h2>
+                    <h2 className={styles.sectionTitle}>
+                        <FormattedMessage
+                            defaultMessage="Description"
+                            description="User's description section title on user's profile"
+                            id="dash.home.tab.description"
+                        />
+                    </h2>
                     {isMyProfile ? (
                         <BufferedInput
                             className={classNames(styles.descriptionField)}
@@ -320,7 +326,16 @@ const User = (props) => {
                     )}
                 </div>
                 <div className={styles.section}>
-                    <h2 className={styles.sectionTitle}>Projects ({userData.projects.length})</h2>
+                    <h2 className={styles.sectionTitle}>
+                        <FormattedMessage
+                            defaultMessage="Projects ({projectsCount})"
+                            description="Projects section title on user's profile"
+                            id="dash.user.projects"
+                            values={{
+                                projectsCount: userData.projects.length
+                            }}
+                        />
+                    </h2>
                     <div className={styles.projectGrid}>
                         {projects.map((project) => (
                             <div

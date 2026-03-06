@@ -310,7 +310,7 @@ const User = (props) => {
                             <p>
                                 {userData.profile.description ?
                                     userData.profile.description : (
-                                        <i>{props.intl.formatMessage(messages.descriptionInputPlaceholder)}</i>
+                                        <i>{props.intl.formatMessage(messages.descriptionPlaceholder)}</i>
                                     )
                                 }
                             </p>

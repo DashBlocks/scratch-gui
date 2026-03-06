@@ -181,7 +181,7 @@ body {
     border-radius: 0.5rem;
     overflow: hidden;
     cursor: pointer;
-    background-color: #e5e7eb;
+    background-color: $ui-secondary;
     width: 12rem;
     min-height: 12rem;
 }

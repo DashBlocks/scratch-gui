@@ -18,7 +18,6 @@ import BufferedInputHOC from '../../components/forms/buffered-input-hoc.jsx';
 import Input from '../../components/forms/input.jsx';
 const BufferedInput = BufferedInputHOC(Input);
 
-
 /* eslint-disable react/jsx-no-literals */
 
 const theme = detectTheme();

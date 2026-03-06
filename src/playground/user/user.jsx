@@ -131,6 +131,8 @@ const User = (props) => {
 
                 if (!userData.ok) throw new Error(userData.error);
                 document.title = `${userData.user.username} - ${APP_NAME}`
+                // Only Dasher+ or higher can do this
+                if (userData.user.role === "dasher") setDescriptionDisabled(true);
                 setUserData(userData.user);
 
                 const projects = userData.user.projects.slice(0, 10);

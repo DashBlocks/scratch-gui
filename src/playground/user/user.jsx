@@ -200,9 +200,7 @@ const User = (props) => {
                 credentials: 'include'
             });
             const data = await response.json();
-            if (data.ok) {
-                setUserData(data.user);
-            } else {
+            if (!data.ok) {
                 throw new Error(data.error);
             }
         } catch (error) {

@@ -176,10 +176,9 @@ const User = (props) => {
         }
     }
 
-    async function handleChangeDescription (e) {
-        const description = e.target.value;
-        const prevDescription = userData.profile.description;
+    async function handleChangeDescription (description) {
         if (!description) return;
+        const prevDescription = userData.profile.description;
 
         setDescriptionDisabled(true);
         setUserData(prev => ({
@@ -192,10 +191,10 @@ const User = (props) => {
         try {
             const response = await fetch('https://dashblocks-server.vercel.app/users/set-description', {
                 method: 'POST',
-                body: {description},
+                body: JSON.stringify({description}),
                 credentials: 'include'
             });
-            const data = response.json();
+            const data = await response.json();
             if (data.ok) {
                 setUserData(data.user);
             } else {

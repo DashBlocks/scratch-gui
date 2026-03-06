@@ -260,7 +260,7 @@ const User = (props) => {
                             <span className={styles.roleBadge}>
                                 {userData.role === 'dashteam'
                                     ? props.intl.formatMessage(messages.dashTeamRole)
-                                    : userData === 'dasher+'
+                                    : userData.role === 'dasher+'
                                         ? props.intl.formatMessage(messages.dasherPlusRole)
                                         : props.intl.formatMessage(messages.dasherRole)}
                             </span>

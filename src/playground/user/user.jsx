@@ -50,6 +50,11 @@ const messages = defineMessages({
     descriptionPlaceholder: {
         id: 'dash.user.description.placeholder',
         description: 'Placeholder for user\'s description when blank',
+        defaultMessage: 'This user is kinda quite...'
+    },
+    descriptionInputPlaceholder: {
+        id: 'dash.user.description.inputPlaceholder',
+        description: 'Placeholder for user\'s description input when blank',
         defaultMessage: 'Who are you? What are you working on? ...'
     }
 });
@@ -294,7 +299,7 @@ const User = (props) => {
                             className={classNames(styles.descriptionField)}
                             maxLength="1000"
                             multiline
-                            placeholder={props.intl.formatMessage(messages.descriptionPlaceholder)}
+                            placeholder={props.intl.formatMessage(messages.descriptionInputPlaceholder)}
                             tabIndex="0"
                             value={userData.profile.description}
                             onSubmit={handleChangeDescription}
@@ -302,7 +307,13 @@ const User = (props) => {
                         />
                     ) : (
                         <div className={styles.description}>
-                            <p>{userData.profile.description}</p>
+                            <p>
+                                {userData.profile.description ?
+                                    userData.profile.description : (
+                                        <i>{props.intl.formatMessage(messages.descriptionInputPlaceholder)}</i>
+                                    )
+                                }
+                            </p>
                         </div>
                     )}
                 </div>

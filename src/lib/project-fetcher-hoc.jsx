@@ -27,7 +27,7 @@ import VM from 'scratch-vm';
 import {fetchProjectMeta} from './tw-project-meta-fetcher-hoc.jsx';
 
 // TW: Temporary hack for project tokens
-const fetchProjectToken = async projectId => {
+const fetchProjectToken = async (projectId, reduxProjectId) => {
     if (projectId === '0') {
         return null;
     }
@@ -42,7 +42,7 @@ const fetchProjectToken = async projectId => {
         return hashParams.get('token');
     }
     try {
-        const metadata = await fetchProjectMeta(projectId);
+        const metadata = await fetchProjectMeta(projectId, reduxProjectId);
         return metadata.project_token;
     } catch (e) {
         log.error(e);
@@ -132,7 +132,7 @@ const ProjectFetcherHOC = function (WrappedComponent) {
                 if (projectId.includes('s') || projectId === '0') {
                     if (projectId.includes('s'))
                         projectId = projectId.replace('s', '');
-                    assetPromise = fetchProjectToken(projectId)
+                    assetPromise = fetchProjectToken(projectId, this.props.reduxProjectId)
                         .then(token => {
                             storage.setProjectToken(token);
                             return storage.load(storage.AssetType.Project, projectId, storage.DataFormat.JSON);

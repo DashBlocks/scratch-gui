@@ -72,8 +72,8 @@ ActualAuthorInfo.propTypes = {
     isDashProject: PropTypes.bool
 };
 
-const AuthorInfo = ({projectId, ...props}) => (
-    projectId?.startsWith('s') ?
+const AuthorInfo = props => (
+    props.projectId?.startsWith('s') ?
         <ActualAuthorInfo {...props} /> :
         <ActualAuthorInfo {...props} isDashProject={true} />
 );

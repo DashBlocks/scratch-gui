@@ -35,7 +35,15 @@ const ActualAuthorInfo = ({
                         description="Shows that a project was created by this user"
                         id="tw.studioview.authorAttribution"
                         values={{
-                            username: <a href={`${process.env.ROOT}user.html#${userId}`}><span className={styles.username}>{username}</span></a>
+                            username: (
+                                <a
+                                    className={styles.link}
+                                    href={`${process.env.ROOT}user.html#${userId}`}
+                                    target="_blank"
+                                >
+                                    <span className={styles.username}>{username}</span>
+                                </a>
+                            )
                         }}
                     />
                 </span>
@@ -53,11 +61,11 @@ ActualAuthorInfo.propTypes = {
     username: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
 };
 
-const AuthorInfo = ({projectId, ...props}) => (
-    projectId && projectId.startsWith('s') ? (
+const AuthorInfo = (props) => (
+    props.projectId && props.projectId.startsWith('s') ? (
         <a
             className={styles.link}
-            href={`https://scratch.mit.edu/projects/${projectId}`}
+            href={`https://scratch.mit.edu/projects/${props.projectId}`}
             target="_blank"
             rel="noreferrer"
         >

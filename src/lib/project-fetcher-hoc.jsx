@@ -141,7 +141,7 @@ const ProjectFetcherHOC = function (WrappedComponent) {
                     assetPromise = fetch(`https://dashblocks-server.vercel.app/get-project/${projectId}`)
                         .then(r => {
                             if (!r.ok) {
-                                throw new Error(`Request returned status ${r.status}`);
+                                throw new Error(`Request returned status ${r.status} (${r.statusText})`);
                             }
                             return r.arrayBuffer();
                         })

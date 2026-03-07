@@ -38,6 +38,9 @@ export const fetchProjectMeta = async (projectId, reduxProjectId = projectId) =>
             if (res.ok) {
                 return data.project;
             }
+            if (res.status === 404) {
+                throw new Error('Project is probably unshared');
+            }
             throw new Error(`Unexpected status code: ${res.status}`);
         } catch (err) {
             if (!firstError) {

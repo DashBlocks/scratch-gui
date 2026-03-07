@@ -37,6 +37,7 @@ export const initialState = {
     dimensions: [0, 0],
     author: {
         username: '',
+        userId: '',
         thumbnail: ''
     },
     description: {

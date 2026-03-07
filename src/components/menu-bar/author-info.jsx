@@ -12,7 +12,8 @@ const ActualAuthorInfo = ({
     projectTitle,
     userId,
     projectId,
-    username
+    username,
+    isDashProject
 }) => (
     <div
         className={classNames(
@@ -25,9 +26,18 @@ const ActualAuthorInfo = ({
             imageUrl={imageUrl}
         />
         <div className={styles.titleAuthor}>
-            <h1 className={styles.projectTitle}>
+            {!isDashProject ? <a
+                className={styles.link}
+                href={`https://scratch.mit.edu/projects/${projectId}`}
+                target="_blank"
+                rel="noreferrer"
+            >
+                <h1 className={styles.projectTitle}>
+                    {projectTitle}
+                </h1>
+            </a> : <h1 className={styles.projectTitle}>
                 {projectTitle}
-            </h1>
+            </h1>}
             <div>
                 <span className={styles.usernameLine}>
                     <FormattedMessage
@@ -38,7 +48,7 @@ const ActualAuthorInfo = ({
                             username: (
                                 <a
                                     className={styles.link}
-                                    href={`${process.env.ROOT}user.html#${userId}`}
+                                    href={isDashProject ? `${process.env.ROOT}user.html#${userId}` : `https://scratch.mit.edu/users/${username}`}
                                     target="_blank"
                                 >
                                     <span className={styles.username}>{username}</span>
@@ -58,20 +68,14 @@ ActualAuthorInfo.propTypes = {
     projectTitle: PropTypes.string,
     userId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     projectId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    username: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
+    username: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    isDashProject: PropTypes.bool
 };
 
-const AuthorInfo = (props) => (
-    props.projectId && props.projectId.startsWith('s') ? (
-        <a
-            className={styles.link}
-            href={`https://scratch.mit.edu/projects/${props.projectId}`}
-            target="_blank"
-            rel="noreferrer"
-        >
-            <ActualAuthorInfo {...props} />
-        </a>
-    ) : <ActualAuthorInfo {...props} />
+const AuthorInfo = ({projectId, ...props}) => (
+    projectId?.startsWith('s') ?
+        <ActualAuthorInfo {...props} /> :
+        <ActualAuthorInfo {...props} isDashProject={true} />
 );
 AuthorInfo.propTypes = {
     projectId: PropTypes.string

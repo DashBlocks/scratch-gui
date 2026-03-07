@@ -72,7 +72,7 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
         componentDidUpdate (prevProps) {
             // project title resetting is handled in titled-hoc.jsx
             if (this.props.reduxProjectId !== prevProps.reduxProjectId) {
-                this.props.onSetAuthor('', '');
+                this.props.onSetAuthor('', '', '');
                 this.props.onSetDescription('', '');
                 let projectId = this.props.reduxProjectId;
 
@@ -93,7 +93,7 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
                             }
                             const authorName = data.author.username;
                             const authorThumbnail = `https://trampoline.turbowarp.org/avatars/${data.author.id}`;
-                            this.props.onSetAuthor(authorName, authorThumbnail);
+                            this.props.onSetAuthor(authorName, '', authorThumbnail);
                             const instructions = data.instructions || '';
                             const credits = data.description || '';
                             if (instructions || credits) {
@@ -120,8 +120,9 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
                                 this.props.onSetProjectTitle(title);
                             }
                             const authorName = data.author.username;
+                            const authorId = data.author.id;
                             const authorThumbnail = `https://dashblocks-server.vercel.app/users/avatars/${data.author.profile.avatarId}`;
-                            this.props.onSetAuthor(authorName, authorThumbnail);
+                            this.props.onSetAuthor(authorName, authorId, authorThumbnail);
                             const description = data.description || '';
                             if (description) {
                                 this.props.onSetDescription(description, '', true);
@@ -164,8 +165,9 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
         reduxProjectId: state.scratchGui.projectState.projectId
     });
     const mapDispatchToProps = dispatch => ({
-        onSetAuthor: (username, thumbnail) => dispatch(setAuthor({
+        onSetAuthor: (username, userId, thumbnail) => dispatch(setAuthor({
             username,
+            userId,
             thumbnail
         })),
         onSetDescription: (instructions, credits, isDashProject) => dispatch(setDescription({

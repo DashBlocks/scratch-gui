@@ -1364,6 +1364,7 @@ const mapStateToProps = (state, ownProps) => {
     const session = state.scratchGui.dash.session;
     return {
         authorUsername: state.scratchGui.tw.author.username,
+        authorId: state.scratchGui.tw.author.userId,
         authorThumbnailUrl: state.scratchGui.tw.author.thumbnail,
         projectId: state.scratchGui.projectState.projectId,
         aboutMenuOpen: aboutMenuOpen(state),

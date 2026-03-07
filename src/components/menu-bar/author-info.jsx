@@ -10,8 +10,8 @@ const ActualAuthorInfo = ({
     className,
     imageUrl,
     projectTitle,
-    // TODO: use userId to link to user's profile
-    userId, // eslint-disable-line no-unused-vars
+    userId,
+    projectId,
     username
 }) => (
     <div
@@ -35,7 +35,7 @@ const ActualAuthorInfo = ({
                         description="Shows that a project was created by this user"
                         id="tw.studioview.authorAttribution"
                         values={{
-                            username: <span className={styles.username}>{username}</span>
+                            username: <a href={`${process.env.ROOT}user.html#${userId}`}><span className={styles.username}>{username}</span></a>
                         }}
                     />
                 </span>
@@ -49,11 +49,12 @@ ActualAuthorInfo.propTypes = {
     imageUrl: PropTypes.string,
     projectTitle: PropTypes.string,
     userId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    projectId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     username: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
 };
 
 const AuthorInfo = ({projectId, ...props}) => (
-    projectId ? (
+    projectId && projectId.startsWith('s') ? (
         <a
             className={styles.link}
             href={`https://scratch.mit.edu/projects/${projectId}`}

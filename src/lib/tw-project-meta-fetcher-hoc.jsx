@@ -76,12 +76,12 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
                 this.props.onSetDescription('', '');
                 let projectId = this.props.reduxProjectId;
 
-                if (projectId === '0') {
+                if ((projectId.includes('s') ? projectId.replace('s', '') : projectId) === '0') {
                     // don't try to get metadata
                 } else {
                     if (projectId.includes('s')) {
                         projectId = projectId.replace('s', '');
-                        fetchProjectMeta(projectId).then(data => {
+                        fetchProjectMeta(projectId, this.props.reduxProjectId).then(data => {
                             // If project ID changed, ignore the results.
                             if (this.props.reduxProjectId.replace('s', '') !== projectId) {
                                 return;

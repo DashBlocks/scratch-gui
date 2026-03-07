@@ -28,7 +28,7 @@ const ActualAuthorInfo = ({
         <div className={styles.titleAuthor}>
             {!isDashProject ? <a
                 className={styles.link}
-                href={`https://scratch.mit.edu/projects/${projectId}`}
+                href={`https://scratch.mit.edu/projects/${projectId.replace('s', '')}`}
                 target="_blank"
                 rel="noreferrer"
             >
@@ -41,11 +41,11 @@ const ActualAuthorInfo = ({
             <div>
                 <span className={styles.usernameLine}>
                     <FormattedMessage
-                        defaultMessage="by {username}"
+                        defaultMessage="by {author}"
                         description="Shows that a project was created by this user"
                         id="tw.studioview.authorAttribution"
                         values={{
-                            username: (
+                            author: (
                                 <a
                                     className={styles.link}
                                     href={isDashProject ? `${process.env.ROOT}user.html#${userId}` : `https://scratch.mit.edu/users/${username}`}

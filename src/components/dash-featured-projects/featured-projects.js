@@ -35,7 +35,7 @@ var FeaturedProjects = function () {
         this.loadNextPageObserver = null;
     }
 
-    // will be filled in by FeaturedProjects.jsx
+    // will be filled in by featured-projects-view.jsx
     this.messages = {
         AUTHOR_ATTRIBUTION: '',
         PROJECT_HOVER_TEXT: '',

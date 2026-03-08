@@ -598,7 +598,7 @@ class Interface extends React.PureComponent {
                                                     }}
                                                 />
                                             </p>
-                                            <FeaturedProjects studio="37103090" />
+                                            <FeaturedProjects />
                                             {/*<p>
                                                 {lazyMessages[this.chooseRandomMessage()]}
                                             </p>*/}

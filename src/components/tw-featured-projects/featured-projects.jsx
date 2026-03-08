@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
-import StudioView from '../tw-studioview/studioview.jsx';
+import FeaturedProjectsView from '../dash-featured-projects/featured-projects-view.jsx';
 import styles from './featured-projects.css';
 import {setProjectId} from '../../lib/tw-navigation-utils.js';
 import classNames from 'classnames';
@@ -50,8 +50,7 @@ class FeaturedProjects extends React.Component {
                         }
                     )}
                 >
-                    <StudioView
-                        id={this.props.studio}
+                    <FeaturedProjectsView
                         onSelect={this.handleSelect}
                         placeholder={!opened}
                     />
@@ -70,19 +69,6 @@ class FeaturedProjects extends React.Component {
                         </div>
                     )}
                 </div>
-                <div className={styles.footer}>
-                    <a
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={`https://scratch.mit.edu/studios/${this.props.studio}/`}
-                    >
-                        <FormattedMessage
-                            defaultMessage="View studio on Scratch."
-                            description="Link to dash featured projects studio"
-                            id="tw.featuredProjectsStudio"
-                        />
-                    </a>
-                </div>
             </div>
         );
     }
@@ -90,8 +76,7 @@ class FeaturedProjects extends React.Component {
 
 FeaturedProjects.propTypes = {
     setProjectId: PropTypes.func,
-    projectId: PropTypes.string,
-    studio: PropTypes.string
+    projectId: PropTypes.string
 };
 
 const mapStateToProps = state => ({

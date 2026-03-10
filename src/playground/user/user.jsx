@@ -50,7 +50,7 @@ const messages = defineMessages({
     descriptionPlaceholder: {
         id: 'dash.user.description.placeholder',
         description: 'Placeholder for user\'s description when blank',
-        defaultMessage: 'This user is kinda quite...'
+        defaultMessage: 'This user is kinda quiet...'
     },
     descriptionInputPlaceholder: {
         id: 'dash.user.description.inputPlaceholder',

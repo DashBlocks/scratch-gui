@@ -47,6 +47,12 @@ const translateGalleryItem = (extension, locale) => ({
     description: extension.descriptionTranslations[locale] || extension.description
 });
 
+const creditLinkShortcuts = {
+    '_scratch_': (credit) => `https://scratch.mit.edu/users/${credit.name}`,
+    '_github_': (credit) => `https://github.com/${credit.name}`
+};
+const creditLink = (credit) => credit.link;
+
 let cachedTwGallery = null;
 let twGalleryMirror = false;
 let cachedOtherExtensions = null;
@@ -154,11 +160,7 @@ const fetchLibrary = async () => {
                 if (typeof credit === 'string') return credit;
                 return (
                     <a
-                        href={credit.link === '_scratch_'
-                            ? `https://scratch.mit.edu/users/${credit.name}`
-                            : credit.link === '_github_'
-                                ? `https://github.com/${credit.name}`
-                                : credit.link}
+                        href={(creditLinkShortcuts[credit.link] || creditLink)(credit)}
                         target="_blank"
                         rel="noreferrer"
                         key={credit.name}

@@ -131,6 +131,8 @@ body {
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: 0.5rem;
     height: 7.5rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
     overflow-y: auto;
     padding: 0.5rem;
 }

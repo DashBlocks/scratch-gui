@@ -100,7 +100,7 @@ const User = (props) => {
         fetchFullProfile();
     }, [id]);
 
-    useEffect(async () => {
+    useEffect(() => {
         const avgGradientByImgSections = async (src, sections, points) => {
             const img = new Image();
             img.crossOrigin = "Anonymous";
@@ -149,15 +149,15 @@ const User = (props) => {
         }
 
         try {
-            if (userData?.ok) setAvgGradient(await avgGradientByImgSections(
-                `https://dashblocks-server.vercel.app/users/avatars/${userData.user.profile.avatarId}`,
+            avgGradientByImgSections(
+                `https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId}`,
                 5,
                 2
-            ));
+            ).then(avgGradient => setAvgGradient(avgGradient));
         } catch (_) {
             // Ignore errors
         }
-    }, [userData?.user.profile.avatarId]);
+    }, [userData?.profile?.avatarId]);
 
     async function handleChangeAvatar (e) {
         const file = e.target.files[0];
@@ -215,7 +215,7 @@ const User = (props) => {
                 ...prev,
                 profile: {
                     ...prev.profile,
-                    prevDescription
+                    description: prevDescription
                 }
             }));
             alert(error.message);

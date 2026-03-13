@@ -73,6 +73,34 @@ const User = (props) => {
     const fileInputRef = useRef(null);
 
     useEffect(() => {
+        const fetchFullProfile = async () => {
+            setLoading(true);
+            let userData;
+            try {
+                const session = await getSession();
+                setIsMyProfile(session?.userId.toString() === id || session?.username.toLowerCase() === id?.toLowerCase());
+                const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}`);
+                userData = await userRes.json();
+
+                if (!userData.ok) throw new Error(userData.error);
+                document.title = `${userData.user.username} - ${APP_NAME}`
+                // Only Dasher+ or higher can do this
+                if (userData.user.role === "dasher") setDescriptionDisabled(true);
+                setUserData(userData.user);
+
+                const projects = userData.user.projects.slice(0, 10);
+                setProjects(projects);
+            } catch (error) {
+                setError(error.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchFullProfile();
+    }, [id]);
+
+    useEffect(async () => {
         const avgGradientByImgSections = async (src, sections, points) => {
             const img = new Image();
             img.crossOrigin = "Anonymous";
@@ -119,42 +147,17 @@ const User = (props) => {
             }
             return avgCssColors;
         }
-        
-        const fetchFullProfile = async () => {
-            setLoading(true);
-            let userData;
-            try {
-                const session = await getSession();
-                setIsMyProfile(session?.userId.toString() === id);
-                const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}`);
-                userData = await userRes.json();
 
-                if (!userData.ok) throw new Error(userData.error);
-                document.title = `${userData.user.username} - ${APP_NAME}`
-                // Only Dasher+ or higher can do this
-                if (userData.user.role === "dasher") setDescriptionDisabled(true);
-                setUserData(userData.user);
-
-                const projects = userData.user.projects.slice(0, 10);
-                setProjects(projects);
-            } catch (error) {
-                setError(error.message);
-            } finally {
-                setLoading(false);
-                try {
-                    if (userData?.ok) setAvgGradient(await avgGradientByImgSections(
-                        `https://dashblocks-server.vercel.app/users/avatars/${userData.user.profile.avatarId}`,
-                        5,
-                        2
-                    ));
-                } catch (_) {
-                    // Ignore errors
-                }
-            }
-        };
-
-        fetchFullProfile();
-    }, [id]);
+        try {
+            if (userData?.ok) setAvgGradient(await avgGradientByImgSections(
+                `https://dashblocks-server.vercel.app/users/avatars/${userData.user.profile.avatarId}`,
+                5,
+                2
+            ));
+        } catch (_) {
+            // Ignore errors
+        }
+    }, [userData.user.profile.avatarId]);
 
     async function handleChangeAvatar (e) {
         const file = e.target.files[0];

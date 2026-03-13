@@ -157,7 +157,7 @@ const User = (props) => {
         } catch (_) {
             // Ignore errors
         }
-    }, [userData.user.profile.avatarId]);
+    }, [userData?.user.profile.avatarId]);
 
     async function handleChangeAvatar (e) {
         const file = e.target.files[0];

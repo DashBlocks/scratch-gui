@@ -141,11 +141,15 @@ const User = (props) => {
                 setError(error.message);
             } finally {
                 setLoading(false);
-                if (userData?.ok) setAvgGradient(await avgGradientByImgSections(
-                    `https://dashblocks-server.vercel.app/users/avatars/${userData.user.profile.avatarId}`,
-                    3,
-                    3
-                ));
+                try {
+                    if (userData?.ok) setAvgGradient(await avgGradientByImgSections(
+                        `https://dashblocks-server.vercel.app/users/avatars/${userData.user.profile.avatarId}`,
+                        5,
+                        2
+                    ));
+                } catch (_) {
+                    // Ignore errors
+                }
             }
         };
 

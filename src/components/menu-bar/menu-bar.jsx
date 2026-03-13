@@ -355,7 +355,8 @@ class MenuBar extends React.Component {
     }
     async handleClickLogOut () {
         const response = await fetch('https://dashblocks-server.vercel.app/auth/logout', {credentials: 'include'});
-        if (!response.ok)
+        const data = await response.json();
+        if (!data.ok)
             return alert('Sign out failed');
         this.props.setSession(null);
         window.location.reload();

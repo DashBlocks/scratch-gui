@@ -49,7 +49,8 @@ const translateGalleryItem = (extension, locale) => ({
 
 const creditLinkShortcuts = {
     '_scratch_': (credit) => `https://scratch.mit.edu/users/${credit.name}`,
-    '_github_': (credit) => `https://github.com/${credit.name}`
+    '_github_': (credit) => `https://github.com/${credit.name}`,
+    '_dash_': (credit) => `https://dashblocks.github.io/user#${credit.name}`
 };
 const creditLink = (credit) => credit.link;
 

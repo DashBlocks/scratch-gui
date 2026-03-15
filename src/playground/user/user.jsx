@@ -291,7 +291,7 @@ const User = (props) => {
                                 description="User's last active date"
                                 id="dash.user.lastActive"
                                 values={{
-                                    date: joinDate
+                                    date: lastActiveDate
                                         ? relativeTimeSupported()
                                             ? (<FormattedRelative value={lastActiveDate} />)
                                             : (<FormattedDate value={lastActiveDate} />)

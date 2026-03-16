@@ -20,6 +20,7 @@ import {
 import {generateRandomUsername} from './tw-username';
 import {setSearchParams} from './tw-navigation-utils';
 import {defaultStageSize} from '../reducers/custom-stage-size';
+import getSession from './session';
 
 /* eslint-disable no-alert */
 
@@ -60,7 +61,7 @@ const getLocalStorage = key => {
 };
 
 const readHashProjectId = () => {
-    const match = location.hash.match(/#(\d+)/);
+    const match = location.hash.match(/#(s?\d+)/);
     return match === null ? null : match[1];
 };
 
@@ -282,7 +283,7 @@ const TWStateManager = function (WrappedComponent) {
                 'onSetIsFullScreen'
             ]);
         }
-        componentDidMount () {
+        async componentDidMount () {
             const urlParams = new URLSearchParams(location.search);
 
             if (urlParams.has('fps')) {
@@ -300,13 +301,14 @@ const TWStateManager = function (WrappedComponent) {
                 this.props.vm.setInterpolation(true);
             }
 
-            if (urlParams.has('username')) {
+            const session = await getSession();
+            if (urlParams.has('username') && !session?.username) {
                 const username = urlParams.get('username');
                 // Do not save username when loaded from URL
                 this.doNotPersistUsername = username;
                 this.props.onSetUsername(username);
             } else {
-                const persistentUsername = this.props.isEmbedded ? null : getLocalStorage(USERNAME_KEY);
+                const persistentUsername = this.props.isEmbedded ? null : (session?.username ? session.username : getLocalStorage(USERNAME_KEY));
                 if (persistentUsername === null) {
                     const randomUsername = generateRandomUsername();
                     this.props.onSetUsername(randomUsername);

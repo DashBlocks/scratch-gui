@@ -598,7 +598,7 @@ class Interface extends React.PureComponent {
                                                     }}
                                                 />
                                             </p>
-                                            <FeaturedProjects studio="37103090" />
+                                            <FeaturedProjects />
                                             {/*<p>
                                                 {lazyMessages[this.chooseRandomMessage()]}
                                             </p>*/}
@@ -697,6 +697,7 @@ class Interface extends React.PureComponent {
                                                 <Description
                                                     instructions={description.instructions}
                                                     credits={description.credits}
+                                                    isDashProject={description.isDashProject}
                                                     projectId={projectId}
                                                 />
                                             </div>
@@ -722,7 +723,8 @@ Interface.propTypes = {
     }),
     description: PropTypes.shape({
         credits: PropTypes.string,
-        instructions: PropTypes.string
+        instructions: PropTypes.string,
+        isDashProject: PropTypes.bool
     }),
     isFullScreen: PropTypes.bool,
     isLoading: PropTypes.bool,

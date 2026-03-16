@@ -23,26 +23,19 @@ const AccountNav = function (props) {
 };
 
 AccountNav.propTypes = {
-    classroomId: PropTypes.string,
-    isEducator: PropTypes.bool,
     isRtl: PropTypes.bool,
-    isStudent: PropTypes.bool,
     profileUrl: PropTypes.string,
     thumbnailUrl: PropTypes.string,
     username: PropTypes.string
 };
 
 const mapStateToProps = state => ({
-    classroomId: state.session && state.session.session && state.session.session.user ?
-        state.session.session.user.classroomId : '',
-    isEducator: state.session && state.session.permissions && state.session.permissions.educator,
-    isStudent: state.session && state.session.permissions && state.session.permissions.student,
-    profileUrl: state.session && state.session.session && state.session.session.user ?
-        `/users/${state.session.session.user.username}` : '',
-    thumbnailUrl: state.session && state.session.session && state.session.session.user ?
-        state.session.session.user.thumbnailUrl : null,
-    username: state.session && state.session.session && state.session.session.user ?
-        state.session.session.user.username : ''
+    profileUrl: state.scratchGui.dash.session && state.scratchGui.dash.session.userId ?
+        `/user.html#${state.scratchGui.dash.session.userId}` : '',
+    thumbnailUrl: state.scratchGui.dash.session && state.scratchGui.dash.session.profile && state.scratchGui.dash.session.profile.avatarId ?
+        `https://dashblocks-server.vercel.app/users/avatars/${state.scratchGui.dash.session.profile.avatarId}` : '',
+    username: state.scratchGui.dash.session && state.scratchGui.dash.session.username ?
+        state.scratchGui.dash.session.username : ''
 });
 
 const mapDispatchToProps = () => ({});

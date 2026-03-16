@@ -2,6 +2,12 @@ name: Publish
 
 on:
   workflow_dispatch:
+    inputs:
+      update_deps:
+        description: 'Update deps?'
+        required: true
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -18,15 +24,12 @@ jobs:
       - name: Install Dependencies
         run: npm ci --legacy-peer-deps
 
-      # This modifies the package.json file which is a bad idea for CI.
-      # You should use a bot like dependabot or renovate, or manually
-      # run npm update instead.
-      # If anything breaks, please contact @ampelectrecuted to fix.
-      # - name: Update Dependencies
-      #  run: npm update --legacy-peer-deps
+      - name: Update Dependencies
+        run: npm update --legacy-peer-deps
+        if: ${{ inputs.update_deps }}
 
       - name: Build Scratch
-        run: NODE_ENV=production npm run build
+        run: npm run build
       
       - name: Upload the pages artifact
         uses: actions/upload-pages-artifact@v3

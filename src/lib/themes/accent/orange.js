@@ -8,6 +8,8 @@ const guiColors = {
     'looks-light-transparent': '#ff4d4d26',
     'looks-secondary-dark': 'hsla(0, 42%, 51%, 1)',
 
+    'data-primary': '#6992ff',
+
     'extensions-primary': 'hsla(10, 85%, 65%, 1)',
     'extensions-tertiary': 'rgb(189, 99, 15)',
     'extensions-transparent': 'hsla(10, 85%, 65%, 0.35)',

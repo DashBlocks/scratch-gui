@@ -12,6 +12,11 @@ const messages = defineMessages({
         defaultMessage: 'Username cannot be changed while the project is running.',
         description: 'Alert that appears when trying to change username while project is running',
         id: 'tw.changeUsername.cannotChangeWhileRunning'
+    },
+    cannotChangeWhileInSession: {
+        defaultMessage: 'Username cannot be changed while signed in.',
+        description: 'Alert that appears when trying to change username while session is active',
+        id: 'dash.changeUsername.cannotChangeWhileInSession'
     }
 });
 
@@ -26,6 +31,10 @@ class ChangeUsername extends React.Component {
         if (this.props.running && !isScratchDesktop()) {
             // eslint-disable-next-line no-alert
             alert(this.props.intl.formatMessage(messages.cannotChangeWhileRunning));
+            return;
+        } else if (this.props.session?.username) {
+            // eslint-disable-next-line no-alert
+            alert(this.props.intl.formatMessage(messages.cannotChangeWhileInSession));
             return;
         }
         this.props.onOpenUsernameModal();
@@ -43,7 +52,8 @@ ChangeUsername.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    running: state.scratchGui.vmStatus.running
+    running: state.scratchGui.vmStatus.running,
+    session: state.scratchGui.dash.session
 });
 
 const mapDispatchToProps = dispatch => ({

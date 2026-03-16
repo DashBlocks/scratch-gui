@@ -5,17 +5,9 @@ import {FormattedMessage} from 'react-intl';
 import styles from './description.css';
 import reactStringReplace from 'react-string-replace';
 
-const decorate = text => {
+// TODO: Edit for Dash projects
+const decorate = (text, isDashProject) => {
     // https://github.com/LLK/scratch-www/blob/25232a06bcceeaddec8fcb24fb63a44d870cf1cf/src/lib/decorate-text.jsx
-
-    // Make @mentions clickable
-    text = reactStringReplace(text, /@([\w-]+)/, (match, i) => (
-        <a
-            href={`https://scratch.mit.edu/users/${match}/`}
-            rel="noreferrer"
-            key={match + i}
-        >{`@${match}`}</a>
-    ));
 
     // Make links clickable
     const linkRegex = /(https?:\/\/[\w\d_\-.]{1,256}(?:\/(?:\S*[\w:/#[\]@$&'()*+=])?)?(?![^?!,:;\w\s]\S))/g;
@@ -25,6 +17,17 @@ const decorate = text => {
             rel="noreferrer"
             key={match + i}
         >{match}</a>
+    ));
+
+    if (isDashProject) return text;
+
+    // Make @mentions clickable
+    text = reactStringReplace(text, /@([\w-]+)/, (match, i) => (
+        <a
+            href={`https://scratch.mit.edu/users/${match}/`}
+            rel="noreferrer"
+            key={match + i}
+        >{`@${match}`}</a>
     ));
 
     // Make hashtags clickable
@@ -41,10 +44,11 @@ const decorate = text => {
 const Description = ({
     instructions,
     credits,
+    isDashProject,
     projectId
 }) => instructions !== 'unshared' && credits !== 'unshared' && (
     <div className={styles.description}>
-        <div className={styles.projectLink}>
+        {!isDashProject ? <div className={styles.projectLink}>
             <a
                 href={`https://scratch.mit.edu/projects/${projectId}/`}
                 target="_blank"
@@ -56,8 +60,19 @@ const Description = ({
                     id="tw.viewOnScratch"
                 />
             </a>
-        </div>
-        {instructions ? (
+        </div> : null}
+        {instructions ? (isDashProject ? (
+            <div>
+                <h2 className={styles.header}>
+                    <FormattedMessage
+                        defaultMessage="Description"
+                        description="Header for description of Dash project"
+                        id="dash.home.tab.description"
+                    />
+                </h2>
+                {decorate(instructions, isDashProject)}
+            </div>
+        ) : (
             <div>
                 <h2 className={styles.header}>
                     <FormattedMessage
@@ -68,11 +83,11 @@ const Description = ({
                 </h2>
                 {decorate(instructions)}
             </div>
-        ) : null}
-        {instructions && credits ? (
+        )) : null}
+        {instructions && credits && !isDashProject ? (
             <div className={styles.divider} />
         ) : null}
-        {credits && (
+        {credits && !isDashProject ? (
             <div>
                 <h2 className={styles.header}>
                     <FormattedMessage
@@ -83,13 +98,14 @@ const Description = ({
                 </h2>
                 {decorate(credits)}
             </div>
-        )}
+        ) : null}
     </div>
 );
 
 Description.propTypes = {
     instructions: PropTypes.string,
     credits: PropTypes.string,
+    isDashProject: PropTypes.bool,
     projectId: PropTypes.string
 };
 

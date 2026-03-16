@@ -569,7 +569,7 @@ GUIComponent.defaultProps = {
     canRemix: false,
     canSave: false,
     canCreateCopy: false,
-    canShare: false,
+    canShare: true,
     canUseCloud: false,
     enableCommunity: false,
     isCreating: false,

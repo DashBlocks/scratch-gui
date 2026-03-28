@@ -184,7 +184,7 @@ body {
     cursor: pointer;
     background-color: $ui-secondary;
     width: 12rem;
-    min-height: 12rem;
+    min-width: 12rem;
     min-height: 12rem;
 }
 

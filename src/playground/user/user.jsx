@@ -302,7 +302,7 @@ const User = (props) => {
                     </div>
                 </div>
                 <div className={styles.section}>
-                    <h2 className={styles.sectionTitle}>
+                    <h2>
                         <FormattedMessage
                             defaultMessage="Description"
                             description="User's description section title on user's profile"
@@ -333,7 +333,7 @@ const User = (props) => {
                     )}
                 </div>
                 <div className={styles.section}>
-                    <h2 className={styles.sectionTitle}>
+                    <h2>
                         <FormattedMessage
                             defaultMessage="Projects ({projectsCount})"
                             description="Projects section title on user's profile"

@@ -63,27 +63,27 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
+    gap: $space;
     background: $ui-primary;
     margin: 0px;
-    padding: 0.5rem;
+    padding: $space;
     width: 100vw;
 }
 
 .section {
-    width: calc(100% - 1rem);
+    width: calc(100% - 2 * $space);
     max-width: 900px;
     background: $ui-white;
     margin: 0px;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
+    padding: $space;
+    border-radius: $space;
     border: 0.0625rem solid $ui-black-transparent;
 }
 
 .user-header {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: calc(2 * $space);
     background-size: cover;
     background-position: center;
 }
@@ -91,7 +91,7 @@ body {
 .avatar-img {
     width: 5rem;
     height: 5rem;
-    border-radius: 0.5rem;
+    border-radius: $space;
 }
 
 .user-info {
@@ -102,7 +102,7 @@ body {
 .user-info-row {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: $space;
 }
 
 .user-info-divider {
@@ -128,12 +128,12 @@ body {
 
 .description {
     border: 0.0625rem solid $ui-black-transparent;
-    border-radius: 0.5rem;
+    border-radius: $space;
     height: 7.5rem;
     white-space: pre-wrap;
     word-wrap: break-word;
     overflow-y: auto;
-    padding: 0.5rem;
+    padding: $space;
 }
 
 .description-field {
@@ -143,10 +143,10 @@ body {
     white-space: pre-wrap !important;
     word-wrap: break-word !important;
     border: 0.0625rem dashed $ui-black-transparent !important;
-    border-radius: 0.5rem !important;
+    border-radius: $space !important;
     background-color: $project-title-inactive !important;
     background-clip: padding-box;
-    padding: 0.5rem !important;
+    padding: $space !important;
 }
 
 .description-field {
@@ -172,14 +172,14 @@ body {
     display: flex;
     overflow-x: auto;
     border: 0.0625rem solid $ui-black-transparent;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    gap: 0.5rem;
+    border-radius: $space;
+    padding: $space;
+    gap: $space;
 }
 
 .project-card {
     border: 0.0625rem solid $ui-black-transparent;
-    border-radius: 0.5rem;
+    border-radius: $space;
     overflow: hidden;
     cursor: pointer;
     background-color: $ui-secondary;

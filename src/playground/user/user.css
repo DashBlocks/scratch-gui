@@ -67,12 +67,11 @@ body {
     background: $ui-primary;
     margin: 0px;
     padding: 0.5rem;
-    min-width: calc(100% - 1rem);
+    width: 100vw;
 }
 
 .section {
     width: calc(100% - 1rem);
-    min-width: fit-content;
     max-width: 900px;
     background: $ui-white;
     margin: 0px;
@@ -185,6 +184,7 @@ body {
     cursor: pointer;
     background-color: $ui-secondary;
     width: 12rem;
+    min-height: 12rem;
     min-height: 12rem;
 }
 

@@ -108,14 +108,13 @@ class Login extends React.Component {
             
                                 <div className={styles.submitRow}>
                                     <Button
-                                        className={classNames(styles.submitButton, 'white')}
+                                        className={styles.submitButton}
                                         disabled={this.state.waiting}
                                         type="submit"
                                     >
                                         {this.state.waiting ? (
                                             <Spinner
                                                 className={styles.spinner}
-                                                level="primary"
                                                 small
                                             />
                                         ) : (

@@ -113,7 +113,11 @@ class Login extends React.Component {
                                         type="submit"
                                     >
                                         {this.state.waiting ? (
-                                            <Spinner className={styles.spinner} level="primary" />
+                                            <Spinner
+                                                className={styles.spinner}
+                                                level="primary"
+                                                small
+                                            />
                                         ) : (
                                             <FormattedMessage
                                                 defaultMessage="Submit"

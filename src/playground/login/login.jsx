@@ -20,14 +20,6 @@ import {detectTheme} from '../../lib/themes/themePersistance';
 const theme = detectTheme();
 applyGuiColors(theme);
 
-const messages = defineMessages({
-    needHelp: {
-        defaultMessage: 'Need Help?',
-        description: 'Button text for user to indicate that they need help',
-        id: 'login.needHelp'
-    }
-});
-
 class Login extends React.Component {
     constructor (props) {
         super(props);
@@ -86,15 +78,15 @@ class Login extends React.Component {
                             >
                                 <label htmlFor="userId">
                                     <FormattedMessage
-                                        defaultMessage="User ID"
-                                        description="Label for login user ID input"
+                                        defaultMessage="Target (user ID or username)"
+                                        description="Label for login target input"
                                         id="dash.login.userId"
                                     />
                                 </label>
                                 <Input
                                     required
                                     name="userId"
-                                    type="number"
+                                    type="text"
                                     value={this.state.userId}
                                     onChange={this.handleChange}
                                 />

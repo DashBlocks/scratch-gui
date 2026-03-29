@@ -110,7 +110,7 @@ class Login extends React.Component {
                                     <Button
                                         className={styles.submitButton}
                                         disabled={this.state.waiting}
-                                        type="submit"
+                                        onClick={this.handleSubmit}
                                     >
                                         {this.state.waiting ? (
                                             <Spinner

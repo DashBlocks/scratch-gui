@@ -91,18 +91,12 @@ body {
         margin-bottom: 1.25rem;
     }
 
-    .input {
+    input {
         display: block
-    }
-
-    label {
-        padding-top: 5px;
-        font-weight: bold;
     }
 
     .spinner {
         margin: 0 .8rem;
-        width: 1rem;
         vertical-align: middle;
     }
     
@@ -111,29 +105,20 @@ body {
         flex-direction: row;
     }
 
-    .submit-button {
-        margin-top: 5px;
-    }
-
-    a {
-        margin: auto 0;
-        color: $ui-white;
-
-        &:link,
-        &:visited,
-        &:active {
-            color: $ui-white;
-        }
-
-        &:hover {
-            background-color: transparent;
-        }
-    }
-
     .error {
         border: 1px solid $ui-black-transparent;
         border-radius: 5px;
         background-color: $ui-primary;
         padding: .75em 1em;
     }
+}
+
+.submit-button {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial;
+    padding: 0.75rem 1rem;
+    background: $looks-secondary;
+    color: white;
+    border: 1px solid $looks-secondary;
+    font-weight: 600;
+    font-size: 0.85rem;
 }

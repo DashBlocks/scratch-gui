@@ -96,7 +96,7 @@ body {
 
 .error {
     border: 1px solid $ui-black-transparent;
-    border-radius: 5px;
+    border-radius: calc($space / 2);
     background-color: $error-primary;
     color: white;
     padding: 0.75rem 1rem;

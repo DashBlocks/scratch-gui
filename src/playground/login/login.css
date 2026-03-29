@@ -72,7 +72,7 @@ body {
 
 .section {
     width: calc(100% - 2 * $space);
-    max-width: 900px;
+    max-width: 500px;
     background: $ui-white;
     margin: 0px;
     padding: $space;
@@ -81,12 +81,7 @@ body {
 }
 
 .login {
-    padding: 10px;
-    width: 200px;
-    line-height: 1.5rem;
     white-space: normal;
-    color: $ui-white;
-    font-size: .8125rem;
 
     .button {
         padding: .75em;
@@ -97,9 +92,7 @@ body {
     }
 
     .input {
-        margin-bottom: 12px;
-        width: calc(100% - 30px);
-        height: 2.25rem;
+        display: block
     }
 
     label {

@@ -78,7 +78,7 @@ const User = (props) => {
             let userData;
             try {
                 const session = await getSession();
-                setIsMyProfile(session?.userId.toString() === id || session?.username.toLowerCase() === id?.toLowerCase());
+                setIsMyProfile(session?.userId?.toString() === id || session?.username?.toLowerCase() === id?.toLowerCase());
                 const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}`);
                 userData = await userRes.json();
 

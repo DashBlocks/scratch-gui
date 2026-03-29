@@ -14,6 +14,9 @@ import Spinner from '../../components/spinner/spinner.jsx';
 
 import styles from './login.css';
 
+import {applyGuiColors} from '../../lib/themes/guiHelpers';
+import {detectTheme} from '../../lib/themes/themePersistance';
+
 const theme = detectTheme();
 applyGuiColors(theme);
 

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import render from '../app-target';
 import styles from './desktop.css';
 
+import Button from '../../components/button/button.jsx';
+
 import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
@@ -11,6 +13,7 @@ import screenshotLight from './screenshot-light.png';
 import screenshotDark from './screenshot-dark.png';
 
 const version = '2.0.0';
+const releasesDownloadUrl = "https://github.com/DashBlocks/desktop/releases/download";
 
 /* eslint-disable react/jsx-no-literals */
 
@@ -38,47 +41,52 @@ const Desktop = () => (
         <section>
             <h3>Windows:</h3>
             <div className={styles.downloadList}>
-                <button
+                <Button
+                    className={styles.downloadButton}
                     onClick={() => {
-                        window.open(`https://github.com/DashBlocks/desktop/releases/download/v${version}/Dash.Desktop.Setup.${version}.exe`, '_blank', 'noreferrer');
+                        window.open(`${releasesDownloadUrl}/v${version}/Dash.Desktop.Setup.${version}.exe`, '_blank', 'noreferrer');
                     }}
                 >
                     Download for Windows (64-bit)
-                </button>
+                </Button>
             </div>
             <h3>Linux:</h3>
             <div className={styles.downloadList}>
-                <button
+                <Button
+                    className={styles.downloadButton}
                     onClick={() => {
-                        window.open(`https://github.com/DashBlocks/desktop/releases/download/v${version}/Dash.Desktop-${version}.AppImage`, '_blank', 'noreferrer');
+                        window.open(`${releasesDownloadUrl}/v${version}/Dash.Desktop-${version}.AppImage`, '_blank', 'noreferrer');
                     }}
                 >
                     Download for AppImage
-                </button>
-                <button
+                </Button>
+                <Button
+                    className={styles.downloadButton}
                     onClick={() => {
-                        window.open(`https://github.com/DashBlocks/desktop/releases/download/v${version}/Dash.Desktop-${version}-arm64.AppImage`, '_blank', 'noreferrer');
+                        window.open(`${releasesDownloadUrl}/v${version}/Dash.Desktop-${version}-arm64.AppImage`, '_blank', 'noreferrer');
                     }}
                 >
                     Download for AppImage (ARM 64-bit)
-                </button>
+                </Button>
             </div>
             <h3>macOS:</h3>
             <div className={styles.downloadList}>
-                <button
+                <Button
+                    className={styles.downloadButton}
                     onClick={() => {
-                        window.open(`https://github.com/DashBlocks/desktop/releases/download/v${version}/Dash.Desktop-${version}.dmg`, '_blank', 'noreferrer');
+                        window.open(`${releasesDownloadUrl}/v${version}/Dash.Desktop-${version}.dmg`, '_blank', 'noreferrer');
                     }}
                 >
                     Download for macOS
-                </button>
-                <button
+                </Button>
+                <Button
+                    className={styles.downloadButton}
                     onClick={() => {
-                        window.open(`https://github.com/DashBlocks/desktop/releases/download/v${version}/Dash.Desktop-${version}-arm64.dmg`, '_blank', 'noreferrer');
+                        window.open(`${releasesDownloadUrl}/v${version}/Dash.Desktop-${version}-arm64.dmg`, '_blank', 'noreferrer');
                     }}
                 >
                     Download for macOS (ARM 64-bit)
-                </button>
+                </Button>
             </div>
         </section>
     </main>

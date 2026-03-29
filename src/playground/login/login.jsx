@@ -61,7 +61,7 @@ class Login extends React.Component {
                 {this.props.session && Object.keys(this.props.session).length > 2 ? window.location.href = "/" : null}
                 <div
                     className={styles.container}
-                    dir={props.isRtl ? 'rtl' : 'ltr'}
+                    dir={this.props.isRtl ? 'rtl' : 'ltr'}
                 >
                     <div className={styles.loginWrapper}>
                         <div className={styles.section}>

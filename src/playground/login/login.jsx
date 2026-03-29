@@ -58,7 +58,7 @@ class Login extends React.Component {
     render () {
         return (
             <>
-                {this.props.session && Object.keys(this.props.session).length > 2 ? window.location.href = "/" : null}
+                {this.props.session && this.props.session.username ? window.location.href = "/" : null}
                 <div
                     className={styles.container}
                     dir={this.props.isRtl ? 'rtl' : 'ltr'}
@@ -111,7 +111,6 @@ class Login extends React.Component {
                                         className={classNames(styles.submitButton, 'white')}
                                         disabled={this.state.waiting}
                                         type="submit"
-                                        onClick={this.handleSubmit}
                                     >
                                         {this.state.waiting ? (
                                             <Spinner className={styles.spinner} level="primary" />

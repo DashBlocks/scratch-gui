@@ -56,7 +56,7 @@ class Register extends React.Component {
 
         this.setState({authCode: null, waiting: true, error: null});
         try {
-            const response = await fetch('https://dashblocks-server.vercel.app/auth/get-auth-code')
+            const response = await fetch('https://dashblocks-server.vercel.app/auth/get-auth-code', {credentials: 'include'})
             const result = await response.json();
             if (!result.ok)
                 throw new Error(result.error);

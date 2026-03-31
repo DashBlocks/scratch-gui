@@ -69,14 +69,14 @@ const AccountNavComponent = ({
                     id="gui.accountMenu.profile"
                 />
             </MenuItemContainer>
-            <MenuItemContainer href="/my-stuff.html">
+            <MenuItemContainer href="my-stuff">
                 <FormattedMessage
                     defaultMessage="My Stuff"
                     description="Text to link to list of my projects, in the account navigation menu"
                     id="gui.accountMenu.myStuff"
                 />
             </MenuItemContainer>
-            <MenuItemContainer href="/account-settings.html">
+            <MenuItemContainer href="account-settings">
                 <FormattedMessage
                     defaultMessage="Account settings"
                     description="Text to link to my account settings, in the account navigation menu"

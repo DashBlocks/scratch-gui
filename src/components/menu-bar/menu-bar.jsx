@@ -1172,9 +1172,9 @@ class MenuBar extends React.Component {
                         />
                     </div>}
                     {this.props.sessionExists && this.props.session?.username ? (
-                        // ************ user is logged in ************
+                        // User is logged in
                         <React.Fragment>
-                            <a href="/mystuff.html">
+                            <a href="mystuff">
                                 <div
                                     className={classNames(
                                         styles.menuBarItem,
@@ -1203,7 +1203,7 @@ class MenuBar extends React.Component {
                             />
                         </React.Fragment>
                     ) : (
-                        // ********* user not logged in
+                        // User not logged in
                         <React.Fragment>
                             <div
                                 className={classNames(
@@ -1211,7 +1211,7 @@ class MenuBar extends React.Component {
                                     styles.hoverable
                                 )}
                                 key="join"
-                                onMouseUp={() => window.open("/register.html", '_blank')}
+                                onMouseUp={() => window.open("./register", '_blank')}
                             >
                                 <FormattedMessage
                                     defaultMessage="Join Dash"
@@ -1225,7 +1225,7 @@ class MenuBar extends React.Component {
                                     styles.hoverable
                                 )}
                                 key="login"
-                                onMouseUp={() => window.open("/login.html", '_blank')}
+                                onMouseUp={() => window.open("./login", '_blank')}
                             >
                                 <FormattedMessage
                                     defaultMessage="Sign in"

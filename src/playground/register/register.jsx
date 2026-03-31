@@ -20,16 +20,6 @@ const theme = detectTheme();
 applyGuiColors(theme);
 
 const messages = defineMessages({
-    failedToGetAuthCode: {
-        id: 'dash.register.failedToGetAuthCode',
-        defaultMessage: 'Failed to get auth code, try again later',
-        description: 'Title of error message when failed to get auth code'
-    },
-    failedToCreate: {
-        id: 'dash.register.failedToCreate',
-        defaultMessage: 'Failed to create account, try again later',
-        description: 'Title of error message when failed to create account'
-    },
     createdButLogInFailed: {
         id: 'dash.register.createdButLogInFailed',
         defaultMessage: 'Account created, but failed to log in. Try to log in by yourself',
@@ -67,9 +57,9 @@ class Register extends React.Component {
         this.setState({authCode: null, waiting: true, error: null});
         try {
             const response = await fetch('https://dashblocks-server.vercel.app/auth/get-auth-code')
-            if (!response.ok)
-                throw new Error(this.props.intl.formatMessage(messages.failedToGetAuthCode));
-            const code = (await response.json()).code;
+            const result = await response.json();
+            if (!result.ok)
+                throw new Error(result.error);
             this.setState({authCode: code});
         } catch (error) {
             this.setState({error: error.message});
@@ -90,10 +80,10 @@ class Register extends React.Component {
 				body: JSON.stringify({ scratchUsername, username, password }),
 				credentials: 'include'
             });
-            if (!response.ok)
-                throw new Error(this.props.intl.formatMessage(messages.failedToCreate));
-            const userId = (await response.json()).userId;
-            const session = await getSession(userId, password);
+            const result = await response.json();
+            if (!result.ok)
+                throw new Error(result.error);
+            const session = await getSession(result.userId, password);
             if (!session || !session.username) {
                 alert(this.props.intl.formatMessage(messages.createdButLogInFailed));
                 window.location.href = '/login.html';
@@ -214,7 +204,6 @@ class Register extends React.Component {
                                             id="dash.register.verification.copyCode"
                                         />
                                     </p>
-                                    <br />
                                     <code>${this.state.authCode}</code>
                                     <p>
                                         <FormattedMessage
@@ -234,7 +223,6 @@ class Register extends React.Component {
                                             }}
                                         />
                                     </p>
-                                    <br />
                                     <p>
                                         <FormattedMessage
                                             defaultMessage="Comment what did you copied (your verification code)"
@@ -242,7 +230,6 @@ class Register extends React.Component {
                                             id="dash.register.verification.commentAuthCode"
                                         />
                                     </p>
-                                    <br />
                                     <p>
                                         <FormattedMessage
                                             defaultMessage={"After that click the \"Confirm\" button"}

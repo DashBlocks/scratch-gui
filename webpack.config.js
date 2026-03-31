@@ -150,7 +150,8 @@ module.exports = [
             'credits': './src/playground/credits/credits.jsx',
             'desktop': './src/playground/desktop/desktop.jsx',
             'user': './src/playground/user/user.jsx',
-            'login': './src/playground/login/login.jsx'
+            'login': './src/playground/login/login.jsx',
+            'register': './src/playground/register/register.jsx'
         },
         output: {
             path: path.resolve(__dirname, 'build')
@@ -248,6 +249,13 @@ module.exports = [
                 template: 'src/playground/simple.ejs',
                 filename: 'login.html',
                 title: `Sign in - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['register'],
+                template: 'src/playground/simple.ejs',
+                filename: 'register.html',
+                title: `Join - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

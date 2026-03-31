@@ -60,7 +60,7 @@ class Register extends React.Component {
             const result = await response.json();
             if (!result.ok)
                 throw new Error(result.error);
-            this.setState({authCode: code});
+            this.setState({authCode: result.code});
         } catch (error) {
             this.setState({error: error.message});
         } finally {

@@ -212,7 +212,7 @@ class Register extends React.Component {
                                             id="dash.register.verification.openProject"
                                             values={{
                                                 verificationProject: (
-                                                    <a href={`https://scratch.mit.edu/projects/${verificationProjectId}`}>
+                                                    <a href={`https://scratch.mit.edu/projects/${verificationProjectId}`} target="_blank">
                                                         <FormattedMessage
                                                             defaultMessage="Verification Project"
                                                             description="Link that opens verification project"

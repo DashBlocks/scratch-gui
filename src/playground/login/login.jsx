@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import bindAll from 'lodash.bindall';
-import classNames from 'classnames';
 import {connect} from 'react-redux';
 import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
@@ -19,6 +18,14 @@ import {detectTheme} from '../../lib/themes/themePersistance';
 
 const theme = detectTheme();
 applyGuiColors(theme);
+
+const messages = defineMessages({
+    failedToLogIn: {
+        id: 'dash.login.failedToLogIn',
+        defaultMessage: 'Failed to log in, try again later',
+        description: 'Title of error message when log in failed'
+    }
+});
 
 class Login extends React.Component {
     constructor (props) {
@@ -41,12 +48,13 @@ class Login extends React.Component {
 
     async handleSubmit (e) {
         e.preventDefault();
-        this.setState({waiting: true, error: null});
 
+        this.setState({waiting: true, error: null});
         const {userId, password} = this.state;
         try {
             const session = await getSession(userId, password);
-            if (!session || !session.username) throw new Error('Session failed');
+            if (!session || !session.username)
+                throw new Error(this.props.intl.formatMessage(messages.failedToLogIn));
             window.location.href = '/';
         } catch (error) {
             this.setState({error: error.message});
@@ -69,7 +77,7 @@ class Login extends React.Component {
                                 <FormattedMessage
                                     defaultMessage="Sign in"
                                     description="Log in page header"
-                                    id="general.signIn"
+                                    id="dash.login.signIn"
                                 />
                             </h2>
                             <form
@@ -80,7 +88,7 @@ class Login extends React.Component {
                                     <FormattedMessage
                                         defaultMessage="Target (user ID or username)"
                                         description="Label for login target input"
-                                        id="dash.login.userId"
+                                        id="dash.login.target"
                                     />
                                 </label>
                                 <Input
@@ -95,7 +103,7 @@ class Login extends React.Component {
                                     <FormattedMessage
                                         defaultMessage="Password"
                                         description="Label for login password input"
-                                        id="general.password"
+                                        id="dash.login.password"
                                     />
                                 </label>
                                 <Input

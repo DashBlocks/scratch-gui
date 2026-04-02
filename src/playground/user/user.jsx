@@ -325,7 +325,7 @@ const User = (props) => {
                         <div className={styles.description}>
                             <p>
                                 {userData.profile.description ?
-                                    decorate(userData.profile.description) : (
+                                    decorate(userData.profile.description, true) : (
                                         <i>{props.intl.formatMessage(messages.descriptionPlaceholder)}</i>
                                     )
                                 }

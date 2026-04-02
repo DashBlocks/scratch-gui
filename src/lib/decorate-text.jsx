@@ -18,7 +18,7 @@ const decorate = (text, isDashProject) => {
     // Make @mentions clickable
     text = reactStringReplace(text, /@([\w-]+)/, (match, i) => (
         <a
-            href={isDashProject ? `https://dashblocks.github.io/user#${match}` : `https://scratch.mit.edu/users/${match}/`}
+            href={isDashProject ? `user#${match}` : `https://scratch.mit.edu/users/${match}/`}
             rel="noreferrer"
             target="_blank"
             key={match + i}

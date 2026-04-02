@@ -5,7 +5,6 @@ import {FormattedMessage} from 'react-intl';
 import styles from './description.css';
 import reactStringReplace from 'react-string-replace';
 
-// TODO: Edit for Dash projects
 const decorate = (text, isDashProject) => {
     // https://github.com/LLK/scratch-www/blob/25232a06bcceeaddec8fcb24fb63a44d870cf1cf/src/lib/decorate-text.jsx
 
@@ -19,18 +18,19 @@ const decorate = (text, isDashProject) => {
         >{match}</a>
     ));
 
-    if (isDashProject) return text;
-
     // Make @mentions clickable
     text = reactStringReplace(text, /@([\w-]+)/, (match, i) => (
         <a
-            href={`https://scratch.mit.edu/users/${match}/`}
+            href={isDashProject ? `https://dashblocks.github.io/user#${match}` : `https://scratch.mit.edu/users/${match}/`}
             rel="noreferrer"
             key={match + i}
         >{`@${match}`}</a>
     ));
 
+    if (isDashProject) return text;
+
     // Make hashtags clickable
+    // TODO: Add projects search for Dash
     text = reactStringReplace(text, /#([\w-]+)/g, (match, i) => (
         <a
             href={`https://scratch.mit.edu/search/projects?q=${match}`}

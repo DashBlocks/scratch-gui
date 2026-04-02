@@ -76,8 +76,8 @@ class Register extends React.Component {
         try {
             const response = await fetch('https://dashblocks-server.vercel.app/auth/register', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ scratchUsername, username, password }),
+                headers: {'Content-Type': 'application/json'},
+				body: JSON.stringify({scratchUsername, username, password}),
 				credentials: 'include'
             });
             const result = await response.json();

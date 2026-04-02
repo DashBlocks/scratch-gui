@@ -10,6 +10,7 @@ const decorate = (text, isDashProject) => {
         <a
             href={match}
             rel="noreferrer"
+            target="_blank"
             key={match + i}
         >{match}</a>
     ));
@@ -19,6 +20,7 @@ const decorate = (text, isDashProject) => {
         <a
             href={isDashProject ? `https://dashblocks.github.io/user#${match}` : `https://scratch.mit.edu/users/${match}/`}
             rel="noreferrer"
+            target="_blank"
             key={match + i}
         >{`@${match}`}</a>
     ));
@@ -30,6 +32,7 @@ const decorate = (text, isDashProject) => {
     text = reactStringReplace(text, /#([\w-]+)/g, (match, i) => (
         <a
             href={`https://scratch.mit.edu/search/projects?q=${match}`}
+            target="_blank"
             key={match + i}
         >{`#${match}`}</a>
     ));

@@ -71,7 +71,10 @@ const User = (props) => {
             return;
 
         try {
-            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${projectId}`, {method: 'DELETE'});
+            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${projectId}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
             const data = await res.json();
             if (!data.ok) throw new Error(data.error);
 

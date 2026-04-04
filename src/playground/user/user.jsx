@@ -61,7 +61,7 @@ const messages = defineMessages({
 });
 
 const User = (props) => {
-    const [id, setId] = useState(null);
+    const [id, setId] = useState(window.location.hash.replace('#', ''));
     const [userData, setUserData] = useState(null);
     const [descriptionDisabled, setDescriptionDisabled] = useState(false);
     const [projects, setProjects] = useState([]);

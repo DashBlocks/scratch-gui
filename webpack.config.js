@@ -37,8 +37,8 @@ const base = {
         disableHostCheck: true,
         compress: true,
         port: process.env.PORT || 8601,
-        // allows ROUTING_STYLE=wildcard to work properly
-        historyApiFallback: {
+        // allows ROUTING_STYLE=wildcard to work properly (removed cuz we use gh-pages)
+        /* historyApiFallback: {
             rewrites: [
                 {from: /^\/\d+\/?$/, to: '/index.html'},
                 {from: /^\/\d+\/fullscreen\/?$/, to: '/fullscreen.html'},
@@ -46,7 +46,7 @@ const base = {
                 {from: /^\/\d+\/embed\/?$/, to: '/embed.html'},
                 {from: /^\/addons\/?$/, to: '/addons.html'}
             ]
-        }
+        } */
     },
     output: {
         library: 'GUI',
@@ -151,7 +151,8 @@ module.exports = [
             'desktop': './src/playground/desktop/desktop.jsx',
             'user': './src/playground/user/user.jsx',
             'login': './src/playground/login/login.jsx',
-            'register': './src/playground/register/register.jsx'
+            'register': './src/playground/register/register.jsx',
+            'mystuff': './src/playground/mystuff/mystuff.jsx'
         },
         output: {
             path: path.resolve(__dirname, 'build')
@@ -256,6 +257,13 @@ module.exports = [
                 template: 'src/playground/simple.ejs',
                 filename: 'register.html',
                 title: `Join - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['mystuff'],
+                template: 'src/playground/simple.ejs',
+                filename: 'mystuff.html',
+                title: `My Stuff - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

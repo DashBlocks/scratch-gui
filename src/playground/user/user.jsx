@@ -61,7 +61,7 @@ const messages = defineMessages({
 });
 
 const User = (props) => {
-    const id = window.location.hash.replace('#', '');
+    const [id, setId] = useState(null);
     const [userData, setUserData] = useState(null);
     const [descriptionDisabled, setDescriptionDisabled] = useState(false);
     const [projects, setProjects] = useState([]);
@@ -72,6 +72,10 @@ const User = (props) => {
     const [error, setError] = useState(null);
 
     const fileInputRef = useRef(null);
+
+    useEffect(() => {
+        setId(window.location.hash.replace('#', ''));
+    }, [window.location.hash]);
 
     useEffect(() => {
         const fetchFullProfile = async () => {
@@ -353,7 +357,7 @@ const User = (props) => {
                                     author: userData.username,
                                     title: project.name
                                 })}
-                                onClick={() => window.open(`https://dashblocks.github.io/#${project.id}`, '_blank')}
+                                onClick={() => window.open(`./#${project.id}`, '_blank')}
                             >
                                 <div className={styles.thumbWrapper}>
                                     <img

@@ -1,0 +1,154 @@
+@import "../../css/colors.css";
+@import "../../css/units.css";
+@import "../../css/z-index.css";
+@import "../../css/default-colors.css";
+
+/* Base styles used by Scratch https://github.com/LLK/scratch-www/blob/develop/src/main.scss */
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: bold;
+    line-height: 1.7em;
+}
+h1 {
+    font-weight: 2.5rem;
+}
+h2 {
+    font-weight: 2rem;
+}
+h3 {
+    font-size: 1.4rem;
+}
+h4 {
+    font-size: 1rem;
+}
+a {
+    color: $link-color;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial;
+    margin: 0px;
+}
+
+.container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-width: fit-content;
+    background: $page-background;
+    color: $page-foreground;
+}
+
+.mystuff-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space;
+    background: $ui-primary;
+    margin: 0px;
+    padding: $space;
+    width: 100vw;
+}
+
+.section {
+    width: calc(100% - 2 * $space);
+    max-width: 900px;
+    background: $ui-white;
+    margin: 0px;
+    padding: $space;
+    border-radius: $space;
+    border: 0.0625rem solid $ui-black-transparent;
+}
+
+.spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.project-grid {
+    display: inline;
+    border: 0.0625rem solid $ui-black-transparent;
+    border-radius: $space;
+    padding: $space;
+    gap: $space;
+}
+
+.project-card {
+    border: 0.0625rem solid $ui-black-transparent;
+    border-radius: $space;
+    overflow: hidden;
+    background-color: $ui-secondary;
+    display: flex;
+    align-items: center;
+}
+
+.thumb-wrapper img {
+    width: 100%;
+    height: 9rem;
+    object-fit: cover;
+    background: #f3f4f6;
+}
+
+.project-info {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.project-info h4 {
+    margin: 0 0 0.5rem 0;
+    cursor: pointer;
+}
+
+.project-info p {
+    font-size: 0.85rem;
+    color: #4b5563;
+    margin: 0;
+}
+
+.see-inside-button {
+    padding: 0.5rem;
+    background: $data-primary;
+    color: white;
+    border: 1px solid $data-primary;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: inline-block;
+    width: fit-content;
+}
+
+.delete-project-button {
+    color: red;
+}
+
+.project-stats {
+    margin: 0 0 0.5rem 0;
+    margin-left: auto;
+}
+
+.project-stats p {
+  text-align: center;
+}

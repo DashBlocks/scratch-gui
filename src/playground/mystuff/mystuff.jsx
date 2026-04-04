@@ -27,6 +27,11 @@ const messages = defineMessages({
         defaultMessage: 'Are you sure you want to delete {projectName}? This action CANNOT be undone!',
         description: 'Confirmation message when deleting a project',
         id: 'dash.mystuff.confirmDeleteProject'
+    },
+    deletedOnlyFromProfile: {
+        defaultMessage: 'Project deleted from your profile, but it still accessable via ID - full deletion requested',
+        description: 'Message displayed when a project is only deleted from the user\'s profile',
+        id: 'dash.mystuff.deletedOnlyFromProfile'
     }
 });
 
@@ -77,6 +82,8 @@ const User = (props) => {
             });
             const data = await res.json();
             if (!data.ok) throw new Error(data.error);
+            if (res.status_code === 202)
+                alert(props.intl.formatMessage(messages.deletedOnlyFromProfile));
 
             setProjects(projects.filter(p => p.id !== projectId));
         } catch (error) {

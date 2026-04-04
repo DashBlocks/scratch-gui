@@ -137,7 +137,6 @@ body {
     word-wrap: break-word;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 0.800rem;
-    font-weight: bold;
     color: $text-primary;
     background-color: $input-background;
 }

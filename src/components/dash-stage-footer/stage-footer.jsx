@@ -45,9 +45,10 @@ const StageFooter = (props) => {
             }
         }
         async function fetchFireStatus() {
+            if (!isDashProject) return;
             const fetchedSession = await getSession();
             setSession(fetchedSession);
-            setIsFired(fetchedSession?.firedProjects?.includes(props.projectId) || false);
+            setIsFired(fetchedSession?.firedProjects?.includes(Number(props.projectId)) || false);
         }
         fetchProjectMetadata();
         fetchFireStatus();

@@ -36,6 +36,7 @@ import FeaturedProjects from '../components/tw-featured-projects/featured-projec
 import Description from '../components/tw-description/description.jsx';
 import BrowserModal from '../components/browser-modal/browser-modal.jsx';
 import DashWelcomeModal from '../containers/dash-welcome-modal.jsx';
+import StageFooter from '../components/dash-stage-footer/stage-footer.jsx';
 import CloudVariableBadge from '../containers/tw-cloud-variable-badge.jsx';
 import {isBrowserSupported} from '../lib/tw-environment-support-prober';
 import AddonChannels from '../addons/channels';
@@ -485,6 +486,7 @@ class Interface extends React.PureComponent {
                             backpackHost="_local_"
                             {...props}
                         />
+                        {isHomepage && <StageFooter />}
                     </div>
                     {isHomepage ? (
                         <React.Fragment>

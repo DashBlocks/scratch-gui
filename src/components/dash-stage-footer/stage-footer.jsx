@@ -41,14 +41,14 @@ const StageFooter = (props) => {
             if (data.ok) {
                 setProjectMetadata(data.project);
                 setIsDashProject(true);
+                fetchFireStatus();
             }
         }
-        async function fetchFireStatus() {
+        function fetchFireStatus() {
             if (!isDashProject || !props.session?.firedProjects) return;
             setIsFired(props.session.firedProjects.includes(+props.projectId));
         }
         fetchProjectMetadata();
-        fetchFireStatus();
     }, [props.projectId]);
 
     async function handleFireButtonClick() {

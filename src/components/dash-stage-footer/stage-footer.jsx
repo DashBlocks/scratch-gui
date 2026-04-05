@@ -81,30 +81,28 @@ const StageFooter = (props) => {
     }
 
     return isDashProject && (
-        <Box className={styles.stageFooterWrapperOverlay}>
-            <Box className={styles.stageFooterWrapper}>
-                <div className={styles.footerButtonsRow}>
-                    {props.projectId && (
-                        <div className={styles.fireButtonWrapper}>
-                            <Button
-                                className={styles.fireButton}
-                                onClick={() => handleFireButtonClick(projectId)}
-                            >
-                                <img
-                                    alt={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}
-                                    className={styles.fireButtonIcon}
-                                    draggable={false}
-                                    src={isFired ? fireReactionOnIcon : fireReactionOffIcon}
-                                    title={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}
-                                />
-                                <p className={styles.fireCount}>
-                                    {projectMetadata?.stats?.fires || 0}
-                                </p>
-                            </Button>
-                        </div>
-                    )}
-                </div>
-            </Box>
+        <Box className={styles.stageFooterWrapper}>
+            <div className={styles.footerButtonsRow}>
+                {props.projectId && (
+                    <div className={styles.fireButtonWrapper}>
+                        <Button
+                            className={styles.fireButton}
+                            onClick={() => handleFireButtonClick(projectId)}
+                        >
+                            <img
+                                alt={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}
+                                className={styles.fireButtonIcon}
+                                draggable={false}
+                                src={isFired ? fireReactionOnIcon : fireReactionOffIcon}
+                                title={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}
+                            />
+                            <p className={styles.fireCount}>
+                                {projectMetadata?.stats?.fires || 0}
+                            </p>
+                        </Button>
+                    </div>
+                )}
+            </div>
         </Box>
     );
 };

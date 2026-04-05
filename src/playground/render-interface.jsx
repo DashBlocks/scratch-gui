@@ -486,7 +486,9 @@ class Interface extends React.PureComponent {
                             backpackHost="_local_"
                             {...props}
                         />
-                        {isHomepage && <StageFooter />}
+                        {isHomepage && (
+                            <StageFooter projectId={projectId} />
+                        )}
                     </div>
                     {isHomepage ? (
                         <React.Fragment>

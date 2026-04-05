@@ -95,7 +95,7 @@ const StageFooter = (props) => {
         }
     }
 
-    if (!isDashProject || !props.projectId) return;
+    if (!isDashProject || !props.projectId) return null;
 
     const fireButton = (
         <Button

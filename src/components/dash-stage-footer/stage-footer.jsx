@@ -37,7 +37,7 @@ const StageFooter = (props) => {
     useEffect(() => {
         async function fetchProjectMetadata() {
             setIsDashProject(false);
-            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${projectId}`);
+            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${props.projectId}`);
             const data = await res.json();
             if (data.ok) {
                 setProjectMetadata(data.project);
@@ -47,20 +47,20 @@ const StageFooter = (props) => {
         async function fetchFireStatus() {
             const fetchedSession = await getSession();
             setSession(fetchedSession);
-            setIsFired(fetchedSession?.firedProjects?.includes(projectId) || false);
+            setIsFired(fetchedSession?.firedProjects?.includes(props.projectId) || false);
         }
         fetchProjectMetadata();
         fetchFireStatus();
-    }, [projectId]);
+    }, [props.projectId]);
 
-    async function handleFireButtonClick(projectId) {
+    async function handleFireButtonClick() {
         if (!session) {
             alert('Log in to fire this project');
             window.open('./login', '_blank');
             return;
         }
         if (isFired) {
-            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${projectId}/fire`, {
+            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${props.projectId}/fire`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -69,7 +69,7 @@ const StageFooter = (props) => {
                 setIsFired(false);
             }
         } else {
-            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${projectId}/fire`, {
+            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${props.projectId}/fire`, {
                 method: 'POST',
                 credentials: 'include'
             });
@@ -87,7 +87,7 @@ const StageFooter = (props) => {
                     <div className={styles.fireButtonWrapper}>
                         <Button
                             className={styles.fireButton}
-                            onClick={() => handleFireButtonClick(props.projectId)}
+                            onClick={handleFireButtonClick}
                         >
                             <img
                                 alt={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}

@@ -95,28 +95,29 @@ const StageFooter = (props) => {
         }
     }
 
-    return isDashProject && (
+    if (!isDashProject || !props.projectId) return;
+
+    const fireButton = (
+        <Button
+            className={styles.fireButton}
+            iconAlt={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}
+            iconClassName={classNames(styles.fireReactionIcon, {
+                [styles.fireReactionOffIcon]: !isFired
+            })}
+            iconSrc={isFired ? fireReactionOnIcon : fireReactionOffIcon}
+            onClick={handleFireButtonClick}
+            title={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}
+        >
+            {projectMetadata?.stats?.fires || 0}
+        </Button>
+    );
+
+    return (
         <Box className={styles.stageFooterWrapper}>
             <div className={styles.footerButtonsRow}>
-                {props.projectId && (
-                    <div className={styles.fireButtonWrapper}>
-                        <Button
-                            className={styles.fireButton}
-                            onClick={handleFireButtonClick}
-                        >
-                            <img
-                                alt={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}
-                                className={styles.fireButtonIcon}
-                                draggable={false}
-                                src={isFired ? fireReactionOnIcon : fireReactionOffIcon}
-                                title={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}
-                            />
-                            <p className={styles.fireCount}>
-                                {projectMetadata?.stats?.fires || 0}
-                            </p>
-                        </Button>
-                    </div>
-                )}
+                <div className={styles.fireButtonWrapper}>
+                    {fireButton}
+                </div>
             </div>
         </Box>
     );

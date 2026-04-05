@@ -128,7 +128,7 @@ const mapStateToProps = state => ({
 
 StageFooter.propTypes = {
     intl: intlShape,
-    projectId: PropTypes.number
+    projectId: PropTypes.string
 };
 
 export default injectIntl(connect(

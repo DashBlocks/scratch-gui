@@ -8,8 +8,6 @@ import {connect} from 'react-redux';
 import Box from '../box/box.jsx';
 import Button from '../button/button.jsx';
 
-import {STAGE_DISPLAY_SIZES} from '../../lib/layout-constants.js';
-import {getStageDimensions} from '../../lib/screen-utils.js';
 import getSession from '../../lib/session';
 
 import fireReactionOnIcon from './fire-reaction-on.svg';
@@ -30,25 +28,11 @@ const messages = defineMessages({
     }
 });
 
-const StageFooter = (props) => {
-    const {
-        isFullScreen,
-        isPlayerOnly,
-        isEmbedded,
-        projectId,
-        stageSize,
-        customStageSize
-    } = props;
+const StageFooter = (props) => {  
     const [session, setSession] = useState(null);
     const [projectMetadata, setProjectMetadata] = useState(null);
     const [isFired, setIsFired] = useState(false);
     const [isDashProject, setIsDashProject] = useState(false);
-
-    let footer = null;
-
-    if (isFullScreen || isEmbedded || !isPlayerOnly) return footer;
-
-    const stageDimensions = getStageDimensions(stageSize, customStageSize, isFullScreen || isEmbedded);
 
     useEffect(() => {
         async function fetchProjectMetadata() {
@@ -96,61 +80,42 @@ const StageFooter = (props) => {
         }
     }
 
-    const fireButton = (
-        <div className={styles.fireButtonWrapper}>
-            <Button
-                className={styles.fireButton}
-                onClick={() => handleFireButtonClick(projectId)}
-            >
-                <img
-                    alt={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}
-                    className={styles.fireButtonIcon}
-                    draggable={false}
-                    src={isFired ? fireReactionOnIcon : fireReactionOffIcon}
-                    title={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}
-                />
-                <p className={styles.fireCount}>
-                    {projectMetadata?.stats?.fires || 0}
-                </p>
-            </Button>
-        </div>
-    );
-    footer = (
-        <Box
-            className={classNames(styles.stageFooterWrapperOverlay)}
-        >
-            <Box
-                className={styles.stageFooterWrapper}
-                style={{width: stageDimensions.width}}
-            >
-                <div
-                    className={styles.footerButtonsRow}
-                    key="footer-buttons" // addons require the HTML element to be not be re-used by in-editor buttons
-                >
-                    {projectId && isDashProject ? fireButton : null}
+    return isDashProject && (
+        <Box className={styles.stageFooterWrapperOverlay}>
+            <Box className={styles.stageFooterWrapper}>
+                <div className={styles.footerButtonsRow}>
+                    {props.projectId && (
+                        <div className={styles.fireButtonWrapper}>
+                            <Button
+                                className={styles.fireButton}
+                                onClick={() => handleFireButtonClick(projectId)}
+                            >
+                                <img
+                                    alt={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}
+                                    className={styles.fireButtonIcon}
+                                    draggable={false}
+                                    src={isFired ? fireReactionOnIcon : fireReactionOffIcon}
+                                    title={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}
+                                />
+                                <p className={styles.fireCount}>
+                                    {projectMetadata?.stats?.fires || 0}
+                                </p>
+                            </Button>
+                        </div>
+                    )}
                 </div>
             </Box>
         </Box>
     );
-
-    return footer;
 };
 
 const mapStateToProps = state => ({
-    projectId: state.scratchGui.projectState.projectId,
-    customStageSize: state.scratchGui.customStageSize
+    projectId: state.scratchGui.projectState.projectId
 });
 
 StageFooter.propTypes = {
     intl: intlShape,
-    customStageSize: PropTypes.shape({
-        width: PropTypes.number,
-        height: PropTypes.number
-    }),
-    isFullScreen: PropTypes.bool.isRequired,
-    isPlayerOnly: PropTypes.bool.isRequired,
-    isEmbedded: PropTypes.bool.isRequired,
-    stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES))
+    projectId: PropTypes.number
 };
 
 export default injectIntl(connect(

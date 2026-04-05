@@ -67,6 +67,13 @@ const StageFooter = (props) => {
             const data = await res.json();
             if (data.ok) {
                 setIsFired(false);
+                setProjectMetadata(prevMetadata => ({
+                    ...prevMetadata,
+                    stats: {
+                        ...prevMetadata.stats,
+                        fires: prevMetadata.stats?.fires > 0 ? prevMetadata.stats.fires - 1 : 0
+                    }
+                }));
             }
         } else {
             const res = await fetch(`https://dashblocks-server.vercel.app/projects/${props.projectId}/fire`, {
@@ -76,6 +83,13 @@ const StageFooter = (props) => {
             const data = await res.json();
             if (data.ok) {
                 setIsFired(true);
+                setProjectMetadata(prevMetadata => ({
+                    ...prevMetadata,
+                    stats: {
+                        ...prevMetadata.stats,
+                        fires: (prevMetadata.stats?.fires || 0) + 1
+                    }
+                }));
             }
         }
     }

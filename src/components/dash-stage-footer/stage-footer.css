@@ -4,23 +4,9 @@
 @import "../../css/filters.css";
 
 .stage-footer-wrapper {
-    position: relative;
-}
-
-.stage-footer-wrapper-overlay {
-    position: relative;
-    background-color: $fullscreen-accent;
-    z-index: $z-index-stage-header;
-}
-.stage-footer-wrapper-overlay.embedded {
-    background-color: transparent;
-}
-
-.stage-footer-wrapper {
     display: flex;
     margin: auto;
     justify-content: space-between;
-    flex-shrink: 0;
     align-items: center;
     height: $stage-menu-height;
     padding-top: $space;
@@ -47,10 +33,6 @@
     width: 100%;
     height: 100%;
     filter: $filter-icon-gray;
-}
-
-[dir="rtl"] .fire-button-icon {
-    transform: scaleX(-1);
 }
 
 .footer-buttons-row {

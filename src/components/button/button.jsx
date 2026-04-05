@@ -7,6 +7,7 @@ import styles from './button.css';
 const ButtonComponent = ({
     className,
     disabled,
+    iconAlt,
     iconClassName,
     iconSrc,
     iconWidth,
@@ -22,6 +23,7 @@ const ButtonComponent = ({
 
     const icon = iconSrc && (
         <img
+            alt={iconAlt}
             className={classNames(iconClassName, styles.icon)}
             draggable={false}
             src={iconSrc}
@@ -50,6 +52,7 @@ ButtonComponent.propTypes = {
     children: PropTypes.node,
     className: PropTypes.string,
     disabled: PropTypes.bool,
+    iconAlt: PropTypes.string,
     iconClassName: PropTypes.string,
     iconSrc: PropTypes.string,
     iconHeight: PropTypes.number,

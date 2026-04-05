@@ -29,7 +29,6 @@ const messages = defineMessages({
 });
 
 const StageFooter = (props) => {  
-    const [session, setSession] = useState(null);
     const [projectMetadata, setProjectMetadata] = useState(null);
     const [isFired, setIsFired] = useState(false);
     const [isDashProject, setIsDashProject] = useState(false);
@@ -45,17 +44,15 @@ const StageFooter = (props) => {
             }
         }
         async function fetchFireStatus() {
-            if (!isDashProject) return;
-            const fetchedSession = await getSession();
-            setSession(fetchedSession);
-            setIsFired(fetchedSession?.firedProjects?.includes(Number(props.projectId)) || false);
+            if (!isDashProject || !props.session?.firedProjects) return;
+            setIsFired(props.session.firedProjects.includes(+props.projectId));
         }
         fetchProjectMetadata();
         fetchFireStatus();
     }, [props.projectId]);
 
     async function handleFireButtonClick() {
-        if (!session) {
+        if (!props.session) {
             alert('Log in to fire this project');
             window.open('./login', '_blank');
             return;
@@ -124,7 +121,8 @@ const StageFooter = (props) => {
 };
 
 const mapStateToProps = state => ({
-    projectId: state.scratchGui.projectState.projectId
+    projectId: state.scratchGui.projectState.projectId,
+    session: state.scratchGui.dash.session
 });
 
 StageFooter.propTypes = {

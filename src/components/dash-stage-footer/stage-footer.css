@@ -8,9 +8,14 @@
     margin: auto;
     justify-content: space-between;
     align-items: center;
+    border-sizing: border-box;
     height: $stage-menu-height;
     padding-top: $space;
     padding-bottom: $space;
+}
+
+.stage-footer-wrapper * {
+    border-sizing: border-box;
 }
 
 .fire-button {

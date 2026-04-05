@@ -215,6 +215,7 @@ const GUIComponent = props => {
                 <StageWrapper
                     isFullScreen={isFullScreen}
                     isEmbedded={isEmbedded}
+                    isPlayerOnly={isPlayerOnly}
                     isRendererSupported={isRendererSupported()}
                     isRtl={isRtl}
                     loading={loading}
@@ -448,6 +449,7 @@ const GUIComponent = props => {
                         <Box className={classNames(styles.stageAndTargetWrapper, styles[stageSize])}>
                             <StageWrapper
                                 isFullScreen={isFullScreen}
+                                isPlayerOnly={isPlayerOnly}
                                 isRendererSupported={isRendererSupported()}
                                 isRtl={isRtl}
                                 stageSize={stageSize}

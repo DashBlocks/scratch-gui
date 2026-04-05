@@ -87,7 +87,7 @@ const StageFooter = (props) => {
                     <div className={styles.fireButtonWrapper}>
                         <Button
                             className={styles.fireButton}
-                            onClick={() => handleFireButtonClick(projectId)}
+                            onClick={() => handleFireButtonClick(props.projectId)}
                         >
                             <img
                                 alt={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}

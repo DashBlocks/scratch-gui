@@ -30,6 +30,7 @@ const messages = defineMessages({
 
 const StageFooter = (props) => {  
     const [projectMetadata, setProjectMetadata] = useState(null);
+    const [session, setSession] = useState(props.session); // Cuz props.session doesn't update, create it's clone
     const [isFired, setIsFired] = useState(false);
     const [isDashProject, setIsDashProject] = useState(false);
 
@@ -47,13 +48,15 @@ const StageFooter = (props) => {
     }, [props.projectId]);
 
     useEffect(() => {
+        setSession(props.session);
+    }, [props.session]);
+
+    useEffect(() => {
         function fetchFireStatus() {
-            console.log(props.session);
-            if (!props.session?.firedProjects) return;
-            setIsFired(props.session.firedProjects.includes(+props.projectId));
+            setIsFired(session.firedProjects.includes(+props.projectId));
         }
         fetchFireStatus();
-    }, [projectMetadata, props.session]);
+    }, [projectMetadata, session?.firedProjects || []]);
 
     async function handleFireButtonClick() {
         if (!props.session) {
@@ -76,6 +79,10 @@ const StageFooter = (props) => {
                         fires: prevMetadata.stats?.fires > 0 ? prevMetadata.stats.fires - 1 : 0
                     }
                 }));
+                setSession(prevSession => ({
+                    ...prevSession,
+                    firedProjects: prevSession.firedProjects.filter(id => id !== +props.projectId)
+                }));
             }
         } else {
             const res = await fetch(`https://dashblocks-server.vercel.app/projects/${props.projectId}/fire`, {
@@ -91,6 +98,10 @@ const StageFooter = (props) => {
                         ...prevMetadata.stats,
                         fires: (prevMetadata.stats?.fires || 0) + 1
                     }
+                }));
+                setSession(prevSession => ({
+                    ...prevSession,
+                    firedProjects: [...(prevSession.firedProjects || []), +props.projectId]
                 }));
             }
         }
@@ -131,7 +142,8 @@ const mapStateToProps = state => ({
 
 StageFooter.propTypes = {
     intl: intlShape,
-    projectId: PropTypes.string
+    projectId: PropTypes.string,
+    session: PropTypes.object
 };
 
 export default injectIntl(connect(

@@ -53,6 +53,7 @@ const StageFooter = (props) => {
 
     useEffect(() => {
         function fetchFireStatus() {
+            if (!session?.firedProjects) return;
             setIsFired(session.firedProjects.includes(+props.projectId));
         }
         fetchFireStatus();

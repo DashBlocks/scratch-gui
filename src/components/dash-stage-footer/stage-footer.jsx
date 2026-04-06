@@ -63,6 +63,7 @@ const StageFooter = (props) => {
         const updatedSession = await getSession();
         setSession(updatedSession);
     }
+
     async function handleFireButtonClick() {
         if (!props.session) {
             alert('Log in to fire this project');

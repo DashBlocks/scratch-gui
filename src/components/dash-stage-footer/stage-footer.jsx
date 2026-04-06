@@ -9,6 +9,7 @@ import Box from '../box/box.jsx';
 import Button from '../button/button.jsx';
 
 import getSession from '../../lib/session';
+import {setSession} from '../../reducers/dash';
 
 import fireReactionOnIcon from './fire-reaction-on.svg';
 import fireReactionOffIcon from './fire-reaction-off.svg';
@@ -30,7 +31,6 @@ const messages = defineMessages({
 
 const StageFooter = (props) => {  
     const [projectMetadata, setProjectMetadata] = useState(null);
-    const [session, setSession] = useState(props.session); // Cuz props.session doesn't update, create it's clone
     const [isFired, setIsFired] = useState(false);
     const [isDashProject, setIsDashProject] = useState(false);
 
@@ -48,16 +48,12 @@ const StageFooter = (props) => {
     }, [props.projectId]);
 
     useEffect(() => {
-        setSession(props.session);
-    }, [props.session]);
-
-    useEffect(() => {
         function fetchFireStatus() {
-            if (!session?.firedProjects) return;
-            setIsFired(session.firedProjects.includes(+props.projectId));
+            if (!props.session?.firedProjects) return;
+            setIsFired(props.session.firedProjects.includes(+props.projectId));
         }
         fetchFireStatus();
-    }, [projectMetadata, session?.firedProjects || []]);
+    }, [projectMetadata, props.session?.firedProjects || []]);
 
     async function updateSession() {
         const updatedSession = await getSession();

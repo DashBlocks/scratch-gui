@@ -45,6 +45,7 @@ const StageFooter = (props) => {
             }
         }
         function fetchFireStatus() {
+            console.log(isDashProject, props.session);
             if (!isDashProject || !props.session?.firedProjects) return;
             setIsFired(props.session.firedProjects.includes(+props.projectId));
         }

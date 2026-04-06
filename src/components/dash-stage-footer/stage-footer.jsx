@@ -53,7 +53,7 @@ const StageFooter = (props) => {
             setIsFired(props.session.firedProjects.includes(+props.projectId));
         }
         fetchFireStatus();
-    }, [projectMetadata, props.session?.firedProjects || []]);
+    }, [props.session?.firedProjects || []]);
 
     async function updateSession() {
         const updatedSession = await getSession();

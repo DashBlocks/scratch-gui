@@ -59,6 +59,10 @@ const StageFooter = (props) => {
         fetchFireStatus();
     }, [projectMetadata, session?.firedProjects || []]);
 
+    async function updateSession() {
+        const updatedSession = await getSession();
+        setSession(updatedSession);
+    }
     async function handleFireButtonClick() {
         if (!props.session) {
             alert('Log in to fire this project');
@@ -77,12 +81,8 @@ const StageFooter = (props) => {
                     ...prevMetadata,
                     stats: {
                         ...prevMetadata.stats,
-                        fires: prevMetadata.stats?.fires > 0 ? prevMetadata.stats.fires - 1 : 0
+                        fires: data.fires
                     }
-                }));
-                setSession(prevSession => ({
-                    ...prevSession,
-                    firedProjects: prevSession.firedProjects.filter(id => id !== +props.projectId)
                 }));
             }
         } else {
@@ -97,15 +97,12 @@ const StageFooter = (props) => {
                     ...prevMetadata,
                     stats: {
                         ...prevMetadata.stats,
-                        fires: (prevMetadata.stats?.fires || 0) + 1
+                        fires: data.fires
                     }
-                }));
-                setSession(prevSession => ({
-                    ...prevSession,
-                    firedProjects: [...(prevSession.firedProjects || []), +props.projectId]
                 }));
             }
         }
+        await updateSession();
     }
 
     if (!isDashProject || !props.projectId) return null;

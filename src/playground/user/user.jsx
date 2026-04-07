@@ -93,7 +93,7 @@ const User = (props) => {
                 if (userData.user.role === "dasher") setDescriptionDisabled(true);
                 setUserData(userData.user);
 
-                const projects = userData.user.projects.slice(0, 10);
+                const projects = userData.user.projects.slice(0, 20);
                 setProjects(projects);
             } catch (error) {
                 setError(error.message);

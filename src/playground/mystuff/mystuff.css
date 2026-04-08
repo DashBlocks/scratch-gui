@@ -88,7 +88,8 @@ body {
 }
 
 .project-grid {
-    display: inline;
+    display: flex;
+    flex-direction: column;
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
     padding: $space;
@@ -104,8 +105,12 @@ body {
     align-items: center;
 }
 
+.thumb-wrapper {
+    height: 9rem;
+}
+
 .thumb-wrapper img {
-    width: 100%;
+    width: 12rem;
     height: 9rem;
     object-fit: cover;
     background: #f3f4f6;

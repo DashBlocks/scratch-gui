@@ -35,7 +35,7 @@ const AccountNavComponent = ({
                 styles.userInfo,
                 className
             )}
-            onMouseUp={onClick}
+            onMouseUp={isOpen ? onClose : onClick}
         >
             {thumbnailUrl ? (
                 <UserAvatar

@@ -32,6 +32,11 @@ class ListMonitorScroller extends React.Component {
         );
     }
     rowRenderer ({index, key, style}) {
+        /*
+         * The implementation of array monitors was taken from AmpMod
+         * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/list-monitor-scroller.jsx
+         */
+        
         const value = this.props.values[index];
         const isNestedArray = Array.isArray(value);
         const isNestedObject = value?.constructor?.prototype === Object.prototype;

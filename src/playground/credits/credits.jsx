@@ -103,7 +103,7 @@ const Credits = () => (
                     <a href="https://penguinmod.com">PenguinMod</a>. {APP_NAME} uses an implementation of extensible blocks, Custom Block Shapes API and has a fork of the PenguinMod's paint editor.
                 </li>
                 <li>
-                    <a href="https://ampmod.codeberg.page">AmpMod</a>. {APP_NAME} uses an implementation of array monitors (only 1D).
+                    <a href="https://ampmod.codeberg.page">AmpMod</a>. {APP_NAME} uses an implementation of array monitors (only 1D) and has some blocks clearly inspired to AmpMod's blocks from Arrays category.
                 </li>
             </ul>
         </section>

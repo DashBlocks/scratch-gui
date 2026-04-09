@@ -33,6 +33,7 @@ class ObjectMonitorScroller extends React.Component {
     }
     rowRenderer ({index, key, style}) {
         const value = Object.values(this.props.values)[index];
+        // The display of the nested array was taken from AmpMod
         const isNestedArray = Array.isArray(value);
         const isNestedObject = value?.constructor?.prototype === Object.prototype;
         return (

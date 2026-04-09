@@ -74,10 +74,11 @@ const Credits = () => (
             </section>
         )}
         {APP_NAME !== 'TurboWarp' && (
+            // Be kind and considerate. Don't remove this :)
             <section>
                 <h2>TurboWarp</h2>
                 <p>
-                    {APP_NAME} is based on <a href="https://turbowarp.org/">TurboWarp</a>.
+                    <a href="https://turbowarp.org/">TurboWarp</a> is the parent project. {APP_NAME} is based on the work of the <a href="https://turbowarp.org/credits">TurboWarp contributors</a> but is not endorsed by TurboWarp in any way.
                 </p>
             </section>
         )}
@@ -91,6 +92,20 @@ const Credits = () => (
                     Donate to support Scratch.
                 </a>
             </p>
+        </section>
+        <section>
+            <h2>Other modifications</h2>
+            <p>
+                {APP_NAME} uses code from other free and open-source TurboWarp modifications/visual programming languages:
+            </p>
+            <ul>
+                <li>
+                    <a href="https://penguinmod.com">PenguinMod</a>. {APP_NAME} uses an implementation of extensible blocks, Custom Block Shapes API and has a fork of the PenguinMod's paint editor.
+                </li>
+                <li>
+                    <a href="https://ampmod.codeberg.page">AmpMod</a>. {APP_NAME} uses an implementation of array monitors (only 1D).
+                </li>
+            </ul>
         </section>
         <section>
             <h2>Contributors</h2>

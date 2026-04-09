@@ -44,6 +44,11 @@ const getCategoryColor = (theme, category) => {
 };
 
 const MonitorComponent = props => {
+    /*
+     * The implementation of array monitors was taken from AmpMod
+     * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/monitor.jsx
+     */
+    
     const mode = Array.isArray(props.value)
         ? 'list'
         : props.value?.constructor?.prototype === Object.prototype ? 'object' : props.mode;

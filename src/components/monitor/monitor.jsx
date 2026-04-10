@@ -12,6 +12,7 @@ import SliderMonitor from '../../containers/slider-monitor.jsx';
 import ListMonitor from '../../containers/list-monitor.jsx';
 import ObjectMonitor from '../../containers/object-monitor.jsx';
 import {Theme} from '../../lib/themes/index.js';
+import Cast from 'scratch-vm/src/utils/cast.js';
 
 import styles from './monitor.css';
 
@@ -49,9 +50,9 @@ const MonitorComponent = props => {
      * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/monitor.jsx
      */
     
-    const mode = Array.isArray(props.value)
+    const mode = Cast.isNormalArray(props.value)
         ? 'list'
-        : props.value?.constructor?.prototype === Object.prototype ? 'object' : props.mode;
+        : Cast.isNormalObject(props.value) ? 'object' : props.mode;
 
     return (
         <ContextMenuTrigger

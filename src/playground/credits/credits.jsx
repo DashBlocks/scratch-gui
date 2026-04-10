@@ -106,9 +106,15 @@ const Credits = () => (
                     <a href="https://ampmod.codeberg.page">AmpMod</a>. {APP_NAME} uses an implementation of array monitors (only 1D) and has some blocks clearly inspired to AmpMod's blocks from Arrays category.
                 </li>
             </ul>
+            <p>
+                Also try them out!
+            </p>
         </section>
         <section>
             <h2>Contributors</h2>
+            <p>
+                {APP_NAME} developers and people who contributed to {APP_NAME} and parent project(s) are listed here.
+            </p>
             <UserList users={UserData.contributors} />
         </section>
         <section>
@@ -116,11 +122,24 @@ const Credits = () => (
             <UserList users={UserData.addonDevelopers} />
         </section>
         <section>
+            <h2>Dash Extensions Gallery</h2>
+            <p>
+                People who develop extensions for Dash Extensions Gallery are listed here.
+            </p>
+            <UserList users={UserData.dashExtensionDevelopers} />
+        </section>
+        <section>
             <h2>TurboWarp Extension Gallery</h2>
-            <UserList users={UserData.extensionDevelopers} />
+            <p>
+                People who develop extensions for TurboWarp Extension Gallery are listed here. Thanks to them for the wonderful and useful extensions.
+            </p>
+            <UserList users={UserData.twExtensionDevelopers} />
         </section>
         <section>
             <h2>Documentation</h2>
+            <p>
+                People who write the pages in the documentation or help to write are listed here.
+            </p>
             <UserList users={UserData.docs} />
         </section>
         <section>

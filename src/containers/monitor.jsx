@@ -11,6 +11,7 @@ import importCSV from '../lib/import-csv';
 import downloadBlob from '../lib/download-blob';
 import {Theme} from '../lib/themes';
 import SliderPrompt from './slider-prompt.jsx';
+import {blockColors} from '../../lib/themes/blocks/three';
 
 import {connect} from 'react-redux';
 import {Map} from 'immutable';
@@ -39,6 +40,7 @@ class Monitor extends React.Component {
     constructor (props) {
         super(props);
         bindAll(this, [
+            'getExtensionRealColor',
             'handleDragEnd',
             'handleHide',
             'handleNextMode',
@@ -106,6 +108,15 @@ class Monitor extends React.Component {
     }
     componentWillUnmount () {
         this.props.removeMonitorRect(this.props.id);
+    }
+    getExtensionRealColor (category) {
+        if (category !== 'extension') return null;
+        const realCategory = this.props.opcode.split('_')[0];
+        const extColor = props.vm.runtime._blockInfo.find((extInfo) => realCategory === extInfo.id)?.color1;
+        if (!extColor || extColor.toLowerCase() === blockColors.pen.primary.toLowerCase()) return null;
+        const themeObj = this.props.theme.getCustomExtensionColors();
+        if (Object.keys(themeObj).length === 0) return extColor;
+        return themeObj.primary(extColor);
     }
     handleDragEnd (e, {x, y}) {
         const newX = parseInt(this.element.style.left, 10) + x;
@@ -220,6 +231,7 @@ class Monitor extends React.Component {
                     {...monitorProps}
                     opcode={this.props.opcode}
                     draggable={this.props.draggable}
+                    extensionRealColor={this.getExtensionRealColor(monitorProps.category)}
                     height={this.props.height}
                     isDiscrete={this.props.isDiscrete}
                     max={this.props.max}

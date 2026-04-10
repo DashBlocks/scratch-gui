@@ -7,6 +7,7 @@ import {FormattedMessage} from 'react-intl';
 import styles from './monitor.css';
 import {List} from 'react-virtualized';
 import DOMElementRenderer from '../../containers/dom-element-renderer.jsx';
+import Cast from 'scratch-vm/src/utils/cast.js';
 
 class ObjectMonitorScroller extends React.Component {
     constructor (props) {
@@ -37,8 +38,8 @@ class ObjectMonitorScroller extends React.Component {
          * The display of the nested array was taken from AmpMod
          * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/list-monitor-scroller.jsx
          */
-        const isNestedArray = Array.isArray(value);
-        const isNestedObject = value?.constructor?.prototype === Object.prototype;
+        const isNestedArray = Cast.isNormalArray(value);
+        const isNestedObject = Cast.isNormalObject(value);
         return (
             <div
                 className={styles.listRow}
@@ -68,7 +69,7 @@ class ObjectMonitorScroller extends React.Component {
                                     ? "nested array"
                                     : isNestedObject
                                         ? "nested object"
-                                        : String(typeof this.props.activeValue?.customId === 'string' && typeof this.props.activeValue?.toListEditor === 'function'
+                                        : String(Cast.isCustomType(this.props.activeValue) && typeof this.props.activeValue?.toListEditor === 'function'
                                             ? this.props.activeValue.toListEditor()
                                             : this.props.activeValue)}
                                 onBlur={this.props.onDeactivate}
@@ -91,7 +92,7 @@ class ObjectMonitorScroller extends React.Component {
                                 ? <i>nested array</i>
                                 : isNestedObject
                                     ? <i>nested object</i>
-                                    : typeof value?.customId === 'string' && (typeof value?.toListItem === 'function' || typeof value?.toMonitorContent === 'function')
+                                    : Cast.isCustomType(value); && (typeof value?.toListItem === 'function' || typeof value?.toMonitorContent === 'function')
                                         ? (<DOMElementRenderer domElement={typeof value?.toListItem === 'function'
                                             ? value.toListItem()
                                             : value.toMonitorContent()} />)

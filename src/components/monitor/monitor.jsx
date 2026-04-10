@@ -79,7 +79,7 @@ const MonitorComponent = props => {
                     data-opcode={props.opcode}
                 >
                     {React.createElement(modes[mode], {
-                        categoryColor: getCategoryColor(props.theme, props.category),
+                        categoryColor: props.extensionRealColor || getCategoryColor(props.theme, props.category),
                         ...props
                     })}
                 </Box>
@@ -171,6 +171,7 @@ MonitorComponent.propTypes = {
     onSetModeToLarge: PropTypes.func,
     onSetModeToSlider: PropTypes.func,
     onSliderPromptOpen: PropTypes.func,
+    extensionRealColor: PropTypes.string,
     theme: PropTypes.instanceOf(Theme).isRequired
 };
 

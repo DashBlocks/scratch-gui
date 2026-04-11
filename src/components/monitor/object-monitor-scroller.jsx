@@ -92,7 +92,7 @@ class ObjectMonitorScroller extends React.Component {
                                 ? <i>nested array</i>
                                 : isNestedObject
                                     ? <i>nested object</i>
-                                    : Cast.isCustomType(value); && (typeof value?.toListItem === 'function' || typeof value?.toMonitorContent === 'function')
+                                    : Cast.isCustomType(value) && (typeof value?.toListItem === 'function' || typeof value?.toMonitorContent === 'function')
                                         ? (<DOMElementRenderer domElement={typeof value?.toListItem === 'function'
                                             ? value.toListItem()
                                             : value.toMonitorContent()} />)

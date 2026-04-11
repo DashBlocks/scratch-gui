@@ -12,7 +12,7 @@ import SliderMonitor from '../../containers/slider-monitor.jsx';
 import ListMonitor from '../../containers/list-monitor.jsx';
 import ObjectMonitor from '../../containers/object-monitor.jsx';
 import {Theme} from '../../lib/themes/index.js';
-import Cast from 'scratch-vm/src/utils/cast.js';
+import Cast from 'scratch-vm/src/util/cast';
 
 import styles from './monitor.css';
 

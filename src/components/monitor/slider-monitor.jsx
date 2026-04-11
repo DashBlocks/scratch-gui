@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import styles from './monitor.css';
 import DOMElementRenderer from '../../containers/dom-element-renderer.jsx';
-import Cast from 'scratch-vm/src/utils/cast.js';
+import Cast from 'scratch-vm/src/util/cast';
 
 const SliderMonitor = ({categoryColor, isDiscrete, label, min, max, value, onSliderUpdate}) => (
     <div className={styles.defaultMonitor}>

@@ -36,10 +36,10 @@ const modes = {
     object: ObjectMonitor
 };
 
-const getCategoryColor = (theme, category) => {
+const getCategoryColor = (theme, category, extensionRealColor) => {
     const colors = theme.getStageBlockColors();
     return {
-        background: colors[categoryColorMap[category]].primary,
+        background: extensionRealColor || colors[categoryColorMap[category]].primary,
         text: colors.text
     };
 };
@@ -79,7 +79,7 @@ const MonitorComponent = props => {
                     data-opcode={props.opcode}
                 >
                     {React.createElement(modes[mode], {
-                        categoryColor: props.extensionRealColor || getCategoryColor(props.theme, props.category),
+                        categoryColor: getCategoryColor(props.theme, props.category, props.extensionRealColor),
                         ...props
                     })}
                 </Box>

@@ -7,7 +7,7 @@ import {FormattedMessage} from 'react-intl';
 import styles from './monitor.css';
 import {List} from 'react-virtualized';
 import DOMElementRenderer from '../../containers/dom-element-renderer.jsx';
-import Cast from 'scratch-vm/src/utils/cast.js';
+import Cast from 'scratch-vm/src/util/cast';
 
 class ObjectMonitorScroller extends React.Component {
     constructor (props) {

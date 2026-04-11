@@ -110,11 +110,18 @@ class Monitor extends React.Component {
         this.props.removeMonitorRect(this.props.id);
     }
     getExtensionRealColor (category) {
-        if (category !== 'extension') return null;
-        const realCategory = this.props.opcode.split('_')[0];
-        const extColor = props.vm.runtime._blockInfo.find((extInfo) => realCategory === extInfo.id)?.color1;
-        if (!extColor || extColor.toLowerCase() === blockColors.pen.primary.toLowerCase()) return null;
-        const themeObj = this.props.theme.getCustomExtensionColors();
+        if (category !== 'extension') {
+            return null;
+        }
+        const {opcode, theme, vm} = this.props;
+        const realCategory = opcode.split('_')[0];
+        const extColor = vm.runtime._blockInfo.find((extInfo) => realCategory === extInfo.id)?.color1;
+        // If primary color of extension is same as default primary color for extensions,
+        // then return null, instead of extension color
+        if (!extColor || extColor.toLowerCase() === blockColors.pen.primary.toLowerCase()) {
+            return null;
+        }
+        const themeObj = theme.getCustomExtensionColors();
         if (Object.keys(themeObj).length === 0) return extColor;
         return themeObj.primary(extColor);
     }

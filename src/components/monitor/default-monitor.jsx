@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './monitor.css';
 import DOMElementRenderer from '../../containers/dom-element-renderer.jsx';
-import Cast from 'scratch-vm/src/utils/cast.js';
+import Cast from 'scratch-vm/src/util/cast';
 
 const DefaultMonitor = ({categoryColor, label, value}) => (
     <div className={styles.defaultMonitor}>

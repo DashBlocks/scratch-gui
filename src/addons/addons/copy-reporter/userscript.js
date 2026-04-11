@@ -1,4 +1,4 @@
-import Cast from "scratch-vm/src/utils/cast";
+import Cast from "scratch-vm/src/util/cast";
 
 export default async function ({ addon, console, msg }) {
   addon.tab.createEditorContextMenu(

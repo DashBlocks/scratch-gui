@@ -11,7 +11,7 @@ import importCSV from '../lib/import-csv';
 import downloadBlob from '../lib/download-blob';
 import {Theme} from '../lib/themes';
 import SliderPrompt from './slider-prompt.jsx';
-import {blockColors} from '../../lib/themes/blocks/three';
+import {blockColors} from '../lib/themes/blocks/three';
 
 import {connect} from 'react-redux';
 import {Map} from 'immutable';

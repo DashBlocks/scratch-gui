@@ -27,7 +27,7 @@ const messages = defineMessages({
     }
 });
 
-const verificationProjectId = "1288539368";
+const redirectLocation = btoa('https://dashblocks-server.vercel.app/auth/verify-scratch');
 
 class Register extends React.Component {
     constructor (props) {
@@ -38,11 +38,10 @@ class Register extends React.Component {
             'handleChange'
         ]);
         this.state = {
-            scratchUsername: '',
             username: '',
             password: '',
-            authCode: null,
             waiting: false,
+            verifying: false,
             error: null
         };
     }
@@ -54,13 +53,13 @@ class Register extends React.Component {
     async handleSubmit (e) {
         e.preventDefault();
 
-        this.setState({authCode: null, waiting: true, error: null});
+        this.setState({waiting: true, verifying: true, error: null});
         try {
-            const response = await fetch('https://dashblocks-server.vercel.app/auth/get-auth-code', {credentials: 'include'})
-            const result = await response.json();
-            if (!result.ok)
-                throw new Error(result.error);
-            this.setState({authCode: result.code});
+            window.open(
+				`https://auth.itinerary.eu.org/auth/?redirect=${redirectLocation}&name=Dash (DashBlocks)`,
+				'_blank',
+				'noopener,noreferrer'
+			);
         } catch (error) {
             this.setState({error: error.message});
         } finally {
@@ -71,13 +70,13 @@ class Register extends React.Component {
     async handleConfirm (e) {
         e.preventDefault();
 
-        this.setState({authCode: null, waiting: true, error: null});
-        const {scratchUsername, username, password} = this.state;
+        this.setState({waiting: true, verifying: false, error: null});
+        const {username, password} = this.state;
         try {
             const response = await fetch('https://dashblocks-server.vercel.app/auth/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-				body: JSON.stringify({scratchUsername, username, password}),
+				body: JSON.stringify({username, password}),
 				credentials: 'include'
             });
             const result = await response.json();
@@ -118,26 +117,9 @@ class Register extends React.Component {
                                 className={styles.register}
                                 onSubmit={this.handleSubmit}
                             >
-                                <label htmlFor="scratchUsername">
-                                    <FormattedMessage
-                                        defaultMessage="Scratch Username"
-                                        description="Label for Scratch username input that will be used to verify auth"
-                                        id="dash.register.scratchUsername"
-                                    />
-                                </label>
-                                <Input
-                                    required
-                                    name="scratchUsername"
-                                    type="text"
-                                    minLength={3}
-                                    maxLength={20}
-                                    value={this.state.scratchUsername}
-                                    onChange={this.handleChange}
-                                />
-
                                 <label htmlFor="username">
                                     <FormattedMessage
-                                        defaultMessage="Username"
+                                        defaultMessage="Create username"
                                         description="Label for register username input"
                                         id="dash.register.username"
                                     />
@@ -154,7 +136,7 @@ class Register extends React.Component {
             
                                 <label htmlFor="password">
                                     <FormattedMessage
-                                        defaultMessage="Password"
+                                        defaultMessage="Create password"
                                         description="Label for register password input"
                                         id="general.password"
                                     />
@@ -173,16 +155,16 @@ class Register extends React.Component {
                                     <Button
                                         className={styles.submitButton}
                                         disabled={this.state.waiting}
-                                        onClick={this.state.authCode ? this.handleConfirm : this.handleSubmit}
+                                        onClick={this.state.verifying ? this.handleConfirm : this.handleSubmit}
                                     >
                                         {this.state.waiting ? (
                                             <Spinner
                                                 className={styles.spinner}
                                                 small
                                             />
-                                        ) : (this.state.authCode ? (
+                                        ) : (this.state.verifying ? (
                                             <FormattedMessage
-                                                defaultMessage="Confirm"
+                                                defaultMessage="Done"
                                                 description="Button text to confirm if user sent auth code to the auth project"
                                                 id="dash.register.confirm"
                                             />
@@ -199,42 +181,32 @@ class Register extends React.Component {
                                 {this.state.authCode && <div className={styles.authCodeWrapper}>
                                     <p>
                                         <FormattedMessage
-                                            defaultMessage="Copy this code:"
-                                            description="Text to ask to copy auth code"
-                                            id="dash.register.verification.copyCode"
-                                        />
-                                    </p>
-                                    <code>${this.state.authCode}</code>
-                                    <p>
-                                        <FormattedMessage
-                                            defaultMessage="Open {verificationProject}"
-                                            description="Text to ask to open verification project"
-                                            id="dash.register.verification.openProject"
+                                            defaultMessage="Verification window should be opened, if not, click {here}"
+                                            description="Text to ask to press the button if verification done"
+                                            id="dash.register.verification.opened"
                                             values={{
-                                                verificationProject: (
-                                                    <a href={`https://scratch.mit.edu/projects/${verificationProjectId}`} target="_blank">
+                                                here: (
+                                                    <a
+                                                        href={`https://auth.itinerary.eu.org/auth/?redirect=${redirectLocation}&name=Dash (DashBlocks)`}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                    >
                                                         <FormattedMessage
-                                                            defaultMessage="Verification Project"
-                                                            description="Link that opens verification project"
-                                                            id="dash.register.verification.project"
+                                                            defaultMessage="here"
+                                                            description="Link text to open verification page"
+                                                            id="dash.register.verification.here"
                                                         />
                                                     </a>
                                                 )
                                             }}
                                         />
                                     </p>
+                                    <br />
                                     <p>
                                         <FormattedMessage
-                                            defaultMessage="Comment what did you copied (your verification code)"
-                                            description="Text to ask to comment auth code to the project"
-                                            id="dash.register.verification.commentAuthCode"
-                                        />
-                                    </p>
-                                    <p>
-                                        <FormattedMessage
-                                            defaultMessage={"After that click the \"Confirm\" button"}
-                                            description="Text to ask when everything is done - click the button"
-                                            id="dash.register.verification.clickTheButton"
+                                            defaultMessage="After verification, click the button again to confirm"
+                                            description="Text to ask to click the button again after verification"
+                                            id="dash.register.verification.after"
                                         />
                                     </p>
                                 </div>}

@@ -58,7 +58,7 @@ class Register extends React.Component {
             window.open(
 				`https://auth.itinerary.eu.org/auth/?redirect=${redirectLocation}&name=Dash (DashBlocks)`,
 				'_blank',
-				'noopener,noreferrer'
+				'noopener,noreferrer,width=600,height=700'
 			);
         } catch (error) {
             this.setState({error: error.message});
@@ -188,8 +188,14 @@ class Register extends React.Component {
                                                 here: (
                                                     <a
                                                         href={`https://auth.itinerary.eu.org/auth/?redirect=${redirectLocation}&name=Dash (DashBlocks)`}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
+                                                        onClick={(e) => {
+                                                            e.preventDefault(); 
+                                                            window.open(
+                                                                `https://auth.itinerary.eu.org/auth/?redirect=${redirectLocation}&name=Dash (DashBlocks)`,
+                                                                '_blank',
+                                                                'noopener,noreferrer,width=600,height=700'
+                                                            );
+                                                        }}
                                                     >
                                                         <FormattedMessage
                                                             defaultMessage="here"

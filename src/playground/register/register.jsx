@@ -53,18 +53,12 @@ class Register extends React.Component {
     async handleSubmit (e) {
         e.preventDefault();
 
-        this.setState({waiting: true, verifying: true, error: null});
-        try {
-            window.open(
-				`https://auth.itinerary.eu.org/auth/?redirect=${redirectLocation}&name=Dash (DashBlocks)`,
-				'_blank',
-				'noopener,noreferrer,width=600,height=700'
-			);
-        } catch (error) {
-            this.setState({error: error.message});
-        } finally {
-            this.setState({waiting: false});
-        }
+        this.setState({waiting: false, verifying: true, error: null});
+        window.open(
+			`https://auth.itinerary.eu.org/auth/?redirect=${redirectLocation}&name=Dash (DashBlocks)`,
+			'_blank',
+			'noopener,noreferrer,width=1000,height=700'
+		);
     }
 
     async handleConfirm (e) {
@@ -193,7 +187,7 @@ class Register extends React.Component {
                                                             window.open(
                                                                 `https://auth.itinerary.eu.org/auth/?redirect=${redirectLocation}&name=Dash (DashBlocks)`,
                                                                 '_blank',
-                                                                'noopener,noreferrer,width=600,height=700'
+                                                                'noopener,noreferrer,width=1000,height=700'
                                                             );
                                                         }}
                                                     >

@@ -178,7 +178,7 @@ class Register extends React.Component {
                                     </Button>
                                 </div>
 
-                                {this.state.authCode && <div className={styles.authCodeWrapper}>
+                                {this.state.verifying && <div className={styles.authCodeWrapper}>
                                     <p>
                                         <FormattedMessage
                                             defaultMessage="Verification window should be opened, if not, click {here}"

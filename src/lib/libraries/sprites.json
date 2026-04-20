@@ -1,4 +1,7 @@
 [ {
+    "tags": [
+            "people"
+        ],
    "isStage":false,
    "name":"Rudolph",
    "variables":{
@@ -191,6 +194,9 @@
    "rotationStyle":"all around"
 },
 {
+    "tags": [
+            "people"
+        ],
    "isStage":false,
    "name":"Freddy",
    "variables":{
@@ -286,7 +292,9 @@
    "draggable":false,
    "rotationStyle":"all around"
 },
-{
+{ "tags": [
+            "people"
+        ],
    "isStage":false,
    "name":"Queen",
    "variables":{
@@ -382,7 +390,9 @@
    "draggable":false,
    "rotationStyle":"all around"
 },
-{
+{ "tags": [
+            "people"
+        ],
    "isStage":false,
    "name":"King",
    "variables":{

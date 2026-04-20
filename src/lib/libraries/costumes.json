@@ -1,5 +1,9 @@
 [          {
          "name":"King_angry",
+    "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"c98ee952063780190d4c60b67c1fca42",
@@ -9,6 +13,10 @@
       },
       {
          "name":"King_happy",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"50eb92742fca140c9de4b10793082dcb",
@@ -18,6 +26,10 @@
       },
       {
          "name":"King_sad",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"f4bfbf5dac03e6b86d7bf688b7c69bc4",
@@ -27,6 +39,10 @@
       },
       {
          "name":"King_sat",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"4a8f3bf1afe1b8d45526bc053bb6700f",
@@ -36,6 +52,10 @@
       },
       {
          "name":"King_walk_1",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"05b17fe508aa33e1bb247a9e5fa24ccf",
@@ -45,6 +65,10 @@
       },
       {
          "name":"King_walk_2",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"41ffe2606da9cfbcc5d2f0e7b1f3151f",
@@ -53,6 +77,10 @@
          "rotationCenterY":94.53500366210938
       },{
          "name":"Queen_neutral",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"884cdec4fbaf332def5782e4c7bf6ea8",
@@ -62,6 +90,10 @@
       },
       {
          "name":"Queen_angry",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"56a6666c3ca41b94a6e1848632cbd870",
@@ -71,6 +103,10 @@
       },
       {
          "name":"Queen_happy",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"2f09a3869748e123129104a4971021ad",
@@ -80,6 +116,10 @@
       },
       {
          "name":"Queen_sad",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"d88dacbad1966fc7762d5af39eb2070c",
@@ -89,6 +129,10 @@
       },
       {
          "name":"Queen_sat",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"db4af303d58dc9ee9b25e501cfaaa1a1",
@@ -98,6 +142,10 @@
       },
       {
          "name":"Queen_walk_1",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"12ce75ada47e03e6de4bdb0e020429a8",
@@ -107,6 +155,10 @@
       },
       {
          "name":"Queen_walk_2",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"398bfa2d38cc1eaf316845d5997fc943",
@@ -115,6 +167,10 @@
          "rotationCenterY":89.8949966430664
       },{
          "name":"Ginger_neutral",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"ef76218c029ff3d65d058e0c3e3d079a",
@@ -124,6 +180,10 @@
       },
       {
          "name":"Ginger_angry",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"328322dcb22cb45fb78b4ddda3dacbc7",
@@ -133,6 +193,10 @@
       },
       {
          "name":"Ginger_happy",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"ca2a53b19d439138e89b5de209d7d5b8",
@@ -142,6 +206,10 @@
       },
       {
          "name":"Ginger_sad",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"3a78d71bcdd7324b927966608fcb8b53",
@@ -151,6 +219,10 @@
       },
       {
          "name":"Ginger_sat",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"87563e0ab7f494f8acdba7048f93d0b7",
@@ -160,6 +232,10 @@
       },
       {
          "name":"Ginger_walk_1",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"809a103c978e46df095118db5570eaed",
@@ -169,6 +245,10 @@
       },
       {
          "name":"Ginger_walk_2",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"472311ceee52caf7711dbf8304552d2a",
@@ -178,6 +258,10 @@
       },
     {
          "name":"Rudolph_neutral_beach",
+            "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"29cd6330c54ddbf241c7ee5b7dcb934b",
@@ -187,6 +271,10 @@
       },
       {
          "name":"Rudolph_angry_beach",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"15d4a63b05371407feacb5f00f11dd6e",
@@ -196,6 +284,10 @@
       },
       {
          "name":"Rudolph_happy_beach",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"41d04f6704cf05b840d1883687e2a7ec",
@@ -205,6 +297,10 @@
       },
       {
          "name":"Rudolph_sad_beach",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"e4fd271a6558efeb9462669be3d25dcb",
@@ -214,6 +310,10 @@
       },
       {
          "name":"Rudolph_sat_beach",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"c2bf3be54ab130f18cd447c9c7d2a8bb",
@@ -223,6 +323,10 @@
       },
       {
          "name":"Rudolph_walk_1_beach",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"843751df81c027f9e9bd4fe6e2f6f421",
@@ -232,6 +336,10 @@
       },
       {
          "name":"Rudolph_walk_2_beach",
+              "tags": [
+            "dash",
+            "people"
+        ],
          "bitmapResolution":1,
          "dataFormat":"svg",
          "assetId":"ac95dc74e22ad9125b5baff9e926f509",

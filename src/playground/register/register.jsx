@@ -251,7 +251,7 @@ class Register extends React.Component {
                                                 <FormattedMessage
                                                     defaultMessage="Log in"
                                                     description="Link to log in page"
-                                                    id="dash.register.logIn"
+                                                    id="dash.register.logInLink"
                                                 />
                                             </a>
                                         )

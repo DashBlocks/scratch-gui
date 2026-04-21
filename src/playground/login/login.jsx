@@ -143,6 +143,7 @@ class Login extends React.Component {
                                 <FormattedMessage
                                     defaultMessage="New to Dash or don't have an account yet? {signUp}"
                                     description="Text prompting user to sign up if they don't have an account"
+                                    id="dash.login.register"
                                     values={{
                                         signUp: (
                                             <a href="./register" target="_blank">

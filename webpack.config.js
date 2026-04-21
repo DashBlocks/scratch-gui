@@ -152,6 +152,7 @@ module.exports = [
             'user': './src/playground/user/user.jsx',
             'login': './src/playground/login/login.jsx',
             'register': './src/playground/register/register.jsx',
+            'account-settings': './src/playground/account-settings/account-settings.jsx',
             'mystuff': './src/playground/mystuff/mystuff.jsx'
         },
         output: {
@@ -249,7 +250,7 @@ module.exports = [
                 chunks: ['login'],
                 template: 'src/playground/simple.ejs',
                 filename: 'login.html',
-                title: `Sign in - ${APP_NAME}`,
+                title: `Sign In - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({
@@ -257,6 +258,13 @@ module.exports = [
                 template: 'src/playground/simple.ejs',
                 filename: 'register.html',
                 title: `Join - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['account-settings'],
+                template: 'src/playground/simple.ejs',
+                filename: 'account-settings.html',
+                title: `Account Settings - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

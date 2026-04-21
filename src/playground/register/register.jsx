@@ -122,7 +122,7 @@ class Register extends React.Component {
                             >
                                 <label htmlFor="username">
                                     <FormattedMessage
-                                        defaultMessage="Create username"
+                                        defaultMessage="Create Username"
                                         description="Label for register username input"
                                         id="dash.register.username"
                                     />
@@ -139,7 +139,7 @@ class Register extends React.Component {
             
                                 <label htmlFor="password">
                                     <FormattedMessage
-                                        defaultMessage="Create password"
+                                        defaultMessage="Create Password"
                                         description="Label for register password input"
                                         id="general.password"
                                     />
@@ -156,7 +156,7 @@ class Register extends React.Component {
 
                                 <label htmlFor="confirmPassword">
                                     <FormattedMessage
-                                        defaultMessage="Confirm password"
+                                        defaultMessage="Confirm Password"
                                         description="Label for confirm password input"
                                         id="dash.account.confirmPassword"
                                     />

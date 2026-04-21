@@ -75,7 +75,7 @@ class Login extends React.Component {
                         <div className={styles.section}>
                             <h2>
                                 <FormattedMessage
-                                    defaultMessage="Sign in"
+                                    defaultMessage="Sign In"
                                     description="Log in page header"
                                     id="dash.login.signIn"
                                 />

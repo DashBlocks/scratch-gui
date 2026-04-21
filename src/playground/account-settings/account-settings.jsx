@@ -99,7 +99,7 @@ class AccountSettings extends React.Component {
                         <div className={styles.section}>
                             <h2>
                                 <FormattedMessage
-                                    defaultMessage="Account settings"
+                                    defaultMessage="Account Settings"
                                     description="Account settings page header"
                                     id="dash.accountSettings.header"
                                 />
@@ -110,7 +110,7 @@ class AccountSettings extends React.Component {
                             >
                                 <label htmlFor="currentPassword">
                                     <FormattedMessage
-                                        defaultMessage="Current password"
+                                        defaultMessage="Current Password"
                                         description="Label for current password input"
                                         id="dash.accountSettings.currentPassword"
                                     />
@@ -125,7 +125,7 @@ class AccountSettings extends React.Component {
 
                                 <label htmlFor="newPassword">
                                     <FormattedMessage
-                                        defaultMessage="New password"
+                                        defaultMessage="New Password"
                                         description="Label for new password input"
                                         id="dash.accountSettings.newPassword"
                                     />
@@ -140,7 +140,7 @@ class AccountSettings extends React.Component {
 
                                 <label htmlFor="confirmPassword">
                                     <FormattedMessage
-                                        defaultMessage="Confirm password"
+                                        defaultMessage="Confirm Password"
                                         description="Label for confirm password input"
                                         id="dash.account.confirmPassword"
                                     />

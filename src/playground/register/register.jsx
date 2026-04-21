@@ -244,6 +244,7 @@ class Register extends React.Component {
                                 <FormattedMessage
                                     defaultMessage="Already have an account? {logIn}"
                                     description="Text prompting user to log in if they already have an account"
+									id="dash.register.logIn"
                                     values={{
                                         logIn: (
                                             <a href="./login" target="_blank">

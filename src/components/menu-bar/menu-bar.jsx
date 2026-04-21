@@ -342,7 +342,7 @@ class MenuBar extends React.Component {
                     }
                     return;
                 }
-                alert('Log in first');
+                window.open('./login', '_blank');
                 return;
             }
             if (this.props.canSave) { // save before transitioning to project page

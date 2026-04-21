@@ -139,6 +139,23 @@ class Login extends React.Component {
                                     <div className={styles.error}>{this.state.error}</div>
                                 )}
                             </form>
+                            <div>
+                                <FormattedMessage
+                                    defaultMessage="New to Dash or don't have an account yet? {signUp}"
+                                    description="Text prompting user to sign up if they don't have an account"
+                                    values={{
+                                        signUp: (
+                                            <a href="./register" target="_blank">
+                                                <FormattedMessage
+                                                    defaultMessage="Sign up"
+                                                    description="Link to sign up page"
+                                                    id="dash.login.signUp"
+                                                />
+                                            </a>
+                                        )
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

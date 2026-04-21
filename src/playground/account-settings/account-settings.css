@@ -1,0 +1,113 @@
+@import "../../css/colors.css";
+@import "../../css/units.css";
+@import "../../css/z-index.css";
+@import "../../css/default-colors.css";
+
+/* Base styles used by Scratch https://github.com/LLK/scratch-www/blob/develop/src/main.scss */
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: bold;
+    line-height: 1.7em;
+}
+h1 {
+    font-weight: 2.5rem;
+}
+h2 {
+    font-weight: 2rem;
+}
+h3 {
+    font-size: 1.4rem;
+}
+h4 {
+    font-size: 1rem;
+}
+a {
+    color: $link-color;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial;
+    margin: 0px;
+}
+
+.container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-width: fit-content;
+    background: $page-background;
+    color: $page-foreground;
+}
+
+.account-settings-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space;
+    background: $ui-primary;
+    margin: 0px;
+    padding: $space;
+    width: 100vw;
+}
+
+.section {
+    width: calc(100% - 2 * $space);
+    max-width: 500px;
+    background: $ui-white;
+    margin: 0px;
+    padding: $space;
+    border-radius: $space;
+    border: 0.0625rem solid $ui-black-transparent;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: calc($space / 2);
+}
+
+.spinner {
+    vertical-align: middle;
+}
+    
+.submit-row {
+    display: flex;
+}
+
+.error {
+    border: 1px solid $ui-black-transparent;
+    border-radius: calc($space / 2);
+    background-color: $error-primary;
+    color: white;
+    padding: 0.75rem 1rem;
+}
+
+.submit-button {
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial;
+    padding: 0.75rem 1rem;
+    background: $looks-secondary;
+    color: white;
+    border: 1px solid $looks-secondary;
+    font-weight: 600;
+    font-size: 0.85rem;
+}

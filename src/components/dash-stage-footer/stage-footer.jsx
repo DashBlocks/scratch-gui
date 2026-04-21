@@ -62,7 +62,6 @@ const StageFooter = (props) => {
 
     async function handleFireButtonClick() {
         if (!props.session) {
-            alert('Log in to fire this project');
             window.open('./login', '_blank');
             return;
         }

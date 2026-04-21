@@ -24,6 +24,11 @@ const messages = defineMessages({
         id: 'dash.register.createdButLogInFailed',
         defaultMessage: 'Account created, but failed to log in. Try to log in by yourself',
         description: 'Title of warning message when account created, but log in failed'
+    },
+    passwordsDontMatch: {
+        id: 'dash.account.passwordsDontMatch',
+        defaultMessage: 'Passwords don\'t match',
+        description: 'Title of error message when passwords do not match'
     }
 });
 
@@ -40,6 +45,7 @@ class Register extends React.Component {
         this.state = {
             username: '',
             password: '',
+            confirmPassword: '',
             waiting: false,
             verifying: false,
             error: null
@@ -65,8 +71,11 @@ class Register extends React.Component {
         e.preventDefault();
 
         this.setState({waiting: true, verifying: false, error: null});
-        const {username, password} = this.state;
+        const {username, password, confirmPassword} = this.state;
         try {
+            // Maybe better to do this on backend ¯\_(ツ)_/¯
+            if (password !== confirmPassword)
+                throw new Error(this.props.intl.formatMessage(messages.passwordsDontMatch));
             const response = await fetch('https://dashblocks-server.vercel.app/auth/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -144,7 +153,24 @@ class Register extends React.Component {
                                     value={this.state.password}
                                     onChange={this.handleChange}
                                 />
-            
+
+                                <label htmlFor="confirmPassword">
+                                    <FormattedMessage
+                                        defaultMessage="Confirm password"
+                                        description="Label for confirm password input"
+                                        id="dash.account.confirmPassword"
+                                    />
+                                </label>
+                                <Input
+                                    required
+                                    name="confirmPassword"
+                                    type="password"
+                                    minLength={8}
+                                    maxLength={100}
+                                    value={this.state.confirmPassword}
+                                    onChange={this.handleChange}
+                                />
+
                                 <div className={styles.submitRow}>
                                     <Button
                                         className={styles.submitButton}
@@ -214,6 +240,23 @@ class Register extends React.Component {
                                     <div className={styles.error}>{this.state.error}</div>
                                 )}
                             </form>
+                            <div>
+                                <FormattedMessage
+                                    defaultMessage="Already have an account? {logIn}"
+                                    description="Text prompting user to log in if they already have an account"
+                                    values={{
+                                        logIn: (
+                                            <a href="./login" target="_blank">
+                                                <FormattedMessage
+                                                    defaultMessage="Log in"
+                                                    description="Link to log in page"
+                                                    id="dash.register.logIn"
+                                                />
+                                            </a>
+                                        )
+                                    }}
+                                />
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -41,7 +41,7 @@ class AccountSettings extends React.Component {
     constructor (props) {
         super(props);
         bindAll(this, [
-            'handleSubmit',
+            'handleChangePassword',
             'handleChange'
         ]);
         this.state = {

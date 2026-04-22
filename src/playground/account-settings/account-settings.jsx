@@ -73,7 +73,8 @@ class AccountSettings extends React.Component {
                 body: JSON.stringify({
                     newPassword: this.state.newPassword,
                     currentPassword: this.state.currentPassword
-                })
+                }),
+                credentials: 'include'
             });
             const data = await response.json();
             if (!data.ok)
@@ -90,7 +91,7 @@ class AccountSettings extends React.Component {
     render () {
         return (
             <>
-                {this.props.session && this.props.session.username ? window.location.href = "/" : null}
+                {!this.props.session || !this.props.session.username ? window.location.href = "/" : null}
                 <div
                     className={styles.container}
                     dir={this.props.isRtl ? 'rtl' : 'ltr'}
@@ -104,80 +105,89 @@ class AccountSettings extends React.Component {
                                     id="dash.accountSettings.header"
                                 />
                             </h2>
-                            <form
-                                className={styles.form}
-                                onSubmit={this.handleChangePassword}
-                            >
-                                <label htmlFor="currentPassword">
+                            <div className={styles.section}>
+                                <h3>
                                     <FormattedMessage
-                                        defaultMessage="Current Password"
-                                        description="Label for current password input"
-                                        id="dash.accountSettings.currentPassword"
+                                        defaultMessage="Change Password"
+                                        description="Header for change password section of account settings page"
+                                        id="dash.accountSettings.changePassword"
                                     />
-                                </label>
-                                <Input
-                                    required
-                                    name="currentPassword"
-                                    type="password"
-                                    value={this.state.currentPassword}
-                                    onChange={this.handleChange}
-                                />
-
-                                <label htmlFor="newPassword">
-                                    <FormattedMessage
-                                        defaultMessage="New Password"
-                                        description="Label for new password input"
-                                        id="dash.accountSettings.newPassword"
+                                </h3>
+                                <form
+                                    className={styles.form}
+                                    onSubmit={this.handleChangePassword}
+                                >
+                                    <label htmlFor="currentPassword">
+                                        <FormattedMessage
+                                            defaultMessage="Current Password"
+                                            description="Label for current password input"
+                                            id="dash.accountSettings.currentPassword"
+                                        />
+                                    </label>
+                                    <Input
+                                        required
+                                        name="currentPassword"
+                                        type="password"
+                                        value={this.state.currentPassword}
+                                        onChange={this.handleChange}
                                     />
-                                </label>
-                                <Input
-                                    required
-                                    name="newPassword"
-                                    type="password"
-                                    value={this.state.newPassword}
-                                    onChange={this.handleChange}
-                                />
 
-                                <label htmlFor="confirmPassword">
-                                    <FormattedMessage
-                                        defaultMessage="Confirm Password"
-                                        description="Label for confirm password input"
-                                        id="dash.account.confirmPassword"
+                                    <label htmlFor="newPassword">
+                                        <FormattedMessage
+                                            defaultMessage="New Password"
+                                            description="Label for new password input"
+                                            id="dash.accountSettings.newPassword"
+                                        />
+                                    </label>
+                                    <Input
+                                        required
+                                        name="newPassword"
+                                        type="password"
+                                        value={this.state.newPassword}
+                                        onChange={this.handleChange}
                                     />
-                                </label>
-                                <Input
-                                    required
-                                    name="confirmPassword"
-                                    type="password"
-                                    value={this.state.confirmPassword}
-                                    onChange={this.handleChange}
-                                />
 
-                                <div className={styles.submitRow}>
-                                    <Button
-                                        className={styles.submitButton}
-                                        disabled={this.state.waiting}
-                                        onClick={this.handleChangePassword}
-                                    >
-                                        {this.state.waiting ? (
-                                            <Spinner
-                                                className={styles.spinner}
-                                                small
-                                            />
-                                        ) : (
-                                            <FormattedMessage
-                                                defaultMessage="Submit"
-                                                description="Button text for user to sign in"
-                                                id="dash.login.submit"
-                                            />
-                                        )}
-                                    </Button>
-                                </div>
-            
-                                {this.state.error && (
-                                    <div className={styles.error}>{this.state.error}</div>
-                                )}
-                            </form>
+                                    <label htmlFor="confirmPassword">
+                                        <FormattedMessage
+                                            defaultMessage="Confirm Password"
+                                            description="Label for confirm password input"
+                                            id="dash.account.confirmPassword"
+                                        />
+                                    </label>
+                                    <Input
+                                        required
+                                        name="confirmPassword"
+                                        type="password"
+                                        value={this.state.confirmPassword}
+                                        onChange={this.handleChange}
+                                    />
+
+                                    <div className={styles.submitRow}>
+                                        <Button
+                                            className={styles.submitButton}
+                                            disabled={this.state.waiting}
+                                            onClick={this.handleChangePassword}
+                                        >
+                                            {this.state.waiting ? (
+                                                <Spinner
+                                                    className={styles.spinner}
+                                                    small
+                                                />
+                                            ) : (
+                                                <FormattedMessage
+                                                    defaultMessage="Submit"
+                                                    description="Button text for user to sign in"
+                                                    id="dash.login.submit"
+                                                />
+                                            )}
+                                        </Button>
+                                    </div>
+
+                                    {this.state.error && (
+                                        <div className={styles.error}>{this.state.error}</div>
+                                    )}
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

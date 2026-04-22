@@ -53,9 +53,18 @@ class AccountSettings extends React.Component {
         };
     }
 
-    componentDidMount() {
-        if (!this.props.session || !this.props.session?.username)
+    async componentDidMount () {
+        if (this.props.session && this.props.session?.username)
+            return;
+
+        try {
+            const session = await getSession();
+            if (!session || !session.username) {
+                window.location.href = './login';
+            }
+        } catch (error) {
             window.location.href = './login';
+        }
     }
 
     handleChange (e) {

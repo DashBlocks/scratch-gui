@@ -325,6 +325,13 @@ const Footer = () => (
                             id="tw.privacy"
                         />
                     </a>
+                    <a href="tos.html">
+                        <FormattedMessage
+                            defaultMessage="Terms of Service"
+                            description="Link to terms of service"
+                            id="dash.tos"
+                        />
+                    </a>
                 </div>
             </div>
         </div>

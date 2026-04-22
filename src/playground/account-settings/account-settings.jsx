@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import bindAll from 'lodash.bindall';
 import {connect} from 'react-redux';
@@ -53,10 +53,10 @@ class AccountSettings extends React.Component {
         };
     }
 
-    useEffect(() => {
+    componentDidMount() {
         if (!this.props.session || !this.props.session?.username)
-            window.location.href = '/';
-    }, [this.props.session]);
+            window.location.href = './login';
+    }
 
     handleChange (e) {
         this.setState({[e.target.name]: e.target.value});

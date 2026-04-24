@@ -1,6 +1,7 @@
 [ {
     "tags": [
-            "people"
+            "people",
+        "dash"
         ],
    "isStage":false,
    "name":"Rudolph",
@@ -195,7 +196,8 @@
 },
 {
     "tags": [
-            "people"
+            "people",
+        "dash"
         ],
    "isStage":false,
    "name":"Freddy",
@@ -293,7 +295,8 @@
    "rotationStyle":"all around"
 },
 { "tags": [
-            "people"
+            "people",
+    "dash"
         ],
    "isStage":false,
    "name":"Queen",
@@ -391,7 +394,7 @@
    "rotationStyle":"all around"
 },
 { "tags": [
-            "people"
+            "people", "dash"
         ],
    "isStage":false,
    "name":"King",

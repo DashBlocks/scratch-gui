@@ -138,7 +138,7 @@ const ProjectFetcherHOC = function (WrappedComponent) {
                             return storage.load(storage.AssetType.Project, projectId, storage.DataFormat.JSON);
                         });
                 } else {
-                    assetPromise = fetch(`https://dashblocks-server.vercel.app/get-project/${projectId}`)
+                    assetPromise = fetch(`https://shaman2016-trampline.vercel.app/dashImage/get-project/${projectId}`)
                         .then(r => {
                             if (!r.ok) {
                                 throw new Error(`Request returned status ${r.status} (${r.statusText})`);

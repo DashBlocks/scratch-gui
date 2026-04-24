@@ -171,6 +171,7 @@ class Register extends React.Component {
                                     onChange={this.handleChange}
                                 />
 
+                                <p>By using Dash, you agree to our <a href={`${process.env.ROOT}tos`}>Terms of Service</a> and <a href={`${process.env.ROOT}privacy`}>Privacy Policy</a>.</p>
                                 <div className={styles.submitRow}>
                                     <Button
                                         className={styles.submitButton}

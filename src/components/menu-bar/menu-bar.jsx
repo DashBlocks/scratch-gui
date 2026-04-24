@@ -664,7 +664,7 @@ class MenuBar extends React.Component {
                         {this.props.isPlayerOnly && <div className={styles.menuBarItem}>
                             <a
                                 className={styles.feedbackLink}
-                                href="https://scratch.mit.edu/discuss/topic/828107/#post-8609237"
+                                href="https://scratch.mit.edu/discuss/topic/879252/"
                                 rel="noopener noreferrer"
                                 target="_blank"
                             >
@@ -1147,7 +1147,7 @@ class MenuBar extends React.Component {
                     {!this.props.isPlayerOnly && !isScratchDesktop() && <div className={styles.menuBarItem}>
                         <a
                             className={styles.feedbackLink}
-                            href="https://scratch.mit.edu/discuss/topic/828107/#post-8609237"
+                            href="https://scratch.mit.edu/discuss/topic/879252/"
                             rel="noopener noreferrer"
                             target="_blank"
                         >

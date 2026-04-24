@@ -297,7 +297,7 @@ const Footer = () => (
                     </a>
                 </div>
                 <div className={styles.footerSection}>
-                    <a href="https://scratch.mit.edu/discuss/topic/828107/#post-8609237">
+                    <a href="https://scratch.mit.edu/discuss/topic/879252/">
                         <FormattedMessage
                             defaultMessage="Our Forum"
                             description="Link to Dash's forum in Scratch"

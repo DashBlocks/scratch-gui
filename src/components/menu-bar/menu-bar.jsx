@@ -1245,7 +1245,7 @@ class MenuBar extends React.Component {
             <React.Fragment>
                 {menuBar}
                 {/* !process.env.OLD_COMPILER && (<TWNews item='dash:news1' id='new-compiler' />) */}
-                {window.location.href.startsWith('https://dashblocks.github.io/scratch-gui') && (<TWNews item='dash:news2' id='dev-version' />)}
+                {window.location.href.startsWith('https://t-smod.github.io/scratch-gui') && (<TWNews item='dash:news2' id='dev-version' />)}
                 {/* <TWNews item='dash:news3' id='new-year' /> */}
             </React.Fragment>
         );

@@ -388,6 +388,11 @@ const TWStateManager = function (WrappedComponent) {
                 this.props.isPlayerOnly !== prevProps.isPlayerOnly ||
                 this.props.isFullScreen !== prevProps.isFullScreen
             ) {
+                const routerCallbacks = {
+                    onSetProjectId: this.onSetProjectId,
+                    onSetIsPlayerOnly: this.onSetIsPlayerOnly,
+                    onSetIsFullScreen: this.onSetIsFullScreen
+                };
                 if (!this.router) {
                     this.router = createRouter(this.props.routingStyle, routerCallbacks);
                 }

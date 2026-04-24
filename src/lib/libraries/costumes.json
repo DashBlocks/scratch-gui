@@ -781,6 +781,18 @@
         "rotationCenterX": 0,
         "rotationCenterY": 0
     },
+        {
+        "name": "Three-dimensional dashy",
+        "tags": [
+            "dash"
+        ],
+        "assetId": "eb318afe6b3e9509143bd7031798af4f",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "md5ext": "eb318afe6b3e9509143bd7031798af4f.svg",
+        "rotationCenterX": 0,
+        "rotationCenterY": 0
+    },
     {
         "name": "Dashy-c",
         "tags": [

@@ -215,6 +215,7 @@ const GUIComponent = props => {
                 <StageWrapper
                     isFullScreen={isFullScreen}
                     isEmbedded={isEmbedded}
+                    isPlayerOnly={isPlayerOnly}
                     isRendererSupported={isRendererSupported()}
                     isRtl={isRtl}
                     loading={loading}

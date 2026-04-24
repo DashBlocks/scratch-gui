@@ -59,7 +59,7 @@ body {
     color: $page-foreground;
 }
 
-.login-wrapper {
+.mystuff-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -72,7 +72,7 @@ body {
 
 .section {
     width: calc(100% - 2 * $space);
-    max-width: 500px;
+    max-width: 900px;
     background: $ui-white;
     margin: 0px;
     padding: $space;
@@ -80,34 +80,80 @@ body {
     border: 0.0625rem solid $ui-black-transparent;
 }
 
-.login {
+.spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.project-grid {
     display: flex;
     flex-direction: column;
-    gap: calc($space / 2);
+    border: 0.0625rem solid $ui-black-transparent;
+    border-radius: $space;
+    padding: $space;
+    gap: $space;
 }
 
-.spinner {
-    vertical-align: middle;
-}
-    
-.submit-row {
+.project-card {
+    border: 0.0625rem solid $ui-black-transparent;
+    border-radius: $space;
+    overflow: hidden;
+    background-color: $ui-secondary;
     display: flex;
+    align-items: center;
 }
 
-.error {
-    border: 1px solid $ui-black-transparent;
-    border-radius: calc($space / 2);
-    background-color: $error-primary;
-    color: white;
-    padding: 0.75rem 1rem;
+.thumb-wrapper {
+    height: 9rem;
 }
 
-.submit-button {
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial;
-    padding: 0.75rem 1rem;
-    background: $looks-secondary;
+.thumb-wrapper img {
+    width: 12rem;
+    height: 9rem;
+    object-fit: cover;
+    background: #f3f4f6;
+}
+
+.project-info {
+    padding: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.project-info h4 {
+    margin: 0 0 0.5rem 0;
+    cursor: pointer;
+}
+
+.project-info p {
+    font-size: 0.85rem;
+    color: #4b5563;
+    margin: 0;
+}
+
+.see-inside-button {
+    padding: 0.5rem;
+    background: $data-primary;
     color: white;
-    border: 1px solid $looks-secondary;
+    border: 1px solid $data-primary;
     font-weight: 600;
     font-size: 0.85rem;
+    display: inline-block;
+    width: fit-content;
+}
+
+.delete-project-button {
+    color: red;
+}
+
+.project-stats {
+    margin: 0 0 0.5rem 0;
+    margin-left: auto;
+}
+
+.project-stats p {
+  text-align: center;
 }

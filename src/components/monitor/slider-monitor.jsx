@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import styles from './monitor.css';
 import DOMElementRenderer from '../../containers/dom-element-renderer.jsx';
+import Cast from 'scratch-vm/src/util/cast';
 
 const SliderMonitor = ({categoryColor, isDiscrete, label, min, max, value, onSliderUpdate}) => (
     <div className={styles.defaultMonitor}>
@@ -18,7 +19,7 @@ const SliderMonitor = ({categoryColor, isDiscrete, label, min, max, value, onSli
                     color: categoryColor.text
                 }}
             >
-                {typeof value?.customId === 'string' && typeof value?.toMonitorContent === 'function'
+                {Cast.isCustomType(value) && typeof value?.toMonitorContent === 'function'
                     ? (<DOMElementRenderer domElement={value.toMonitorContent()} />)
                     : String(value)}
             </div>

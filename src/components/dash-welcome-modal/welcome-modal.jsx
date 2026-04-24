@@ -47,6 +47,7 @@ const WelcomeModalComponent = props => (
                 />
                 <p>Don't show this again</p>
             </label>
+            <p>By using Dash, you agree to our <a href={`${process.env.ROOT}tos`}>Terms of Service</a> and <a href={`${process.env.ROOT}privacy`}>Privacy Policy</a>.</p>
             <button
                 className={styles.closeButton}
                 onClick={props.onClose}

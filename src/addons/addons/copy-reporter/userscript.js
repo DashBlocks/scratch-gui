@@ -1,3 +1,5 @@
+import Cast from "scratch-vm/src/util/cast";
+
 export default async function ({ addon, console, msg }) {
   addon.tab.createEditorContextMenu(
     (ctx) => {
@@ -34,13 +36,10 @@ export default async function ({ addon, console, msg }) {
 
     let valueReportBox = document.createElement("div");
     valueReportBox.setAttribute("class", "valueReportBox");
-    if (Array.isArray(value)) {
+    if (Cast.isNormalArray(value)) {
       valueReportBox.appendChild(this.generateReporterJSONContent(value));
-    } else if (typeof value === 'object' && value !== null) {
-      if (
-        value?.constructor?.prototype !== Object.prototype &&
-        typeof value.customId === 'string' && typeof value.toReporterContent === 'function'
-      ) {
+    } else if (Cast.isNormalObject(value)) {
+      if (Cast.isCustomType(value) && typeof value.toReporterContent === 'function') {
         valueReportBox.appendChild(value.toReporterContent());
       } else {
         valueReportBox.appendChild(this.generateReporterJSONContent(value));
@@ -59,7 +58,12 @@ export default async function ({ addon, console, msg }) {
         }
       };
 
-      if (value !== "" && !(typeof value === 'object' && value instanceof Object)) {
+      if (
+          value !== "" &&
+          !Cast.isCustomType(value) &&
+          !Cast.isNormalArray(value) &&
+          !Cast.isNormalObject(value)
+      ) {
         const copyButton = document.createElement("img");
         copyButton.setAttribute("role", "button");
         copyButton.setAttribute("tabindex", "0");

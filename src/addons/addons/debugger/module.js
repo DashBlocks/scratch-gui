@@ -1,3 +1,4 @@
+import { set } from "core-js/core/dict";
 import EventTarget from "../../event-target.js"; /* inserted by pull.js */
 
 // https://github.com/scratchfoundation/scratch-vm/blob/bb352913b57991713a5ccf0b611fda91056e14ec/src/engine/thread.js#L198
@@ -103,6 +104,7 @@ export const setPaused = (_paused) => {
     eventTarget.dispatchEvent(new CustomEvent("change"));
 
     // TW: events for extensions
+    // Dash: ...and for blocks (eg. pause all, resume all, paused?)
     if (paused) {
       vm.runtime.emit("RUNTIME_PAUSED");
     } else {
@@ -433,4 +435,8 @@ export const setup = (addon) => {
     }
     return count;
   };
-};
+
+  vm.runtime.on("RUNTIME_SET_PAUSED", (_paused) => {
+    setPaused(_paused);
+  });
+}

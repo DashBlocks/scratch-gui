@@ -9,6 +9,7 @@ import styles from './user.css';
 
 import {APP_NAME} from '../../lib/brand';
 import Spinner from '../../components/spinner/spinner.jsx';
+import decorate from '../../lib/decorate-text.jsx';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 
@@ -60,7 +61,7 @@ const messages = defineMessages({
 });
 
 const User = (props) => {
-    const id = window.location.hash.replace('#', '');
+    const [id, setId] = useState(window.location.hash.replace('#', ''));
     const [userData, setUserData] = useState(null);
     const [descriptionDisabled, setDescriptionDisabled] = useState(false);
     const [projects, setProjects] = useState([]);
@@ -73,12 +74,16 @@ const User = (props) => {
     const fileInputRef = useRef(null);
 
     useEffect(() => {
+        setId(window.location.hash.replace('#', ''));
+    }, [window.location.hash]);
+
+    useEffect(() => {
         const fetchFullProfile = async () => {
             setLoading(true);
             let userData;
             try {
                 const session = await getSession();
-                setIsMyProfile(session?.userId.toString() === id || session?.username.toLowerCase() === id?.toLowerCase());
+                setIsMyProfile(session?.userId?.toString() === id || session?.username?.toLowerCase() === id?.toLowerCase());
                 const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}`);
                 userData = await userRes.json();
 
@@ -88,7 +93,7 @@ const User = (props) => {
                 if (userData.user.role === "dasher") setDescriptionDisabled(true);
                 setUserData(userData.user);
 
-                const projects = userData.user.projects.slice(0, 10);
+                const projects = userData.user.projects.slice(0, 20);
                 setProjects(projects);
             } catch (error) {
                 setError(error.message);
@@ -302,7 +307,7 @@ const User = (props) => {
                     </div>
                 </div>
                 <div className={styles.section}>
-                    <h2 className={styles.sectionTitle}>
+                    <h2>
                         <FormattedMessage
                             defaultMessage="Description"
                             description="User's description section title on user's profile"
@@ -324,7 +329,7 @@ const User = (props) => {
                         <div className={styles.description}>
                             <p>
                                 {userData.profile.description ?
-                                    userData.profile.description : (
+                                    decorate(userData.profile.description, true) : (
                                         <i>{props.intl.formatMessage(messages.descriptionPlaceholder)}</i>
                                     )
                                 }
@@ -333,7 +338,7 @@ const User = (props) => {
                     )}
                 </div>
                 <div className={styles.section}>
-                    <h2 className={styles.sectionTitle}>
+                    <h2>
                         <FormattedMessage
                             defaultMessage="Projects ({projectsCount})"
                             description="Projects section title on user's profile"
@@ -352,7 +357,7 @@ const User = (props) => {
                                     author: userData.username,
                                     title: project.name
                                 })}
-                                onClick={() => window.open(`https://dashblocks.github.io/#${project.id}`, '_blank')}
+                                onClick={() => window.open(`./#${project.id}`, '_blank')}
                             >
                                 <div className={styles.thumbWrapper}>
                                     <img

@@ -18,6 +18,8 @@
         "Making new features...",
         "Welcome to Dash!",
         "Implementing new round blocks...",
+        "Debugging the code...",
+        "Writing documentation...",
 
         "Keeping an eye on Dashy...",
         "Unbanning SpartanDav...",
@@ -33,6 +35,22 @@
         "License has expired!",
         "SyntaxError: Unexpected token",
         "Searching for an answer on Stack Overflow...",
+        "Eating...",
+        "Sleeping...",
+        "Dashing...",
+        "Eat, sleep, Dash, repeat...",
+        "Watching cat videos...",
+        "Playing games...",
+        "Watching animations...",
+        "Investigating projects' algorithms...",
+        "Starting loading over again...",
+
+        "Banning bad users...",
+        "Deleting bad projects...",
+        "Changing profile picture...",
+        "Writing new profile description...",
+        "Firing projects...",
+        "Searching a project to feature...",
 
         "Fact: 05/21/2025 is Dashy's birthday",
 
@@ -59,6 +77,8 @@
         "Делаем новые фичи...",
         "Добро пожаловать в Dash!",
         "Реализовываем новые круглые блоки...",
+        "Дебажим код...",
+        "Пишем документацию...",
 
         "Следим за Dashy...",
         "Разбаниваем SpartanDav...",
@@ -74,7 +94,23 @@
         "Срок действия лицензии истек!",
         "SyntaxError: Unexpected token",
         "Ищем ответ на Stack Overflow...",
-        
+        "Едим...",
+        "Спим...",
+        "Дэшим...",
+        "Есть, спать, Дэшить, повторять...",
+        "Смотрим видео с котиками...",
+        "Играем в игры...",
+        "Смотрим анимации...",
+        "Исследуем алгоритмы проектов...",
+        "Начинаем загрузку сначала...",
+
+        "Баним плохих пользователей...",
+        "Удаляем плохие проекты...",
+        "Меняем аватар...",
+        "Пишем новое описание профиля...",
+        "Ставим огонь на проекты...",
+        "Ищем проект для рекомендуемых...",
+
         "Факт: 21.05.2025 - день рождения Dashy",
 
         "1000100 1100001 1110011 1101000 1111001",

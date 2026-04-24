@@ -46,8 +46,7 @@
 }
 
 [class*="menu-bar_file-group_"] [class*="menu-bar_menu-bar-item_"],
-[class*="menu-bar_account-info-group_"] [class*="menu-bar_menu-bar-item_"] {
-  margin: 0;
+[class*="menu-bar_account-info-group_"] [class*="menu-bar_menu-bar-item_"]:not(:has([class*="save-status_save-now_"])) {
   padding: 0 0.5rem;
 }
 .sa-body-editor [class*="menu-bar_menu-bar-menu"] {

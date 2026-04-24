@@ -59,7 +59,7 @@ body {
     color: $page-foreground;
 }
 
-.login-wrapper {
+.account-settings-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -80,7 +80,7 @@ body {
     border: 0.0625rem solid $ui-black-transparent;
 }
 
-.login {
+.form {
     display: flex;
     flex-direction: column;
     gap: calc($space / 2);

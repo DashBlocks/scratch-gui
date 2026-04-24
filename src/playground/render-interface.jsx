@@ -36,6 +36,7 @@ import FeaturedProjects from '../components/tw-featured-projects/featured-projec
 import Description from '../components/tw-description/description.jsx';
 import BrowserModal from '../components/browser-modal/browser-modal.jsx';
 import DashWelcomeModal from '../containers/dash-welcome-modal.jsx';
+import StageFooter from '../components/dash-stage-footer/stage-footer.jsx';
 import CloudVariableBadge from '../containers/tw-cloud-variable-badge.jsx';
 import {isBrowserSupported} from '../lib/tw-environment-support-prober';
 import AddonChannels from '../addons/channels';
@@ -296,7 +297,7 @@ const Footer = () => (
                     </a>
                 </div>
                 <div className={styles.footerSection}>
-                    <a href="https://scratch.mit.edu/discuss/topic/828107/#post-8609237">
+                    <a href="https://scratch.mit.edu/discuss/topic/879252/">
                         <FormattedMessage
                             defaultMessage="Our Forum"
                             description="Link to Dash's forum in Scratch"
@@ -322,6 +323,13 @@ const Footer = () => (
                             defaultMessage="Privacy Policy"
                             description="Link to privacy policy"
                             id="tw.privacy"
+                        />
+                    </a>
+                    <a href="tos.html">
+                        <FormattedMessage
+                            defaultMessage="Terms of Service"
+                            description="Link to terms of service"
+                            id="dash.tos"
                         />
                     </a>
                 </div>
@@ -485,6 +493,9 @@ class Interface extends React.PureComponent {
                             backpackHost="_local_"
                             {...props}
                         />
+                        {isHomepage && (
+                            <StageFooter projectId={projectId} />
+                        )}
                     </div>
                     {isHomepage ? (
                         <React.Fragment>

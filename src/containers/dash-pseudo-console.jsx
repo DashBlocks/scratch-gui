@@ -70,6 +70,12 @@ class PseudoConsole extends React.Component {
             this.realCursor.symbol
         );
     }
+    print (value) {
+        if (!String(value)) return;
+        const line = this.props.lines[this.realCursor.row] || '';
+        const newLine = line.substring(0, this.realCursor.symbol) + String(value) + line.substring(this.realCursor.symbol, line.length);
+        this.editLine(newLine);
+    }
     editSymbol (value) {
         if (!String(value)?.[0]) return;
         const symbol = String(value)[0];

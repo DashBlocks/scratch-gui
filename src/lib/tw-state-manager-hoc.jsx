@@ -388,6 +388,9 @@ const TWStateManager = function (WrappedComponent) {
                 this.props.isPlayerOnly !== prevProps.isPlayerOnly ||
                 this.props.isFullScreen !== prevProps.isFullScreen
             ) {
+                if (!this.router) {
+                    this.router = createRouter(this.props.routingStyle, routerCallbacks);
+                }
                 const oldPath = `${location.pathname}${location.search}${location.hash}`;
                 const routerState = {
                     projectId: this.props.reduxProjectId,

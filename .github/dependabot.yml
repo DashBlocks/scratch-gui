@@ -1,4 +1,3 @@
-#run1
 version: 2
 updates:
   - package-ecosystem: "npm"
@@ -13,3 +12,4 @@ updates:
       - dependency-name: "scratch-paint"
       - dependency-name: "scratch-blocks"
       - dependency-name: "dash-extensions-gallery"
+      - dependency-name: "tsmod-extensions-gallery"

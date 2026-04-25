@@ -52,6 +52,7 @@ const creditLinkShortcuts = {
     '_scratch_': (credit) => `https://scratch.mit.edu/users/${credit.name}`,
     '_github_': (credit) => `https://github.com/${credit.name}`,
     '_dash_': (credit) => `https://dashblocks.github.io/user#${credit.name}`,
+    '_dashDev_': (credit) => `https://dashblocks.github.io/scratch-gui/user#${credit.name}`,
     '_TSMod_': (credit) => `https:/t-smod.github.io/scratch-gui/user#${credit.name}`
 };
 const creditLink = (credit) => credit.link;
@@ -149,7 +150,7 @@ const fetchOtherExtensions = async () => {
 };
 
 const fetchLibrary = async () => {
-    return extensions.map(extension => ({
+    return tsExtensions.map(extension => ({
         name: extension.name,
         nameTranslations: extension.nameTranslations || {},
         description: extension.description,
@@ -185,6 +186,43 @@ const fetchLibrary = async () => {
     }));
 };
 
+const fetchTSModLibrary = async () => {
+    return extensions.map(extension => ({
+        name: extension.name,
+        nameTranslations: extension.nameTranslations || {},
+        description: extension.description,
+        descriptionTranslations: extension.descriptionTranslations || {},
+        extensionId: extension.id,
+        extensionURL: extension.code?.startsWith('http') ? extension.code : `https://t-smod.github.io/extensions/static/extensions/${extension.code}`,
+        iconURL: extension.banner?.startsWith('http') ? extension.banner : `https://t-smod.github.io/extensions/static/images/${extension.banner || 'unknown.svg'}`,
+        tags: ['tsmod'],
+        credits: [
+            ...(Array.isArray(extension.creator) ? extension.creator : [extension.creator] || []).map(credit => {
+                if (typeof credit === 'string') return credit;
+                return (
+                    <a
+                        href={(creditLinkShortcuts[credit.link] || creditLink)(credit)}
+                        target="_blank"
+                        rel="noreferrer"
+                        key={credit.name}
+                    >
+                        {credit.name}
+                    </a>
+                );
+            }),
+            ...(extension.notes ? [extension.notes] : [])
+        ],
+        docsURI: extension.documentation ? `https://t-smod.github.io/extensions/static/documentations/${extension.documentation}.md` : null,
+        samples: /*extension.samples ? extension.samples.map(sample => ({
+            href: `${process.env.ROOT}editor?project_url=https://extensions.turbowarp.org/samples/${encodeURIComponent(sample)}.sb3`,
+            text: sample
+        })) :*/ null,
+        incompatibleWithScratch: !(extension.scratchCompatible || false),
+        internetConnectionRequired: extension.internetConnectionRequired || false,
+        featured: true
+    }));
+};
+
 class ExtensionLibrary extends React.PureComponent {
     constructor (props) {
         super(props);
@@ -195,6 +233,7 @@ class ExtensionLibrary extends React.PureComponent {
             otherExtensions: cachedOtherExtensions,
             twGallery: cachedTwGallery,
             gallery: cachedGallery,
+            tsGallery: cachedGallery,
             galleryError: null,
             galleryTimedOut: false
         };
@@ -241,6 +280,21 @@ class ExtensionLibrary extends React.PureComponent {
                 });
 
             fetchLibrary()
+                .then(gallery => {
+                    cachedGallery = gallery;
+                    this.setState({
+                        gallery
+                    });
+                    clearTimeout(timeout);
+                })
+                .catch(error => {
+                    log.error(error);
+                    this.setState({
+                        galleryError: error
+                    });
+                    clearTimeout(timeout);
+                });
+            fetchTSModLibrary()
                 .then(gallery => {
                     cachedGallery = gallery;
                     this.setState({

@@ -61,6 +61,7 @@ let cachedTwGallery = null;
 let twGalleryMirror = false;
 let cachedOtherExtensions = null;
 let cachedGallery = null;
+let cachedTsGallery = null;
 
 const fetchTwLibrary = async () => {
     let res;
@@ -150,7 +151,7 @@ const fetchOtherExtensions = async () => {
 };
 
 const fetchLibrary = async () => {
-    return tsExtensions.map(extension => ({
+    return extensions.map(extension => ({
         name: extension.name,
         nameTranslations: extension.nameTranslations || {},
         description: extension.description,
@@ -187,7 +188,7 @@ const fetchLibrary = async () => {
 };
 
 const fetchTSModLibrary = async () => {
-    return extensions.map(extension => ({
+    return tsExtensions.map(extension => ({
         name: extension.name,
         nameTranslations: extension.nameTranslations || {},
         description: extension.description,
@@ -233,7 +234,7 @@ class ExtensionLibrary extends React.PureComponent {
             otherExtensions: cachedOtherExtensions,
             twGallery: cachedTwGallery,
             gallery: cachedGallery,
-            tsGallery: cachedGallery,
+            tsGallery: cachedTsGallery,
             galleryError: null,
             galleryTimedOut: false
         };
@@ -386,14 +387,13 @@ class ExtensionLibrary extends React.PureComponent {
         
         const addedIds = new Set();
         if (this.state.tsGallery) {
-            library.push(toLibraryItem(galleryMore));
-            const filteredGallery = this.state.tsGallery
+            const filteredTsGallery = this.state.tsGallery
                 .filter(item => !addedIds.has(item.extensionId))
                 .map(i => {
                     addedIds.add(i.extensionId);
                     return translateGalleryItem(i, locale);
                 });
-            library.push(...filteredGallery.map(toLibraryItem));
+            library.push(...filteredTsGallery.map(toLibraryItem));
         } else if (this.state.galleryTimedOut && !this.state.tsGallery) {
             library.push(toLibraryItem(galleryLoading));
         } else if (this.state.galleryError && !this.state.tsGallery) {

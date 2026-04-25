@@ -34,6 +34,7 @@ const isTrustedUrl = url => (
     url.toLowerCase().startsWith('https://penguinmod.com') ||
     url.toLowerCase().startsWith('https://studio.penguinmod.com') ||
     url.toLowerCase().startsWith('https://extensions.penguinmod.com') ||
+    url.toLowerCase().startsWith('https://t-smod.github.io') ||
     extensions.some(ext => ext?.code === url) ||
 
     // For development.
@@ -68,8 +69,9 @@ const isAlwaysTrustedForFetching = parsed => (
     // If we would trust loading an extension from here, we can trust loading resources too.
     isTrustedUrl(parsed.href) ||
 
-    // Any Dash service
+    // Any Dash and TSMod services
     parsed.origin === 'https://dashblocks.github.io' ||
+    parsed.origin === 'https://t-smod.github.io' ||
 
     // Any TurboWarp service such as trampoline
     parsed.origin === 'https://turbowarp.org' ||

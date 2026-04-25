@@ -86,28 +86,12 @@ class TWNews extends React.Component {
                         onClick={this.handleCloseNewCompiler}
                     />
                 </div>)}
-                {this.props.id == 'dev-version' && (<div className={styles.news}>
-                    <div className={styles.text}>
-                        {/* eslint-disable-next-line max-len */}
-                        {`This is a "Dev" version of ${APP_NAME}. Please do not use this version for real projects, as it may break your projects! `}
-                        <a
-                            href="https://dashblocks.github.io"
-                            rel="noreferrer"
-                        >
-                            {'Main version.'}
-                        </a>
-                    </div>
-                    <CloseButton
-                        className={styles.close}
-                        onClick={this.handleCloseDevVersion}
-                    />
-                </div>)}
                 {this.props.id == 'new-year' && (<div className={styles.news}>
                     <div className={styles.text}>
                         {/* eslint-disable-next-line max-len */}
                         {`Happy New Year! Enjoy the festive theme while it lasts. `}
                         <a
-                            href={isNewYearMode() ? 'https://dashblocks.github.io' : 'https://dashblocks.github.io/?newYearMode'}
+                            href={isNewYearMode() ? 'https://t-smod.github.io/scratch-gui/' : 'https://t-smod.github.io/scratch-gui/?newYearMode'}
                             rel="noreferrer"
                         >
                             {isNewYearMode() ? 'Switch to normal mode.' : 'Switch to new year mode.'}

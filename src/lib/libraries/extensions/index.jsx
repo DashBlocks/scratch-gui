@@ -400,7 +400,7 @@ export default [
             />
         ),
         incompatibleWithScratch: true,
-        tags: ['dash'],
+        tags: ['tsmod'],
         featured: true
     },
     {
@@ -423,6 +423,26 @@ export default [
         tags: ['tw'],
         featured: true
         // Not marked as incompatible with Scratch so that clicking on it doesn't show a prompt
+    }, {
+        name: (
+            <FormattedMessage
+                defaultMessage="Dash Extensions Gallery"
+                description="Name of Dash extension gallery in extension library"
+                id="tsmod.gallery.dash.name"
+            />
+        ),
+        href: 'https://dashbcloks.github.io/extensions',
+        extensionId: 'dashGallery',
+        iconURL: galleryIcon,
+        description: (
+            <FormattedMessage
+                defaultMessage="Extensions Gallery for Dash"
+                description="Description of dash extensions gallery"
+                id="tsmod.gallery.dash.description"
+            />
+        ),
+        tags: ['dash'],
+        featured: true
     }
 ];
 
@@ -438,7 +458,7 @@ export const galleryLoading = {
         />
     ),
     // TODO: Make an Extension Gallery for Dash
-    href: 'https://dashblocks.github.io/extensions',
+    href: 'https://t-smod.github.io/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
@@ -449,7 +469,7 @@ export const galleryLoading = {
             id="dash.extensionGallery.loading"
         />
     ),
-    tags: ['dash'],
+    tags: ['tsmod'],
     featured: true
 };
 

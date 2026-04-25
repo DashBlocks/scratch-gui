@@ -297,9 +297,9 @@ class ExtensionLibrary extends React.PureComponent {
                 });
             fetchTSModLibrary()
                 .then(gallery => {
-                    cachedGallery = gallery;
+                    cachedTsGallery = gallery;
                     this.setState({
-                        gallery
+                        tsGallery
                     });
                     clearTimeout(timeout);
                 })

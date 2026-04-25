@@ -385,6 +385,23 @@ class ExtensionLibrary extends React.PureComponent {
         library.push('---');
         
         const addedIds = new Set();
+        if (this.state.tsGallery) {
+            library.push(toLibraryItem(galleryMore));
+            const filteredGallery = this.state.tsGallery
+                .filter(item => !addedIds.has(item.extensionId))
+                .map(i => {
+                    addedIds.add(i.extensionId);
+                    return translateGalleryItem(i, locale);
+                });
+            library.push(...filteredGallery.map(toLibraryItem));
+        } else if (this.state.galleryTimedOut && !this.state.tsGallery) {
+            library.push(toLibraryItem(galleryLoading));
+        } else if (this.state.galleryError && !this.state.tsGallery) {
+            library.push(toLibraryItem(galleryError));
+        }
+
+        library.push('---');
+
         if (this.state.gallery) {
             library.push(toLibraryItem(galleryMore));
             const filteredGallery = this.state.gallery

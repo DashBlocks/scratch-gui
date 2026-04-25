@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import VM from 'scratch-vm';
 import {extensions, otherExtensions} from 'dash-extensions-gallery/src/lib/extensions.js';
+import tsExtensions from 'tsmod-extensions-gallery/src/lib/ext.js';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import log from '../lib/log';
 

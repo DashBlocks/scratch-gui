@@ -165,12 +165,10 @@ const RenderVersion = () => {
     const [version, setVersion] = React.useState();
 
     const fetchVersion = () => {
-        fetch('https://api.github.com/repos/DashBlocks/dashblocks.github.io/commits')
+        fetch('https://api.github.com/repos/T-SMod/scratch-gui/commits')
             .then(response => response.json())
             .then(data => {
-                const latestCommit = data[0];
-                const matchedVersion = latestCommit.commit.message.match(/^(\[(\d+(\.\d+)*)\])/);
-                setVersion(matchedVersion[2]);
+                setVersion('0.0.1 Alpha');
             });
     };
 
@@ -181,7 +179,7 @@ const RenderVersion = () => {
     return (
         <div className={styles.footerText}>
             <div className={styles.commitVersion}>
-                {window.location.href.startsWith('https://dashblocks.github.io/scratch-gui') ? 'Dev' : 'v' + version}
+                {'v' + version}
             </div>
         </div>
     );
@@ -229,7 +227,7 @@ const Footer = () => (
             <div className={styles.footerText}>
                 <FormattedMessage
                     // eslint-disable-next-line max-len
-                    defaultMessage="{APP_NAME} is based on Scratch, TurboWarp and other mods, but not affiliated with these mods. TurboWarp is available for free at: {turbowarpDotOrg}."
+                    defaultMessage="{APP_NAME} is based on Scratch, TurboWarp, Dash and other mods, but not affiliated with these mods. TurboWarp is available for free at: {turbowarpDotOrg}."
                     description="Disclaimer that Dash is based on Scratch and TurboWarp and other mods."
                     id="dash.footer.basedOnDisclaimer"
                     values={{
@@ -270,9 +268,9 @@ const Footer = () => (
                         {/* Do not translate */}
                         {'Dash Desktop'}
                     </a>
-                    <a href="https://dashblocks.github.io/packager">
+                    <a href="https://t-smod.github.io/scratch-gui/packager">
                         {/* Do not translate */}
-                        {'Dash Packager'}
+                        {'TSMod Packager'}
                     </a>
                     <a href="https://dashblocks.github.io/docs/embedding">
                         <FormattedMessage
@@ -290,7 +288,7 @@ const Footer = () => (
                     </a>
                     <a href="https://dashblocks.github.io/docs/">
                         <FormattedMessage
-                            defaultMessage="Documentation"
+                            defaultMessage="Dash Documentation"
                             description="Link in footer to additional documentation"
                             id="tw.footer.documentation"
                         />
@@ -299,19 +297,19 @@ const Footer = () => (
                 <div className={styles.footerSection}>
                     <a href="https://scratch.mit.edu/discuss/topic/879252/">
                         <FormattedMessage
-                            defaultMessage="Our Forum"
+                            defaultMessage="Dash Forum"
                             description="Link to Dash's forum in Scratch"
                             id="dash.home.forum"
                         />
                     </a>
-                    <a href="https://scratch.mit.edu/users/damir2809/#comments">
+                    <a href="https://scratch.mit.edu/users/shaman2016/#comments">
                         <FormattedMessage
                             defaultMessage="Feedback & Bugs"
                             description="Link to feedback/bugs page"
                             id="tw.feedback"
                         />
                     </a>
-                    <a href="https://github.com/DashBlocks/">
+                    <a href="https://github.com/T-SMos/">
                         <FormattedMessage
                             defaultMessage="Source Code"
                             description="Link to source code"
@@ -344,7 +342,7 @@ const WhatsNew = () => {
     const [error, setError] = useState();
 
     useEffect(() => {
-        fetch('https://api.github.com/repos/DashBlocks/dashblocks.github.io/commits')
+        fetch('https://api.github.com/repos/T-SMod/scratch-gui/commits')
             .then(response => response.json())
             .then(data => {
                 setCommits(data.slice(0, 10));

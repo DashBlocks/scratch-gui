@@ -431,7 +431,7 @@ export default [
                 id="tsmod.gallery.dash.name"
             />
         ),
-        href: 'https://dashbcloks.github.io/extensions',
+        href: 'https://dashblocks.github.io/extensions',
         extensionId: 'dashGallery',
         iconURL: galleryIcon,
         description: (
@@ -485,18 +485,18 @@ export const galleryMore = {
         />
     ),
     // TODO: Make an Extension Gallery for Dash
-    href: 'https://dashblocks.github.io/extensions',
+    href: 'https://t-smod.github.io/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
-            defaultMessage="Learn more about extensions at dashblocks.github.io/extensions."
+            defaultMessage="Learn more about extensions at t-smod.github.io/extensions."
             description="Appears after the extension list from the gallery was loaded successfully"
             id="dash.extensionGallery.more"
         />
     ),
-    tags: ['dash'],
+    tags: ['t-smod'],
     featured: true
 };
 
@@ -512,17 +512,17 @@ export const galleryError = {
         />
     ),
     // TODO: Make an Extension Gallery for Dash
-    href: 'https://dashblocks.github.io/extensions',
+    href: 'https://t-smod.github.io/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
-            defaultMessage="Error loading extension gallery. Visit dashblocks.github.io/extensions to find more extensions."
+            defaultMessage="Error loading extension gallery. Visit t-smod.github.io/extensions to find more extensions."
             description="Appears when an error occurred loading extension list from the custom extension gallery"
             id="dash.extensionGallery.error"
         />
     ),
-    tags: ['dash'],
+    tags: ['t-smod'],
     featured: true
 };

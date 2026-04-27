@@ -6,5 +6,6 @@ export default [
     {tag: 'tsmod', intlLabel: APP_NAME},
     {tag: 'dash', intlLabel: 'Dash'},
     {tag: 'tw', intlLabel: 'TurboWarp'},
-    {tag: 'other', intlLabel: 'Other'}
+    {tag: 'other', intlLabel: 'Other'},
+    {tag: 'gallerys', intlLabel: 'Gallerys'}
 ]

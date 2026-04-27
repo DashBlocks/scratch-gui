@@ -131,9 +131,9 @@ export default defineMessages({
         description: 'Tag for filtering a library for letters',
         id: 'gui.libraryTags.letters'
     },
-    music: {
+    musicSound: {
         defaultMessage: 'Music',
-        description: 'Tag for filtering a library for music',
-        id: 'gui.libraryTags.music'
+        description: 'Tag for filtering a library for music in sound',
+        id: 'tsmod.gallerySound.music.name'
     }
 });

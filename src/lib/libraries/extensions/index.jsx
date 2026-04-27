@@ -441,7 +441,47 @@ export default [
                 id="tsmod.gallery.dash.description"
             />
         ),
-        tags: ['dash'],
+        tags: ['dash', 'gallerys'],
+        featured: true
+    }, {
+        name: (
+            <FormattedMessage
+                defaultMessage="TurboWarp Extensions Gallery"
+                description="Name of TurboWarp extension gallery in extension library"
+                id="tsmod.gallery.tw.name"
+            />
+        ),
+        href: 'https://extensions.turbowarp.org/',
+        extensionId: 'twGallery',
+        iconURL: galleryIcon,
+        description: (
+            <FormattedMessage
+                defaultMessage="Extensions Gallery for TurboWarp"
+                description="Description of TurboWarp extensions gallery"
+                id="tsmod.gallery.tw.description"
+            />
+        ),
+        tags: ['tw', 'gallerys'],
+        featured: true
+    }, {
+        name: (
+            <FormattedMessage
+                defaultMessage="PenguinMod Extensions Gallery"
+                description="Name of PenguinMod extension gallery in extension library"
+                id="tsmod.gallery.pm.name"
+            />
+        ),
+        href: 'https://extensions.penguinmod.com/',
+        extensionId: 'pmGallery',
+        iconURL: galleryIcon,
+        description: (
+            <FormattedMessage
+                defaultMessage="Extensions Gallery for PenguinMod"
+                description="Description of PenguinMod extensions gallery"
+                id="tsmod.gallery.pm.description"
+            />
+        ),
+        tags: ['other', 'gallerys'],
         featured: true
     }
 ];
@@ -469,7 +509,7 @@ export const galleryLoading = {
             id="dash.extensionGallery.loading"
         />
     ),
-    tags: ['tsmod'],
+    tags: ['tsmod', 'gallerys'],
     featured: true
 };
 
@@ -496,7 +536,7 @@ export const galleryMore = {
             id="dash.extensionGallery.more"
         />
     ),
-    tags: ['t-smod'],
+    tags: ['tsmod', 'gallerys'],
     featured: true
 };
 
@@ -523,6 +563,6 @@ export const galleryError = {
             id="dash.extensionGallery.error"
         />
     ),
-    tags: ['t-smod'],
+    tags: ['tsmod', 'gallerys'],
     featured: true
 };

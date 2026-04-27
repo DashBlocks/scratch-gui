@@ -130,5 +130,10 @@ export default defineMessages({
         defaultMessage: 'Letters',
         description: 'Tag for filtering a library for letters',
         id: 'gui.libraryTags.letters'
+    },
+    music: {
+        defaultMessage: 'Music',
+        description: 'Music',
+        id: 'gui.libraryTags.music'
     }
 });

@@ -499,7 +499,7 @@ export const galleryLoading = {
     ),
     // TODO: Make an Extension Gallery for Dash
     href: 'https://t-smod.github.io/extensions',
-    extensionId: 'gallery',
+    extensionId: 'galleryLoad',
     iconURL: galleryIcon,
     description: (
         <FormattedMessage
@@ -553,7 +553,7 @@ export const galleryError = {
     ),
     // TODO: Make an Extension Gallery for Dash
     href: 'https://t-smod.github.io/extensions',
-    extensionId: 'gallery',
+    extensionId: 'galleryErr',
     iconURL: galleryIcon,
     description: (
         <FormattedMessage

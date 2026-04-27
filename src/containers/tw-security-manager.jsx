@@ -7,6 +7,7 @@ import SecurityManagerModal from '../components/tw-security-manager-modal/securi
 import SecurityModals from '../lib/tw-security-manager-constants';
 import {getPersistedUnsandboxed, setPersistedUnsandboxed} from '../lib/tw-persisted-unsandboxed.js';
 import {extensions} from 'dash-extensions-gallery/src/lib/extensions.js';
+import tsExtensions from 'tsmod-extensions-gallery/src/lib/ext.js';
 
 /* eslint-disable require-atomic-updates */
 

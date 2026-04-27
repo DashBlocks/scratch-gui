@@ -37,6 +37,7 @@ const isTrustedUrl = url => (
     url.toLowerCase().startsWith('https://extensions.penguinmod.com') ||
     url.toLowerCase().startsWith('https://t-smod.github.io') ||
     extensions.some(ext => ext?.code === url) ||
+    tsExtensions.some(ext => ext?.code === url) ||
 
     // For development.
     url.toLowerCase().startsWith('http://localhost:') ||

@@ -3582,7 +3582,14 @@
         "dash.wallpaper.changeOpaquePrompt": "Введите новое значение непрозрачности рабочего места:",
         "dash.wallpaper.changeOpaque": "Изменить непрозрачность",
         "dash.wallpaper.choose": "Выбрать обои...",
-        "dash.wallpaper.remove": "Убрать обои"
+        "dash.wallpaper.remove": "Убрать обои",
+        "tsmod.gallery.dash.name": "Галерея расширений Dash",
+        "tsmod.gallery.tw.name": "Галерея расширений TurboWarp",
+        "tsmod.gallery.pm.name": "Галерея расширений PenguinMod",
+        "tsmod.gallery.dash.description": "Галерея расширений для Dash",
+        "tsmod.gallery.tw.description": "Галерея расширений для TurboWarp",
+        "tsmod.gallery.pm.description": "Галерея расширений для PenguinMod",
+        "tsmod.gallery.list.name": "Галереи"
     },
     "sk": {
         "tw.feedbackButton": "{APP_NAME} Spätná väzba",

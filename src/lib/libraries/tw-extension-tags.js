@@ -8,5 +8,5 @@ export default [
     {tag: 'dash', intlLabel: 'Dash'},
     {tag: 'tw', intlLabel: 'TurboWarp'},
     {tag: 'other', intlLabel: 'Other'},
-    {tag: 'gallerys', intlLabel: messages}
+    {tag: 'gallerys', intlLabel: messages.gallerysInExtGallery}
 ]

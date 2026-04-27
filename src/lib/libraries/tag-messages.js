@@ -133,7 +133,7 @@ export default defineMessages({
     },
     music: {
         defaultMessage: 'Music',
-        description: 'Music',
+        description: 'Tag for filtering a library for music',
         id: 'gui.libraryTags.music'
     }
 });

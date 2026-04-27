@@ -8,5 +8,6 @@ export default [
     {tag: 'space', intlLabel: messages.space},
     {tag: 'sports', intlLabel: messages.sports},
     {tag: 'voice', intlLabel: messages.voice},
-    {tag: 'wacky', intlLabel: messages.wacky}
+    {tag: 'wacky', intlLabel: messages.wacky},
+    {tag: 'music', intlLabel: messages.music}
 ];

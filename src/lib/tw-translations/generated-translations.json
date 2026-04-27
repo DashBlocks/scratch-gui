@@ -3589,7 +3589,8 @@
         "tsmod.gallery.dash.description": "Галерея расширений для Dash",
         "tsmod.gallery.tw.description": "Галерея расширений для TurboWarp",
         "tsmod.gallery.pm.description": "Галерея расширений для PenguinMod",
-        "tsmod.gallery.list.name": "Галереи"
+        "tsmod.gallery.gallerys.name": "Галереи",
+        "tsmod.gallerySound.music.name": "Музыка"
     },
     "sk": {
         "tw.feedbackButton": "{APP_NAME} Spätná väzba",

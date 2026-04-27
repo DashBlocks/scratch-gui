@@ -232,7 +232,7 @@ const dashExtensionDevelopers = [
         username: 'scratch_craft_2'
     },
     {
-        isGitHub: true,
+        link: 'github',
         userID: '133135758',
         username: 'DDen4ik-12'
     },

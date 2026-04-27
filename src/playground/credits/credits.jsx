@@ -124,7 +124,7 @@ const Credits = () => (
         <section>
             <h2>Dash Extensions Gallery</h2>
             <p>
-                People who develop extensions for Dash Extensions Gallery are listed here.
+                People who develop extensions for Dash Extensions Gallery or whose extensions are included in it are listed here.
             </p>
             <UserList users={UserData.dashExtensionDevelopers} />
         </section>

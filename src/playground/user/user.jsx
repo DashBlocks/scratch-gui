@@ -57,6 +57,11 @@ const messages = defineMessages({
         id: 'dash.user.description.inputPlaceholder',
         description: 'Placeholder for user\'s description input when blank',
         defaultMessage: 'Who are you? What are you working on? ...'
+    },
+    descriptionInputPlaceholderForDasher: {
+        id: 'dash.user.description.inputPlaceholderForDasher',
+        description: 'Placeholder for notifying that descriptions are only available for Dasher+ role and higher',
+        defaultMessage: 'Descriptions are available only for Dasher+ role and higher. Come back later!'
     }
 });
 
@@ -319,7 +324,7 @@ const User = (props) => {
                             className={classNames(styles.descriptionField)}
                             maxLength="1000"
                             multiline
-                            placeholder={props.intl.formatMessage(messages.descriptionInputPlaceholder)}
+                            placeholder={props.intl.formatMessage(userData.role === "dasher" ? messages.descriptionInputPlaceholderForDasher : messages.descriptionInputPlaceholder)}
                             tabIndex="0"
                             value={userData.profile.description}
                             onSubmit={handleChangeDescription}

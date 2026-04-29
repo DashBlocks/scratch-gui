@@ -7,6 +7,7 @@ import render from '../app-target';
 import styles from './mystuff.css';
 
 import Spinner from '../../components/spinner/spinner.jsx';
+import {Footer} from '../render-interface.jsx';
 import Button from '../../components/button/button.jsx';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
@@ -172,6 +173,7 @@ const User = (props) => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };

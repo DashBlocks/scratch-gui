@@ -11,6 +11,8 @@ import Input from '../../components/forms/input.jsx';
 import Button from '../../components/button/button.jsx';
 import Spinner from '../../components/spinner/spinner.jsx';
 
+import {Footer} from '../render-interface.jsx';
+
 import styles from './login.css';
 
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
@@ -159,6 +161,7 @@ class Login extends React.Component {
                             </div>
                         </div>
                     </div>
+                    <Footer />
                 </div>
             </>
         );

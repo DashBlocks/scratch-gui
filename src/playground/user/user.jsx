@@ -9,6 +9,7 @@ import styles from './user.css';
 
 import {APP_NAME} from '../../lib/brand';
 import Spinner from '../../components/spinner/spinner.jsx';
+import {Footer} from '../render-interface.jsx';
 import decorate from '../../lib/decorate-text.jsx';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
@@ -389,6 +390,7 @@ const User = (props) => {
                     </div>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 };

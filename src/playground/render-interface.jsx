@@ -771,3 +771,4 @@ const WrappedInterface = compose(
 )(ConnectedInterface);
 
 export default WrappedInterface;
+export {Footer};

@@ -5,6 +5,8 @@ import styles from './desktop.css';
 
 import Button from '../../components/button/button.jsx';
 
+import {Footer} from '../render-interface.jsx';
+
 import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
@@ -105,6 +107,7 @@ const Desktop = () => (
                 </Button>
             </div>
         </section>
+        <Footer />
     </main>
 );
 

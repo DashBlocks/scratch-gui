@@ -7,6 +7,7 @@ import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import getSession from '../../lib/session.js';
 import render from '../app-target';
 
+import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import Input from '../../components/forms/input.jsx';
 import Button from '../../components/button/button.jsx';
 import Spinner from '../../components/spinner/spinner.jsx';
@@ -104,6 +105,7 @@ class Register extends React.Component {
     render () {
         return (
             <>
+                <LazyMenuBar />
                 {this.props.session && this.props.session.username ? window.location.href = "/" : null}
                 <div
                     className={styles.container}

@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import render from '../app-target';
+import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import styles from './desktop.css';
 
 import Button from '../../components/button/button.jsx';
 
+import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {Footer} from '../render-interface.jsx';
 
 import {APP_NAME} from '../../lib/brand';
@@ -24,6 +26,7 @@ applyGuiColors(theme);
 
 const Desktop = () => (
     <main className={styles.main}>
+        <LazyMenuBar />
         <header className={styles.headerContainer}>
             <h1 className={styles.headerText}>
                 {APP_NAME} Desktop
@@ -111,4 +114,6 @@ const Desktop = () => (
     </main>
 );
 
-render(<Desktop />);
+const WrappedDesktop = AppStateHOC(Desktop);
+
+render(<WrappedDesktop />);

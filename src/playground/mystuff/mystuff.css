@@ -51,7 +51,7 @@ body {
 
 .container {
     position: absolute;
-    top: 0;
+    top: $menu-bar-height;
     left: 0;
     width: 100%;
     min-width: fit-content;

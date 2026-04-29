@@ -11,6 +11,7 @@ import {APP_NAME} from '../../lib/brand';
 import Spinner from '../../components/spinner/spinner.jsx';
 import {Footer} from '../render-interface.jsx';
 import decorate from '../../lib/decorate-text.jsx';
+import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 
@@ -236,162 +237,178 @@ const User = (props) => {
     }
 
     if (loading) return (
-        <div className={styles.spinner}>
-            <Spinner level={'primary'} large />
-        </div>
+        <>
+            <LazyMenuBar />
+            <div className={styles.spinner}>
+                <Spinner level={'primary'} large />
+            </div>
+        </>
     );
-    if (error) return <div>Error: {error}</div>;
-    if (!userData) return null;
+    if (error) return (
+        <>
+            <LazyMenuBar />
+            <div>Error: {error}</div>
+        </>
+    );
+    if (!userData) return (
+        <>
+            <LazyMenuBar />
+            <div />
+        </>
+    );
 
     const joinDate = userData.joinedAt ? new Date(userData.joinedAt) : null;
     const lastActiveDate = userData.lastActive ? new Date(userData.lastActive) : null;
     return (
-        <div
-            className={styles.container}
-            dir={props.isRtl ? 'rtl' : 'ltr'}
-        >
-            <div className={styles.userWrapper}>
-                <div
-                    className={classNames(styles.section, styles.userHeader)}
-                    style={avgGradient.length > 0 ? {
-                        backgroundImage: `linear-gradient(to right, ${avgGradient.join(', ')})`
-                    } : {}}
-                >
-                    <input
-                        type='file'
-                        accept='.png,.jpg,.jpeg,.img,.gif'
-                        ref={fileInputRef}
-                        onChange={handleChangeAvatar}
-                        style={{display: 'none'}}
-                    />
-                    <img
-                        draggable={false}
-                        src={`https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId}`}
-                        alt={userData.username}
-                        onClick={() => isMyProfile ? fileInputRef.current.click() : null}
-                        className={styles.avatarImg}
-                        style={isMyProfile ? {cursor: 'pointer'} : null}
-                    />
-                    <div className={styles.userInfo}>
-                        <div className={styles.userInfoRow}>
-                            <h2>{userData.username}</h2>
-                            <span className={styles.roleBadge}>
-                                {userData.role === 'dashteam'
-                                    ? props.intl.formatMessage(messages.dashTeamRole)
-                                    : userData.role === 'dasher+'
-                                        ? props.intl.formatMessage(messages.dasherPlusRole)
-                                        : props.intl.formatMessage(messages.dasherRole)}
-                            </span>
-                        </div>
-                        <div className={styles.userInfoRow}>
-                            <FormattedMessage
-                                defaultMessage="Joined: {date}"
-                                description="User's account registration date"
-                                id="dash.user.joinedAt"
-                                values={{
-                                    date: joinDate
-                                        ? relativeTimeSupported()
-                                            ? (<FormattedRelative value={joinDate} />)
-                                            : (<FormattedDate value={joinDate} />)
-                                        : '?'
-                                }}
-                            />
-                            <div className={styles.userInfoDivider} />
-                            <FormattedMessage
-                                defaultMessage="Last Active: {date}"
-                                description="User's last active date"
-                                id="dash.user.lastActive"
-                                values={{
-                                    date: lastActiveDate
-                                        ? relativeTimeSupported()
-                                            ? (<FormattedRelative value={lastActiveDate} />)
-                                            : (<FormattedDate value={lastActiveDate} />)
-                                        : '?' 
-                                }}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className={styles.section}>
-                    <h2>
-                        <FormattedMessage
-                            defaultMessage="Description"
-                            description="User's description section title on user's profile"
-                            id="dash.home.tab.description"
+        <>
+            <LazyMenuBar />
+            <div
+                className={styles.container}
+                dir={props.isRtl ? 'rtl' : 'ltr'}
+            >
+                <div className={styles.userWrapper}>
+                    <div
+                        className={classNames(styles.section, styles.userHeader)}
+                        style={avgGradient.length > 0 ? {
+                            backgroundImage: `linear-gradient(to right, ${avgGradient.join(', ')})`
+                        } : {}}
+                    >
+                        <input
+                            type='file'
+                            accept='.png,.jpg,.jpeg,.img,.gif'
+                            ref={fileInputRef}
+                            onChange={handleChangeAvatar}
+                            style={{ display: 'none' }}
                         />
-                    </h2>
-                    {isMyProfile ? (
-                        <BufferedInput
-                            className={classNames(styles.descriptionField)}
-                            maxLength="1000"
-                            multiline
-                            placeholder={props.intl.formatMessage(userData.role === "dasher" ? messages.descriptionInputPlaceholderForDasher : messages.descriptionInputPlaceholder)}
-                            tabIndex="0"
-                            value={userData.profile.description}
-                            onSubmit={handleChangeDescription}
-                            disabled={descriptionDisabled}
+                        <img
+                            draggable={false}
+                            src={`https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId}`}
+                            alt={userData.username}
+                            onClick={() => isMyProfile ? fileInputRef.current.click() : null}
+                            className={styles.avatarImg}
+                            style={isMyProfile ? { cursor: 'pointer' } : null}
                         />
-                    ) : (
-                        <div className={styles.description}>
-                            <p>
-                                {userData.profile.description ?
-                                    decorate(userData.profile.description, true) : (
-                                        <i>{props.intl.formatMessage(messages.descriptionPlaceholder)}</i>
-                                    )
-                                }
-                            </p>
-                        </div>
-                    )}
-                </div>
-                <div className={styles.section}>
-                    <h2>
-                        <FormattedMessage
-                            defaultMessage="Projects ({projectsCount})"
-                            description="Projects section title on user's profile"
-                            id="dash.user.projects"
-                            values={{
-                                projectsCount: userData.projects.length
-                            }}
-                        />
-                    </h2>
-                    <div className={styles.projectGrid}>
-                        {projects.map((project) => (
-                            <div
-                                key={project.id}
-                                className={styles.projectCard}
-                                title={props.intl.formatMessage(messages.hoverText, {
-                                    author: userData.username,
-                                    title: project.name
-                                })}
-                                onClick={() => window.open(`./#${project.id}`, '_blank')}
-                            >
-                                <div className={styles.thumbWrapper}>
-                                    <img
-                                        draggable={false}
-                                        src={`https://dashblocks-server.vercel.app/projects/thumbnails/${project.thumbnailId || 1}`}
-                                        alt={project.id}
-                                    />
-                                </div>
-                                <div className={styles.projectInfo}>
-                                    <h4>{project.name}</h4>
-                                    <p>
-                                        <FormattedMessage
-                                            defaultMessage="by {author}"
-                                            description="Displayed under project title to credit creator"
-                                            id="tw.studioview.authorAttribution"
-                                            values={{
-                                                author: userData.username
-                                            }}
-                                        />
-                                    </p>
-                                </div>
+                        <div className={styles.userInfo}>
+                            <div className={styles.userInfoRow}>
+                                <h2>{userData.username}</h2>
+                                <span className={styles.roleBadge}>
+                                    {userData.role === 'dashteam'
+                                        ? props.intl.formatMessage(messages.dashTeamRole)
+                                        : userData.role === 'dasher+'
+                                            ? props.intl.formatMessage(messages.dasherPlusRole)
+                                            : props.intl.formatMessage(messages.dasherRole)}
+                                </span>
                             </div>
-                        ))}
+                            <div className={styles.userInfoRow}>
+                                <FormattedMessage
+                                    defaultMessage="Joined: {date}"
+                                    description="User's account registration date"
+                                    id="dash.user.joinedAt"
+                                    values={{
+                                        date: joinDate
+                                            ? relativeTimeSupported()
+                                                ? (<FormattedRelative value={joinDate} />)
+                                                : (<FormattedDate value={joinDate} />)
+                                            : '?'
+                                    }}
+                                />
+                                <div className={styles.userInfoDivider} />
+                                <FormattedMessage
+                                    defaultMessage="Last Active: {date}"
+                                    description="User's last active date"
+                                    id="dash.user.lastActive"
+                                    values={{
+                                        date: lastActiveDate
+                                            ? relativeTimeSupported()
+                                                ? (<FormattedRelative value={lastActiveDate} />)
+                                                : (<FormattedDate value={lastActiveDate} />)
+                                            : '?'
+                                    }}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className={styles.section}>
+                        <h2>
+                            <FormattedMessage
+                                defaultMessage="Description"
+                                description="User's description section title on user's profile"
+                                id="dash.home.tab.description"
+                            />
+                        </h2>
+                        {isMyProfile ? (
+                            <BufferedInput
+                                className={classNames(styles.descriptionField)}
+                                maxLength="1000"
+                                multiline
+                                placeholder={props.intl.formatMessage(userData.role === "dasher" ? messages.descriptionInputPlaceholderForDasher : messages.descriptionInputPlaceholder)}
+                                tabIndex="0"
+                                value={userData.profile.description}
+                                onSubmit={handleChangeDescription}
+                                disabled={descriptionDisabled}
+                            />
+                        ) : (
+                            <div className={styles.description}>
+                                <p>
+                                    {userData.profile.description ?
+                                        decorate(userData.profile.description, true) : (
+                                            <i>{props.intl.formatMessage(messages.descriptionPlaceholder)}</i>
+                                        )
+                                    }
+                                </p>
+                            </div>
+                        )}
+                    </div>
+                    <div className={styles.section}>
+                        <h2>
+                            <FormattedMessage
+                                defaultMessage="Projects ({projectsCount})"
+                                description="Projects section title on user's profile"
+                                id="dash.user.projects"
+                                values={{
+                                    projectsCount: userData.projects.length
+                                }}
+                            />
+                        </h2>
+                        <div className={styles.projectGrid}>
+                            {projects.map((project) => (
+                                <div
+                                    key={project.id}
+                                    className={styles.projectCard}
+                                    title={props.intl.formatMessage(messages.hoverText, {
+                                        author: userData.username,
+                                        title: project.name
+                                    })}
+                                    onClick={() => window.open(`./#${project.id}`, '_blank')}
+                                >
+                                    <div className={styles.thumbWrapper}>
+                                        <img
+                                            draggable={false}
+                                            src={`https://dashblocks-server.vercel.app/projects/thumbnails/${project.thumbnailId || 1}`}
+                                            alt={project.id}
+                                        />
+                                    </div>
+                                    <div className={styles.projectInfo}>
+                                        <h4>{project.name}</h4>
+                                        <p>
+                                            <FormattedMessage
+                                                defaultMessage="by {author}"
+                                                description="Displayed under project title to credit creator"
+                                                id="tw.studioview.authorAttribution"
+                                                values={{
+                                                    author: userData.username
+                                                }}
+                                            />
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 </div>
+                <Footer />
             </div>
-            <Footer />
-        </div>
+        </>
     );
 };
 

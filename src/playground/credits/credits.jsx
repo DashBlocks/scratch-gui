@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import render from '../app-target';
+import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import styles from './credits.css';
 
+import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {Footer} from '../render-interface.jsx';
 
 import {APP_NAME} from '../../lib/brand';
@@ -56,6 +58,7 @@ UserList.propTypes = {
 
 const Credits = () => (
     <main className={styles.main}>
+        <LazyMenuBar />
         <header className={styles.headerContainer}>
             <h1 className={styles.headerText}>
                 {APP_NAME} Credits
@@ -163,4 +166,6 @@ const Credits = () => (
     </main>
 );
 
-render(<Credits />);
+const WrappedCredits = AppStateHOC(Credits);
+
+render(<WrappedCredits />);

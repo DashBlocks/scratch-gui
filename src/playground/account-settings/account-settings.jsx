@@ -11,6 +11,7 @@ import Input from '../../components/forms/input.jsx';
 import Button from '../../components/button/button.jsx';
 import Spinner from '../../components/spinner/spinner.jsx';
 
+import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {Footer} from '../render-interface.jsx';
 
 import styles from './account-settings.css';
@@ -107,6 +108,7 @@ class AccountSettings extends React.Component {
     render () {
         return (
             <>
+                <LazyMenuBar />
                 <div
                     className={styles.container}
                     dir={this.props.isRtl ? 'rtl' : 'ltr'}

@@ -9,6 +9,7 @@ import styles from './mystuff.css';
 import Spinner from '../../components/spinner/spinner.jsx';
 import {Footer} from '../render-interface.jsx';
 import Button from '../../components/button/button.jsx';
+import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 import getSession from '../../lib/session.js';
@@ -93,88 +94,104 @@ const User = (props) => {
     }
 
     if (loading) return (
-        <div className={styles.spinner}>
-            <Spinner level={'primary'} large />
-        </div>
+        <>
+            <LazyMenuBar />
+            <div className={styles.spinner}>
+                <Spinner level={'primary'} large />
+            </div>
+        </>
     );
-    if (error) return <div>Error: {error}</div>;
-    if (!userData) return null;
+    if (error) return (
+        <>
+            <LazyMenuBar />
+            <div>Error: {error}</div>
+        </>
+    );
+    if (!userData) return (
+        <>
+            <LazyMenuBar />
+            <div />
+        </>
+    );
 
     return (
-        <div
-            className={styles.container}
-            dir={props.isRtl ? 'rtl' : 'ltr'}
-        >
-            <div className={styles.mystuffWrapper}>
-                <div className={styles.section}>
-                    <h2>
-                        <FormattedMessage
-                            defaultMessage="My Stuff"
-                            description="Title of /mystuff page"
-                            id="dash.mystuff.title"
-                        />
-                    </h2>
-                    <div className={styles.projectGrid}>
-                        {projects.map((project) => (
-                            <div
-                                key={project.id}
-                                className={styles.projectCard}
-                            >
-                                <div className={styles.thumbWrapper}>
-                                    <img
-                                        draggable={false}
-                                        src={`https://dashblocks-server.vercel.app/projects/thumbnails/${project.thumbnailId || 1}`}
-                                        alt={project.id}
-                                    />
-                                </div>
-                                <div className={styles.projectInfo}>
-                                    <h4
-                                        onClick={() => window.open(`./#${project.id}`, '_blank')}
-                                        title={props.intl.formatMessage(messages.hoverText, {
-                                            author: userData.username,
-                                            title: project.name
-                                        })}
-                                    >{project.name}</h4>
-                                    <Button
-                                        className={styles.seeInsideButton}
-                                        onClick={() => window.open(`./editor.html#${project.id}`, '_blank')}
-                                    >
-                                        <FormattedMessage
-                                            defaultMessage="See inside"
-                                            description="Label for see inside button"
-                                            id="tw.menuBar.seeInside"
+        <>
+            <LazyMenuBar />
+            <div
+                className={styles.container}
+                dir={props.isRtl ? 'rtl' : 'ltr'}
+            >
+                <div className={styles.mystuffWrapper}>
+                    <div className={styles.section}>
+                        <h2>
+                            <FormattedMessage
+                                defaultMessage="My Stuff"
+                                description="Title of /mystuff page"
+                                id="dash.mystuff.title"
+                            />
+                        </h2>
+                        <div className={styles.projectGrid}>
+                            {projects.map((project) => (
+                                <div
+                                    key={project.id}
+                                    className={styles.projectCard}
+                                >
+                                    <div className={styles.thumbWrapper}>
+                                        <img
+                                            draggable={false}
+                                            src={`https://dashblocks-server.vercel.app/projects/thumbnails/${project.thumbnailId || 1}`}
+                                            alt={project.id}
                                         />
-                                    </Button>
+                                    </div>
+                                    <div className={styles.projectInfo}>
+                                        <h4
+                                            onClick={() => window.open(`./#${project.id}`, '_blank')}
+                                            title={props.intl.formatMessage(messages.hoverText, {
+                                                author: userData.username,
+                                                title: project.name
+                                            })}
+                                        >{project.name}</h4>
+                                        <Button
+                                            className={styles.seeInsideButton}
+                                            onClick={() => window.open(`./editor.html#${project.id}`, '_blank')}
+                                        >
+                                            <FormattedMessage
+                                                defaultMessage="See inside"
+                                                description="Label for see inside button"
+                                                id="tw.menuBar.seeInside"
+                                            />
+                                        </Button>
+                                    </div>
+                                    <div className={styles.projectStats}>
+                                        <p>
+                                            <FormattedMessage
+                                                defaultMessage="{fires} fires" // TODO: Icon + count
+                                                description="Number of fires for a project"
+                                                id="dash.project.stats.fires"
+                                                values={{
+                                                    fires: project.stats?.fires || 0
+                                                }}
+                                            />
+                                        </p>
+                                        <Button
+                                            className={styles.deleteProjectButton}
+                                            onClick={() => handleDeleteProject(project.id)}
+                                        >
+                                            <FormattedMessage
+                                                defaultMessage="Delete"
+                                                description="Label for delete project button"
+                                                id="dash.mystuff.delete"
+                                            />
+                                        </Button>
+                                    </div>
                                 </div>
-                                <div className={styles.projectStats}>
-                                    <p>
-                                        <FormattedMessage
-                                            defaultMessage="{fires} fires" // TODO: Icon + count
-                                            description="Number of fires for a project"
-                                            id="dash.project.stats.fires"
-                                            values={{
-                                                fires: project.stats?.fires || 0
-                                            }}
-                                        />
-                                    </p>
-                                    <Button
-                                        className={styles.deleteProjectButton}
-                                        onClick={() => handleDeleteProject(project.id)}
-                                    >
-                                        <FormattedMessage
-                                            defaultMessage="Delete"
-                                            description="Label for delete project button"
-                                            id="dash.mystuff.delete"
-                                        />
-                                    </Button>
-                                </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
+                <Footer />
             </div>
-            <Footer />
-        </div>
+        </>
     );
 };
 

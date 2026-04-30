@@ -1,4 +1,15 @@
-[          {
+[         {
+         "name":"Flowers",
+    "tags": [
+            "dash"
+        ],
+         "bitmapResolution":1,
+         "dataFormat":"svg",
+         "assetId":"bfd93040f9d2652f468e1858b5775388",
+         "md5ext":"bfd93040f9d2652f468e1858b5775388.svg",
+         "rotationCenterX":0,
+         "rotationCenterY":0
+      },  {
          "name":"King_angry",
     "tags": [
             "dash",

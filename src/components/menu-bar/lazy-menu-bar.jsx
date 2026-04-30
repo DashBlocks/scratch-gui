@@ -14,6 +14,7 @@ import {ComingSoonTooltip} from '../coming-soon/coming-soon.jsx';
 import Divider from '../divider/divider.jsx';
 import {MenuItem} from '../menu/menu.jsx';
 import MenuBarHOC from '../../containers/menu-bar-hoc.jsx';
+import TWThemeManagerHOC from '../../containers/tw-theme-manager-hoc.jsx';
 import SettingsMenu from './lazy-settings-menu.jsx';
 import AccountNav from '../../containers/account-nav.jsx';
 
@@ -306,7 +307,7 @@ const mapStateToProps = state => {
         currentLocale: state.locales.locale,
         isRtl: state.locales.isRtl,
         locale: state.locales.locale,
-        sessionExists: state.scratchGui.dash.session !== null,
+        sessionExists: typeof session === 'object' && session !== null,
         settingsMenuOpen: settingsMenuOpen(state),
         session: session || null,
         vm: state.scratchGui.vm
@@ -324,6 +325,7 @@ const mapDispatchToProps = dispatch => ({
 export default compose(
     injectIntl,
     MenuBarHOC,
+    TWThemeManagerHOC,
     connect(
         mapStateToProps,
         mapDispatchToProps

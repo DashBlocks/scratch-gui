@@ -258,8 +258,6 @@ class LazyMenuBar extends React.Component {
                         </React.Fragment>
                     )}
                 </div>
-
-                {aboutButton}
             </Box>
         );
 

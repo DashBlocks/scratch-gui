@@ -68,7 +68,7 @@ const relativeTimeSupported = () => typeof Intl !== 'undefined' && typeof Intl.R
 
 const handleClickAddonSettings = addonId => {
     // addonId might be a string of the addon to focus on, undefined, or an event (treat like undefined)
-    const path = process.env.ROUTING_STYLE === 'wildcard' ? 'addons' : 'addons.html';
+    const path = /*process.env.ROUTING_STYLE === 'wildcard' ?*/ 'addons' /*: 'addons.html'*/;
     const url = `${process.env.ROOT}${path}${typeof addonId === 'string' ? `#${addonId}` : ''}`;
     window.open(url);
 };
@@ -250,7 +250,7 @@ const Footer = () => (
             <div className={styles.footerColumns}>
                 <div className={styles.footerSection}>
                     <RenderWelcomeModal />
-                    <a href="credits.html">
+                    <a href="credits">
                         <FormattedMessage
                             defaultMessage="Credits"
                             description="Credits link in footer"
@@ -266,7 +266,7 @@ const Footer = () => (
                     </a>*/}
                 </div>
                 <div className={styles.footerSection}>
-                    <a href="https://dashblocks.github.io/desktop.html">
+                    <a href="https://dashblocks.github.io/desktop">
                         {/* Do not translate */}
                         {'Dash Desktop'}
                     </a>
@@ -318,14 +318,14 @@ const Footer = () => (
                             id="tw.code"
                         />
                     </a>
-                    <a href="privacy.html">
+                    <a href="privacy">
                         <FormattedMessage
                             defaultMessage="Privacy Policy"
                             description="Link to privacy policy"
                             id="tw.privacy"
                         />
                     </a>
-                    <a href="tos.html">
+                    <a href="tos">
                         <FormattedMessage
                             defaultMessage="Terms of Service"
                             description="Link to terms of service"

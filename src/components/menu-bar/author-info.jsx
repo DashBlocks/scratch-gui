@@ -48,7 +48,7 @@ const ActualAuthorInfo = ({
                             author: (
                                 <a
                                     className={styles.link}
-                                    href={isDashProject ? `${process.env.ROOT}user.html#${userId}` : `https://scratch.mit.edu/users/${username}`}
+                                    href={isDashProject ? `${process.env.ROOT}user#${userId}` : `https://scratch.mit.edu/users/${username}`}
                                     target="_blank"
                                 >
                                     <span className={styles.username}>{username}</span>

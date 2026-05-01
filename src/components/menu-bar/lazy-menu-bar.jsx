@@ -263,12 +263,14 @@ class LazyMenuBar extends React.Component {
         );
 
         return (
-            <React.Fragment>
-                {menuBar}
-                {/* !process.env.OLD_COMPILER && (<TWNews item='dash:news1' id='new-compiler' />) */}
-                {window.location.href.startsWith('https://dashblocks.github.io/scratch-gui') && (<TWNews item='dash:news2' id='dev-version' />)}
-                {/* <TWNews item='dash:news3' id='new-year' /> */}
-            </React.Fragment>
+            <div dir={this.props.isRtl ? 'rtl' : 'ltr'}>
+                <React.Fragment>
+                    {menuBar}
+                    {/* !process.env.OLD_COMPILER && (<TWNews item='dash:news1' id='new-compiler' />) */}
+                    {window.location.href.startsWith('https://dashblocks.github.io/scratch-gui') && (<TWNews item='dash:news2' id='dev-version' />)}
+                    {/* <TWNews item='dash:news3' id='new-year' /> */}
+                </React.Fragment>
+            </div>
         );
     }
 }

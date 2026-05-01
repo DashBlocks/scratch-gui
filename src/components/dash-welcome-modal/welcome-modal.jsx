@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import poster from './dash-poster.svg';
 import styles from './welcome-modal.css';
 import FancyCheckbox from '../tw-fancy-checkbox/checkbox.jsx';
-import { APP_NAME } from '../../lib/brand.js';
+import {APP_NAME} from '../../lib/brand.js';
 
 const WelcomeModalComponent = props => (
     <Modal
@@ -33,9 +33,9 @@ const WelcomeModalComponent = props => (
             <p className={styles.text}>
                 {APP_NAME} was made by <a href="https://scratch.mit.edu/users/damir2809">damir2809</a>, <a href="https://scratch.mit.edu/users/Den4ik-12">Den4ik-12</a>, <a href="https://scratch.mit.edu/users/scratch_craft_2">scratch_craft_2</a>, <a href="https://scratch.mit.edu/users/AnonimKing24">AnonimKing24</a> and other contributors.
                 <br />
-                View all contributors on <a href={`${process.env.ROOT}credits.html`}>credits page</a>.
+                View all contributors on <a href={`${process.env.ROOT}credits`}>credits page</a>.
                 <br />
-                Customize editor to your preference on the <a href={`${process.env.ROOT}addons.html`}>addons page</a>.
+                Customize editor to your preference on the <a href={`${process.env.ROOT}addons`}>addons page</a>.
             </p>
         </Box>
         <Box className={styles.buttonRow}>
@@ -47,7 +47,33 @@ const WelcomeModalComponent = props => (
                 />
                 <p>Don't show this again</p>
             </label>
-            <p>By using Dash, you agree to our <a href={`${process.env.ROOT}tos`}>Terms of Service</a> and <a href={`${process.env.ROOT}privacy`}>Privacy Policy</a>.</p>
+            <p className={styles.text}>
+                <FormattedMessage
+                    defaultMessage="By using Dash, you agree to our {termsOfService} and {privacyPolicy}."
+                    description="Text to inform users about terms of service and privacy policy when registering"
+                    id="dash.tosAndPrivacy"
+                    values={{
+                        termsOfService: (
+                            <a href={`${process.env.ROOT}tos`} target="_blank">
+                                <FormattedMessage
+                                    defaultMessage="Terms of Service"
+                                    description="Link to terms of service page"
+                                    id="dash.tosAndPrivacy.tos"
+                                />
+                            </a>
+                        ),
+                        privacyPolicy: (
+                            <a href={`${process.env.ROOT}privacy`} target="_blank">
+                                <FormattedMessage
+                                    defaultMessage="Privacy Policy"
+                                    description="Link to privacy policy page"
+                                    id="dash.tosAndPrivacy.privacy"
+                                />
+                            </a>
+                        )
+                    }}
+                />
+            </p>
             <button
                 className={styles.closeButton}
                 onClick={props.onClose}

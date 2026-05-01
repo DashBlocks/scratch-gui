@@ -91,7 +91,7 @@ class Register extends React.Component {
             const session = await getSession(result.userId, password);
             if (!session || !session.username) {
                 alert(this.props.intl.formatMessage(messages.createdButLogInFailed));
-                window.location.href = '/login.html';
+                window.location.href = '/login';
                 return;
             }
             window.location.href = '/';
@@ -109,7 +109,6 @@ class Register extends React.Component {
                 {this.props.session && this.props.session.username ? window.location.href = "/" : null}
                 <div
                     className={styles.container}
-                    dir={this.props.isRtl ? 'rtl' : 'ltr'}
                 >
                     <div className={styles.registerWrapper}>
                         <div className={styles.section}>
@@ -175,7 +174,33 @@ class Register extends React.Component {
                                     onChange={this.handleChange}
                                 />
 
-                                <p>By using Dash, you agree to our <a href={`${process.env.ROOT}tos`}>Terms of Service</a> and <a href={`${process.env.ROOT}privacy`}>Privacy Policy</a>.</p>
+                                <p>
+                                    <FormattedMessage
+                                        defaultMessage="By using Dash, you agree to our {termsOfService} and {privacyPolicy}."
+                                        description="Text to inform users about terms of service and privacy policy when registering"
+                                        id="dash.tosAndPrivacy"
+                                        values={{
+                                            termsOfService: (
+                                                <a href={`${process.env.ROOT}tos`} target="_blank">
+                                                    <FormattedMessage
+                                                        defaultMessage="Terms of Service"
+                                                        description="Link to terms of service page"
+                                                        id="dash.tosAndPrivacy.tos"
+                                                    />
+                                                </a>
+                                            ),
+                                            privacyPolicy: (
+                                                <a href={`${process.env.ROOT}privacy`} target="_blank">
+                                                    <FormattedMessage
+                                                        defaultMessage="Privacy Policy"
+                                                        description="Link to privacy policy page"
+                                                        id="dash.tosAndPrivacy.privacy"
+                                                    />
+                                                </a>
+                                            )
+                                        }}
+                                    />
+                                </p>
                                 <div className={styles.submitRow}>
                                     <Button
                                         className={styles.submitButton}

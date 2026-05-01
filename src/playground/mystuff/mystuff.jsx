@@ -153,7 +153,7 @@ const User = (props) => {
                                         >{project.name}</h4>
                                         <Button
                                             className={styles.seeInsideButton}
-                                            onClick={() => window.open(`./editor.html#${project.id}`, '_blank')}
+                                            onClick={() => window.open(`./editor#${project.id}`, '_blank')}
                                         >
                                             <FormattedMessage
                                                 defaultMessage="See inside"

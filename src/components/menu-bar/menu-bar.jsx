@@ -590,6 +590,7 @@ class MenuBar extends React.Component {
                             />
                         </a>
                     )}
+                    {this.props.isPlayerOnly && <Divider className={styles.divider} />}
                     <div className={styles.fileGroup}>
                         {!this.props.isPlayerOnly && (this.props.canChangeTheme || this.props.canChangeLanguage) && (<SettingsMenu
                             className={styles.fileGroup}

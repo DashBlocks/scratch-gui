@@ -192,6 +192,23 @@ class LazyMenuBar extends React.Component {
                             </Button>
                         </a>
                     </div>}
+                    {!isScratchDesktop() && <div className={styles.menuBarItem}>
+                        <a
+                            className={styles.feedbackLink}
+                            href="editor"
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            {/* todo: icon */}
+                            <Button>
+                                <FormattedMessage
+                                    defaultMessage="Editor"
+                                    description="Button to give link to editor"
+                                    id="dash.editor"
+                                />
+                            </Button>
+                        </a>
+                    </div>}
                 </div>
                 <div className={styles.accountInfoGroup}>
                     {this.props.sessionExists && this.props.session?.username ? (

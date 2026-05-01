@@ -428,6 +428,6 @@ const ConnectedUser = injectIntl(connect(
     mapDispatchToProps
 )(User));
 
-const WrappedUser = AppStateHOC(ConnectedUser, true);
+const WrappedUser = AppStateHOC(ConnectedUser);
 
 render(<WrappedUser />);

@@ -131,7 +131,8 @@ class LazyMenuBar extends React.Component {
             <Box
                 className={classNames(
                     this.props.className,
-                    styles.menuBar
+                    styles.menuBar,
+                    styles.centered
                 )}
             >
                 <div className={styles.settingsMenu}>
@@ -156,7 +157,7 @@ class LazyMenuBar extends React.Component {
                         />}
                     </div>
                 </div>
-                <div className={classNames(styles.mainMenu, styles.centered)}>
+                <div className={styles.mainMenu}>
                     <a
                         href="/"
                         rel="noreferrer"

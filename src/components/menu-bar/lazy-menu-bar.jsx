@@ -192,23 +192,19 @@ class LazyMenuBar extends React.Component {
                             </Button>
                         </a>
                     </div>}
-                    {!isScratchDesktop() && <div className={styles.menuBarItem}>
-                        <a
-                            className={styles.feedbackLink}
-                            href="editor"
-                            rel="noopener noreferrer"
-                            target="_blank"
+                    {!isScratchDesktop() && (
+                        <div
+                            className={classNames(styles.menuBarItem, styles.hoverable, styles.editorButton)}
+                            onClick={() => window.open("./editor", "_blank")}
                         >
                             {/* todo: icon */}
-                            <Button>
-                                <FormattedMessage
-                                    defaultMessage="Editor"
-                                    description="Button to give link to editor"
-                                    id="dash.editor"
-                                />
-                            </Button>
-                        </a>
-                    </div>}
+                            <FormattedMessage
+                                defaultMessage="Editor"
+                                description="Button to open editor"
+                                id="dash.editor"
+                            />
+                        </div>
+                    )}
                 </div>
                 <div className={styles.accountInfoGroup}>
                     {this.props.sessionExists && this.props.session?.username ? (

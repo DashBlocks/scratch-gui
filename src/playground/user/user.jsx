@@ -242,18 +242,21 @@ const User = (props) => {
             <div className={styles.spinner}>
                 <Spinner level={'primary'} large />
             </div>
+            <Footer />
         </>
     );
     if (error) return (
         <>
             <LazyMenuBar />
             <div>Error: {error}</div>
+            <Footer />
         </>
     );
     if (!userData) return (
         <>
             <LazyMenuBar />
-            <div />
+            <div>Failed to load user data</div>
+            <Footer />
         </>
     );
 

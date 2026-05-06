@@ -67,9 +67,9 @@ class ListMonitorScroller extends React.Component {
                                 style={{color: this.props.categoryColor.text}}
                                 type="text"
                                 value={isNestedArray
-                                    ? "nested array"
+                                    ? `Array(${this.props.activeValue.length})`
                                     : isNestedObject
-                                        ? "nested object"
+                                        ? `Object(${this.props.activeValue.size})`
                                         : String(Cast.isCustomType(this.props.activeValue) && typeof this.props.activeValue?.toListEditor === 'function'
                                             ? this.props.activeValue.toListEditor()
                                             : this.props.activeValue)}
@@ -90,9 +90,9 @@ class ListMonitorScroller extends React.Component {
                     ) : (
                         <div className={styles.valueInner}>
                             {isNestedArray
-                                ? <i>nested array</i>
+                                ? <i>{`Array(${value.length})`}</i>
                                 : isNestedObject
-                                    ? <i>nested object</i>
+                                    ? <i>{`Object(${value.size})`}</i>
                                     : Cast.isCustomType(value) && (typeof value?.toListItem === 'function' || typeof value?.toMonitorContent === 'function')
                                         ? (<DOMElementRenderer domElement={typeof value?.toListItem === 'function'
                                             ? value.toListItem()

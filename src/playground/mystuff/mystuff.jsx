@@ -59,9 +59,7 @@ const User = (props) => {
                 userData = await userRes.json();
                 if (!userData.ok) throw new Error(userData.error);
                 setUserData(userData.user);
-
-                const projects = userData.user.projects.slice(0, 10);
-                setProjects(projects);
+                setProjects(userData.user.projects);
             } catch (error) {
                 setError(error.message);
             } finally {

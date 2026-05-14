@@ -17,7 +17,7 @@ import screenshotLight from './screenshot-light.png';
 import screenshotDark from './screenshot-dark.png';
 
 const version = '2.2.0';
-const releasesDownloadUrl = "https://github.com/DashBlocks/desktop/releases/download/v${version}";
+const releasesDownloadUrl = `https://github.com/DashBlocks/desktop/releases/download/v${version}`;
 
 /* eslint-disable react/jsx-no-literals */
 

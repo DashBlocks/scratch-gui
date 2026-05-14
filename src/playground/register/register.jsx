@@ -49,6 +49,7 @@ class Register extends React.Component {
             username: '',
             password: '',
             confirmPassword: '',
+            verificationToken: null,
             waiting: false,
             verifying: false,
             error: null
@@ -66,7 +67,7 @@ class Register extends React.Component {
         window.open(
 			`https://auth.itinerary.eu.org/auth/?redirect=${redirectLocation}&name=Dash (DashBlocks)`,
 			'_blank',
-			'noopener,noreferrer,width=1000,height=700'
+			'width=1000,height=700'
 		);
     }
 
@@ -243,7 +244,7 @@ class Register extends React.Component {
                                                             window.open(
                                                                 `https://auth.itinerary.eu.org/auth/?redirect=${redirectLocation}&name=Dash (DashBlocks)`,
                                                                 '_blank',
-                                                                'noopener,noreferrer,width=1000,height=700'
+                                                                'width=1000,height=700'
                                                             );
                                                         }}
                                                     >

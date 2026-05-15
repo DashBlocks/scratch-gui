@@ -32,6 +32,11 @@ const messages = defineMessages({
         id: 'dash.account.passwordsDontMatch',
         defaultMessage: 'Passwords don\'t match',
         description: 'Title of error message when passwords do not match'
+    },
+    verificationMissingToken: {
+        id: 'dash.register.verificationMissingToken',
+        defaultMessage: 'No verification token found. Please complete verification in the popup before confirming',
+        description: 'Error shown when the user tries to confirm registration without a verification token'
     }
 });
 
@@ -43,7 +48,8 @@ class Register extends React.Component {
         bindAll(this, [
             'handleSubmit',
             'handleConfirm',
-            'handleChange'
+            'handleChange',
+            'handleVerificationMessage'
         ]);
         this.state = {
             username: '',
@@ -56,35 +62,57 @@ class Register extends React.Component {
         };
     }
 
+    componentDidMount () {
+        window.addEventListener('message', this.handleVerificationMessage);
+    }
+
+    componentWillUnmount () {
+        window.removeEventListener('message', this.handleVerificationMessage);
+    }
+
     handleChange (e) {
         this.setState({[e.target.name]: e.target.value});
+    }
+
+    handleVerificationMessage (event) {
+        if (event.origin !== 'https://dashblocks-server.vercel.app') return;
+        const data = event.data;
+        if (data && data.type === 'verification_success') {
+            this.setState({
+                verificationToken: data.token,
+                verifying: true,
+                error: null
+            });
+        }
     }
 
     async handleSubmit (e) {
         e.preventDefault();
 
-        this.setState({waiting: false, verifying: true, error: null});
+        this.setState({waiting: false, verifying: true, verificationToken: null, error: null});
         window.open(
-			`https://auth.itinerary.eu.org/auth/?redirect=${redirectLocation}&name=Dash (DashBlocks)`,
-			'_blank',
-			'width=1000,height=700'
-		);
+            `https://auth.itinerary.eu.org/auth/?redirect=${redirectLocation}&name=Dash (DashBlocks)`,
+            '_blank',
+            'width=1000,height=700'
+        );
     }
 
     async handleConfirm (e) {
         e.preventDefault();
 
         this.setState({waiting: true, verifying: false, error: null});
-        const {username, password, confirmPassword} = this.state;
+        const {username, password, confirmPassword, verificationToken} = this.state;
         try {
             // Maybe better to do this on backend ¯\_(ツ)_/¯
             if (password !== confirmPassword)
                 throw new Error(this.props.intl.formatMessage(messages.passwordsDontMatch));
+            if (!verificationToken)
+                throw new Error(this.props.intl.formatMessage(messages.verificationMissingToken));
             const response = await fetch('https://dashblocks-server.vercel.app/auth/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-				body: JSON.stringify({username, password}),
-				credentials: 'include'
+                body: JSON.stringify({username, password, verificationToken}),
+                credentials: 'include'
             });
             const result = await response.json();
             if (!result.ok)

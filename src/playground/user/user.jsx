@@ -310,7 +310,11 @@ const User = (props) => {
                                     values={{
                                         date: joinDate
                                             ? relativeTimeSupported()
-                                                ? (<FormattedRelative value={joinDate} />)
+                                                ? (
+                                                    <span title={`${props.intl.formatDate(joinDate)}, ${props.intl.formatTime(joinDate)}`}>
+                                                        <FormattedRelative value={joinDate} />
+                                                    </span>
+                                                )
                                                 : (<FormattedDate value={joinDate} />)
                                             : '?'
                                     }}
@@ -323,7 +327,11 @@ const User = (props) => {
                                     values={{
                                         date: lastActiveDate
                                             ? relativeTimeSupported()
-                                                ? (<FormattedRelative value={lastActiveDate} />)
+                                                ? (
+                                                    <span title={`${props.intl.formatDate(lastActiveDate)}, ${props.intl.formatTime(lastActiveDate)}`}>
+                                                        <FormattedRelative value={lastActiveDate} />
+                                                    </span>
+                                                )
                                                 : (<FormattedDate value={lastActiveDate} />)
                                             : '?'
                                     }}

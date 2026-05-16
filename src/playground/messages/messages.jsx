@@ -15,6 +15,7 @@ import {detectTheme} from '../../lib/themes/themePersistance';
 import getSession from '../../lib/session.js';
 
 import firedIcon from './icon--fired.svg';
+import featuredIcon from './icon--featured.svg';
 import promotedIcon from './icon--promoted.svg';
 import demotedIcon from './icon--demoted.svg';
 
@@ -88,7 +89,11 @@ const Messages = (props) => {
             case 'featured':
                 return (
                     <>
-                        {/* TODO: Icon */}
+                        <img
+                            className={styles.messageIcon}
+                            src={featuredIcon}
+                            draggable={false}
+                        />
                         <FormattedMessage
                             defaultMessage="Your project {project} got featured!"
                             description="Displayed when user's project is featured"

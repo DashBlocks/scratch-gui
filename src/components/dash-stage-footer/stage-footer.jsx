@@ -118,12 +118,22 @@ const StageFooter = (props) => {
         </Button>
     );
 
+    const uploadDate = projectMetadata?.uploadedAt ? new Date(projectMetadata?.uploadedAt) : null;
+    const uploadDateNode = uploadDate ? (
+        <>
+            <FormattedDate value={uploadDate} />
+            {', '}
+            <FormattedTime value={uploadDate} />
+        </>
+    ) : '?';
+
     return (
         <Box className={styles.stageFooterWrapper}>
             <div className={styles.footerButtonsRow}>
-                <div className={styles.fireButtonWrapper}>
-                    {fireButton}
-                </div>
+                {fireButton}
+            </div>
+            <div className={styles.footerButtonsRow}>
+                {uploadDateNode}
             </div>
         </Box>
     );

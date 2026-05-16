@@ -98,8 +98,14 @@ body {
 
 .message-content {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
     padding: $space;
+    gap: $space;
+}
+
+.message-icon {
+    width: 1.5rem;
+    height: 1.5rem;
 }

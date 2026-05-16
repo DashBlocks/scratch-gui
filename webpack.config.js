@@ -153,7 +153,8 @@ module.exports = [
             'login': './src/playground/login/login.jsx',
             'register': './src/playground/register/register.jsx',
             'account-settings': './src/playground/account-settings/account-settings.jsx',
-            'mystuff': './src/playground/mystuff/mystuff.jsx'
+            'mystuff': './src/playground/mystuff/mystuff.jsx',
+            'messages': './src/playground/messages/messages.jsx'
         },
         output: {
             path: path.resolve(__dirname, 'build')
@@ -272,6 +273,13 @@ module.exports = [
                 template: 'src/playground/simple.ejs',
                 filename: 'mystuff.html',
                 title: `My Stuff - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['messages'],
+                template: 'src/playground/simple.ejs',
+                filename: 'messages.html',
+                title: `Messages - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

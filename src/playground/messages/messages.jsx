@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import {FormattedMessage, injectIntl, intlShape} from 'react-intl';
+import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import render from '../app-target';
 import styles from './messages.css';
@@ -18,6 +18,14 @@ import getSession from '../../lib/session.js';
 
 const theme = detectTheme();
 applyGuiColors(theme);
+
+const messages = defineMessages({
+    setDescription: {
+        defaultMessage: 'set a description',
+        description: 'Label for link to set profile description in promotedDasherPlus message',
+        id: 'dash.messages.promotedDasherPlus.setDescription'
+    }
+});
 
 const Messages = (props) => {
     const [userData, setUserData] = useState(null);
@@ -51,6 +59,64 @@ const Messages = (props) => {
 
         fetchFullProfile();
     }, []); // Let's say session won't change
+
+    const getMessageContent = (message) => {
+        switch (message.type) {
+            case 'fired':
+                return (
+                    <FormattedMessage
+                        defaultMessage="{user} fired your project {project}"
+                        description="Displayed when someone fired user's project"
+                        id="dash.messages.fired"
+                        values={{
+                            user: <a href={`user#${message.user.username}`}>{message.user.username}</a>,
+                            project: <a href={`/#${message.id}`}>{message.name}</a>
+                        }}
+                    />
+                );
+            case 'featured':
+                return (
+                    <FormattedMessage
+                        defaultMessage="Your project {project} got featured!"
+                        description="Displayed when user's project is featured"
+                        id="dash.messages.featured"
+                        values={{
+                            project: <a href={`/#${message.id}`}>{message.name}</a>
+                        }}
+                    />
+                );
+            case 'promoted': {
+                if (message.role === 'dasher+') {
+                    return (
+                        <FormattedMessage
+                            defaultMessage="Congrats! You are now Dasher+, now you can {setDescription} in your profile and upload projects with custom extensions"
+                            description="Displayed when user got promoted to Dasher+ role"
+                            id="dash.messages.promotedDasherPlus"
+                            values={{
+                                setDescription: <a href={`user#${userData.username}`}>{props.intl.formatMessage(messages.setDescription)}</a>
+                            }}
+                        />
+                    );
+                } else if (message.role === 'dasher') {
+                    return (
+                        <FormattedMessage
+                            defaultMessage="You got demoted to Dasher role"
+                            description="Displayed when user got demoted to Dasher role"
+                            id="dash.messages.demotedDasher"
+                        />
+                    );
+                } else {
+                    return (
+                        <FormattedMessage
+                            defaultMessage="Unknown message type"
+                            description="Displayed when a message has an unknown type"
+                            id="dash.messages.unknownMessageType"
+                        />
+                    );
+                }
+            }
+        }
+    };
 
     if (loading) return (
         <>
@@ -96,55 +162,10 @@ const Messages = (props) => {
                             {userMessages.map((message, index) => (
                                 <div
                                     key={index}
-                                    className={styles.messageItem}
+                                    className={styles.messageContent}
                                 >
                                     {/* TODO: Icon based on message type */}
-                                    <div className={styles.messageContent}>
-                                        {message.type === 'fired' ?
-                                            <FormattedMessage
-                                                defaultMessage="{user} fired your project {project}"
-                                                description="Displayed when someone fired user's project"
-                                                id="dash.messages.fired"
-                                                values={{
-                                                    user: <a href={`user#${message.user.username}`}>{message.user.username}</a>,
-                                                    project: <a href={`/#${message.id}`}>{message.name}</a>
-                                                }}
-                                            /> :
-                                            message.type === 'featured' ?
-                                                <FormattedMessage
-                                                    defaultMessage="Your project {project} got featured!"
-                                                    description="Displayed when user's project is featured"
-                                                    id="dash.messages.featured"
-                                                    values={{
-                                                        project: <a href={`/#${message.id}`}>{message.name}</a>
-                                                    }}
-                                                /> :
-                                                message.type === 'promoted' && message.role === 'dasher+' ?
-                                                    <FormattedMessage
-                                                        defaultMessage="Congrats! You are now Dasher+, now you can {setDescription} in your profile and upload projects with custom extensions"
-                                                        description="Displayed when user got promoted to Dasher+ role"
-                                                        id="dash.messages.promotedDasherPlus"
-                                                        values={{
-                                                            setDescription: <a href={`user#${userData.username}`}>{props.intl.formatMessage({
-                                                                defaultMessage: 'set a description',
-                                                                description: 'Label for link to set profile description in promotedDasherPlus message',
-                                                                id: 'dash.messages.promotedDasherPlus.setDescription'
-                                                            })}</a>
-                                                        }}
-                                                    /> :
-                                                    message.type === 'promoted' && message.role === 'dasher' ?
-                                                        <FormattedMessage
-                                                            defaultMessage="You got demoted to Dasher role"
-                                                            description="Displayed when user got demoted to Dasher role"
-                                                            id="dash.messages.demotedDasher"
-                                                        /> :
-                                                        <FormattedMessage
-                                                            defaultMessage="Unknown message type"
-                                                            description="Displayed when a message has an unknown type"
-                                                            id="dash.messages.unknownMessageType"
-                                                        />
-                                        }
-                                    </div>
+                                    {getMessageContent(message)}
                                 </div>
                             ))}
                         </div>

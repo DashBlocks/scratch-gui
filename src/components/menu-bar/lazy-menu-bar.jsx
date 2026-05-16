@@ -33,6 +33,7 @@ import {
 
 import styles from './menu-bar.css';
 
+import messagesIcon from './icon--messages.png';
 import mystuffIcon from './icon--mystuff.png';
 import dashLogo from './dash.png';
 import dashNewYearLogo from './dash-new-year.png'
@@ -210,6 +211,20 @@ class LazyMenuBar extends React.Component {
                     {this.props.sessionExists && this.props.session?.username ? (
                         // User is logged in
                         <React.Fragment>
+                            <a href="messages">
+                                <div
+                                    className={classNames(
+                                        styles.menuBarItem,
+                                        styles.hoverable,
+                                        styles.messagesButton
+                                    )}
+                                >
+                                    <img
+                                        className={styles.messagesIcon}
+                                        src={messagesIcon}
+                                    />
+                                </div>
+                            </a>
                             <a href="mystuff">
                                 <div
                                     className={classNames(

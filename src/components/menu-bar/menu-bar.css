@@ -186,7 +186,7 @@
     padding: 0 0.75rem;
 }
 
-.mystuff-icon {
+.mystuff-icon, .messages-icon {
     margin: 0 .25rem;
     height: 1rem;
 }
@@ -199,7 +199,7 @@
     margin: 0 0 0 .25rem;
 }
 
-.account-nav-menu, .mystuff-button {
+.account-nav-menu, .mystuff-button, .messages-button {
     padding: 0 .25rem;
     display: flex;
     flex-direction: row;

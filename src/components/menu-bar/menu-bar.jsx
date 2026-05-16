@@ -90,6 +90,7 @@ import collectMetadata from '../../lib/collect-metadata';
 import styles from './menu-bar.css';
 
 import helpIcon from '../../lib/assets/icon--tutorials.svg';
+import messagesIcon from './icon--messages.png';
 import mystuffIcon from './icon--mystuff.png';
 import profileIcon from './icon--profile.png';
 import remixIcon from './icon--remix.svg';
@@ -1175,6 +1176,20 @@ class MenuBar extends React.Component {
                     {this.props.sessionExists && this.props.session?.username ? (
                         // User is logged in
                         <React.Fragment>
+                            <a href="messages">
+                                <div
+                                    className={classNames(
+                                        styles.menuBarItem,
+                                        styles.hoverable,
+                                        styles.messagesButton
+                                    )}
+                                >
+                                    <img
+                                        className={styles.messagesIcon}
+                                        src={messagesIcon}
+                                    />
+                                </div>
+                            </a>
                             <a href="mystuff">
                                 <div
                                     className={classNames(

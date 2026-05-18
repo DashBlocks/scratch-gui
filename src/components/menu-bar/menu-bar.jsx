@@ -344,6 +344,12 @@ class MenuBar extends React.Component {
                             alert('Project was shared but thumbnail upload failed');
                         }
                         window.location.hash = result.projectId;
+                        if (this.props.canSave) { // save before transitioning to project page
+                            this.props.autoUpdateProject();
+                            waitForUpdate(true); // queue the transition to project page
+                        } else {
+                            waitForUpdate(false); // immediately transition to project page
+                        }
                     } else {
                         alert(result.error);
                     }
@@ -354,12 +360,6 @@ class MenuBar extends React.Component {
                 }
                 window.open('./login', '_blank');
                 return;
-            }
-            if (this.props.canSave) { // save before transitioning to project page
-                this.props.autoUpdateProject();
-                waitForUpdate(true); // queue the transition to project page
-            } else {
-                waitForUpdate(false); // immediately transition to project page
             }
         }
     }

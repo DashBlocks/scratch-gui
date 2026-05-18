@@ -4,7 +4,11 @@
     background: $data-primary;
 }
 
-.share-button-is-shared {
+.share-button-is-disabled {
     background: $ui-black-transparent;
     cursor: default;
+}
+
+.spinner {
+    vertical-align: middle;
 }

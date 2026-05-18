@@ -237,6 +237,9 @@ class MenuBar extends React.Component {
             'getSaveToComputerHandler',
             'restoreOptionMessage'
         ]);
+        this.state = {
+            isSharing: false
+        }
     }
     componentDidMount () {
         document.addEventListener('keydown', this.handleKeyPress);
@@ -296,10 +299,13 @@ class MenuBar extends React.Component {
         }
     }
     async handleClickShare (waitForUpdate) {
-        if (!this.props.isShared) {
+        if (!this.props.isShared && !this.state.isSharing) {
             if (this.props.canShare) { // save before transitioning to project page
                 const session = await getSession();
                 if (session) {
+                    this.setState({
+                        isSharing: true
+                    });
                     let formData = new FormData();
                     const content = await this.props.vm.saveProjectSb3();
                     const fileBlob = new Blob([content], { type: 'application/x.dash.dbp' });
@@ -341,6 +347,9 @@ class MenuBar extends React.Component {
                     } else {
                         alert(result.error);
                     }
+                    this.setState({
+                        isSharing: false
+                    });
                     return;
                 }
                 window.open('./login', '_blank');
@@ -1094,6 +1103,7 @@ class MenuBar extends React.Component {
                                             <ShareButton
                                                 className={styles.menuBarButton}
                                                 isShared={this.props.isShared}
+                                                isSharing={this.state.isSharing}
                                                 /* eslint-disable react/jsx-no-bind */
                                                 onClick={() => {
                                                     this.handleClickShare(waitForUpdate);

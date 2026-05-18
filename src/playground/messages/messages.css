@@ -109,3 +109,8 @@ body {
     width: 1.5rem;
     height: 1.5rem;
 }
+
+.message-date {
+    margin-left: auto;
+    font-size: 0.875rem;
+}

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';
+import {FormattedMessage, FormattedDate, FormattedRelative, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import render from '../app-target';
 import styles from './messages.css';
@@ -23,6 +23,9 @@ import demotedIcon from './icon--demoted.svg';
 
 const theme = detectTheme();
 applyGuiColors(theme);
+
+// Browser support is not perfect yet
+const relativeTimeSupported = () => typeof Intl !== 'undefined' && typeof Intl.RelativeTimeFormat !== 'undefined';
 
 const messages = defineMessages({
     setDescription: {
@@ -198,6 +201,24 @@ const Messages = (props) => {
                                     className={styles.messageContent}
                                 >
                                     {getMessageContent(message)}
+                                    <div className={styles.messageDate}>
+                                        <FormattedMessage
+                                            defaultMessage="{date}"
+                                            description="Displayed date for the message"
+                                            id="dash.messages.date"
+                                            values={{
+                                                date: message.date ? new Date(message.date) : null
+                                                    ? relativeTimeSupported()
+                                                        ? (
+                                                            <span title={`${props.intl.formatDate(new Date(message.date))}, ${props.intl.formatTime(new Date(message.date))}`}>
+                                                                <FormattedRelative value={message.date} />
+                                                            </span>
+                                                        )
+                                                        : (<FormattedDate value={new Date(message.date)} />)
+                                                    : '?'
+                                            }}
+                                        />
+                                    </div>
                                 </div>
                             ))}
                         </div>

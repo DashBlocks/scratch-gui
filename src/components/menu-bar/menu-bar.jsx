@@ -343,13 +343,8 @@ class MenuBar extends React.Component {
                         } else {
                             alert('Project was shared but thumbnail upload failed');
                         }
+                        await waitForUpdate(false); // immediately transition to project page
                         window.location.hash = result.projectId;
-                        if (this.props.canSave) { // save before transitioning to project page
-                            this.props.autoUpdateProject();
-                            waitForUpdate(true); // queue the transition to project page
-                        } else {
-                            waitForUpdate(false); // immediately transition to project page
-                        }
                     } else {
                         alert(result.error);
                     }

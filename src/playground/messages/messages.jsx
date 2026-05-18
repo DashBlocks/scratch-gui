@@ -207,7 +207,7 @@ const Messages = (props) => {
                                             description="Displayed date for the message"
                                             id="dash.messages.date"
                                             values={{
-                                                date: message.date ? new Date(message.date) : null
+                                                date: (message.date ? new Date(message.date) : null)
                                                     ? relativeTimeSupported()
                                                         ? (
                                                             <span title={`${props.intl.formatDate(new Date(message.date))}, ${props.intl.formatTime(new Date(message.date))}`}>

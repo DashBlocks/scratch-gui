@@ -154,7 +154,8 @@ module.exports = [
             'register': './src/playground/register/register.jsx',
             'account-settings': './src/playground/account-settings/account-settings.jsx',
             'mystuff': './src/playground/mystuff/mystuff.jsx',
-            'messages': './src/playground/messages/messages.jsx'
+            'messages': './src/playground/messages/messages.jsx',
+            'admin': './src/playground/admin/admin.jsx'
         },
         output: {
             path: path.resolve(__dirname, 'build')
@@ -280,6 +281,13 @@ module.exports = [
                 template: 'src/playground/simple.ejs',
                 filename: 'messages.html',
                 title: `Messages - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['admin'],
+                template: 'src/playground/simple.ejs',
+                filename: 'admin.html',
+                title: `Admin Panel - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

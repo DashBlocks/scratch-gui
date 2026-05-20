@@ -30,6 +30,8 @@ const Admin = (props) => {
     const [userData, setUserData] = useState(null);
     const [featureProjectId, setFeatureProjectId] = useState('');
     const [featureProjectButtonLoading, setFeatureProjectButtonLoading] = useState(false);
+    const [unfeatureProjectId, setUnfeatureProjectId] = useState('');
+    const [unfeatureProjectButtonLoading, setUnfeatureProjectButtonLoading] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -67,6 +69,26 @@ const Admin = (props) => {
             alert(`Error featuring project with ID ${projectId}: ${error.message}`);
         } finally {
             setFeatureProjectButtonLoading(false);
+        }
+    }
+
+    async function handleUnfeatureProject(projectId) {
+        if (!projectId || unfeatureProjectButtonLoading) return;
+
+        setUnfeatureProjectButtonLoading(true);
+
+        try {
+            const res = await fetch(`https://dashblocks-server.vercel.app/featured-projects/${Number(projectId)}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            setUnfeatureProjectId('');
+        } catch (error) {
+            alert(`Error unfeaturing project with ID ${projectId}: ${error.message}`);
+        } finally {
+            setUnfeatureProjectButtonLoading(false);
         }
     }
 
@@ -151,6 +173,44 @@ const Admin = (props) => {
                                         defaultMessage="Feature"
                                         description="Label for feature button"
                                         id="dash.admin.featureProject.button"
+                                    />
+                                )}
+                            </Button>
+                        </div>
+                        <div className={styles.section}>
+                            <h2>
+                                <FormattedMessage
+                                    defaultMessage="Unfeature Project"
+                                    description="Title of the unfeature project section in admin panel"
+                                    id="dash.admin.unfeatureProject.title"
+                                />
+                            </h2>
+                            <div className={styles.label}>
+                                <FormattedMessage
+                                    defaultMessage="Project ID"
+                                    description="Label for the project ID input in admin panel"
+                                    id="dash.admin.projectId"
+                                />
+                                <BufferedInput
+                                    value={unfeatureProjectId}
+                                    onSubmit={setUnfeatureProjectId}
+                                    className={styles.input}
+                                    type="number"
+                                    min="1"
+                                    step="1"
+                                />
+                            </div>
+                            <Button
+                                className={styles.button}
+                                onClick={() => handleUnfeatureProject(unfeatureProjectId)}
+                            >
+                                {unfeatureProjectButtonLoading ? (
+                                    <Spinner className={styles.spinner} small />
+                                ) : (
+                                    <FormattedMessage
+                                        defaultMessage="Unfeature"
+                                        description="Label for unfeature button"
+                                        id="dash.admin.unfeatureProject.button"
                                     />
                                 )}
                             </Button>

@@ -24,6 +24,11 @@ const theme = detectTheme();
 applyGuiColors(theme);
 
 const messages = defineMessages({
+    deletedOnlyFromProfile: {
+        defaultMessage: 'Project deleted from profile, but it still accessable via ID - full deletion requested',
+        description: 'Message displayed when a project is only deleted from the target\'s profile',
+        id: 'dash.admin.deletedOnlyFromProfile'
+    }
 });
 
 const Admin = (props) => {
@@ -32,6 +37,8 @@ const Admin = (props) => {
     const [featureProjectButtonLoading, setFeatureProjectButtonLoading] = useState(false);
     const [unfeatureProjectId, setUnfeatureProjectId] = useState('');
     const [unfeatureProjectButtonLoading, setUnfeatureProjectButtonLoading] = useState(false);
+    const [deleteProjectId, setDeleteProjectId] = useState('');
+    const [deleteProjectButtonLoading, setDeleteProjectButtonLoading] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -89,6 +96,28 @@ const Admin = (props) => {
             alert(`Error unfeaturing project with ID ${projectId}: ${error.message}`);
         } finally {
             setUnfeatureProjectButtonLoading(false);
+        }
+    }
+
+    async function handleDeleteProject(projectId) {
+        if (!projectId || deleteProjectButtonLoading) return;
+
+        setDeleteProjectButtonLoading(true);
+
+        try {
+            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${Number(projectId)}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            if (res.status_code === 202)
+                alert(props.intl.formatMessage(messages.deletedOnlyFromProfile));
+            setDeleteProjectId('');
+        } catch (error) {
+            alert(`Error deleting project with ID ${projectId}: ${error.message}`);
+        } finally {
+            setDeleteProjectButtonLoading(false);
         }
     }
 
@@ -211,6 +240,44 @@ const Admin = (props) => {
                                         defaultMessage="Unfeature"
                                         description="Label for unfeature button"
                                         id="dash.admin.unfeatureProject.button"
+                                    />
+                                )}
+                            </Button>
+                        </div>
+                        <div className={styles.section}>
+                            <h2>
+                                <FormattedMessage
+                                    defaultMessage="Delete Project"
+                                    description="Title of the delete project section in admin panel"
+                                    id="dash.admin.deleteProject.title"
+                                />
+                            </h2>
+                            <div className={styles.label}>
+                                <FormattedMessage
+                                    defaultMessage="Project ID"
+                                    description="Label for the project ID input in admin panel"
+                                    id="dash.admin.projectId"
+                                />
+                                <BufferedInput
+                                    value={deleteProjectId}
+                                    onSubmit={setDeleteProjectId}
+                                    className={styles.input}
+                                    type="number"
+                                    min="1"
+                                    step="1"
+                                />
+                            </div>
+                            <Button
+                                className={styles.button}
+                                onClick={() => handleDeleteProject(deleteProjectId)}
+                            >
+                                {deleteProjectButtonLoading ? (
+                                    <Spinner className={styles.spinner} small />
+                                ) : (
+                                    <FormattedMessage
+                                        defaultMessage="Delete"
+                                        description="Label for delete button"
+                                        id="dash.admin.deleteProject.button"
                                     />
                                 )}
                             </Button>

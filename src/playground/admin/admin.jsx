@@ -28,6 +28,41 @@ const messages = defineMessages({
         defaultMessage: 'Project deleted from profile, but it still accessable via ID - full deletion requested',
         description: 'Message displayed when a project is only deleted from the target\'s profile',
         id: 'dash.admin.deletedOnlyFromProfile'
+    },
+    banUser: {
+        defaultMessage: 'Ban user',
+        description: 'Option to ban user in action select in admin panel',
+        id: 'dash.admin.manage.banUser'
+    },
+    banIp: {
+        defaultMessage: 'Ban IP',
+        description: 'Option to ban IP in action select in admin panel',
+        id: 'dash.admin.manage.banIp'
+    },
+    unbanUser: {
+        defaultMessage: 'Unban user',
+        description: 'Option to unban user in action select in admin panel',
+        id: 'dash.admin.manage.unbanUser'
+    },
+    unbanIp: {
+        defaultMessage: 'Unban IP',
+        description: 'Option to unban IP in action select in admin panel',
+        id: 'dash.admin.manage.unbanIp'
+    },
+    promote: {
+        defaultMessage: 'Promote',
+        description: 'Option to promote user in action select in admin panel',
+        id: 'dash.admin.manage.promote'
+    },
+    dasher: {
+        defaultMessage: 'Dasher',
+        description: '"Dasher" role name',
+        id: 'dash.user.role.dasher'
+    },
+    dasherPlus: {
+        defaultMessage: 'Dasher+',
+        description: '"Dasher+" role name',
+        id: 'dash.user.role.dasherPlus'
     }
 });
 
@@ -352,39 +387,19 @@ const Admin = (props) => {
                                     className={styles.input}
                                 >
                                     <option value="ban-user">
-                                        <FormattedMessage
-                                            defaultMessage="Ban user"
-                                            description="Option to ban user in action select in admin panel"
-                                            id="dash.admin.manage.banUser"
-                                        />
+                                        {props.intl.formatMessage(messages.banUser)}
                                     </option>
                                     <option value="ban-ip">
-                                        <FormattedMessage
-                                            defaultMessage="Ban IP"
-                                            description="Option to ban IP in action select in admin panel"
-                                            id="dash.admin.manage.banIp"
-                                        />
+                                        {props.intl.formatMessage(messages.banIp)}
                                     </option>
                                     <option value="unban-user">
-                                        <FormattedMessage
-                                            defaultMessage="Unban user"
-                                            description="Option to unban user in action select in admin panel"
-                                            id="dash.admin.manage.unbanUser"
-                                        />
+                                        {props.intl.formatMessage(messages.unbanUser)}
                                     </option>
                                     <option value="unban-ip">
-                                        <FormattedMessage
-                                            defaultMessage="Unban IP"
-                                            description="Option to unban IP in action select in admin panel"
-                                            id="dash.admin.manage.unbanIp"
-                                        />
+                                        {props.intl.formatMessage(messages.unbanIp)}
                                     </option>
                                     <option value="promote">
-                                        <FormattedMessage
-                                            defaultMessage="Promote"
-                                            description="Option to promote user in action select in admin panel"
-                                            id="dash.admin.manage.promote"
-                                        />
+                                        {props.intl.formatMessage(messages.promote)}
                                     </option>
                                 </select>
                             </div>
@@ -401,18 +416,10 @@ const Admin = (props) => {
                                         className={styles.input}
                                     >
                                         <option value="dasher">
-                                            <FormattedMessage
-                                                defaultMessage="Dasher"
-                                                description='"Dasher" role name'
-                                                id="dash.user.role.dasher"
-                                            />
+                                            {props.intl.formatMessage(messages.dasher)}
                                         </option>
                                         <option value="dasher+">
-                                            <FormattedMessage
-                                                defaultMessage="Dasher+"
-                                                description='"Dasher+" role name"'
-                                                id="dash.user.role.dasherPlus"
-                                            />
+                                            {props.intl.formatMessage(messages.dasherPlus)}
                                         </option>
                                     </select>
                                 </div>

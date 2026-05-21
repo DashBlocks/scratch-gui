@@ -33,12 +33,20 @@ const messages = defineMessages({
 
 const Admin = (props) => {
     const [userData, setUserData] = useState(null);
+
     const [featureProjectId, setFeatureProjectId] = useState('');
     const [featureProjectButtonLoading, setFeatureProjectButtonLoading] = useState(false);
+
     const [unfeatureProjectId, setUnfeatureProjectId] = useState('');
     const [unfeatureProjectButtonLoading, setUnfeatureProjectButtonLoading] = useState(false);
+
     const [deleteProjectId, setDeleteProjectId] = useState('');
     const [deleteProjectButtonLoading, setDeleteProjectButtonLoading] = useState(false);
+
+    const [targetUsername, setTargetUsername] = useState('');
+    const [manageAction, setManageAction] = useState('ban-user');
+    const [manageRole, setManageRole] = useState('dasher+');
+    const [manageButtonLoading, setManageButtonLoading] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -121,6 +129,31 @@ const Admin = (props) => {
         }
     }
 
+    async function handleManageUser() {
+        if (!targetUsername || manageButtonLoading) return;
+
+        setManageButtonLoading(true);
+
+        try {
+            const body = { targetUsername, action: manageAction };
+            if (manageAction === 'promote') body.role = manageRole;
+
+            const res = await fetch('https://dashblocks-server.vercel.app/admin/manage-user', {
+                method: 'POST',
+                credentials: 'include',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(body)
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            // Not clearing states to allow multiple actions on the same user
+        } catch (error) {
+            alert(`Error managing user ${targetUsername}: ${error.message}`);
+        } finally {
+            setManageButtonLoading(false);
+        }
+    }
+
     if (loading) return (
         <>
             <LazyMenuBar />
@@ -168,6 +201,7 @@ const Admin = (props) => {
                                 id="dash.admin.title"
                             />
                         </h2>
+
                         <div className={styles.section}>
                             <h2>
                                 <FormattedMessage
@@ -206,6 +240,7 @@ const Admin = (props) => {
                                 )}
                             </Button>
                         </div>
+
                         <div className={styles.section}>
                             <h2>
                                 <FormattedMessage
@@ -244,6 +279,7 @@ const Admin = (props) => {
                                 )}
                             </Button>
                         </div>
+
                         <div className={styles.section}>
                             <h2>
                                 <FormattedMessage
@@ -278,6 +314,90 @@ const Admin = (props) => {
                                         defaultMessage="Delete"
                                         description="Label for delete button"
                                         id="dash.admin.deleteProject.button"
+                                    />
+                                )}
+                            </Button>
+                        </div>
+
+                        <div className={styles.section}>
+                            <h2>
+                                <FormattedMessage
+                                    defaultMessage="Manage User"
+                                    description="Title of the manage user section in admin panel"
+                                    id="dash.admin.manageUser.title"
+                                />
+                            </h2>
+                            <div className={styles.label}>
+                                <FormattedMessage
+                                    defaultMessage="Username"
+                                    description="Label for the username input in admin panel"
+                                    id="dash.admin.username"
+                                />
+                                <BufferedInput
+                                    value={targetUsername}
+                                    onSubmit={setTargetUsername}
+                                    className={styles.input}
+                                    type="text"
+                                />
+                            </div>
+                            <div className={styles.label}>
+                                <FormattedMessage
+                                    defaultMessage="Action"
+                                    description="Label for the action select in admin panel"
+                                    id="dash.admin.manage.action"
+                                />
+                                <select
+                                    value={manageAction}
+                                    onChange={e => setManageAction(e.target.value)}
+                                    className={styles.input}
+                                >
+                                    <option value="ban-user">Ban user</option>
+                                    <option value="ban-ip">Ban IP</option>
+                                    <option value="unban-user">Unban user</option>
+                                    <option value="unban-ip">Unban IP</option>
+                                    <option value="promote">Promote</option>
+                                </select>
+                            </div>
+                            {manageAction === 'promote' && (
+                                <div className={styles.label}>
+                                    <FormattedMessage
+                                        defaultMessage="Role"
+                                        description="Label for the role select in admin panel"
+                                        id="dash.admin.manage.role"
+                                    />
+                                    <select
+                                        value={manageRole}
+                                        onChange={e => setManageRole(e.target.value)}
+                                        className={styles.input}
+                                    >
+                                        <option value="dasher">
+                                            <FormattedMessage
+                                                defaultMessage="Dasher"
+                                                description='"Dasher" role name'
+                                                id="dash.user.role.dasher"
+                                            />
+                                        </option>
+                                        <option value="dasher+">
+                                            <FormattedMessage
+                                                defaultMessage="Dasher+"
+                                                description='"Dasher+" role name"'
+                                                id="dash.user.role.dasherPlus"
+                                            />
+                                        </option>
+                                    </select>
+                                </div>
+                            )}
+                            <Button
+                                className={styles.button}
+                                onClick={handleManageUser}
+                            >
+                                {manageButtonLoading ? (
+                                    <Spinner className={styles.spinner} small />
+                                ) : (
+                                    <FormattedMessage
+                                        defaultMessage="Manage"
+                                        description="Label for manage user button"
+                                        id="dash.admin.manageUser.button"
                                     />
                                 )}
                             </Button>

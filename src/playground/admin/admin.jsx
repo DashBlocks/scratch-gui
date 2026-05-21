@@ -351,11 +351,41 @@ const Admin = (props) => {
                                     onChange={e => setManageAction(e.target.value)}
                                     className={styles.input}
                                 >
-                                    <option value="ban-user">Ban user</option>
-                                    <option value="ban-ip">Ban IP</option>
-                                    <option value="unban-user">Unban user</option>
-                                    <option value="unban-ip">Unban IP</option>
-                                    <option value="promote">Promote</option>
+                                    <option value="ban-user">
+                                        <FormattedMessage
+                                            defaultMessage="Ban user"
+                                            description="Option to ban user in action select in admin panel"
+                                            id="dash.admin.manage.banUser"
+                                        />
+                                    </option>
+                                    <option value="ban-ip">
+                                        <FormattedMessage
+                                            defaultMessage="Ban IP"
+                                            description="Option to ban IP in action select in admin panel"
+                                            id="dash.admin.manage.banIp"
+                                        />
+                                    </option>
+                                    <option value="unban-user">
+                                        <FormattedMessage
+                                            defaultMessage="Unban user"
+                                            description="Option to unban user in action select in admin panel"
+                                            id="dash.admin.manage.unbanUser"
+                                        />
+                                    </option>
+                                    <option value="unban-ip">
+                                        <FormattedMessage
+                                            defaultMessage="Unban IP"
+                                            description="Option to unban IP in action select in admin panel"
+                                            id="dash.admin.manage.unbanIp"
+                                        />
+                                    </option>
+                                    <option value="promote">
+                                        <FormattedMessage
+                                            defaultMessage="Promote"
+                                            description="Option to promote user in action select in admin panel"
+                                            id="dash.admin.manage.promote"
+                                        />
+                                    </option>
                                 </select>
                             </div>
                             {manageAction === 'promote' && (

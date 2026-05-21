@@ -44,7 +44,6 @@ const ObjectMonitor = ({draggable, label, width, height, value, onResizeMouseDow
             </div>
             <div
                 className={classNames(draggable ? styles.resizeHandle : null, 'no-drag')}
-                onMouseDown={draggable ? onResizeMouseDown : null}
                 onTouchStart={draggable ? onResizeMouseDown : null}
                 onPointerDown={draggable ? onResizeMouseDown : null}
             >

@@ -127,7 +127,7 @@ class ListMonitor extends React.Component {
         this.initialWidth = this.state.width;
         this.initialHeight = this.state.height;
 
-        const onMouseMove = ev => {
+        const onMove = ev => {
             const newPosition = getEventXY(ev);
             const dx = newPosition.x - this.initialPosition.x;
             const dy = newPosition.y - this.initialPosition.y;
@@ -137,10 +137,12 @@ class ListMonitor extends React.Component {
             });
         };
 
-        const onMouseUp = ev => {
-            onMouseMove(ev); // Make sure width/height are up-to-date
-            window.removeEventListener('mousemove', onMouseMove);
-            window.removeEventListener('mouseup', onMouseUp);
+        const onEnd = ev => {
+            onMove(ev); // Make sure width/height are up-to-date
+            window.removeEventListener('mousemove', onMove);
+            window.removeEventListener('mouseup', onEnd);
+            window.removeEventListener('touchmove', onMove);
+            window.removeEventListener('touchend', onEnd);
             this.props.vm.runtime.requestUpdateMonitor(Map({
                 id: this.props.id,
                 height: this.state.height,
@@ -148,8 +150,10 @@ class ListMonitor extends React.Component {
             }));
         };
 
-        window.addEventListener('mousemove', onMouseMove);
-        window.addEventListener('mouseup', onMouseUp);
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onEnd);
+        window.addEventListener('touchmove', onMove);
+        window.addEventListener('touchend', onEnd);
 
     }
 

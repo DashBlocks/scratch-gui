@@ -27,7 +27,8 @@ const AccountNavComponent = ({
     onLogOut,
     profileUrl,
     thumbnailUrl,
-    username
+    username,
+    role
 }) => (
     <React.Fragment>
         <div
@@ -83,6 +84,15 @@ const AccountNavComponent = ({
                     id="gui.accountMenu.myStuff"
                 />
             </MenuItemContainer>
+            {role === "dashteam" && (
+                <MenuItemContainer href="admin">
+                    <FormattedMessage
+                        defaultMessage="Admin Panel"
+                        description="Text to link to admin panel for Dash Team, in the account navigation menu"
+                        id="gui.accountMenu.adminPanel"
+                    />
+                </MenuItemContainer>
+            )}
             <MenuItemContainer href="account-settings">
                 <FormattedMessage
                     defaultMessage="Account Settings"
@@ -113,7 +123,8 @@ AccountNavComponent.propTypes = {
     onLogOut: PropTypes.func,
     profileUrl: PropTypes.string,
     thumbnailUrl: PropTypes.string,
-    username: PropTypes.string
+    username: PropTypes.string,
+    role: PropTypes.string
 };
 
 export default AccountNavComponent;

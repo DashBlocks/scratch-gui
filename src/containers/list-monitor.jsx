@@ -7,6 +7,7 @@ import {getEventXY} from '../lib/touch-utils';
 import {getVariableValue, setVariableValue} from '../lib/variable-utils';
 import ListMonitorComponent from '../components/monitor/list-monitor.jsx';
 import {Map} from 'immutable';
+import Prompt from './prompt.jsx';
 
 class ListMonitor extends React.Component {
     constructor (props) {
@@ -19,6 +20,8 @@ class ListMonitor extends React.Component {
             'handleKeyPress',
             'handleFocus',
             'handleAdd',
+            'handleOk',
+            'handleCancel',
             'handleResizeMouseDown',
             'handleNavigateDown',
             'handleNavigateTo'
@@ -27,6 +30,8 @@ class ListMonitor extends React.Component {
         this.state = {
             activeIndex: null,
             activeValue: null,
+            prompt: false,
+            draggable: props.draggable !== false,
             width: props.width || 100,
             height: props.height || 200,
             path: []
@@ -189,14 +194,47 @@ class ListMonitor extends React.Component {
     }
 
     handleAdd () {
-        this.applyDeepUpdate(list => {
-            if (Array.isArray(list)) {
+        const currentList = this.getCurrentList();
+        if (Array.isArray(currentList)) {
+            this.applyDeepUpdate(list => {
                 const newListValue = list.concat(['']);
                 this.setState({activeIndex: newListValue.length - 1, activeValue: ''});
                 return newListValue;
-            }
-            return list;
+            });
+            return;
+        }
+
+        this.setState({
+            prompt: true,
+            draggable: false
         });
+    }
+
+    handleOk (key) {
+        if (!key) {
+            this.setState({prompt: false, draggable: true});
+            return;
+        }
+
+        this.applyDeepUpdate(list => {
+            if (!list || typeof list !== 'object' || Array.isArray(list)) {
+                return list;
+            }
+
+            if (Object.keys(list).includes(key)) {
+                alert(`Value with the key "${key}" already exists!`);
+                this.setState({prompt: false, draggable: true});
+                return list;
+            }
+
+            const newObjectValue = {...list, [key]: ''};
+            this.setState({activeIndex: key, activeValue: '', prompt: false, draggable: true});
+            return newObjectValue;
+        });
+    }
+
+    handleCancel () {
+        this.setState({prompt: false, draggable: true});
     }
 
     handleResizeMouseDown (e) {
@@ -252,25 +290,42 @@ class ListMonitor extends React.Component {
         }
 
         return (
-            <ListMonitorComponent
-                {...props}
-                value={resolvedValues}
-                path={this.state.path}
-                activeIndex={this.state.activeIndex}
-                activeValue={this.state.activeValue}
-                height={this.state.height}
-                width={this.state.width}
-                onActivate={this.handleActivate}
-                onAdd={this.handleAdd}
-                onDeactivate={this.handleDeactivate}
-                onFocus={this.handleFocus}
-                onInput={this.handleInput}
-                onKeyPress={this.handleKeyPress}
-                onRemove={this.handleRemove}
-                onResizeMouseDown={this.handleResizeMouseDown}
-                onNavigateDown={this.handleNavigateDown}
-                onNavigateTo={this.handleNavigateTo}
-            />
+            <>
+                {this.state.prompt && (
+                    <Prompt
+                        title="New Item"
+                        label="Enter key for new item in object."
+                        defaultValue="key"
+                        onOk={this.handleOk}
+                        onCancel={this.handleCancel}
+                        showVariableOptions={false}
+                        showCloudOption={false}
+                        showListMessage={false}
+                        isStage={false}
+                        vm={vm}
+                    />
+                )}
+                <ListMonitorComponent
+                    {...props}
+                    draggable={this.state.draggable}
+                    value={resolvedValues}
+                    path={this.state.path}
+                    activeIndex={this.state.activeIndex}
+                    activeValue={this.state.activeValue}
+                    height={this.state.height}
+                    width={this.state.width}
+                    onActivate={this.handleActivate}
+                    onAdd={this.handleAdd}
+                    onDeactivate={this.handleDeactivate}
+                    onFocus={this.handleFocus}
+                    onInput={this.handleInput}
+                    onKeyPress={this.handleKeyPress}
+                    onRemove={this.handleRemove}
+                    onResizeMouseDown={this.handleResizeMouseDown}
+                    onNavigateDown={this.handleNavigateDown}
+                    onNavigateTo={this.handleNavigateTo}
+                />
+            </>
         );
     }
 }

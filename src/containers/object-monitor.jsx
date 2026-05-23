@@ -194,13 +194,19 @@ class ObjectMonitor extends React.Component {
     }
 
     handleAdd () {
-        this.applyDeepUpdate(list => {
-            if (Array.isArray(list)) {
+        const currentList = this.getCurrentList();
+        if (Array.isArray(currentList)) {
+            this.applyDeepUpdate(list => {
                 const newListValue = list.concat(['']);
                 this.setState({activeIndex: newListValue.length - 1, activeValue: ''});
                 return newListValue;
-            }
-            return list;
+            });
+            return;
+        }
+
+        this.setState({
+            prompt: true,
+            draggable: false
         });
     }
 
@@ -208,17 +214,23 @@ class ObjectMonitor extends React.Component {
         if (!key) {
             this.setState({prompt: false, draggable: true});
             return;
-        };
-        const {vm, targetId, id: variableId} = this.props;
-        const newObjectValue = getVariableValue(vm, targetId, variableId);
-        if (Object.keys(newObjectValue).includes(key)) {
-          alert(`Value with the key "${key}" already exists!`);
-          this.setState({prompt: false, draggable: true});
-          return;
         }
-        newObjectValue[key] = '';
-        setVariableValue(vm, targetId, variableId, newObjectValue);
-        this.setState({activeIndex: Object.keys(newObjectValue).length - 1, activeValue: '', prompt: false, draggable: true});
+
+        this.applyDeepUpdate(list => {
+            if (!list || typeof list !== 'object' || Array.isArray(list)) {
+                return list;
+            }
+
+            if (Object.keys(list).includes(key)) {
+                alert(`Value with the key "${key}" already exists!`);
+                this.setState({prompt: false, draggable: true});
+                return list;
+            }
+
+            const newObjectValue = {...list, [key]: ''};
+            this.setState({activeIndex: key, activeValue: '', prompt: false, draggable: true});
+            return newObjectValue;
+        });
     }
 
     handleCancel () {

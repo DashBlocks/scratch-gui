@@ -420,7 +420,7 @@ const User = (props) => {
                                 id="dash.home.tab.recommendedProject"
                             />
                         </h2>
-                        <img src={`https://dashblocks-server.vercel.app/projects/trumbnails/${userData.profile.recommendedProject?.trumbnailId || 1}`} width='100' height='140' />
+                        <img src={`https://dashblocks-server.vercel.app/projects/thumbnails/${userData.profile.recommendedProject?.trumbnailId || 1}`} width='140' height='100' />
                         <h4><a href='/#'>{userData.profile.recommendedProject?.name || "Unknown"}</a></h4>
                         {isMyProfile ? (
                             <button

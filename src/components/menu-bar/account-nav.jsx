@@ -84,7 +84,7 @@ const AccountNavComponent = ({
                     id="gui.accountMenu.myStuff"
                 />
             </MenuItemContainer>
-            {(role && role === "dashteam") ? (
+            {role === "dashteam" && (
                 <MenuItemContainer href="admin">
                     <FormattedMessage
                         defaultMessage="Admin Panel"
@@ -92,7 +92,7 @@ const AccountNavComponent = ({
                         id="gui.accountMenu.adminPanel"
                     />
                 </MenuItemContainer>
-            ) : null}
+            )}
             <MenuItemContainer href="account-settings">
                 <FormattedMessage
                     defaultMessage="Account Settings"

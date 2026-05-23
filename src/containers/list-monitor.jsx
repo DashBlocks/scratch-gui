@@ -2,12 +2,31 @@ import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
 import VM from 'scratch-vm';
+import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import {connect} from 'react-redux';
 import {getEventXY} from '../lib/touch-utils';
 import {getVariableValue, setVariableValue} from '../lib/variable-utils';
 import ListMonitorComponent from '../components/monitor/list-monitor.jsx';
 import {Map} from 'immutable';
 import Prompt from './prompt.jsx';
+
+const messages = defineMessages({
+    newItemTitle: {
+        defaultMessage: 'New Item',
+        description: 'Title for the prompt used to add a new item to an object monitor',
+        id: 'dash.objectMonitor.newItemTitle'
+    },
+    newItemLabel: {
+        defaultMessage: 'Enter key for new item in object.',
+        description: 'Label for the prompt used to add a new item to an object monitor',
+        id: 'dash.objectMonitor.newItemLabel'
+    },
+    keyAlreadyExists: {
+        defaultMessage: 'Value with the key {key} already exists!',
+        description: 'Alert shown when trying to add a duplicate key to an object monitor',
+        id: 'dash.objectMonitor.keyAlreadyExists'
+    }
+});
 
 class ListMonitor extends React.Component {
     constructor (props) {
@@ -222,7 +241,7 @@ class ListMonitor extends React.Component {
             }
 
             if (Object.keys(list).includes(key)) {
-                alert(`Value with the key "${key}" already exists!`);
+                alert(this.props.intl.formatMessage(messages.keyAlreadyExists, {key}));
                 this.setState({prompt: false, draggable: true});
                 return list;
             }
@@ -288,13 +307,12 @@ class ListMonitor extends React.Component {
         } else if (Array.isArray(currentList)) {
             resolvedValues = currentList;
         }
-
         return (
             <>
                 {this.state.prompt && (
                     <Prompt
-                        title="New Item"
-                        label="Enter key for new item in object."
+                        title={this.props.intl.formatMessage(messages.newItemTitle)}
+                        label={this.props.intl.formatMessage(messages.newItemLabel)}
                         defaultValue="key"
                         onOk={this.handleOk}
                         onCancel={this.handleCancel}
@@ -344,6 +362,7 @@ ListMonitor.propTypes = {
         PropTypes.array,
         PropTypes.object
     ]),
+    intl: intlShape,
     vm: PropTypes.instanceOf(VM),
     width: PropTypes.number,
     x: PropTypes.number,
@@ -355,4 +374,4 @@ const mapStateToProps = state => ({
     vm: state.scratchGui.vm
 });
 
-export default connect(mapStateToProps)(ListMonitor);
+export default injectIntl(connect(mapStateToProps)(ListMonitor));

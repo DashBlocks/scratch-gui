@@ -38,7 +38,7 @@ const mapStateToProps = state => ({
     username: state.scratchGui.dash.session && state.scratchGui.dash.session.username ?
         state.scratchGui.dash.session.username : '',
     role: state.scratchGui.dash.session && state.scratchGui.dash.session.role ?
-        state.scratchGui.dash.sessuib.role : ''
+        state.scratchGui.dash.session.role : ''
 });
 
 const mapDispatchToProps = () => ({});

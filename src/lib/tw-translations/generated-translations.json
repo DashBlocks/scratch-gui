@@ -3382,6 +3382,8 @@
         "dash.home.tab.about": "О {APP_NAME}",
         "dash.home.tab.cloud": "Облачные переменные",
         "dash.home.tab.description": "Описание",
+        "dash.home.tab.recommendedProject": "Рекомендуемый проект",
+        "dash.home.tab.recommendedProject.set": "установить рекомендуемый проект",
         "dash.home.tab.unshared": "Приватный проект",
         "dash.home.tab.whatsNew": "Что нового?",
         "dash.home.welcomeModal": "Приветственное окно",

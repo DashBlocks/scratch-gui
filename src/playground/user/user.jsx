@@ -236,6 +236,48 @@ const User = (props) => {
         }
     }
 
+    async function handleSetRecommendedProject () {
+        const project = prompt("project id")
+        if (!project) return;
+        const prevRecommendedProject = userData.profile.recommendedProject;
+
+        try {
+            const recommendedProject = (await (await fetch(`https://dashblocks-server.vercel.app/projects/${project}/`)).json())?.project
+            setUserData(prev => ({
+                ...prev,
+                profile: {
+                    ...prev.profile,
+                    recommendedProject: {
+                        name: recommendedProject.name,
+                        trumbnailId: recommendedProject.trumbnailId,
+                        id: project
+                    }
+                }
+            }));
+            const response = await fetch('https://dashblocks-server.vercel.app/users/setRecommendedProject', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({project}),
+                credentials: 'include'
+            });
+            const data = await response.json();
+            if (!data.ok) {
+                throw new Error(data.error);
+            }
+        } catch (error) {
+            setUserData(prev => ({
+                ...prev,
+                profile: {
+                    ...prev.profile,
+                    recommendedProject: prevRecommendedProject
+                }
+            }));
+            alert(error.message);
+        }
+    }
+
     if (loading) return (
         <>
             <LazyMenuBar />
@@ -369,6 +411,30 @@ const User = (props) => {
                                 </p>
                             </div>
                         )}
+                    </div>
+                    <div className={styles.section}>
+                        <h2>
+                            <FormattedMessage
+                                defaultMessage="Recommended project"
+                                description="User's recommended project section title on user's profile"
+                                id="dash.home.tab.recommendedProject"
+                            />
+                        </h2>
+                        <div className={styles.description}>
+                            <img src={`https://dashblocks-server/projects/trumbnails/${userData.profile.recommendedProject?.trumbnailId || 1}`} width='100' height='140' />
+                            <h4><a href='/#'>{userData.profile.recommendedProject?.name || "Unknown"}</a></h4>
+                        </div>
+                        {isMyProfile ? (
+                            <button
+                                onClick={handleSetRecommendedProject}
+                            >
+                                <FormattedMessage 
+                                    defaultMessage="set recommended project"
+                                    description="button for update recommended project section title on user's profile"
+                                    id="dash.home.tab.recommendedProject.set"
+                                />
+                            </button>
+                        ) : null}
                     </div>
                     <div className={styles.section}>
                         <h2>

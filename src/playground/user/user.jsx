@@ -244,6 +244,7 @@ const User = (props) => {
         if (!projectId) return;
         const prevRecommendedProject = userData.profile.recommendedProject;
 
+        setRecommendProjectButtonDisabled(true);
         try {
             const response = await fetch('https://dashblocks-server.vercel.app/users/set-recommended-project', {
                 method: 'POST',
@@ -278,6 +279,8 @@ const User = (props) => {
                 }
             }));
             alert(error.message);
+        } finally {
+            setRecommendProjectButtonDisabled(false);
         }
     }
 

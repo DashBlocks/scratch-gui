@@ -110,9 +110,8 @@ body {
 }
 
 .thumb-wrapper img {
-    width: 12rem;
+    aspect-ratio: 4 / 3;
     height: 9rem;
-    object-fit: cover;
     background: #f3f4f6;
 }
 
@@ -135,10 +134,11 @@ body {
 }
 
 .see-inside-button {
-    padding: 0.5rem;
-    background: $data-primary;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 0.75rem 1rem;
+    background: $looks-secondary;
     color: white;
-    border: 1px solid $data-primary;
+    border: 1px solid $looks-secondary;
     font-weight: 600;
     font-size: 0.85rem;
     display: inline-block;
@@ -155,5 +155,5 @@ body {
 }
 
 .project-stats p {
-  text-align: center;
+    text-align: center;
 }

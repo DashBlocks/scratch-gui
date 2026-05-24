@@ -45,7 +45,7 @@ a {
 }
 
 body {
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     margin: 0px;
 }
 
@@ -194,9 +194,8 @@ body {
 }
 
 .thumb-wrapper img {
+    aspect-ratio: 4 / 3;
     width: 100%;
-    height: 9rem;
-    object-fit: cover;
     background: #f3f4f6;
 }
 
@@ -224,9 +223,8 @@ body {
 }
 
 .recommended-project img {
+    aspect-ratio: 4 / 3;
     width: 100%;
-    height: 9rem;
-    object-fit: cover;
     background: #f3f4f6;
 }
 
@@ -235,7 +233,7 @@ body {
 }
 
 .set-recommended-project-button {
-    font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     padding: 0.75rem 1rem;
     background: $looks-secondary;
     color: white;

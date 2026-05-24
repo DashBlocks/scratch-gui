@@ -258,7 +258,7 @@ const User = (props) => {
                     }
                 }
             }));
-            const response = await fetch('https://dashblocks-server.vercel.app/users/setRecommendedProject', {
+            const response = await fetch('https://dashblocks-server.vercel.app/users/set-recommended-project', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

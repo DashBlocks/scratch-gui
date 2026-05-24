@@ -419,7 +419,7 @@ const User = (props) => {
                         <div className={styles.section}>
                             <h2>
                                 <FormattedMessage
-                                    defaultMessage="Recommended project"
+                                    defaultMessage="Recommended Project"
                                     description="User's recommended project section title on user's profile"
                                     id="dash.user.recommendedProject"
                                 />

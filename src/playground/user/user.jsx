@@ -17,6 +17,8 @@ import {detectTheme} from '../../lib/themes/themePersistance';
 
 import getSession from '../../lib/session';
 
+import Button from '../../components/button/button.jsx';
+import Spinner from '../../components/spinner/spinner.jsx';
 import BufferedInputHOC from '../../components/forms/buffered-input-hoc.jsx';
 import Input from '../../components/forms/input.jsx';
 const BufferedInput = BufferedInputHOC(Input);
@@ -71,6 +73,7 @@ const User = (props) => {
     const [id, setId] = useState(window.location.hash.replace('#', ''));
     const [userData, setUserData] = useState(null);
     const [descriptionDisabled, setDescriptionDisabled] = useState(false);
+    const [recommendProjectButtonDisabled, setRecommendProjectButtonDisabled] = useState(false);
     const [projects, setProjects] = useState([]);
     const [avgGradient, setAvgGradient] = useState([]);
     const [isMyProfile, setIsMyProfile] = useState(false);
@@ -237,20 +240,21 @@ const User = (props) => {
     }
 
     async function handleSetRecommendedProject () {
-        const project = prompt("project id")
-        if (!project) return;
+        // TODO: Project selector instead of prompt
+        const projectId = Number(prompt("Project ID:"));
+        if (!projectId) return;
         const prevRecommendedProject = userData.profile.recommendedProject;
 
         try {
-            const recommendedProject = (await (await fetch(`https://dashblocks-server.vercel.app/projects/${project}/`)).json())?.project
+            const projectData = (await (await fetch(`https://dashblocks-server.vercel.app/projects/${projectId}`)).json())?.project
             setUserData(prev => ({
                 ...prev,
                 profile: {
                     ...prev.profile,
                     recommendedProject: {
-                        name: recommendedProject.name,
-                        trumbnailId: recommendedProject.trumbnailId,
-                        id: project
+                        id: projectId,
+                        name: projectData.name,
+                        thumbnailId: projectData.thumbnailId
                     }
                 }
             }));
@@ -259,7 +263,7 @@ const User = (props) => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({project}),
+                body: JSON.stringify({projectId}),
                 credentials: 'include'
             });
             const data = await response.json();
@@ -412,28 +416,54 @@ const User = (props) => {
                             </div>
                         )}
                     </div>
-                    <div className={styles.section}>
-                        <h2>
-                            <FormattedMessage
-                                defaultMessage="Recommended project"
-                                description="User's recommended project section title on user's profile"
-                                id="dash.home.tab.recommendedProject"
-                            />
-                        </h2>
-                        <img src={`https://dashblocks-server.vercel.app/projects/thumbnails/${userData.profile.recommendedProject?.trumbnailId || 1}`} width='140' height='100' />
-                        <h4><a href='/#'>{userData.profile.recommendedProject?.name || "Unknown"}</a></h4>
-                        {isMyProfile ? (
-                            <button
-                                onClick={handleSetRecommendedProject}
-                            >
-                                <FormattedMessage 
-                                    defaultMessage="set recommended project"
-                                    description="button for update recommended project section title on user's profile"
-                                    id="dash.home.tab.recommendedProject.set"
+                    {(userData.profile.recommendedProject?.id || isMyProfile) && (
+                        <div className={styles.section}>
+                            <h2>
+                                <FormattedMessage
+                                    defaultMessage="Recommended project"
+                                    description="User's recommended project section title on user's profile"
+                                    id="dash.user.recommendedProject"
                                 />
-                            </button>
-                        ) : null}
-                    </div>
+                            </h2>
+                            {userData.profile.recommendedProject?.id && (
+                                <div
+                                    className={styles.recommendedProject}
+                                    title={props.intl.formatMessage(messages.hoverText, {
+                                        author: userData.username,
+                                        title: userData.profile.recommendedProject.name || "Unknown"
+                                    })}
+                                    onClick={() => window.open(`./#${userData.profile.recommendedProject.id}`, '_blank')}
+                                >
+                                    <img
+                                        draggable={false}
+                                        src={`https://dashblocks-server.vercel.app/projects/thumbnails/${userData.profile.recommendedProject.thumbnailId || 1}`}
+                                        alt={userData.profile.recommendedProject.id}
+                                    />
+                                    <h4>{userData.profile.recommendedProject.name || "Unknown"}</h4>
+                                </div>
+                            )}
+                            {isMyProfile && (
+                                <Button
+                                    className={styles.setRecommendedProjectButton}
+                                    disabled={recommendProjectButtonDisabled}
+                                    onClick={handleSetRecommendedProject}
+                                >
+                                    {recommendProjectButtonDisabled ? (
+                                        <Spinner
+                                            className={styles.spinner}
+                                            small
+                                        />
+                                    ) : (
+                                        <FormattedMessage
+                                            defaultMessage="Set recommended project"
+                                            description="Button text for setting recommended project on user's profile"
+                                            id="dash.user.recommendedProject.set"
+                                        />
+                                    )}
+                                </Button>
+                            )}
+                        </div>
+                    )}
                     <div className={styles.section}>
                         <h2>
                             <FormattedMessage

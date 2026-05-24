@@ -245,18 +245,6 @@ const User = (props) => {
         const prevRecommendedProject = userData.profile.recommendedProject;
 
         try {
-            const projectData = (await (await fetch(`https://dashblocks-server.vercel.app/projects/${projectId}`)).json())?.project
-            setUserData(prev => ({
-                ...prev,
-                profile: {
-                    ...prev.profile,
-                    recommendedProject: {
-                        id: projectId,
-                        name: projectData.name,
-                        thumbnailId: projectData.thumbnailId
-                    }
-                }
-            }));
             const response = await fetch('https://dashblocks-server.vercel.app/users/set-recommended-project', {
                 method: 'POST',
                 headers: {
@@ -269,6 +257,18 @@ const User = (props) => {
             if (!data.ok) {
                 throw new Error(data.error);
             }
+            const projectData = (await (await fetch(`https://dashblocks-server.vercel.app/projects/${projectId}`)).json())?.project;
+            setUserData(prev => ({
+                ...prev,
+                profile: {
+                    ...prev.profile,
+                    recommendedProject: {
+                        id: projectId,
+                        name: projectData?.name || "Unknown",
+                        thumbnailId: projectData?.thumbnailId || 1
+                    }
+                }
+            }));
         } catch (error) {
             setUserData(prev => ({
                 ...prev,

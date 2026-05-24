@@ -97,10 +97,12 @@ body {
 .user-info {
     display: flex;
     flex-direction: column;
+    gap: $space;
 }
 
 .user-info-row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: $space;
 }

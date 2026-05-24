@@ -8,7 +8,6 @@ import render from '../app-target';
 import styles from './user.css';
 
 import {APP_NAME} from '../../lib/brand';
-import Spinner from '../../components/spinner/spinner.jsx';
 import {Footer} from '../render-interface.jsx';
 import decorate from '../../lib/decorate-text.jsx';
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';

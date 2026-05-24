@@ -3387,7 +3387,7 @@
         "dash.home.tab.unshared": "Приватный проект",
         "dash.home.tab.whatsNew": "Что нового?",
         "dash.home.welcomeModal": "Приветственное окно",
-        "tw.input.tooltip": "Скопируйте ссылку на проект Dash и вставьте её сюда!",
+        "tw.input.tooltip": "Введите ID проекта здесь!",
         "tw.interpolationEnabled": "Интерполяция",
         "tw.invalidParameters.clones": "Параметр \"clone\" в URL-адресе некорректен",
         "tw.invalidParameters.fps": "Параметр \"fps\" в URL-адресе некорректен",

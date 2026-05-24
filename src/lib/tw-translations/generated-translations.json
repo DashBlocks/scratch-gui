@@ -1,7 +1,17 @@
 {
     "ar": {
         "tw.footer.credits": "الاعتمادات",
-        "tw.usernameModal.reset": "إعادة تعيين"
+        "tw.usernameModal.reset": "إعادة تعيين",
+        "dash.user.recommendedProject": "المشروع الموصى به",
+        "dash.user.recommendedProject.set": "تثبيت المشروع الموصى به",
+        "dash.user.projects": "المشاريع ({projectsCount})",
+        "dash.home.tab.description": "الوصف",
+        "dash.user.lastActive": "آخر نشاط: {date}",
+        "dash.user.joinedAt": "انضم: {date}",
+        "dash.user.role.dasher": "داشر",
+        "dash.user.role.dasherPlus": "داشر+",
+        "dash.user.role.dashTeam": "فريق داش",
+        "tw.studioview.hoverText": "{title} بواسطة {author}"
     },
     "ca": {
         "tw.alerts.creatingRestorePoint": "S'està creant un punt de restauració...",
@@ -3382,8 +3392,8 @@
         "dash.home.tab.about": "О {APP_NAME}",
         "dash.home.tab.cloud": "Облачные переменные",
         "dash.home.tab.description": "Описание",
-        "dash.home.tab.recommendedProject": "Рекомендуемый проект",
-        "dash.home.tab.recommendedProject.set": "установить рекомендуемый проект",
+        "dash.user.recommendedProject": "Рекомендуемый проект",
+        "dash.user.recommendedProject.set": "Установить рекомендуемый проект",
         "dash.home.tab.unshared": "Приватный проект",
         "dash.home.tab.whatsNew": "Что нового?",
         "dash.home.welcomeModal": "Приветственное окно",

@@ -71,8 +71,8 @@ body {
 }
 
 .section {
-    width: calc(100% - 2 * $space);
-    max-width: 900px;
+    width: 100%;
+    max-width: 500px;
     background: $ui-white;
     margin: 0px;
     padding: $space;

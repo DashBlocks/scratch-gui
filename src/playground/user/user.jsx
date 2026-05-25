@@ -387,85 +387,87 @@ const User = (props) => {
                             </div>
                         </div>
                     </div>
-                    <div className={styles.section}>
-                        <h2>
-                            <FormattedMessage
-                                defaultMessage="Description"
-                                description="User's description section title on user's profile"
-                                id="dash.home.tab.description"
-                            />
-                        </h2>
-                        {isMyProfile ? (
-                            <BufferedInput
-                                className={classNames(styles.descriptionField)}
-                                maxLength="1000"
-                                multiline
-                                placeholder={props.intl.formatMessage(userData.role === "dasher" ? messages.descriptionInputPlaceholderForDasher : messages.descriptionInputPlaceholder)}
-                                tabIndex="0"
-                                value={userData.profile.description}
-                                onSubmit={handleChangeDescription}
-                                disabled={descriptionDisabled}
-                            />
-                        ) : (
-                            <div className={styles.description}>
-                                <p>
-                                    {userData.profile.description ?
-                                        decorate(userData.profile.description, true) : (
-                                            <i>{props.intl.formatMessage(messages.descriptionPlaceholder)}</i>
-                                        )
-                                    }
-                                </p>
-                            </div>
-                        )}
-                    </div>
-                    {(userData.profile.recommendedProject?.id || isMyProfile) && (
+                    <div className={styles.userAbout}>
                         <div className={styles.section}>
                             <h2>
                                 <FormattedMessage
-                                    defaultMessage="Recommended Project"
-                                    description="User's recommended project section title on user's profile"
-                                    id="dash.user.recommendedProject"
+                                    defaultMessage="Description"
+                                    description="User's description section title on user's profile"
+                                    id="dash.home.tab.description"
                                 />
                             </h2>
-                            {userData.profile.recommendedProject?.id && (
-                                <div
-                                    className={styles.recommendedProject}
-                                    title={props.intl.formatMessage(messages.hoverText, {
-                                        author: userData.username,
-                                        title: userData.profile.recommendedProject.name || "Unknown"
-                                    })}
-                                    onClick={() => window.open(`./#${userData.profile.recommendedProject.id}`, '_blank')}
-                                >
-                                    <img
-                                        draggable={false}
-                                        src={`https://dashblocks-server.vercel.app/projects/thumbnails/${userData.profile.recommendedProject.thumbnailId || 1}`}
-                                        alt={userData.profile.recommendedProject.id}
-                                    />
-                                    <h4>{userData.profile.recommendedProject.name || "Unknown"}</h4>
+                            {isMyProfile ? (
+                                <BufferedInput
+                                    className={classNames(styles.descriptionField)}
+                                    maxLength="1000"
+                                    multiline
+                                    placeholder={props.intl.formatMessage(userData.role === "dasher" ? messages.descriptionInputPlaceholderForDasher : messages.descriptionInputPlaceholder)}
+                                    tabIndex="0"
+                                    value={userData.profile.description}
+                                    onSubmit={handleChangeDescription}
+                                    disabled={descriptionDisabled}
+                                />
+                            ) : (
+                                <div className={styles.description}>
+                                    <p>
+                                        {userData.profile.description ?
+                                            decorate(userData.profile.description, true) : (
+                                                <i>{props.intl.formatMessage(messages.descriptionPlaceholder)}</i>
+                                            )
+                                        }
+                                    </p>
                                 </div>
                             )}
-                            {isMyProfile && (
-                                <Button
-                                    className={styles.setRecommendedProjectButton}
-                                    disabled={recommendProjectButtonDisabled}
-                                    onClick={handleSetRecommendedProject}
-                                >
-                                    {recommendProjectButtonDisabled ? (
-                                        <Spinner
-                                            className={styles.spinner}
-                                            small
-                                        />
-                                    ) : (
-                                        <FormattedMessage
-                                            defaultMessage="Set recommended project"
-                                            description="Button text for setting recommended project on user's profile"
-                                            id="dash.user.recommendedProject.set"
-                                        />
-                                    )}
-                                </Button>
-                            )}
                         </div>
-                    )}
+                        {(userData.profile.recommendedProject?.id || isMyProfile) && (
+                            <div className={styles.section}>
+                                <h2>
+                                    <FormattedMessage
+                                        defaultMessage="Recommended Project"
+                                        description="User's recommended project section title on user's profile"
+                                        id="dash.user.recommendedProject"
+                                    />
+                                </h2>
+                                {userData.profile.recommendedProject?.id && (
+                                    <div
+                                        className={styles.recommendedProject}
+                                        title={props.intl.formatMessage(messages.hoverText, {
+                                            author: userData.username,
+                                            title: userData.profile.recommendedProject.name || "Unknown"
+                                        })}
+                                        onClick={() => window.open(`./#${userData.profile.recommendedProject.id}`, '_blank')}
+                                    >
+                                        <img
+                                            draggable={false}
+                                            src={`https://dashblocks-server.vercel.app/projects/thumbnails/${userData.profile.recommendedProject.thumbnailId || 1}`}
+                                            alt={userData.profile.recommendedProject.id}
+                                        />
+                                        <h4>{userData.profile.recommendedProject.name || "Unknown"}</h4>
+                                    </div>
+                                )}
+                                {isMyProfile && (
+                                    <Button
+                                        className={styles.setRecommendedProjectButton}
+                                        disabled={recommendProjectButtonDisabled}
+                                        onClick={handleSetRecommendedProject}
+                                    >
+                                        {recommendProjectButtonDisabled ? (
+                                            <Spinner
+                                                className={styles.spinner}
+                                                small
+                                            />
+                                        ) : (
+                                            <FormattedMessage
+                                                defaultMessage="Set recommended project"
+                                                description="Button text for setting recommended project on user's profile"
+                                                id="dash.user.recommendedProject.set"
+                                            />
+                                        )}
+                                    </Button>
+                                )}
+                            </div>
+                        )}
+                    </div>
                     <div className={styles.section}>
                         <h2>
                             <FormattedMessage

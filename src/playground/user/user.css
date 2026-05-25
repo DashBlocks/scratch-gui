@@ -91,17 +91,17 @@ body {
 .user-about {
     display: flex;
     flex-wrap: wrap;
-    gap: calc(2 * $space);
+    gap: $space;
     width: 100%;
     max-width: 900px;
     margin: 0px;
 }
 
-.user-about:nth-child(1) {
+.user-about > :nth-child(1) {
     flex: 1 1 20rem;
 }
 
-.user-about:nth-child(2) {
+.user-about > :nth-child(2) {
     flex: 1 1 10rem;
 }
 
@@ -261,4 +261,5 @@ body {
     border: 1px solid $looks-secondary;
     font-weight: 600;
     font-size: 0.85rem;
+    width: fit-content;
 }

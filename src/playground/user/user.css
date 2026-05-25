@@ -54,7 +54,7 @@ body {
     top: $menu-bar-height;
     left: 0;
     width: 100%;
-    min-width: fit-content;
+    max-width: 100%;
     background: $page-background;
     color: $page-foreground;
 }
@@ -67,7 +67,7 @@ body {
     background: $ui-primary;
     margin: 0px;
     padding: $space;
-    width: 100vw;
+    width: 100%;
 }
 
 .section {

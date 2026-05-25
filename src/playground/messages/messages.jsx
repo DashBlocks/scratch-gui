@@ -32,6 +32,16 @@ const messages = defineMessages({
         defaultMessage: 'set a description',
         description: 'Label for link to set profile description in promotedDasherPlus message',
         id: 'dash.messages.promotedDasherPlus.setDescription'
+    },
+    creatingProject: {
+        defaultMessage: 'creating a project',
+        description: 'Label for link to create a project in joined message',
+        id: 'dash.messages.joined.creatingProject'
+    },
+    exploringOthers: {
+        defaultMessage: 'exploring other projects',
+        description: 'Label for link to explore projects in joined message',
+        id: 'dash.messages.joined.exploringOthers'
     }
 });
 
@@ -70,6 +80,21 @@ const Messages = (props) => {
 
     const getMessageContent = (message) => {
         switch (message.type) {
+            case 'joined':
+                return (
+                    <>
+                        {/* TODO: Icon */}
+                        <FormattedMessage
+                            defaultMessage="Welcome to Dash! Get started by {creatingProject} and {exploringOthers}"
+                            description="Displayed when user joins to Dash"
+                            id="dash.messages.joined"
+                            values={{
+                                creatingProject: <a href={'editor'}>{props.intl.formatMessage(messages.creatingProject)}</a>,
+                                exploringOthers: <a href={'trending'}>{props.intl.formatMessage(messages.exploringOthers)}</a>
+                            }}
+                        />
+                    </>
+                );
             case 'fired':
                 return (
                     <>

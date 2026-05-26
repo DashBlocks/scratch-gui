@@ -20,12 +20,25 @@
 
 .filter-bar {
     display: flex;
-    flex-direction: column;
     justify-content: flex-start;
-    gap: .75rem;
     background-color: $looks-transparent;
-    padding: 1rem;
     font-size: .875rem;
+}
+
+.filter-bar-content {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    padding: 1rem;
+}
+
+.filter-bar-arrow {
+    width: 1rem;
+    margin: $space;
+}
+
+.filter-bar-arrow.filter-bar-arrow-opened {
+    transform: scaleX(-1);
 }
 
 .filter {

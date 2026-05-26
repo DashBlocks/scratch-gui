@@ -6,7 +6,6 @@ import {defineMessages, injectIntl, intlShape} from 'react-intl';
 
 import LibraryItem from '../../containers/library-item.jsx';
 import Modal from '../../containers/modal.jsx';
-import Divider from '../divider/divider.jsx';
 import Filter from '../filter/filter.jsx';
 import TagButton from '../../containers/tag-button.jsx';
 import Spinner from '../spinner/spinner.jsx';
@@ -260,19 +259,15 @@ class LibraryComponent extends React.Component {
                         <div className={styles.filterBar}>
                             {this.props.filterable && (
                                 <Filter
-                                    className={classNames(
-                                        styles.filterBarItem,
-                                        styles.filter
-                                    )}
+                                    className={styles.filter}
                                     filterQuery={this.state.filterQuery}
-                                    inputClassName={styles.filterInput}
                                     placeholderText={this.props.intl.formatMessage(messages.filterPlaceholder)}
                                     onChange={this.handleFilterChange}
                                     onClear={this.handleFilterClear}
                                 />
                             )}
                             {this.props.filterable && this.props.tags && (
-                                <Divider className={classNames(styles.filterBarItem, styles.divider)} />
+                                <div className={styles.divider} />
                             )}
                             {this.props.tags &&
                                 <div className={styles.tagWrapper}>
@@ -280,7 +275,6 @@ class LibraryComponent extends React.Component {
                                         <TagButton
                                             active={this.state.selectedTag === tagProps.tag.toLowerCase()}
                                             className={classNames(
-                                                styles.filterBarItem,
                                                 styles.tagButton,
                                                 tagProps.className
                                             )}
@@ -294,9 +288,7 @@ class LibraryComponent extends React.Component {
                         </div>
                     )}
                     <div
-                        className={classNames(styles.libraryScrollGrid, {
-                            [styles.withFilterBar]: this.props.filterable || this.props.tags
-                        })}
+                        className={styles.libraryScrollGrid}
                         ref={this.setFilteredDataRef}
                     >
                         {filteredData && this.getFilteredData().map((dataItem, index) => (

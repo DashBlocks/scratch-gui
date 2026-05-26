@@ -44,12 +44,14 @@ class LibraryComponent extends React.Component {
             'handleSelect',
             'handleFavorite',
             'handleTagClick',
+            'handleFilterBarToggling',
             'setFilteredDataRef'
         ]);
         const favorites = this.readFavoritesFromStorage();
         this.state = {
             playingItem: null,
             filterQuery: '',
+            filterBarOpened: true,
             selectedTag: ALL_TAG.tag,
             canDisplay: false,
             favorites,
@@ -170,6 +172,11 @@ class LibraryComponent extends React.Component {
     handleFilterClear () {
         this.setState({filterQuery: ''});
     }
+    handleFilterBarToggling () {
+        this.setState({
+            filterBarOpened: !this.state.filterBarOpened
+        });
+    }
     getFilteredData () {
         // When no filtering, favorites get their own section
         if (this.state.selectedTag === 'all' && !this.state.filterQuery) {
@@ -257,34 +264,37 @@ class LibraryComponent extends React.Component {
                 <div className={styles.libraryWrapper}>
                     {(this.props.filterable || this.props.tags) && (
                         <div className={styles.filterBar}>
-                            {this.props.filterable && (
-                                <Filter
-                                    className={styles.filter}
-                                    filterQuery={this.state.filterQuery}
-                                    placeholderText={this.props.intl.formatMessage(messages.filterPlaceholder)}
-                                    onChange={this.handleFilterChange}
-                                    onClear={this.handleFilterClear}
-                                />
-                            )}
-                            {this.props.filterable && this.props.tags && (
-                                <div className={styles.divider} />
-                            )}
-                            {this.props.tags &&
-                                <div className={styles.tagWrapper}>
-                                    {tagListPrefix.concat(this.props.tags).map((tagProps, id) => (
-                                        <TagButton
-                                            active={this.state.selectedTag === tagProps.tag.toLowerCase()}
-                                            className={classNames(
-                                                styles.tagButton,
-                                                tagProps.className
-                                            )}
-                                            key={`tag-button-${id}`}
-                                            onClick={this.handleTagClick}
-                                            {...tagProps}
-                                        />
-                                    ))}
-                                </div>
-                            }
+                            <div className={styles.filterBarContent}>
+                                {this.props.filterable && (
+                                    <Filter
+                                        className={styles.filter}
+                                        filterQuery={this.state.filterQuery}
+                                        placeholderText={this.props.intl.formatMessage(messages.filterPlaceholder)}
+                                        onChange={this.handleFilterChange}
+                                        onClear={this.handleFilterClear}
+                                    />
+                                )}
+                                {this.props.filterable && this.props.tags && (
+                                    <div className={styles.divider} />
+                                )}
+                                {this.props.tags &&
+                                    <div className={styles.tagWrapper}>
+                                        {tagListPrefix.concat(this.props.tags).map((tagProps, id) => (
+                                            <TagButton
+                                                active={this.state.selectedTag === tagProps.tag.toLowerCase()}
+                                                className={classNames(
+                                                    styles.tagButton,
+                                                    tagProps.className
+                                                )}
+                                                key={`tag-button-${id}`}
+                                                onClick={this.handleTagClick}
+                                                {...tagProps}
+                                            />
+                                        ))}
+                                    </div>
+                                }
+                            </div>
+                            {/* TODO: Make arrow asset */}
                         </div>
                     )}
                     <div

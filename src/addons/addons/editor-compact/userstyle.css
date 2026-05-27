@@ -506,7 +506,7 @@ body:not(.sa-columns-enabled) [class*="gui_tab-panel"] [class*="gui_extension-bu
 [class*="custom-procedures_body"] {
   padding: 1rem;
 }
-[class*="modal_modal-content"] [class*="box_box"] button {
+[class*="modal_modal-content"] [class*="box_box"] button:not([class*="library-item_favorite-container"]) {
   padding: 0.5rem 0.75rem;
 }
 

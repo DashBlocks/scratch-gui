@@ -3457,6 +3457,7 @@
         "dash.messages.joined": "Добро пожаловать в Dash! Начни с {creatingProject} и {exploringOthers}",
         "dash.messages.joined.creatingProject": "создания проектов",
         "exploring other projects": "иследования других проектов",
+        "dash.messages.fired": "{user} поставил огонь вашему проекту {project}",
         "dash.messages.featured": "Твой проект {project} стал избранным",
         "dash.messages.promotedDasherPlus": "Поздравляю! Теперь вы Дэшер+, теперь вы можете {setDescription} в своем профиле и загружать проекты с пользовательскими расширениями",
         "dash.messages.promotedDasherPlus.setDescription": "установить описание",

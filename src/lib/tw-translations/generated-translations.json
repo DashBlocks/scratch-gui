@@ -3430,6 +3430,7 @@
         "dash.login.register": "Новый в Dash или ещё не имеете аккаунт? {signUp}",
         "dash.login.signUp": "Регистрация",
         "dash.login.target": "Цель (ID или имя пользователя)",
+        "dash.libraryTags.other": "Другие моды",
         "tw.menuBar.60off": "Выключить режим 60 FPS",
         "tw.menuBar.60on": "Включить режим 60 FPS",
         "tw.menuBar.accent": "Акцент",

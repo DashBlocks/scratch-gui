@@ -22,16 +22,8 @@ const messages = defineMessages({
         id: 'gui.library.filterPlaceholder',
         defaultMessage: 'Search',
         description: 'Placeholder text for library search field'
-    },
-    allTag: {
-        id: 'gui.library.allTag',
-        defaultMessage: 'All',
-        description: 'Label for library tag to revert to all items after filtering by tag.'
     }
 });
-
-const ALL_TAG = {tag: 'all', intlLabel: messages.allTag};
-const tagListPrefix = [ALL_TAG];
 
 class LibraryComponent extends React.Component {
     constructor (props) {
@@ -54,7 +46,7 @@ class LibraryComponent extends React.Component {
             playingItem: null,
             filterQuery: '',
             filterBarOpened: true,
-            selectedTag: ALL_TAG.tag,
+            selectedTags: new Set(),
             canDisplay: false,
             favorites,
             initialFavorites: favorites
@@ -72,7 +64,7 @@ class LibraryComponent extends React.Component {
     }
     componentDidUpdate (prevProps, prevState) {
         if (prevState.filterQuery !== this.state.filterQuery ||
-            prevState.selectedTag !== this.state.selectedTag) {
+            prevState.selectedTags !== this.state.selectedTags) {
             this.scrollToTop();
         }
 
@@ -118,18 +110,22 @@ class LibraryComponent extends React.Component {
         this.props.onRequestClose();
     }
     handleTagClick (tag) {
+        const lowerCaseTag = tag.toLowerCase();
+        const tagSet = new Set([lowerCaseTag]);
         if (this.state.playingItem === null) {
-            this.setState({
-                filterQuery: '',
-                selectedTag: tag.toLowerCase()
-            });
+            this.setState(oldState => ({
+                selectedTags: oldState.selectedTags.has(lowerCaseTag)
+                    ? oldState.selectedTags.difference(tagSet)
+                    : oldState.selectedTags.union(tagSet)
+            }));
         } else {
-            this.props.onItemMouseLeave(this.getFilteredData()[[this.state.playingItem]]);
-            this.setState({
-                filterQuery: '',
+            this.props.onItemMouseLeave(this.getFilteredData()[this.state.playingItem]);
+            this.setState(oldState => ({
                 playingItem: null,
-                selectedTag: tag.toLowerCase()
-            });
+                selectedTags: oldState.selectedTags.has(lowerCaseTag)
+                    ? oldState.selectedTags.difference(tagSet)
+                    : oldState.selectedTags.union(tagSet)
+            }));
         }
     }
     handleMouseEnter (id) {
@@ -159,15 +155,13 @@ class LibraryComponent extends React.Component {
     handleFilterChange (event) {
         if (this.state.playingItem === null) {
             this.setState({
-                filterQuery: event.target.value,
-                selectedTag: ALL_TAG.tag
+                filterQuery: event.target.value
             });
         } else {
-            this.props.onItemMouseLeave(this.getFilteredData()[[this.state.playingItem]]);
+            this.props.onItemMouseLeave(this.getFilteredData()[this.state.playingItem]);
             this.setState({
                 filterQuery: event.target.value,
-                playingItem: null,
-                selectedTag: ALL_TAG.tag
+                playingItem: null
             });
         }
     }
@@ -175,13 +169,13 @@ class LibraryComponent extends React.Component {
         this.setState({filterQuery: ''});
     }
     handleFilterBarToggling () {
-        this.setState({
-            filterBarOpened: !this.state.filterBarOpened
-        });
+        this.setState(oldState => ({
+            filterBarOpened: !oldState.filterBarOpened
+        }));
     }
     getFilteredData () {
         // When no filtering, favorites get their own section
-        if (this.state.selectedTag === 'all' && !this.state.filterQuery) {
+        if (this.state.selectedTags.size === 0 && !this.state.filterQuery) {
             const favoriteItems = this.props.data
                 .filter(dataItem => (
                     this.state.initialFavorites.includes(dataItem[this.props.persistableKey])
@@ -216,10 +210,10 @@ class LibraryComponent extends React.Component {
 
         let filteredItems = favoriteItems.concat(nonFavoriteItems);
 
-        if (this.state.selectedTag !== 'all') {
+        if (this.state.selectedTags.size > 0) {
             filteredItems = filteredItems.filter(dataItem => (
                 dataItem.tags &&
-                dataItem.tags.map(i => i.toLowerCase()).includes(this.state.selectedTag)
+                new Set(dataItem.tags.map(i => i.toLowerCase())).isSubsetOf(this.state.selectedTags)
             ));
         }
 
@@ -282,17 +276,30 @@ class LibraryComponent extends React.Component {
                                     )}
                                     {this.props.tags &&
                                         <div className={styles.tagWrapper}>
-                                            {tagListPrefix.concat(this.props.tags).map((tagProps, id) => (
-                                                <TagButton
-                                                    active={this.state.selectedTag === tagProps.tag.toLowerCase()}
-                                                    className={classNames(
-                                                        styles.tagButton,
-                                                        tagProps.className
-                                                    )}
-                                                    key={`tag-button-${id}`}
-                                                    onClick={this.handleTagClick}
-                                                    {...tagProps}
-                                                />
+                                            {this.props.tags.map((tagProps, index) => (
+                                                tagProps === '---' ? (
+                                                    <div className={styles.divider} />
+                                                ) : tagProps.isGroup ? (
+                                                    <h4
+                                                        className={tagProps.className}
+                                                        key={index}
+                                                    >
+                                                        {typeof tagProps.intlLabel === 'string' ? tagProps.intlLabel : (
+                                                            <FormattedMessage {...tagProps.intlLabel} />
+                                                        )}
+                                                    </h4>
+                                                ) : (
+                                                    <TagButton
+                                                        active={this.state.selectedTags.has(tagProps.tag.toLowerCase())}
+                                                        className={classNames(
+                                                            styles.tagButton,
+                                                            tagProps.className
+                                                        )}
+                                                        key={index}
+                                                        onClick={this.handleTagClick}
+                                                        {...tagProps}
+                                                    />
+                                                )
                                             ))}
                                         </div>
                                     }
@@ -415,7 +422,21 @@ LibraryComponent.propTypes = {
     onRequestClose: PropTypes.func,
     setStopHandler: PropTypes.func,
     showPlayButton: PropTypes.bool,
-    tags: PropTypes.arrayOf(PropTypes.shape(TagButton.propTypes)),
+    tags: PropTypes.arrayOf(PropTypes.oneOfType([
+        PropTypes.shape(TagButton.propTypes),
+        PropTypes.shape({
+            intlLabel: PropTypes.oneOfType([
+                PropTypes.shape({
+                    defaultMessage: PropTypes.string,
+                    description: PropTypes.string,
+                    id: PropTypes.string
+                }),
+                PropTypes.string
+            ]).isRequired,
+            isGroup: PropTypes.bool.isRequired
+        }),
+        PropTypes.string
+    ])),
     title: PropTypes.string.isRequired,
     removedTrademarks: PropTypes.bool
 };

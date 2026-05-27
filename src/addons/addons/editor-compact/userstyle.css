@@ -469,11 +469,11 @@ body:not(.sa-columns-enabled) [class*="gui_tab-panel"] [class*="gui_extension-bu
   height: 1rem;
 }
 
-[class*="library_filter"],
+[class*="library_filter_"],
 [class*="library_tag-wrapper"] > * {
   height: 1.5rem;
 }
-[class*="library_filter"]:focus-within {
+[class*="library_filter_"]:focus-within {
   box-shadow: 0 0 0 0.125rem var(--editorDarkMode-primary-transparent35, hsl(260deg 60% 60% / 35%));
 }
 [dir="ltr"] [class*="filter_filter-icon"],

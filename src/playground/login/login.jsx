@@ -16,6 +16,7 @@ import {Footer} from '../render-interface.jsx';
 
 import styles from './login.css';
 
+import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 
@@ -23,6 +24,11 @@ const theme = detectTheme();
 applyGuiColors(theme);
 
 const messages = defineMessages({
+    title: {
+        defaultMessage: 'Sign In',
+        description: 'Log in page title',
+        id: 'dash.login.signIn'
+    },
     failedToLogIn: {
         id: 'dash.login.failedToLogIn',
         defaultMessage: 'Failed to log in, try again later',
@@ -43,6 +49,10 @@ class Login extends React.Component {
             waiting: false,
             error: null
         };
+    }
+
+    componentDidMount () {
+        document.title = this.props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
     }
 
     handleChange (e) {
@@ -80,7 +90,7 @@ class Login extends React.Component {
                             <h2>
                                 <FormattedMessage
                                     defaultMessage="Sign In"
-                                    description="Log in page header"
+                                    description="Log in page title"
                                     id="dash.login.signIn"
                                 />
                             </h2>

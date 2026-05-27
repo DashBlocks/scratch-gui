@@ -16,6 +16,7 @@ import {Footer} from '../render-interface.jsx';
 
 import styles from './register.css';
 
+import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 
@@ -23,6 +24,11 @@ const theme = detectTheme();
 applyGuiColors(theme);
 
 const messages = defineMessages({
+    title: {
+        defaultMessage: 'Join',
+        description: 'Register page title',
+        id: 'dash.register.title'
+    },
     createdButLogInFailed: {
         id: 'dash.register.createdButLogInFailed',
         defaultMessage: 'Account created, but failed to log in. Try to log in by yourself',
@@ -63,6 +69,8 @@ class Register extends React.Component {
     }
 
     componentDidMount () {
+        document.title = this.props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
+
         window.addEventListener('message', this.handleVerificationMessage);
     }
 

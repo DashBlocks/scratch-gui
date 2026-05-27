@@ -12,6 +12,7 @@ import Button from '../../components/button/button.jsx';
 import Input from '../../components/forms/input.jsx';
 import BufferedInputHOC from '../../components/forms/buffered-input-hoc.jsx';
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
+import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 import getSession from '../../lib/session.js';
@@ -24,6 +25,11 @@ const theme = detectTheme();
 applyGuiColors(theme);
 
 const messages = defineMessages({
+    title: {
+        defaultMessage: 'Admin Panel',
+        description: 'Title of /admin page',
+        id: 'dash.admin.title'
+    },
     deletedOnlyFromProfile: {
         defaultMessage: 'Project deleted from profile, but it still accessable via ID - full deletion requested',
         description: 'Message displayed when a project is only deleted from the target\'s profile',
@@ -87,6 +93,8 @@ const Admin = (props) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        document.title = props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
+
         const fetchFullProfile = async () => {
             setLoading(true);
             const session = await getSession();
@@ -100,7 +108,7 @@ const Admin = (props) => {
         };
 
         fetchFullProfile();
-    }, []); // Let's say session won't change
+    }, []);
 
     async function handleFeatureProject(projectId) {
         if (!projectId || featureProjectButtonLoading) return;

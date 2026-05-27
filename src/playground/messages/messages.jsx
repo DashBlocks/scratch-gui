@@ -10,6 +10,7 @@ import Spinner from '../../components/spinner/spinner.jsx';
 import {Footer} from '../render-interface.jsx';
 import Button from '../../components/button/button.jsx';
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
+import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 import getSession from '../../lib/session.js';
@@ -28,6 +29,11 @@ applyGuiColors(theme);
 const relativeTimeSupported = () => typeof Intl !== 'undefined' && typeof Intl.RelativeTimeFormat !== 'undefined';
 
 const messages = defineMessages({
+    title: {
+        defaultMessage: 'Messages',
+        description: 'Title of /messages page',
+        id: 'dash.messages.title'
+    },
     setDescription: {
         defaultMessage: 'set a description',
         description: 'Label for link to set profile description in promotedDasherPlus message',
@@ -53,6 +59,8 @@ const Messages = (props) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        document.title = props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
+
         const fetchFullProfile = async () => {
             setLoading(true);
             const session = await getSession();
@@ -76,7 +84,7 @@ const Messages = (props) => {
         };
 
         fetchFullProfile();
-    }, []); // Let's say session won't change
+    }, []);
 
     const getMessageContent = (message) => {
         switch (message.type) {

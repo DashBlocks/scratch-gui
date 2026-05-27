@@ -16,6 +16,7 @@ import {Footer} from '../render-interface.jsx';
 
 import styles from './account-settings.css';
 
+import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers.js';
 import {detectTheme} from '../../lib/themes/themePersistance.js';
 
@@ -23,6 +24,11 @@ const theme = detectTheme();
 applyGuiColors(theme);
 
 const messages = defineMessages({
+    title: {
+        id: 'dash.accountSettings.title',
+        defaultMessage: 'Account Settings',
+        description: 'Account settings page title'
+    },
     failedToChangePassword: {
         id: 'dash.accountSettings.failedToChangePassword',
         defaultMessage: 'Failed to change password, try again later',
@@ -57,6 +63,8 @@ class AccountSettings extends React.Component {
     }
 
     async componentDidMount () {
+        document.title = this.props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
+
         if (this.props.session && this.props.session?.username)
             return;
 
@@ -118,8 +126,8 @@ class AccountSettings extends React.Component {
                             <h2>
                                 <FormattedMessage
                                     defaultMessage="Account Settings"
-                                    description="Account settings page header"
-                                    id="dash.accountSettings.header"
+                                    description="Account settings page title"
+                                    id="dash.accountSettings.title"
                                 />
                             </h2>
                             <div className={styles.section}>

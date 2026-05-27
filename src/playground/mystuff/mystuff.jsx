@@ -10,6 +10,7 @@ import Spinner from '../../components/spinner/spinner.jsx';
 import {Footer} from '../render-interface.jsx';
 import Button from '../../components/button/button.jsx';
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
+import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 import getSession from '../../lib/session.js';
@@ -20,6 +21,11 @@ const theme = detectTheme();
 applyGuiColors(theme);
 
 const messages = defineMessages({
+    title: {
+        defaultMessage: 'My Stuff',
+        description: 'Title of /mystuff page',
+        id: 'dash.mystuff.title'
+    },
     hoverText: {
         defaultMessage: '{title} by {author}',
         description: 'Displayed when hovering on a project',
@@ -45,6 +51,8 @@ const User = (props) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        document.title = props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
+
         const fetchFullProfile = async () => {
             setLoading(true);
             const session = await getSession();
@@ -68,7 +76,7 @@ const User = (props) => {
         };
 
         fetchFullProfile();
-    }, []); // Let's say session won't change
+    }, []);
 
     async function handleDeleteProject(projectId) {
         const project = projects.find(p => p.id === projectId);

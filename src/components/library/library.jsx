@@ -213,7 +213,7 @@ class LibraryComponent extends React.Component {
         if (this.state.selectedTags.size > 0) {
             filteredItems = filteredItems.filter(dataItem => (
                 dataItem.tags &&
-                new Set(dataItem.tags.map(i => i.toLowerCase())).isSubsetOf(this.state.selectedTags)
+                this.state.selectedTags.isSubsetOf(new Set(dataItem.tags.map(i => i.toLowerCase())))
             ));
         }
 

@@ -33,13 +33,20 @@
     padding: 1rem;
 }
 
-.filter-bar-arrow {
-    width: 1rem;
-    margin: $space;
+.arrow-icon-wrapper {
+    align-self: center;
+    padding: $space;
+    cursor: pointer;
 }
 
-[dir="rtl"] .filter-bar-arrow:not(.is-opened),
-[dir="ltr"] .filter-bar-arrow.is-opened {
+.arrow-icon {
+    width: 1rem;
+    height: 1.6rem;
+    user-select: none;
+}
+
+[dir="rtl"] .arrow-icon:not(.is-opened),
+[dir="ltr"] .arrow-icon.is-opened {
     transform: scaleX(-1);
 }
 

@@ -1,20 +1,15 @@
 import {defineMessages} from 'react-intl';
 
 export default defineMessages({
-    all: {
-        defaultMessage: 'All',
-        description: 'Tag for filtering a library for everything',
-        id: 'gui.libraryTags.all'
-    },
     dash: {
         defaultMessage: 'Dash',
         description: 'Tag for filtering a library for Dash-created content',
-        id: 'gui.libraryTags.dash'
+        id: 'dash.libraryTags.dash'
     },
     other: {
         defaultMessage: 'Other mods',
         description: 'Tag for filtering a library for extensions from other modifications',
-        id: 'gui.libraryTags.other'
+        id: 'dash.libraryTags.other'
     },
     animals: {
         defaultMessage: 'Animals',

@@ -1,7 +1,9 @@
 import messages from './tag-messages.js';
+import tagGroupMessages from './dash-tag-group-messages.js';
 export default [
     {tag: 'dash', intlLabel: messages.dash},
     '---',
+    {isGroup: true, intlLabel: tagGroupMessages.category},
     {tag: 'animals', intlLabel: messages.animals},
     {tag: 'people', intlLabel: messages.people},
     {tag: 'fantasy', intlLabel: messages.fantasy},

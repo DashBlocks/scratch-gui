@@ -11,6 +11,11 @@ export default defineMessages({
         description: 'Tag for filtering a library for Dash-created content',
         id: 'gui.libraryTags.dash'
     },
+    other: {
+        defaultMessage: 'Other mods',
+        description: 'Tag for filtering a library for extensions from other modifications',
+        id: 'gui.libraryTags.other'
+    },
     animals: {
         defaultMessage: 'Animals',
         description: 'Tag for filtering a library for animals',

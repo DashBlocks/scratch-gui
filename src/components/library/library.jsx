@@ -13,6 +13,8 @@ import Separator from '../tw-extension-separator/separator.jsx';
 import RemovedTrademarks from '../tw-removed-trademarks/removed-trademarks.jsx';
 import {APP_NAME} from '../../lib/brand.js';
 
+import TWRenderRecoloredImage from '../../lib/tw-recolor/render.jsx';
+import arrowIcon from '!../../lib/tw-recolor/build!./icon--arrow.svg';
 import styles from './library.css';
 
 const messages = defineMessages({
@@ -264,37 +266,49 @@ class LibraryComponent extends React.Component {
                 <div className={styles.libraryWrapper}>
                     {(this.props.filterable || this.props.tags) && (
                         <div className={styles.filterBar}>
-                            <div className={styles.filterBarContent}>
-                                {this.props.filterable && (
-                                    <Filter
-                                        className={styles.filter}
-                                        filterQuery={this.state.filterQuery}
-                                        placeholderText={this.props.intl.formatMessage(messages.filterPlaceholder)}
-                                        onChange={this.handleFilterChange}
-                                        onClear={this.handleFilterClear}
-                                    />
-                                )}
-                                {this.props.filterable && this.props.tags && (
-                                    <div className={styles.divider} />
-                                )}
-                                {this.props.tags &&
-                                    <div className={styles.tagWrapper}>
-                                        {tagListPrefix.concat(this.props.tags).map((tagProps, id) => (
-                                            <TagButton
-                                                active={this.state.selectedTag === tagProps.tag.toLowerCase()}
-                                                className={classNames(
-                                                    styles.tagButton,
-                                                    tagProps.className
-                                                )}
-                                                key={`tag-button-${id}`}
-                                                onClick={this.handleTagClick}
-                                                {...tagProps}
-                                            />
-                                        ))}
-                                    </div>
-                                }
+                            {this.state.filterBarOpened && (
+                                <div className={styles.filterBarContent}>
+                                    {this.props.filterable && (
+                                        <Filter
+                                            className={styles.filter}
+                                            filterQuery={this.state.filterQuery}
+                                            placeholderText={this.props.intl.formatMessage(messages.filterPlaceholder)}
+                                            onChange={this.handleFilterChange}
+                                            onClear={this.handleFilterClear}
+                                        />
+                                    )}
+                                    {this.props.filterable && this.props.tags && (
+                                        <div className={styles.divider} />
+                                    )}
+                                    {this.props.tags &&
+                                        <div className={styles.tagWrapper}>
+                                            {tagListPrefix.concat(this.props.tags).map((tagProps, id) => (
+                                                <TagButton
+                                                    active={this.state.selectedTag === tagProps.tag.toLowerCase()}
+                                                    className={classNames(
+                                                        styles.tagButton,
+                                                        tagProps.className
+                                                    )}
+                                                    key={`tag-button-${id}`}
+                                                    onClick={this.handleTagClick}
+                                                    {...tagProps}
+                                                />
+                                            ))}
+                                        </div>
+                                    }
+                                </div>
+                            )}
+                            <div
+                                className={styles.arrowIconWrapper}
+                                onClick={this.handleFilterBarToggling}
+                            >
+                                <TWRenderRecoloredImage
+                                    className={classNames(styles.arrowIcon, {
+                                        [styles.isOpened]: this.state.filterBarOpened
+                                    })}
+                                    src={arrowIcon}
+                                />
                             </div>
-                            {/* TODO: Make arrow asset */}
                         </div>
                     )}
                     <div

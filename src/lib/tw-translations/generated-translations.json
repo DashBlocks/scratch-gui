@@ -11,7 +11,8 @@
         "dash.user.role.dasher": "داشر",
         "dash.user.role.dasherPlus": "داشر+",
         "dash.user.role.dashTeam": "فريق داش",
-        "tw.studioview.hoverText": "{title} بواسطة {author}"
+        "tw.studioview.hoverText": "{title} بواسطة {author}",
+        "tw.studioview.authorAttribution": "بواسطة {author}"
     },
     "ca": {
         "tw.alerts.creatingRestorePoint": "S'està creant un punt de restauració...",
@@ -3452,6 +3453,15 @@
         "dash.mystuff.delete": "Удалить",
         "dash.mystuff.deletedOnlyFromProfile": "Проект удалён из Вашего профиля, но он всё ещё доступен через ID - полное удаление запрошено",
         "dash.mystuff.title": "Мои работы",
+        "dash.messages.title": "Сообщения",
+        "dash.messages.joined": "Добро пожаловать в Dash! Начни с {creatingProject} и {exploringOthers}",
+        "dash.messages.joined.creatingProject": "создания проектов",
+        "exploring other projects": "иследования других проектов",
+        "dash.messages.featured": "Твой проект {project} стал избранным",
+        "dash.messages.promotedDasherPlus": "Поздравляю! Теперь вы Дэшер+, теперь вы можете {setDescription} в своем профиле и загружать проекты с пользовательскими расширениями",
+        "dash.messages.promotedDasherPlus.setDescription": "установить описание",
+        "dash.messages.demotedDasher": "Тебя понизили до роли Дэшера",
+        "dash.messages.unknownMessageType": "Неизвестный тип сообщения",
         "tw.notify.permission": "Если разрешить, ваш браузер может предложить вам включить уведомления, и дальнейшие уведомления будут разрешены автоматически.",
         "tw.notify.title": "Проект хочет отображать уведомления.",
         "tw.oldDownload": "Сохранить в отдельный файл...",

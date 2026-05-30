@@ -17,7 +17,8 @@ const getSession = async (userId, password) => {
             return data;
         }
     } catch (error) {
-        throw new Error(error.message);
+        console.warn(error?.message || error);
+        return null;
     }
 
     return null;

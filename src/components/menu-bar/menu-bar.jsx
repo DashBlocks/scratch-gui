@@ -306,50 +306,55 @@ class MenuBar extends React.Component {
                     this.setState({
                         isSharing: true
                     });
-                    let formData = new FormData();
-                    const content = await this.props.vm.saveProjectSb3();
-                    const fileBlob = new Blob([content], { type: 'application/x.dash.dbp' });
-                    formData.append('file', fileBlob, `${this.props.projectTitle}.dbp`);
-                    formData.append('name', this.props.projectTitle);
-                    // TODO: Description input instead of prompt
-                    const description = prompt('Enter a description for your project:') || '';
-                    formData.append('description', description);
+                    try {
+                        let formData = new FormData();
+                        const content = await this.props.vm.saveProjectSb3();
+                        const fileBlob = new Blob([content], { type: 'application/x.dash.dbp' });
+                        formData.append('file', fileBlob, `${this.props.projectTitle}.dbp`);
+                        formData.append('name', this.props.projectTitle);
+                        // TODO: Description input instead of prompt
+                        const description = prompt('Enter a description for your project:') || '';
+                        formData.append('description', description);
 
-                    const response = await fetch('https://dashblocks-server.vercel.app/save-project', {
-                        method: 'POST',
-                        body: formData,
-                        credentials: 'include'
-                    });
-                    const result = await response.json();
-                    if (response.ok) {
-                        formData = new FormData();
-                        this.props.vm.postIOData('video', {forceTransparentPreview: true});
-                        const thumbnailBlob = await new Promise(resolve => {
-                            this.props.vm.renderer.requestSnapshot(async dataURI => {
-                                this.props.vm.postIOData('video', {forceTransparentPreview: false});
-                                const res = await fetch(dataURI);
-                                const blob = await res.blob();
-                                resolve(blob);
-                            });
-                        });
-                        formData.append('thumbnail', thumbnailBlob, 'thumbnail.png');
-                        const thumbnailResponse = await fetch(`https://dashblocks-server.vercel.app/projects/${result.projectId}/upload-thumbnail`, {
+                        const response = await fetch('https://dashblocks-server.vercel.app/save-project', {
                             method: 'POST',
                             body: formData,
                             credentials: 'include'
                         });
-                        if (thumbnailResponse.ok) {
-                            alert('Project shared successfully!');
+                        const result = await response.json();
+                        if (response.ok) {
+                            formData = new FormData();
+                            this.props.vm.postIOData('video', {forceTransparentPreview: true});
+                            const thumbnailBlob = await new Promise(resolve => {
+                                this.props.vm.renderer.requestSnapshot(async dataURI => {
+                                    this.props.vm.postIOData('video', {forceTransparentPreview: false});
+                                    const res = await fetch(dataURI);
+                                    const blob = await res.blob();
+                                    resolve(blob);
+                                });
+                            });
+                            formData.append('thumbnail', thumbnailBlob, 'thumbnail.png');
+                            const thumbnailResponse = await fetch(`https://dashblocks-server.vercel.app/projects/${result.projectId}/upload-thumbnail`, {
+                                method: 'POST',
+                                body: formData,
+                                credentials: 'include'
+                            });
+                            if (thumbnailResponse.ok) {
+                                alert('Project shared successfully!');
+                            } else {
+                                alert('Project was shared but thumbnail upload failed');
+                            }
+                            window.open(`./#${result.projectId}`, '_self');
                         } else {
-                            alert('Project was shared but thumbnail upload failed');
+                            alert(result.error);
                         }
-                        window.open(`./#${result.projectId}`, '_self');
-                    } else {
-                        alert(result.error);
+                    } catch (error) {
+                        alert(error?.message || error);
+                    } finally {
+                        this.setState({
+                            isSharing: false
+                        });
                     }
-                    this.setState({
-                        isSharing: false
-                    });
                     return;
                 }
                 window.open('./login', '_blank');
@@ -358,12 +363,16 @@ class MenuBar extends React.Component {
         }
     }
     async handleClickLogOut () {
-        const response = await fetch('https://dashblocks-server.vercel.app/auth/logout', {credentials: 'include'});
-        const data = await response.json();
-        if (!data.ok)
-            return alert('Sign out failed');
-        this.props.setSession(null);
-        window.location.reload();
+        try {
+            const response = await fetch('https://dashblocks-server.vercel.app/auth/logout', {credentials: 'include'});
+            const data = await response.json();
+            if (!data.ok) return alert('Sign out failed');
+            this.props.setSession(null);
+            window.location.reload();
+        } catch (error) {
+            console.warn(error?.message || error);
+            alert('Sign out failed');
+        }
     }
     handleSetMode (mode) {
         return () => {

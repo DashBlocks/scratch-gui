@@ -120,12 +120,16 @@ class LazyMenuBar extends React.Component {
         ]);
     }
     async handleClickLogOut () {
-        const response = await fetch('https://dashblocks-server.vercel.app/auth/logout', {credentials: 'include'});
-        const data = await response.json();
-        if (!data.ok)
-            return alert('Sign out failed');
-        this.props.setSession(null);
-        window.location.reload();
+        try {
+            const response = await fetch('https://dashblocks-server.vercel.app/auth/logout', {credentials: 'include'});
+            const data = await response.json();
+            if (!data.ok) return alert('Sign out failed');
+            this.props.setSession(null);
+            window.location.reload();
+        } catch (error) {
+            console.warn(error?.message || error);
+            alert('Sign out failed');
+        }
     }
     render () {
         const menuBar = (

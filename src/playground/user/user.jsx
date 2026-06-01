@@ -418,6 +418,22 @@ const User = (props) => {
                                     </p>
                                 </div>
                             )}
+                            <h2>
+                                <FormattedMessage
+                                    defaultMessage="My links"
+                                    description="User's links section title on user's profile"
+                                    id="dash.user.myLinks"
+                                />
+                            </h2>
+                            <div className={styles.description}></div>
+                            <h2>
+                                <FormattedMessage
+                                    defaultMessage="Achievements"
+                                    description="User's achievements section title on user's profile"
+                                    id="dash.user.achievements"
+                                />
+                            </h2>
+                            <div className={styles.description}></div>
                         </div>
                         {(userData.profile.recommendedProject?.id || isMyProfile) && (
                             <div className={styles.section}>

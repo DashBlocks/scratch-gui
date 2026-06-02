@@ -74,8 +74,10 @@ const User = (props) => {
     const [descriptionDisabled, setDescriptionDisabled] = useState(false);
     const [recommendProjectButtonDisabled, setRecommendProjectButtonDisabled] = useState(false);
     const [projects, setProjects] = useState([]);
+    const [achievements, setAchievements] = useState([])
     const [avgGradient, setAvgGradient] = useState([]);
     const [isMyProfile, setIsMyProfile] = useState(false);
+    const [isAchievements, setIsAchievements] = useState(false)
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -103,7 +105,12 @@ const User = (props) => {
                 setUserData(userData.user);
 
                 const projects = userData.user.projects.slice(0, 20);
+                const achievements = userData.user.profile.achievements;
                 setProjects(projects);
+                setAchievements(achievements);
+                if (achievements.length > 0) {
+                    setIsAchievements(true)
+                }
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -172,6 +179,35 @@ const User = (props) => {
             // Ignore errors
         }
     }, [userData?.profile?.avatarId]);
+
+    const getAchievement = (achievement) => {
+        switch (achievement.type) {
+            case 'firstProject':
+                return (
+                    <>
+                        {/* TODO: Icon */}
+                        <h4><FormattedMessage
+                            defaultMessage='First Project'
+                            description="Title for achievement 'First project'"
+                            id="dash.user.achievements.firstProject.title"
+                        /></h4>
+                        <FormattedMessage
+                            defaultMessage='Achievement for the first project.'
+                            description="Description for achievement 'First project'"
+                            id="dash.user.achievements.firstProject"
+                        />
+                    </>
+                )
+            default:
+                return (
+                    <FormattedMessage
+                        defaultMessage='Unknown achievement.'
+                        description='Displayed when an achievement has an unknown type'
+                        id='dash.user.achievements.unknown'
+                    />
+                )
+        }
+    }
 
     async function handleChangeAvatar (e) {
         const file = e.target.files[0];
@@ -433,7 +469,23 @@ const User = (props) => {
                                     id="dash.user.achievements"
                                 />
                             </h2>
-                            <div className={styles.description}></div>
+                            <div className={styles.description}>
+                                {isAchievements ? (
+                                    <>
+                                        {achievements.map((achievement) => (
+                                            <div class='styles.description'>
+                                                {getAchievement(achievement)}
+                                            </div>
+                                        ))}
+                                    </>
+                                ) : (
+                                    <FormattedMessage
+                                        defaultMessage="The user has no achievements"
+                                        description="A message indicating that the user has no achievements"
+                                        id="dash.user.achevements.not"
+                                    />
+                                )}
+                            </div>
                         </div>
                         {(userData.profile.recommendedProject?.id || isMyProfile) && (
                             <div className={styles.section}>

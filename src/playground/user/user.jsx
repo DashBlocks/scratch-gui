@@ -74,10 +74,10 @@ const User = (props) => {
     const [descriptionDisabled, setDescriptionDisabled] = useState(false);
     const [recommendProjectButtonDisabled, setRecommendProjectButtonDisabled] = useState(false);
     const [projects, setProjects] = useState([]);
-    const [achievements, setAchievements] = useState([])
+    const [links, setLinks] = useState([]);
+    const [achievements, setAchievements] = useState([]);
     const [avgGradient, setAvgGradient] = useState([]);
     const [isMyProfile, setIsMyProfile] = useState(false);
-    const [isAchievements, setIsAchievements] = useState(false)
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -106,11 +106,9 @@ const User = (props) => {
 
                 const projects = userData.user.projects.slice(0, 20);
                 const achievements = userData.user.profile.achievements;
+                const links = userData.user.profile.links;
                 setProjects(projects);
                 setAchievements(achievements);
-                if (achievements.length > 0) {
-                    setIsAchievements(true)
-                }
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -182,19 +180,28 @@ const User = (props) => {
 
     const getAchievement = (achievement) => {
         switch (achievement.type) {
-            case 'firstProject':
+            case 'first-project':
                 return (
                     <>
                         {/* TODO: Icon */}
-                        <h4><FormattedMessage
-                            defaultMessage='First Project'
-                            description="Title for achievement 'First project'"
-                            id="dash.user.achievements.firstProject.title"
-                        /></h4>
+                        <h4>
+                            <FormattedMessage
+                                defaultMessage='First Project'
+                                description="Title for achievement for creating the first project"
+                                id="dash.user.achievements.firstProject.title"
+                            />
+                        </h4>
                         <FormattedMessage
-                            defaultMessage='Achievement for the first project.'
-                            description="Description for achievement 'First project'"
-                            id="dash.user.achievements.firstProject"
+                            defaultMessage='Created the first project "{firstProject}" on Dash.'
+                            description="Description for achievement for creating the first project, with a link to the project"
+                            id="dash.user.achievements.firstProject.info"
+                            values={{
+                                firstProject: (
+                                    <a href={`./#${achievement.project.id}`} target="_blank" rel="noopener noreferrer">
+                                        {achievement.project.name}
+                                    </a>
+                                )
+                            }}
                         />
                     </>
                 )
@@ -461,7 +468,25 @@ const User = (props) => {
                                     id="dash.user.myLinks"
                                 />
                             </h2>
-                            <div className={styles.description}></div>
+                            <div className={styles.links}>
+                                {links.length > 0 ? (
+                                    <ul className={styles.linkList}>
+                                        {links.map((link, index) => (
+                                            <li key={index}>
+                                                <a href={link.link} target="_blank" rel="noopener noreferrer">
+                                                    {link.label || "Link"}
+                                                </a>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <FormattedMessage
+                                        defaultMessage="The user has no links"
+                                        description="Placeholder text when the user has no links"
+                                        id="dash.user.myLinks.placeholder"
+                                    />
+                                )}
+                            </div>
                             <h2>
                                 <FormattedMessage
                                     defaultMessage="Achievements"
@@ -469,20 +494,31 @@ const User = (props) => {
                                     id="dash.user.achievements"
                                 />
                             </h2>
-                            <div className={styles.description}>
-                                {isAchievements ? (
-                                    <>
-                                        {achievements.map((achievement) => (
-                                            <div class='styles.description'>
+                            <div className={styles.achievements}>
+                                {achievements.length > 0 ? (
+                                    <div className={styles.achievementList}>
+                                        {achievements.map((achievement, index) => (
+                                            <div className={styles.achievement} key={index}>
                                                 {getAchievement(achievement)}
+                                                <div className={styles.achievementDate}>
+                                                    {achievement.date
+                                                        ? relativeTimeSupported()
+                                                            ? (
+                                                                <span title={`${props.intl.formatDate(new Date(achievement.date))}, ${props.intl.formatTime(new Date(achievement.date))}`}>
+                                                                    <FormattedRelative value={new Date(achievement.date)} />
+                                                                </span>
+                                                            )
+                                                        : (<FormattedDate value={new Date(achievement.date)} />)
+                                                    : '?'}
+                                                </div>
                                             </div>
                                         ))}
-                                    </>
+                                    </div>
                                 ) : (
                                     <FormattedMessage
                                         defaultMessage="The user has no achievements"
-                                        description="A message indicating that the user has no achievements"
-                                        id="dash.user.achevements.not"
+                                        description="Placeholder text when the user has no achievements"
+                                        id="dash.user.achievements.placeholder"
                                     />
                                 )}
                             </div>

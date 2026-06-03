@@ -38,15 +38,15 @@ const messages = defineMessages({
         id: 'dash.account.passwordsDontMatch',
         defaultMessage: 'Passwords don\'t match',
         description: 'Title of error message when passwords do not match'
-    },
+    } /* ,
     verificationMissingToken: {
         id: 'dash.register.verificationMissingToken',
         defaultMessage: 'No verification token found. Please complete verification in the popup before confirming',
         description: 'Error shown when the user tries to confirm registration without a verification token'
-    }
+    } */
 });
 
-const redirectLocation = btoa('https://dashblocks-server.vercel.app/auth/verify-scratch');
+// const redirectLocation = btoa('https://dashblocks-server.vercel.app/auth/verify-scratch');
 
 class Register extends React.Component {
     constructor (props) {
@@ -61,9 +61,9 @@ class Register extends React.Component {
             username: '',
             password: '',
             confirmPassword: '',
-            verificationToken: null,
+            // verificationToken: null,
             waiting: false,
-            verifying: false,
+            // verifying: false,
             error: null
         };
     }
@@ -71,18 +71,18 @@ class Register extends React.Component {
     componentDidMount () {
         document.title = this.props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
 
-        window.addEventListener('message', this.handleVerificationMessage);
+        // window.addEventListener('message', this.handleVerificationMessage);
     }
 
-    componentWillUnmount () {
+    /* componentWillUnmount () {
         window.removeEventListener('message', this.handleVerificationMessage);
-    }
+    } */
 
     handleChange (e) {
         this.setState({[e.target.name]: e.target.value});
     }
 
-    handleVerificationMessage (event) {
+    /* handleVerificationMessage (event) {
         if (event.origin !== 'https://dashblocks-server.vercel.app') return;
         const data = event.data;
         if (data && data.type === 'verification_success') {
@@ -92,9 +92,9 @@ class Register extends React.Component {
                 error: null
             });
         }
-    }
+    } */
 
-    async handleSubmit (e) {
+    /* async handleSubmit (e) {
         e.preventDefault();
 
         this.setState({waiting: false, verifying: true, verificationToken: null, error: null});
@@ -103,23 +103,23 @@ class Register extends React.Component {
             '_blank',
             'width=1000,height=700'
         );
-    }
+    } */
 
     async handleConfirm (e) {
         e.preventDefault();
 
-        this.setState({waiting: true, verifying: false, error: null});
-        const {username, password, confirmPassword, verificationToken} = this.state;
+        this.setState({waiting: true, /* verifying: false, */ error: null});
+        const {username, password, confirmPassword /* , verificationToken */} = this.state;
         try {
             // Maybe better to do this on backend ¯\_(ツ)_/¯
             if (password !== confirmPassword)
                 throw new Error(this.props.intl.formatMessage(messages.passwordsDontMatch));
-            if (!verificationToken)
-                throw new Error(this.props.intl.formatMessage(messages.verificationMissingToken));
+            /* if (!verificationToken)
+                throw new Error(this.props.intl.formatMessage(messages.verificationMissingToken)); */
             const response = await fetch('https://dashblocks-server.vercel.app/auth/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({username, password, verificationToken}),
+                body: JSON.stringify({username, password /* , verificationToken */}),
                 credentials: 'include'
             });
             const result = await response.json();
@@ -242,19 +242,19 @@ class Register extends React.Component {
                                     <Button
                                         className={styles.submitButton}
                                         disabled={this.state.waiting}
-                                        onClick={this.state.verifying ? this.handleConfirm : this.handleSubmit}
+                                        onClick={/* this.state.verifying ? */ this.handleConfirm /* : this.handleSubmit */}
                                     >
                                         {this.state.waiting ? (
                                             <Spinner
                                                 className={styles.spinner}
                                                 small
                                             />
-                                        ) : (this.state.verifying ? (
+                                        /* ) : (this.state.verifying ? (
                                             <FormattedMessage
                                                 defaultMessage="Done"
                                                 description="Button text to confirm if user sent auth code to the auth project"
                                                 id="dash.register.confirm"
-                                            />
+                                            /> */
                                         ) : (
                                             <FormattedMessage
                                                 defaultMessage="Submit"
@@ -265,7 +265,7 @@ class Register extends React.Component {
                                     </Button>
                                 </div>
 
-                                {this.state.verifying && <div className={styles.authCodeWrapper}>
+                                {/* this.state.verifying && <div className={styles.authCodeWrapper}>
                                     <p>
                                         <FormattedMessage
                                             defaultMessage="Verification window should be opened, if not, click {here}"
@@ -302,7 +302,7 @@ class Register extends React.Component {
                                             id="dash.register.verification.after"
                                         />
                                     </p>
-                                </div>}
+                                </div> */}
                                 {this.state.error && (
                                     <div className={styles.error}>{this.state.error}</div>
                                 )}

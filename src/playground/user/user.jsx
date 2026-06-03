@@ -109,6 +109,7 @@ const User = (props) => {
                 const links = userData.user.profile.links;
                 setProjects(projects);
                 setAchievements(achievements);
+                setLinks(links);
             } catch (error) {
                 setError(error.message);
             } finally {

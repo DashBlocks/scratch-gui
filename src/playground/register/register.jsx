@@ -52,10 +52,10 @@ class Register extends React.Component {
     constructor (props) {
         super(props);
         bindAll(this, [
-            'handleSubmit',
+            // 'handleSubmit',
             'handleConfirm',
             'handleChange',
-            'handleVerificationMessage'
+            // 'handleVerificationMessage'
         ]);
         this.state = {
             username: '',

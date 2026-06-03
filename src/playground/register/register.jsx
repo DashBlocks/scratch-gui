@@ -249,13 +249,13 @@ class Register extends React.Component {
                                                 className={styles.spinner}
                                                 small
                                             />
-                                        /* ) : (this.state.verifying ? (
+                                        ) : /* (this.state.verifying ? (
                                             <FormattedMessage
                                                 defaultMessage="Done"
                                                 description="Button text to confirm if user sent auth code to the auth project"
                                                 id="dash.register.confirm"
-                                            /> */
-                                        ) : (
+                                            /> 
+                                        ) : */ (
                                             <FormattedMessage
                                                 defaultMessage="Submit"
                                                 description="Button text for account creation"

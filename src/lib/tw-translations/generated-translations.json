@@ -3635,7 +3635,7 @@
         "dash.user.myLinks.placeholder": "У пользователя нет ссылок",
         "dash.user.achievements": "Достижения",
         "dash.user.achevements.placeholder": "У пользователя нет достижений.",
-        "dash.user.achievements.firstProject.info": "Создал первый проект \"{firstProject}\" в Дэше",
+        "dash.user.achievements.firstProject.info": "Создал первый проект \"{firstProject}\" на Dash",
         "dash.user.achievements.firstProject.title": "Первый проект",
         "dash.user.achievements.unknown": "Неизвестное достижение",
         "tw.usernameModal.help": "Это значение будет сохранено в данных вашего браузера. Оно будет использоваться, когда вы используете проекты, в которых есть облачные переменные.",

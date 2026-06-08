@@ -86,6 +86,8 @@ body {
     gap: calc(2 * $space);
     background-size: cover;
     background-position: center;
+    position: relative;
+    width: 100%;
 }
 
 .user-about {
@@ -150,12 +152,16 @@ body {
     font-weight: 600;
     font-size: 0.85rem;
     width: fit-content;
+    position: absolute; 
+    top: $space;
+    right: $space;
+    margin: 0;
 }
 
 .unfollow-button {
     display: inline-block;
     background-color: $ui-secondary;
-    color: $ui-white;
+    color: $ui-transparent;
     margin-left: auto;
     margin-right: $space;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -164,6 +170,10 @@ body {
     font-weight: 600;
     font-size: 0.85rem;
     width: fit-content;
+    position: absolute; 
+    top: $space;
+    right: $space;
+    margin: 0;
 }
 
 .spinner {
@@ -294,8 +304,9 @@ body {
 
 .follow-list {
     display: flex;
-    flex-direction: column;
-    gap: $space;
+    flex-direction: row; /* Changed to horizontal */
+    flex-wrap: wrap;     /* Allows wrapping to the next line */
+    gap: calc(1.5 * $space);
     max-height: 15vh;
     overflow-y: auto;
     border: 0.0625rem solid $ui-black-transparent;
@@ -305,12 +316,15 @@ body {
 
 .follow-card {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: $space;
+    justify-content: flex-start;
+    gap: calc($space / 2);
+    width: 4rem;
 }
 
 .follow-avatar {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 5rem;
+    height: 5rem;
     border-radius: $space;
 }

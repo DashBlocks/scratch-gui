@@ -472,7 +472,7 @@ const User = (props) => {
                                     }}
                                 />
                                 {!isMyProfile && <Button
-                                    className={isFollowing ? styles.unfollowButton : styles.followButton}
+                                    className={styles.followButton}
                                     disabled={followButtonDisabled}
                                     onClick={handleClickFollowButton}
                                 >

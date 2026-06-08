@@ -290,7 +290,8 @@ body {
     flex-wrap: wrap;
     gap: calc(3 * $space);
     max-height: 15vh;
-    overflow-y: auto;
+    overflow-x: auto;
+    overflow-y: none;
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
     padding: $space;

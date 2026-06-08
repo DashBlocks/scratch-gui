@@ -713,7 +713,7 @@ const User = (props) => {
                                         alt={follower.username}
                                         className={styles.followAvatar}
                                     />
-                                    <span>{follower.username}</span>
+                                    <span className={styles.followUsername}>{follower.username}</span>
                                 </div>
                             )) : (
                                 <FormattedMessage

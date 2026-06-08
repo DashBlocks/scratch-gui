@@ -301,7 +301,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: calc($space / 2);
+    gap: $space;
     width: 4rem;
 }
 
@@ -309,4 +309,14 @@ body {
     width: 5rem;
     height: 5rem;
     border-radius: $space;
+}
+
+.follow-card > *:not(.follow-avatar) {
+    font-size: 0.8rem;
+    text-align: left;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
 }

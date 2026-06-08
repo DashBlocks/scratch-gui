@@ -311,7 +311,7 @@ body {
     border-radius: $space;
 }
 
-.follow-card > *:not(.follow-avatar) {
+.follow-username {
     font-size: 0.8rem;
     text-align: left;
     width: 100%;

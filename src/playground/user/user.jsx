@@ -71,13 +71,15 @@ const messages = defineMessages({
 const User = (props) => {
     const [id, setId] = useState(window.location.hash.replace('#', ''));
     const [userData, setUserData] = useState(null);
-    const [following, setFollowing] = useState(false);
+    const [isFollowing, setIsFollowing] = useState(false);
     const [followButtonDisabled, setFollowButtonDisabled] = useState(false);
     const [descriptionDisabled, setDescriptionDisabled] = useState(false);
     const [recommendProjectButtonDisabled, setRecommendProjectButtonDisabled] = useState(false);
     const [projects, setProjects] = useState([]);
     const [links, setLinks] = useState([]);
     const [achievements, setAchievements] = useState([]);
+    const [followers, setFollowers] = useState([]);
+    const [following, setFollowing] = useState([]);
     const [avgGradient, setAvgGradient] = useState([]);
     const [isMyProfile, setIsMyProfile] = useState(false);
 
@@ -109,11 +111,19 @@ const User = (props) => {
                 setAchievements(userData.user.profile.achievements);
                 setLinks(userData.user.profile.links);
 
-                const followingRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/is-following`, {
+                const isFollowingRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/is-following`, {
                     credentials: 'include'
                 });
+                const isFollowingData = await isFollowingRes.json();
+                setIsFollowing(isFollowingData.isFollowing);
+
+                const followersRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/followers?limit=20&offset=0`);
+                const followersData = await followersRes.json();
+                setFollowers(followersData.followers);
+
+                const followingRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/following?limit=20&offset=0`);
                 const followingData = await followingRes.json();
-                setFollowing(followingData.isFollowing);
+                setFollowing(followingData.following);
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -255,7 +265,7 @@ const User = (props) => {
             return;
         }
 
-        const endpoint = following ? 'unfollow' : 'follow';
+        const endpoint = isFollowing ? 'unfollow' : 'follow';
         try {
             const response = await fetch(`https://dashblocks-server.vercel.app/users/${id}/${endpoint}`, {
                 method: 'POST',
@@ -265,7 +275,7 @@ const User = (props) => {
             if (!data.ok) {
                 throw new Error(data.error);
             }
-            setFollowing(!following);
+            setIsFollowing(!isFollowing);
         } catch (error) {
             alert(error.message);
         } finally {
@@ -459,7 +469,7 @@ const User = (props) => {
                                     }}
                                 />
                                 {!isMyProfile && <Button
-                                    className={following ? styles.unfollowButton : styles.followButton}
+                                    className={isFollowing ? styles.unfollowButton : styles.followButton}
                                     disabled={followButtonDisabled}
                                     onClick={handleClickFollowButton}
                                 >
@@ -468,7 +478,7 @@ const User = (props) => {
                                             className={styles.spinner}
                                             small
                                         />
-                                    ) : (following ? (
+                                    ) : (isFollowing ? (
                                         <FormattedMessage
                                             defaultMessage="Unfollow"
                                             description="Unfollow button on user's profile"
@@ -639,7 +649,7 @@ const User = (props) => {
                             />
                         </h2>
                         <div className={styles.projectGrid}>
-                            {projects.map((project) => (
+                            {projects.length > 0 ? projects.map((project) => (
                                 <div
                                     key={project.id}
                                     className={styles.projectCard}
@@ -670,7 +680,77 @@ const User = (props) => {
                                         </p>
                                     </div>
                                 </div>
-                            ))}
+                            )) : (
+                                <FormattedMessage
+                                    defaultMessage="This user has no projects"
+                                    description="Placeholder text when the user has no projects"
+                                    id="dash.user.projects.placeholder"
+                                />
+                            )}
+                        </div>
+                    </div>
+                    <div className={styles.section}>
+                        <h2>
+                            <FormattedMessage
+                                defaultMessage="Followers"
+                                description="Followers section title on user's profile"
+                                id="dash.user.followers"
+                            />
+                        </h2>
+                        <div className={styles.followList}>
+                            {followers.length > 0 ? followers.map((follower) => (
+                                <div
+                                    key={follower.id}
+                                    className={styles.followCard}
+                                    onClick={() => window.open(`./#${follower.id}`, '_blank')}
+                                >
+                                    <img
+                                        draggable={false}
+                                        src={`https://dashblocks-server.vercel.app/users/avatars/${follower.profile.avatarId}`}
+                                        alt={follower.username}
+                                        className={styles.followAvatar}
+                                    />
+                                    <span>{follower.username}</span>
+                                </div>
+                            )) : (
+                                <FormattedMessage
+                                    defaultMessage="This user has no followers"
+                                    description="Placeholder text when the user has no followers"
+                                    id="dash.user.followers.placeholder"
+                                />
+                            )}
+                        </div>
+                    </div>
+                    <div className={styles.section}>
+                        <h2>
+                            <FormattedMessage
+                                defaultMessage="Following"
+                                description="Following section title on user's profile"
+                                id="dash.user.following"
+                            />
+                        </h2>
+                        <div className={styles.followList}>
+                            {following.length > 0 ? following.map((followed) => (
+                                <div
+                                    key={followed.id}
+                                    className={styles.followCard}
+                                    onClick={() => window.open(`./#${followed.id}`, '_blank')}
+                                >
+                                    <img
+                                        draggable={false}
+                                        src={`https://dashblocks-server.vercel.app/users/avatars/${followed.profile.avatarId}`}
+                                        alt={followed.username}
+                                        className={styles.followAvatar}
+                                    />
+                                    <span>{followed.username}</span>
+                                </div>
+                            )) : (
+                                <FormattedMessage
+                                    defaultMessage="This user is not following anyone"
+                                    description="Placeholder text when the user is not following anyone"
+                                    id="dash.user.following.placeholder"
+                                />
+                            )}
                         </div>
                     </div>
                 </div>

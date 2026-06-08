@@ -286,9 +286,9 @@ body {
 
 .follow-list {
     display: flex;
-    flex-direction: row; /* Changed to horizontal */
-    flex-wrap: wrap;     /* Allows wrapping to the next line */
-    gap: calc(1.5 * $space);
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: calc(3 * $space);
     max-height: 15vh;
     overflow-y: auto;
     border: 0.0625rem solid $ui-black-transparent;

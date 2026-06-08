@@ -36,6 +36,7 @@ import FeaturedProjects from '../components/tw-featured-projects/featured-projec
 import Description from '../components/tw-description/description.jsx';
 import BrowserModal from '../components/browser-modal/browser-modal.jsx';
 import DashWelcomeModal from '../containers/dash-welcome-modal.jsx';
+import StageFooter from '../components/dash-stage-footer/stage-footer.jsx';
 import CloudVariableBadge from '../containers/tw-cloud-variable-badge.jsx';
 import {isBrowserSupported} from '../lib/tw-environment-support-prober';
 import AddonChannels from '../addons/channels';
@@ -67,7 +68,7 @@ const relativeTimeSupported = () => typeof Intl !== 'undefined' && typeof Intl.R
 
 const handleClickAddonSettings = addonId => {
     // addonId might be a string of the addon to focus on, undefined, or an event (treat like undefined)
-    const path = process.env.ROUTING_STYLE === 'wildcard' ? 'addons' : 'addons.html';
+    const path = /*process.env.ROUTING_STYLE === 'wildcard' ?*/ 'addons' /*: 'addons.html'*/;
     const url = `${process.env.ROOT}${path}${typeof addonId === 'string' ? `#${addonId}` : ''}`;
     window.open(url);
 };
@@ -249,7 +250,7 @@ const Footer = () => (
             <div className={styles.footerColumns}>
                 <div className={styles.footerSection}>
                     <RenderWelcomeModal />
-                    <a href="credits.html">
+                    <a href="credits">
                         <FormattedMessage
                             defaultMessage="Credits"
                             description="Credits link in footer"
@@ -265,7 +266,7 @@ const Footer = () => (
                     </a>*/}
                 </div>
                 <div className={styles.footerSection}>
-                    <a href="https://dashblocks.github.io/desktop.html">
+                    <a href="https://dashblocks.github.io/desktop">
                         {/* Do not translate */}
                         {'Dash Desktop'}
                     </a>
@@ -273,21 +274,21 @@ const Footer = () => (
                         {/* Do not translate */}
                         {'Dash Packager'}
                     </a>
-                    <a href="https://docs.turbowarp.org/embedding">
+                    <a href="https://dashblocks.github.io/docs/embedding">
                         <FormattedMessage
                             defaultMessage="Embedding"
                             description="Link in footer to embedding documentation for embedding link"
                             id="tw.footer.embed"
                         />
                     </a>
-                    <a href="https://docs.turbowarp.org/url-parameters">
+                    <a href="https://dashblocks.github.io/docs/url-parameters">
                         <FormattedMessage
                             defaultMessage="URL Parameters"
                             description="Link in footer to URL parameters documentation"
                             id="tw.footer.parameters"
                         />
                     </a>
-                    <a href="https://docs.turbowarp.org/">
+                    <a href="https://dashblocks.github.io/docs/">
                         <FormattedMessage
                             defaultMessage="Documentation"
                             description="Link in footer to additional documentation"
@@ -296,7 +297,7 @@ const Footer = () => (
                     </a>
                 </div>
                 <div className={styles.footerSection}>
-                    <a href="https://scratch.mit.edu/discuss/topic/828107/#post-8609237">
+                    <a href="https://scratch.mit.edu/discuss/topic/879252/">
                         <FormattedMessage
                             defaultMessage="Our Forum"
                             description="Link to Dash's forum in Scratch"
@@ -317,11 +318,18 @@ const Footer = () => (
                             id="tw.code"
                         />
                     </a>
-                    <a href="privacy.html">
+                    <a href="privacy">
                         <FormattedMessage
                             defaultMessage="Privacy Policy"
                             description="Link to privacy policy"
                             id="tw.privacy"
+                        />
+                    </a>
+                    <a href="tos">
+                        <FormattedMessage
+                            defaultMessage="Terms of Service"
+                            description="Link to terms of service"
+                            id="dash.tos"
                         />
                     </a>
                 </div>
@@ -485,6 +493,9 @@ class Interface extends React.PureComponent {
                             backpackHost="_local_"
                             {...props}
                         />
+                        {isHomepage && (
+                            <StageFooter projectId={projectId} />
+                        )}
                     </div>
                     {isHomepage ? (
                         <React.Fragment>
@@ -598,7 +609,7 @@ class Interface extends React.PureComponent {
                                                     }}
                                                 />
                                             </p>
-                                            <FeaturedProjects studio="37103090" />
+                                            <FeaturedProjects />
                                             {/*<p>
                                                 {lazyMessages[this.chooseRandomMessage()]}
                                             </p>*/}
@@ -642,11 +653,11 @@ class Interface extends React.PureComponent {
                                                             values={{
                                                                 link: (
                                                                     <a
-                                                                        href="https://docs.turbowarp.org/unshared-projects"
+                                                                        href="https://dashblocks.github.io/docs/unshared-projects"
                                                                         target="_blank"
                                                                         rel="noopener noreferrer"
                                                                     >
-                                                                        {'https://docs.turbowarp.org/unshared-projects'}
+                                                                        {'https://dashblocks.github.io/docs/unshared-projects'}
                                                                     </a>
                                                                 )
                                                             }}
@@ -697,6 +708,7 @@ class Interface extends React.PureComponent {
                                                 <Description
                                                     instructions={description.instructions}
                                                     credits={description.credits}
+                                                    isDashProject={description.isDashProject}
                                                     projectId={projectId}
                                                 />
                                             </div>
@@ -722,7 +734,8 @@ Interface.propTypes = {
     }),
     description: PropTypes.shape({
         credits: PropTypes.string,
-        instructions: PropTypes.string
+        instructions: PropTypes.string,
+        isDashProject: PropTypes.bool
     }),
     isFullScreen: PropTypes.bool,
     isLoading: PropTypes.bool,
@@ -758,3 +771,4 @@ const WrappedInterface = compose(
 )(ConnectedInterface);
 
 export default WrappedInterface;
+export {Footer};

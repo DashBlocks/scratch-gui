@@ -19,18 +19,16 @@ import styles from './account-nav.css';
 
 const AccountNavComponent = ({
     className,
-    classroomId,
-    isEducator,
     isOpen,
     isRtl,
-    isStudent,
     menuBarMenuClassName,
     onClick,
     onClose,
     onLogOut,
     profileUrl,
     thumbnailUrl,
-    username
+    username,
+    role
 }) => (
     <React.Fragment>
         <div
@@ -38,7 +36,7 @@ const AccountNavComponent = ({
                 styles.userInfo,
                 className
             )}
-            onMouseUp={onClick}
+            onMouseUp={isOpen ? onClose : onClick}
         >
             {thumbnailUrl ? (
                 <UserAvatar
@@ -72,34 +70,32 @@ const AccountNavComponent = ({
                     id="gui.accountMenu.profile"
                 />
             </MenuItemContainer>
-            <MenuItemContainer href="/mystuff/">
+            <MenuItemContainer href="messages">
+                <FormattedMessage
+                    defaultMessage="Messages"
+                    description="Text to link to list of messages, in the account navigation menu"
+                    id="gui.accountMenu.messages"
+                />
+            </MenuItemContainer>
+            <MenuItemContainer href="mystuff">
                 <FormattedMessage
                     defaultMessage="My Stuff"
                     description="Text to link to list of my projects, in the account navigation menu"
                     id="gui.accountMenu.myStuff"
                 />
             </MenuItemContainer>
-            {isEducator ? (
-                <MenuItemContainer href="/educators/classes/">
+            {role === "dashteam" && (
+                <MenuItemContainer href="admin">
                     <FormattedMessage
-                        defaultMessage="My Classes"
-                        description="Text to link to my classes (if I am a teacher), in the account navigation menu"
-                        id="gui.accountMenu.myClasses"
+                        defaultMessage="Admin Panel"
+                        description="Text to link to admin panel for Dash Team, in the account navigation menu"
+                        id="gui.accountMenu.adminPanel"
                     />
                 </MenuItemContainer>
-            ) : null}
-            {isStudent ? (
-                <MenuItemContainer href={`/classes/${classroomId}/`}>
-                    <FormattedMessage
-                        defaultMessage="My Class"
-                        description="Text to link to my class (if I am a student), in the account navigation menu"
-                        id="gui.accountMenu.myClass"
-                    />
-                </MenuItemContainer>
-            ) : null}
-            <MenuItemContainer href="/accounts/settings/">
+            )}
+            <MenuItemContainer href="account-settings">
                 <FormattedMessage
-                    defaultMessage="Account settings"
+                    defaultMessage="Account Settings"
                     description="Text to link to my account settings, in the account navigation menu"
                     id="gui.accountMenu.accountSettings"
                 />
@@ -107,7 +103,7 @@ const AccountNavComponent = ({
             <MenuSection>
                 <MenuItemContainer onClick={onLogOut}>
                     <FormattedMessage
-                        defaultMessage="Sign out"
+                        defaultMessage="Sign Out"
                         description="Text to link to sign out, in the account navigation menu"
                         id="gui.accountMenu.signOut"
                     />
@@ -119,18 +115,16 @@ const AccountNavComponent = ({
 
 AccountNavComponent.propTypes = {
     className: PropTypes.string,
-    classroomId: PropTypes.string,
-    isEducator: PropTypes.bool,
     isOpen: PropTypes.bool,
     isRtl: PropTypes.bool,
-    isStudent: PropTypes.bool,
     menuBarMenuClassName: PropTypes.string,
     onClick: PropTypes.func,
     onClose: PropTypes.func,
     onLogOut: PropTypes.func,
     profileUrl: PropTypes.string,
     thumbnailUrl: PropTypes.string,
-    username: PropTypes.string
+    username: PropTypes.string,
+    role: PropTypes.string
 };
 
 export default AccountNavComponent;

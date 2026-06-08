@@ -1,12 +1,18 @@
 import messages from './tag-messages.js';
+import tagGroupMessages from './dash-tag-group-messages.js';
 export default [
+    {tag: 'dash', intlLabel: messages.dash},
+    '---',
+    {isGroup: true, intlLabel: tagGroupMessages.category},
     {tag: 'animals', intlLabel: messages.animals},
     {tag: 'effects', intlLabel: messages.effects},
-    {tag: 'loops', intlLabel: messages.loops},
     {tag: 'notes', intlLabel: messages.notes},
     {tag: 'percussion', intlLabel: messages.percussion},
     {tag: 'space', intlLabel: messages.space},
     {tag: 'sports', intlLabel: messages.sports},
     {tag: 'voice', intlLabel: messages.voice},
-    {tag: 'wacky', intlLabel: messages.wacky}
+    {tag: 'wacky', intlLabel: messages.wacky},
+    '---',
+    {isGroup: true, intlLabel: tagGroupMessages.soundType},
+    {tag: 'loops', intlLabel: messages.loops}
 ];

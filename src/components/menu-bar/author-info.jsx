@@ -10,9 +10,10 @@ const ActualAuthorInfo = ({
     className,
     imageUrl,
     projectTitle,
-    // TODO: use userId to link to user's profile
-    userId, // eslint-disable-line no-unused-vars
-    username
+    userId,
+    projectId,
+    username,
+    isDashProject
 }) => (
     <div
         className={classNames(
@@ -25,17 +26,34 @@ const ActualAuthorInfo = ({
             imageUrl={imageUrl}
         />
         <div className={styles.titleAuthor}>
-            <h1 className={styles.projectTitle}>
+            {!isDashProject ? <a
+                className={styles.link}
+                href={`https://scratch.mit.edu/projects/${projectId.replace('s', '')}`}
+                target="_blank"
+                rel="noreferrer"
+            >
+                <h1 className={styles.projectTitle}>
+                    {projectTitle}
+                </h1>
+            </a> : <h1 className={styles.projectTitle}>
                 {projectTitle}
-            </h1>
+            </h1>}
             <div>
                 <span className={styles.usernameLine}>
                     <FormattedMessage
-                        defaultMessage="by {username}"
+                        defaultMessage="by {author}"
                         description="Shows that a project was created by this user"
-                        id="gui.authorInfo.byUser"
+                        id="tw.studioview.authorAttribution"
                         values={{
-                            username: <span className={styles.username}>{username}</span>
+                            author: (
+                                <a
+                                    className={styles.link}
+                                    href={isDashProject ? `${process.env.ROOT}user#${userId}` : `https://scratch.mit.edu/users/${username}`}
+                                    target="_blank"
+                                >
+                                    <span className={styles.username}>{username}</span>
+                                </a>
+                            )
                         }}
                     />
                 </span>
@@ -49,20 +67,15 @@ ActualAuthorInfo.propTypes = {
     imageUrl: PropTypes.string,
     projectTitle: PropTypes.string,
     userId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    username: PropTypes.oneOfType([PropTypes.string, PropTypes.bool])
+    projectId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    username: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    isDashProject: PropTypes.bool
 };
 
-const AuthorInfo = ({projectId, ...props}) => (
-    projectId ? (
-        <a
-            className={styles.link}
-            href={`https://scratch.mit.edu/projects/${projectId}`}
-            target="_blank"
-            rel="noreferrer"
-        >
-            <ActualAuthorInfo {...props} />
-        </a>
-    ) : <ActualAuthorInfo {...props} />
+const AuthorInfo = props => (
+    props.projectId?.startsWith('s') ?
+        <ActualAuthorInfo {...props} /> :
+        <ActualAuthorInfo {...props} isDashProject={true} />
 );
 AuthorInfo.propTypes = {
     projectId: PropTypes.string

@@ -21,7 +21,7 @@ export default function (Input) {
             };
         }
         handleKeyPress (e) {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && !this.props.multiline) {
                 this.handleFlush();
                 e.target.blur();
             }

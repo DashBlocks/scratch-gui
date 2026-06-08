@@ -1,64 +1,69 @@
 @import "../../css/units.css";
 @import "../../css/colors.css";
 
+.library-wrapper {
+    display: flex;
+    height: calc(100% - $library-header-height);
+}
+
 .library-scroll-grid {
+    width: 100%;
     display: flex;
     justify-content: flex-start;
     align-content: flex-start;
     align-items: flex-start;
     background: $ui-secondary;
-    flex-grow: 1;
     flex-wrap: wrap;
     overflow-y: auto;
-    height: auto;
     padding: 0.5rem;
-    height: calc(100% - $library-header-height);
-}
-
-.library-scroll-grid.withFilterBar {
-    height: calc(100% - $library-header-height - $library-filter-bar-height - 2rem);
 }
 
 .filter-bar {
     display: flex;
-    flex-direction: row;
     justify-content: flex-start;
-    align-items: center;
-    height: calc($library-filter-bar-height + 2rem); /* padding */
     background-color: $looks-transparent;
-    padding: 0 1rem;
     font-size: .875rem;
 }
 
-.filter-bar-item {
-    margin-right: .75rem;
+.filter-bar-content {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+    width: 20rem;
+    padding: 1rem;
+}
+
+.arrow-icon-wrapper {
+    align-self: center;
+    padding: $space;
+    cursor: pointer;
+}
+
+.arrow-icon {
+    width: 1rem;
+    height: 1.6rem;
+    user-select: none;
+}
+
+[dir="rtl"] .arrow-icon:not(.is-opened),
+[dir="ltr"] .arrow-icon.is-opened {
+    transform: scaleX(-1);
 }
 
 .filter {
     flex-grow: 0;
 }
 
-.filter-input {
-    width: 11.5rem;
-    transition: .2s;
-}
-
-.filter-input:focus,
-.filter-input:not([value=""]) {
-    width: 18.75rem;
-}
-
 .divider {
-    transform: scaleY(1.39);
-    height: $library-filter-bar-height;
+    border-bottom: 1px dashed $ui-black-transparent;
+    transform: scaleX(1.05);
 }
 
 .tag-wrapper {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
-    height: $library-filter-bar-height;
-    overflow: hidden;
+    gap: .75rem;
 }
 
 .spinner-wrapper {

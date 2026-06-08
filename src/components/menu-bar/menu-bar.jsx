@@ -27,6 +27,7 @@ import DeletionRestorer from '../../containers/deletion-restorer.jsx';
 import TurboMode from '../../containers/turbo-mode.jsx';
 import MenuBarHOC from '../../containers/menu-bar-hoc.jsx';
 import SettingsMenu from './settings-menu.jsx';
+import AccountNav from '../../containers/account-nav.jsx';
 
 import FramerateChanger from '../../containers/tw-framerate-changer.jsx';
 import ChangeUsername from '../../containers/tw-change-username.jsx';
@@ -34,9 +35,11 @@ import CloudVariablesToggler from '../../containers/tw-cloud-toggler.jsx';
 import TWSaveStatus from './tw-save-status.jsx';
 import TWNews from './tw-news.jsx';
 import {isNewYearMode} from '../../components/dash-new-year-mode/new-year-mode.jsx';
+import getSession from '../../lib/session';
 
 import {openTipsLibrary, openSettingsModal, openRestorePointModal} from '../../reducers/modals';
 import {setPlayer} from '../../reducers/mode';
+import {setSession} from '../../reducers/dash';
 import {
     isTimeTravel220022BC,
     isTimeTravel1920,
@@ -87,6 +90,7 @@ import collectMetadata from '../../lib/collect-metadata';
 import styles from './menu-bar.css';
 
 import helpIcon from '../../lib/assets/icon--tutorials.svg';
+import messagesIcon from './icon--messages.png';
 import mystuffIcon from './icon--mystuff.png';
 import profileIcon from './icon--profile.png';
 import remixIcon from './icon--remix.svg';
@@ -226,12 +230,16 @@ class MenuBar extends React.Component {
             'handleClickRestorePoints',
             'handleClickSeeCommunity',
             'handleClickShare',
+            'handleClickLogOut',
             'handleSetMode',
             'handleKeyPress',
             'handleRestoreOption',
             'getSaveToComputerHandler',
             'restoreOptionMessage'
         ]);
+        this.state = {
+            isSharing: false
+        }
     }
     componentDidMount () {
         document.addEventListener('keydown', this.handleKeyPress);
@@ -290,17 +298,80 @@ class MenuBar extends React.Component {
             waitForUpdate(false); // immediately transition to project page
         }
     }
-    handleClickShare (waitForUpdate) {
-        if (!this.props.isShared) {
+    async handleClickShare (waitForUpdate) {
+        if (!this.props.isShared && !this.state.isSharing) {
             if (this.props.canShare) { // save before transitioning to project page
-                this.props.onShare();
+                const session = await getSession();
+                if (session) {
+                    this.setState({
+                        isSharing: true
+                    });
+                    try {
+                        let formData = new FormData();
+                        const content = await this.props.vm.saveProjectSb3();
+                        const fileBlob = new Blob([content], { type: 'application/x.dash.dbp' });
+                        formData.append('file', fileBlob, `${this.props.projectTitle}.dbp`);
+                        formData.append('name', this.props.projectTitle);
+                        // TODO: Description input instead of prompt
+                        const description = prompt('Enter a description for your project:') || '';
+                        formData.append('description', description);
+
+                        const response = await fetch('https://dashblocks-server.vercel.app/save-project', {
+                            method: 'POST',
+                            body: formData,
+                            credentials: 'include'
+                        });
+                        const result = await response.json();
+                        if (response.ok) {
+                            formData = new FormData();
+                            this.props.vm.postIOData('video', {forceTransparentPreview: true});
+                            const thumbnailBlob = await new Promise(resolve => {
+                                this.props.vm.renderer.requestSnapshot(async dataURI => {
+                                    this.props.vm.postIOData('video', {forceTransparentPreview: false});
+                                    const res = await fetch(dataURI);
+                                    const blob = await res.blob();
+                                    resolve(blob);
+                                });
+                            });
+                            formData.append('thumbnail', thumbnailBlob, 'thumbnail.png');
+                            const thumbnailResponse = await fetch(`https://dashblocks-server.vercel.app/projects/${result.projectId}/upload-thumbnail`, {
+                                method: 'POST',
+                                body: formData,
+                                credentials: 'include'
+                            });
+                            if (thumbnailResponse.ok) {
+                                alert('Project shared successfully!');
+                            } else {
+                                alert('Project was shared but thumbnail upload failed');
+                            }
+                            window.open(`./#${result.projectId}`, '_self');
+                        } else {
+                            alert(result.error);
+                        }
+                    } catch (error) {
+                        alert(error?.message || error);
+                    } finally {
+                        this.setState({
+                            isSharing: false
+                        });
+                    }
+                    return;
+                }
+                window.open('./login', '_blank');
+                return;
             }
-            if (this.props.canSave) { // save before transitioning to project page
-                this.props.autoUpdateProject();
-                waitForUpdate(true); // queue the transition to project page
-            } else {
-                waitForUpdate(false); // immediately transition to project page
-            }
+        }
+    }
+    async handleClickLogOut () {
+        try {
+            const response = await fetch('https://dashblocks-server.vercel.app/auth/logout', {credentials: 'include'});
+            const data = await response.json();
+            if (!data.ok) return alert('Sign out failed');
+            this.props.setSession(null);
+            window.location.reload();
+        } catch (error) {
+            console.warn(error?.message || error);
+            alert('Sign out failed');
         }
     }
     handleSetMode (mode) {
@@ -532,6 +603,7 @@ class MenuBar extends React.Component {
                             />
                         </a>
                     )}
+                    {this.props.isPlayerOnly && <Divider className={styles.divider} />}
                     <div className={styles.fileGroup}>
                         {!this.props.isPlayerOnly && (this.props.canChangeTheme || this.props.canChangeLanguage) && (<SettingsMenu
                             className={styles.fileGroup}
@@ -606,7 +678,7 @@ class MenuBar extends React.Component {
                         {this.props.isPlayerOnly && <div className={styles.menuBarItem}>
                             <a
                                 className={styles.feedbackLink}
-                                href="https://scratch.mit.edu/discuss/topic/828107/#post-8609237"
+                                href="https://scratch.mit.edu/discuss/topic/879252/"
                                 rel="noopener noreferrer"
                                 target="_blank"
                             >
@@ -864,7 +936,10 @@ class MenuBar extends React.Component {
                                         </MenuItem>
                                     )}</FramerateChanger>
                                     <ChangeUsername>{changeUsername => (
-                                        <MenuItem onClick={changeUsername}>
+                                        <MenuItem
+                                            className={classNames({[styles.disabled]: !!this.props.session?.username})}
+                                            onClick={changeUsername}
+                                        >
                                             <FormattedMessage
                                                 defaultMessage="Change Username"
                                                 description="Menu bar item for changing the username"
@@ -1012,7 +1087,7 @@ class MenuBar extends React.Component {
                                 />
                             </MenuBarItemTooltip>
                         </div>
-                    ) : ((this.props.authorUsername && this.props.authorUsername !== this.props.username) ? (
+                    ) : ((this.props.authorUsername && this.props.authorUsername !== this.props.session?.username) ? (
                         <AuthorInfo
                             className={styles.authorInfo}
                             imageUrl={this.props.authorThumbnailUrl}
@@ -1031,6 +1106,7 @@ class MenuBar extends React.Component {
                                             <ShareButton
                                                 className={styles.menuBarButton}
                                                 isShared={this.props.isShared}
+                                                isSharing={this.state.isSharing}
                                                 /* eslint-disable react/jsx-no-bind */
                                                 onClick={() => {
                                                     this.handleClickShare(waitForUpdate);
@@ -1086,7 +1162,7 @@ class MenuBar extends React.Component {
                     {!this.props.isPlayerOnly && !isScratchDesktop() && <div className={styles.menuBarItem}>
                         <a
                             className={styles.feedbackLink}
-                            href="https://scratch.mit.edu/discuss/topic/828107/#post-8609237"
+                            href="https://scratch.mit.edu/discuss/topic/879252/"
                             rel="noopener noreferrer"
                             target="_blank"
                         >
@@ -1104,12 +1180,91 @@ class MenuBar extends React.Component {
                         </a>
                     </div>}
                 </div>
-
-                {!this.props.isPlayerOnly && <div className={styles.accountInfoGroup}>
-                    <TWSaveStatus
-                        showSaveFilePicker={this.props.showSaveFilePicker}
-                    />
-                </div>}
+                <div className={styles.accountInfoGroup}>
+                    {!this.props.isPlayerOnly && <div className={styles.menuBarItem}>
+                        <TWSaveStatus
+                            showSaveFilePicker={this.props.showSaveFilePicker}
+                        />
+                    </div>}
+                    {this.props.sessionExists && this.props.session?.username ? (
+                        // User is logged in
+                        <React.Fragment>
+                            <a href="messages">
+                                <div
+                                    className={classNames(
+                                        styles.menuBarItem,
+                                        styles.hoverable,
+                                        styles.messagesButton
+                                    )}
+                                >
+                                    <img
+                                        className={styles.messagesIcon}
+                                        src={messagesIcon}
+                                    />
+                                </div>
+                            </a>
+                            <a href="mystuff">
+                                <div
+                                    className={classNames(
+                                        styles.menuBarItem,
+                                        styles.hoverable,
+                                        styles.mystuffButton
+                                    )}
+                                >
+                                    <img
+                                        className={styles.mystuffIcon}
+                                        src={mystuffIcon}
+                                    />
+                                </div>
+                            </a>
+                            <AccountNav
+                                className={classNames(
+                                    styles.menuBarItem,
+                                    styles.hoverable,
+                                    {[styles.active]: this.props.accountMenuOpen}
+                                )}
+                                isOpen={this.props.accountMenuOpen}
+                                isRtl={this.props.isRtl}
+                                menuBarMenuClassName={classNames(styles.menuBarMenu)}
+                                onClick={this.props.onClickAccount}
+                                onClose={this.props.onRequestCloseAccount}
+                                onLogOut={this.handleClickLogOut}
+                            />
+                        </React.Fragment>
+                    ) : (
+                        // User not logged in
+                        <React.Fragment>
+                            <div
+                                className={classNames(
+                                    styles.menuBarItem,
+                                    styles.hoverable
+                                )}
+                                key="join"
+                                onMouseUp={() => window.open("./register", '_blank')}
+                            >
+                                <FormattedMessage
+                                    defaultMessage="Join Dash"
+                                    description="Link for creating a Dash account"
+                                    id="dash.menuBar.joinDash"
+                                />
+                            </div>
+                            <div
+                                className={classNames(
+                                    styles.menuBarItem,
+                                    styles.hoverable
+                                )}
+                                key="login"
+                                onMouseUp={() => window.open("./login", '_blank')}
+                            >
+                                <FormattedMessage
+                                    defaultMessage="Sign in"
+                                    description="Link for signing in to your Dash account"
+                                    id="dash.menuBar.signIn"
+                                />
+                            </div>
+                        </React.Fragment>
+                    )}
+                </div>
 
                 {aboutButton}
             </Box>
@@ -1224,6 +1379,7 @@ MenuBar.propTypes = {
     shouldSaveBeforeTransition: PropTypes.func,
     showSaveFilePicker: PropTypes.func,
     showComingSoon: PropTypes.bool,
+    setSession: PropTypes.func,
     username: PropTypes.string,
     userOwnsProject: PropTypes.bool,
     vm: PropTypes.instanceOf(VM).isRequired
@@ -1235,9 +1391,10 @@ MenuBar.defaultProps = {
 
 const mapStateToProps = (state, ownProps) => {
     const loadingState = state.scratchGui.projectState.loadingState;
-    const user = state.session && state.session.session && state.session.session.user;
+    const session = state.scratchGui.dash.session;
     return {
         authorUsername: state.scratchGui.tw.author.username,
+        authorId: state.scratchGui.tw.author.userId,
         authorThumbnailUrl: state.scratchGui.tw.author.thumbnail,
         projectId: state.scratchGui.projectState.projectId,
         aboutMenuOpen: aboutMenuOpen(state),
@@ -1255,11 +1412,11 @@ const mapStateToProps = (state, ownProps) => {
         loginMenuOpen: loginMenuOpen(state),
         modeMenuOpen: modeMenuOpen(state),
         projectTitle: state.scratchGui.projectTitle,
-        sessionExists: state.session && typeof state.session.session !== 'undefined',
+        sessionExists: state.scratchGui.dash.session !== null,
         settingsMenuOpen: settingsMenuOpen(state),
-        username: user ? user.username : null,
-        userOwnsProject: ownProps.authorUsername && user &&
-            (ownProps.authorUsername === user.username),
+        session: session || null,
+        userOwnsProject: ownProps.authorUsername && session &&
+            (ownProps.authorUsername === session.username),
         vm: state.scratchGui.vm,
         mode220022BC: isTimeTravel220022BC(state),
         mode1920: isTimeTravel1920(state),
@@ -1302,7 +1459,8 @@ const mapDispatchToProps = dispatch => ({
     onClickSave: () => dispatch(manualUpdateProject()),
     onClickSaveAsCopy: () => dispatch(saveProjectAsCopy()),
     onSeeCommunity: () => dispatch(setPlayer(true)),
-    onSetTimeTravelMode: mode => dispatch(setTimeTravel(mode))
+    onSetTimeTravelMode: mode => dispatch(setTimeTravel(mode)),
+    setSession: session => dispatch(setSession(session))
 });
 
 export default compose(

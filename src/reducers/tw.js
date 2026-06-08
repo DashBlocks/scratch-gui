@@ -37,11 +37,13 @@ export const initialState = {
     dimensions: [0, 0],
     author: {
         username: '',
+        userId: '',
         thumbnail: ''
     },
     description: {
         instructions: '',
-        credits: ''
+        credits: '',
+        isDashProject: false
     },
     compileErrors: [],
     fileHandle: null,

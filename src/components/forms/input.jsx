@@ -5,7 +5,21 @@ import classNames from 'classnames';
 import styles from './input.css';
 
 const Input = props => {
-    const {small, ...componentProps} = props;
+    const {small, multiline, ...componentProps} = props;
+    if (multiline) {
+        return (
+            <textarea
+                {...componentProps}
+                className={classNames(
+                    styles.inputForm,
+                    props.className,
+                    {
+                        [styles.inputSmall]: small
+                    }
+                )}
+            />
+        );
+    }
     return (
         <input
             {...componentProps}
@@ -22,11 +36,13 @@ const Input = props => {
 
 Input.propTypes = {
     className: PropTypes.string,
-    small: PropTypes.bool
+    small: PropTypes.bool,
+    multiline: PropTypes.bool
 };
 
 Input.defaultProps = {
-    small: false
+    small: false,
+    multiline: false
 };
 
 export default Input;

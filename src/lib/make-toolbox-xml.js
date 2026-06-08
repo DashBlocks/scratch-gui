@@ -433,13 +433,6 @@ const events = function (isInitialSetup, isStage, targetId, colors) {
         </block>
         ${blockSeparator}
         <block type="event_whenbroadcastreceived"/>
-        <block type="event_open">
-            <value name="OPEN_LINK">
-                <shadow type="text">
-                    <field name="TEXT">https://dashblocks.github.io</field>
-                </shadow>
-            </value>
-        </block>
         <block type="event_broadcast">
             <value name="BROADCAST_INPUT">
                 <shadow type="event_broadcast_menu"></shadow>
@@ -448,6 +441,14 @@ const events = function (isInitialSetup, isStage, targetId, colors) {
         <block type="event_broadcastandwait">
             <value name="BROADCAST_INPUT">
               <shadow type="event_broadcast_menu"></shadow>
+            </value>
+        </block>
+        ${blockSeparator}
+        <block type="event_open">
+            <value name="OPEN_LINK">
+                <shadow type="text">
+                    <field name="TEXT">https://dashblocks.github.io</field>
+                </shadow>
             </value>
         </block>
         ${categorySeparator}
@@ -504,6 +505,13 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
         <block id="repeat_until" type="control_repeat_until"/>
         <block id="while" type="control_while"/>
         ${blockSeparator}
+        <block type="control_all_at_once"/>
+        <block type="control_run_as">
+            <value name="OBJECT">
+                <shadow type="control_run_as_menu"/>
+            </value>
+        </block>
+        ${blockSeparator}
         <block type="control_resume"/>
         <block type="control_pause"/>
         <block type="control_is_paused"/>
@@ -523,6 +531,7 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
                 </value>
             </block>
             <block type="control_delete_this_clone"/>
+            <block type="control_is_clone"/>
         `}
         ${categorySeparator}
     </category>
@@ -643,6 +652,7 @@ const sensing = function (isInitialSetup, isStage, targetId, colors) {
         <block id="current" type="sensing_current"/>
         <block type="sensing_dayssince2000"/>
         ${blockSeparator}
+        <block id="online" type="sensing_online"/>
         <block type="sensing_username"/>
         ${categorySeparator}
     </category>
@@ -1169,6 +1179,13 @@ const console = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         <block type="console_addlineandmove">
+            <value name="LINE">
+                <shadow type="text">
+                    <field name="TEXT">${hello}</field>
+                </shadow>
+            </value>
+        </block>
+        <block type="console_print">
             <value name="LINE">
                 <shadow type="text">
                     <field name="TEXT">${hello}</field>

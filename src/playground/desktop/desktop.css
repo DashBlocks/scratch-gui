@@ -46,13 +46,12 @@ a {
     width: 100%;
 }
 
-button {
+.download-button {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     padding: 0.75rem 1rem;
-    border-radius: 0.25rem;
     background: $looks-secondary;
     color: white;
     border: 1px solid $looks-secondary;
     font-weight: 600;
     font-size: 0.85rem;
-    cursor: pointer;
 }

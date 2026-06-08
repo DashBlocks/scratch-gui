@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import render from '../app-target';
+import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import styles from './credits.css';
+
+import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
+import {Footer} from '../render-interface.jsx';
 
 import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
@@ -54,6 +58,7 @@ UserList.propTypes = {
 
 const Credits = () => (
     <main className={styles.main}>
+        <LazyMenuBar />
         <header className={styles.headerContainer}>
             <h1 className={styles.headerText}>
                 {APP_NAME} Credits
@@ -74,10 +79,11 @@ const Credits = () => (
             </section>
         )}
         {APP_NAME !== 'TurboWarp' && (
+            // Be kind and considerate. Don't remove this :)
             <section>
                 <h2>TurboWarp</h2>
                 <p>
-                    {APP_NAME} is based on <a href="https://turbowarp.org/">TurboWarp</a>.
+                    <a href="https://turbowarp.org/">TurboWarp</a> is the parent project. {APP_NAME} is based on the work of the <a href="https://turbowarp.org/credits">TurboWarp contributors</a> but is not endorsed by TurboWarp in any way.
                 </p>
             </section>
         )}
@@ -93,7 +99,27 @@ const Credits = () => (
             </p>
         </section>
         <section>
+            <h2>Other modifications</h2>
+            <p>
+                {APP_NAME} uses code from other free and open-source TurboWarp modifications/visual programming languages:
+            </p>
+            <ul>
+                <li>
+                    <a href="https://penguinmod.com">PenguinMod</a>. {APP_NAME} uses an implementation of extensible blocks, Custom Block Shapes API and has a fork of the PenguinMod's paint editor.
+                </li>
+                <li>
+                    <a href="https://ampmod.codeberg.page">AmpMod</a>. {APP_NAME} uses an implementation of array monitors (only 1D) and has some blocks clearly inspired to AmpMod's blocks from Arrays category.
+                </li>
+            </ul>
+            <p>
+                Also try them out!
+            </p>
+        </section>
+        <section>
             <h2>Contributors</h2>
+            <p>
+                {APP_NAME} developers and people who contributed to {APP_NAME} and parent project(s) are listed here.
+            </p>
             <UserList users={UserData.contributors} />
         </section>
         <section>
@@ -101,11 +127,24 @@ const Credits = () => (
             <UserList users={UserData.addonDevelopers} />
         </section>
         <section>
+            <h2>Dash Extensions Gallery</h2>
+            <p>
+                People who develop extensions for Dash Extensions Gallery or whose extensions are included in it are listed here.
+            </p>
+            <UserList users={UserData.dashExtensionDevelopers} />
+        </section>
+        <section>
             <h2>TurboWarp Extension Gallery</h2>
-            <UserList users={UserData.extensionDevelopers} />
+            <p>
+                People who develop extensions for TurboWarp Extension Gallery are listed here. Thanks to them for the wonderful and useful extensions.
+            </p>
+            <UserList users={UserData.twExtensionDevelopers} />
         </section>
         <section>
             <h2>Documentation</h2>
+            <p>
+                People who write the pages in the documentation or help to write are listed here.
+            </p>
             <UserList users={UserData.docs} />
         </section>
         <section>
@@ -123,7 +162,10 @@ const Credits = () => (
                 </i>
             </p>
         </section>
+        <Footer />
     </main>
 );
 
-render(<Credits />);
+const WrappedCredits = AppStateHOC(Credits);
+
+render(<WrappedCredits />);

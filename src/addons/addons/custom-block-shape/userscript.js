@@ -10,6 +10,56 @@ export default async function ({ addon, console }) {
 
     const { GRID_UNIT } = BlockSvg;
 
+    function path2SegmentList(path) {
+      const cmds = structuredClone(BlockSvg.CUSTOM_NOTCH_UTIL.supportedCommands);
+      cmds.z = 0;
+      const segment = /([astvzqmhlc])([^astvzqmhlc]*)/ig;
+    	const data = [];
+    	path.replace(segment, (_, command, args) => {
+    		let type = command.toLowerCase();
+    		const numbers = args.match(/-?[0-9]*\.?[0-9]+(?:e[-+]?\d+)?/ig);
+    		args = numbers ? numbers.map(Number) : [];
+		    if (type == "m" && args.length > 2) {
+		    	data.push([command].concat(args.splice(0, 2)));
+		    	type = "l";
+		    	command = command == "m" ? "l" : "L";
+		    }
+
+        while (true) {
+          if (args.length == cmds[type]) {
+            args.unshift(command);
+            return data.push(args);
+          }
+          if (args.length < cmds[type]) throw new Error("Malformed path data");
+          data.push([command].concat(args.splice(0, cmds[type])));
+        }
+      });
+      return data;
+    }
+
+    function scalePathXY(path, scaleX, scaleY) {
+      const segments = path2SegmentList(path);
+      return segments.map((segment) => {
+        const name = segment[0].toLowerCase();
+        if (name === "v") {
+          segment[1] *= scaleY;
+          return segment;
+        }
+        if (name === "a") {
+          segment[1] *= scaleX;
+          segment[2] *= scaleY;
+          segment[6] *= scaleX;
+          segment[7] *= scaleY;
+          return segment;
+        }
+
+        return segment.map((val, i) => {
+          if (!i) return val;
+          return val *= i % 2 ? scaleX : scaleY;
+        });
+      }).flat().join(" ");
+    }
+      
     function applyChanges(
       paddingSize = addon.settings.get("paddingSize"),
       cornerSize = addon.settings.get("cornerSize"),
@@ -187,6 +237,19 @@ export default async function ({ addon, console }) {
 
       BlockSvg.STATEMENT_INPUT_INNER_SPACE = 2.8 * GRID_UNIT - 0.9 * GRID_UNIT * cornerSize;
 
+      // Custom Block Shape API Support
+      BlockSvg.CUSTOM_SHAPES.forEach((shape) => {
+        if (!shape.ogEmptySize) {
+          shape.ogEmptySize = shape.emptyInputWidth;
+          shape.ogEmptyPath = shape.emptyInputPath;
+        }
+        shape.emptyInputWidth = shape.ogEmptySize * multiplier;
+        shape.emptyInputPath = scalePathXY(shape.ogEmptyPath, multiplier, multiplier);
+        if (shape.emptyInputPath[0] !== "M" && shape.emptyInputPath[0] !== "m") {
+            shape.emptyInputPath = "M" + shape.emptyInputPath;
+        }
+      });
+
       // Input setting
       BlockSvg.INPUT_SHAPE_HEXAGONAL =
         "M " +
@@ -214,6 +277,7 @@ export default async function ({ addon, console }) {
         -4 * GRID_UNIT * multiplier +
         " z";
       BlockSvg.INPUT_SHAPE_HEXAGONAL_WIDTH = 12 * GRID_UNIT * multiplier;
+        
       BlockSvg.INPUT_SHAPE_SQUARE =
         BlockSvg.TOP_LEFT_CORNER_START +
         BlockSvg.TOP_LEFT_CORNER +
@@ -228,6 +292,7 @@ export default async function ({ addon, console }) {
         BlockSvg.BOTTOM_LEFT_CORNER +
         ' z';
       BlockSvg.INPUT_SHAPE_SQUARE_WIDTH = 12 * GRID_UNIT * multiplier;
+        
       BlockSvg.INPUT_SHAPE_PLUS =
         `
         M ${9 * GRID_UNIT * multiplier} 0
@@ -236,23 +301,24 @@ export default async function ({ addon, console }) {
         a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
         a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
         l 0 ${4 * (multiplier * multiplier)}
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 -${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 -${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${-GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${-GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
         l 0 2
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 -${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
-        h -${6 * GRID_UNIT * multiplier}
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 -${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier}
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${-GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+        h ${-6 * GRID_UNIT * multiplier}
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${-GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
         l 0 -2
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 -${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier}
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 -${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier}
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${-GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${-GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
         l 0 ${-4 * (multiplier * multiplier)}
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier}
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier}
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
         l 0 -2
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} -${GRID_UNIT * multiplier} 
+        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier} 
         z
         `;
       BlockSvg.INPUT_SHAPE_PLUS_WIDTH = 12 * GRID_UNIT * multiplier;
+        
       BlockSvg.INPUT_SHAPE_ROUND =
         "M " +
         4 * GRID_UNIT * multiplier +
@@ -275,6 +341,7 @@ export default async function ({ addon, console }) {
         8 * GRID_UNIT * multiplier +
         " z";
       BlockSvg.INPUT_SHAPE_ROUND_WIDTH = 12 * GRID_UNIT * multiplier;
+        
       BlockSvg.INPUT_SHAPE_HEIGHT = 8 * GRID_UNIT * multiplier;
     }
 

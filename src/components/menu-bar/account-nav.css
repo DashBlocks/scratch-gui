@@ -14,7 +14,6 @@
     text-decoration: none;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: $ui-white;
     font-size: .75rem;
     font-weight: normal;
 }

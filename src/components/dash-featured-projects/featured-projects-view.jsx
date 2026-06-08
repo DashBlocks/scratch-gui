@@ -4,8 +4,8 @@ import bindAll from 'lodash.bindall';
 import classNames from 'classnames';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 
-import StudioView from './studioview';
-import styles from './studioview.css';
+import FeaturedProjects from './featured-projects';
+import styles from './featured-projects.css';
 
 const messages = defineMessages({
     authorAttribution: {
@@ -25,7 +25,7 @@ const messages = defineMessages({
     }
 });
 
-class StudioViewComponent extends React.Component {
+class FeaturedProjectsViewComponent extends React.Component {
     constructor (props) {
         super(props);
         bindAll(this, [
@@ -34,28 +34,28 @@ class StudioViewComponent extends React.Component {
         ]);
     }
     componentDidMount () {
-        this.studioView = new StudioView(this.props.id);
-        this.studioView.messages.AUTHOR_ATTRIBUTION = this.props.intl.formatMessage(messages.authorAttribution, {
-            // studioview uses $-based variables
+        this.featuredProjects = new FeaturedProjects();
+        this.featuredProjects.messages.AUTHOR_ATTRIBUTION = this.props.intl.formatMessage(messages.authorAttribution, {
+            // featured-projects uses $-based variables
             author: '$author'
         });
-        this.studioView.messages.PROJECT_HOVER_TEXT = this.props.intl.formatMessage(messages.hoverText, {
-            // studioview uses $-based variables
+        this.featuredProjects.messages.PROJECT_HOVER_TEXT = this.props.intl.formatMessage(messages.hoverText, {
+            // featured-projects uses $-based variables
             author: '$author',
             title: '$title'
         });
-        this.studioView.messages.LOAD_ERROR = this.props.intl.formatMessage(messages.error);
+        this.featuredProjects.messages.LOAD_ERROR = this.props.intl.formatMessage(messages.error);
         if (this.props.placeholder) {
-            this.studioView.addPlaceholders();
+            this.featuredProjects.addPlaceholders();
         } else {
-            this.studioView.loadNextPage();
+            this.featuredProjects.loadNextPage();
         }
-        this.studioView.onselect = this.handleSelect;
-        this.el.appendChild(this.studioView.root);
+        this.featuredProjects.onselect = this.handleSelect;
+        this.el.appendChild(this.featuredProjects.root);
     }
     componentDidUpdate (prevProps) {
         if (prevProps.placeholder && !this.props.placeholder) {
-            this.studioView.loadNextPage();
+            this.featuredProjects.loadNextPage();
         }
     }
     handleSelect (id) {
@@ -76,11 +76,10 @@ class StudioViewComponent extends React.Component {
     }
 }
 
-StudioViewComponent.propTypes = {
-    id: PropTypes.string.isRequired,
+FeaturedProjectsViewComponent.propTypes = {
     intl: intlShape.isRequired,
     placeholder: PropTypes.bool,
     onSelect: PropTypes.func.isRequired
 };
 
-export default injectIntl(StudioViewComponent);
+export default injectIntl(FeaturedProjectsViewComponent);

@@ -44,7 +44,12 @@
     align-items: center;
     gap: 0.5rem;
     position: absolute;
+}
+[dir="ltr"] .settings-menu {
     left: 0;
+}
+[dir="rtl"] .settings-menu {
+    right: 0;
 }
 
 .main-menu {
@@ -160,20 +165,28 @@
 .account-info-group {
     display: flex;
     flex-direction: row;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
     align-items: center;
+    flex-grow: 1;
+    gap: 0.5rem;
 }
-.menu-bar.centered > .account-info-group {
+[dir="ltr"] .menu-bar.centered > .account-info-group {
     flex-grow: 0;
     position: absolute;
     right: 0;
 }
+[dir="rtl"] .menu-bar.centered > .account-info-group {
+    flex-grow: 0;
+    position: absolute;
+    left: 0;
+}
 
-.account-info-group .menu-bar-item {
-    margin: 0 .25rem;
+.account-info-group .menu-bar-item:not(:has(:global([class*="save-status_save-now_"]))) {
     padding: 0 0.75rem;
 }
 
-.mystuff-icon {
+.mystuff-icon, .messages-icon {
     margin: 0 .25rem;
     height: 1rem;
 }
@@ -186,7 +199,7 @@
     margin: 0 0 0 .25rem;
 }
 
-.account-nav-menu, .mystuff-button {
+.account-nav-menu, .mystuff-button, .messages-button {
     padding: 0 .25rem;
     display: flex;
     flex-direction: row;
@@ -258,4 +271,8 @@
 .menu-item-link {
     color: inherit;
     text-decoration: none;
+}
+
+.editor-button {
+    padding: 1rem;
 }

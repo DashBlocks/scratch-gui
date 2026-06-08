@@ -3,19 +3,21 @@ import {FormattedMessage} from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Button from '../button/button.jsx';
+import Spinner from '../../components/spinner/spinner.jsx';
 
 import styles from './share-button.css';
 
 const ShareButton = ({
     className,
     isShared,
+    isSharing,
     onClick
 }) => (
     <Button
         className={classNames(
             className,
             styles.shareButton,
-            {[styles.shareButtonIsShared]: isShared}
+            {[styles.shareButtonIsDisabled]: isShared || isSharing}
         )}
         onClick={onClick}
     >
@@ -24,6 +26,11 @@ const ShareButton = ({
                 defaultMessage="Shared"
                 description="Label for shared project"
                 id="gui.menuBar.isShared"
+            />
+        ) : isSharing ? (
+            <Spinner
+                className={styles.spinner}
+                small
             />
         ) : (
             <FormattedMessage
@@ -38,6 +45,7 @@ const ShareButton = ({
 ShareButton.propTypes = {
     className: PropTypes.string,
     isShared: PropTypes.bool,
+    isSharing: PropTypes.bool,
     onClick: PropTypes.func
 };
 

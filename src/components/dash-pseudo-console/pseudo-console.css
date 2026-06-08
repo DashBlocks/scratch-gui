@@ -4,4 +4,8 @@
     flex-direction: column;
     background-color: black;
     color: white;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    overflow-wrap: anywhere;
+    white-space: break-spaces;
 }

@@ -215,6 +215,7 @@ const GUIComponent = props => {
                 <StageWrapper
                     isFullScreen={isFullScreen}
                     isEmbedded={isEmbedded}
+                    isPlayerOnly={isPlayerOnly}
                     isRendererSupported={isRendererSupported()}
                     isRtl={isRtl}
                     loading={loading}
@@ -569,7 +570,7 @@ GUIComponent.defaultProps = {
     canRemix: false,
     canSave: false,
     canCreateCopy: false,
-    canShare: false,
+    canShare: true,
     canUseCloud: false,
     enableCommunity: false,
     isCreating: false,

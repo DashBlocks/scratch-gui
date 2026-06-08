@@ -10,12 +10,11 @@ import React from 'react';
 import {defineMessages} from 'react-intl';
 
 import MenuBarMenu from './menu-bar-menu.jsx';
+import ConnectedLogin from '../dash-login/connected-login.jsx';
 
 import styles from './login-dropdown.css';
 
-// these are here as a hack to get them translated, so that equivalent messages will be translated
-// when passed in from www via gui's renderLogin() function
-const LoginDropdownMessages = defineMessages({ // eslint-disable-line no-unused-vars
+const LoginDropdownMessages = defineMessages({
     username: {
         defaultMessage: 'Username',
         description: 'Label for login username input',
@@ -48,8 +47,7 @@ const LoginDropdown = ({
     className,
     isOpen,
     isRtl,
-    onClose,
-    renderLogin
+    onClose
 }) => (
     <MenuBarMenu
         className={className}
@@ -64,9 +62,19 @@ const LoginDropdown = ({
                 styles.login
             )}
         >
-            {renderLogin({
-                onClose: onClose
-            })}
+            <ConnectedLogin
+                key="login-dropdown-presentation"
+                /* eslint-disable react/jsx-no-bind */
+                onLogIn={(formData, callback) => {
+                    this.props.handleLogIn(formData, result => {
+                        if (result.ok === true) {
+                            onClose();
+                        }
+                        callback(result);
+                    });
+                }}
+                /* eslint-ensable react/jsx-no-bind */
+            />
         </div>
     </MenuBarMenu>
 );
@@ -75,8 +83,7 @@ LoginDropdown.propTypes = {
     className: PropTypes.string,
     isOpen: PropTypes.bool,
     isRtl: PropTypes.bool,
-    onClose: PropTypes.func,
-    renderLogin: PropTypes.func
+    onClose: PropTypes.func
 };
 
 export default LoginDropdown;

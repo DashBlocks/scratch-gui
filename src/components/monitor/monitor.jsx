@@ -12,6 +12,7 @@ import SliderMonitor from '../../containers/slider-monitor.jsx';
 import ListMonitor from '../../containers/list-monitor.jsx';
 import ObjectMonitor from '../../containers/object-monitor.jsx';
 import {Theme} from '../../lib/themes/index.js';
+import Cast from 'scratch-vm/src/util/cast';
 
 import styles from './monitor.css';
 
@@ -35,18 +36,23 @@ const modes = {
     object: ObjectMonitor
 };
 
-const getCategoryColor = (theme, category) => {
+const getCategoryColor = (theme, category, extensionRealColor) => {
     const colors = theme.getStageBlockColors();
     return {
-        background: colors[categoryColorMap[category]].primary,
+        background: extensionRealColor || colors[categoryColorMap[category]].primary,
         text: colors.text
     };
 };
 
 const MonitorComponent = props => {
-    const mode = Array.isArray(props.value)
+    /**
+     * The implementation of array monitors was taken from AmpMod
+     * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/monitor.jsx
+     */
+    
+    const mode = Cast.isNormalArray(props.value)
         ? 'list'
-        : props.value?.constructor?.prototype === Object.prototype ? 'object' : props.mode;
+        : Cast.isNormalObject(props.value) ? 'object' : props.mode;
 
     return (
         <ContextMenuTrigger
@@ -73,7 +79,7 @@ const MonitorComponent = props => {
                     data-opcode={props.opcode}
                 >
                     {React.createElement(modes[mode], {
-                        categoryColor: getCategoryColor(props.theme, props.category),
+                        categoryColor: getCategoryColor(props.theme, props.category, props.extensionRealColor),
                         ...props
                     })}
                 </Box>
@@ -165,6 +171,7 @@ MonitorComponent.propTypes = {
     onSetModeToLarge: PropTypes.func,
     onSetModeToSlider: PropTypes.func,
     onSliderPromptOpen: PropTypes.func,
+    extensionRealColor: PropTypes.string,
     theme: PropTypes.instanceOf(Theme).isRequired
 };
 

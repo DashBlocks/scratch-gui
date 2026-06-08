@@ -2,6 +2,12 @@ name: Publish
 
 on:
   workflow_dispatch:
+    inputs:
+      update_deps:
+        description: 'Update deps?'
+        required: true
+        type: boolean
+        default: false
 
 jobs:
   build:
@@ -20,6 +26,7 @@ jobs:
 
       - name: Update Dependencies
         run: npm update --legacy-peer-deps
+        if: ${{ inputs.update_deps }}
 
       - name: Build Scratch
         run: npm run build

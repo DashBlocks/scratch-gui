@@ -354,7 +354,7 @@ export default [
                 id="tw.customReporters.description"
             />
         ),
-        tags: ['tw'],
+        tags: ['dash'],
         incompatibleWithScratch: true,
         featured: true
     },
@@ -404,6 +404,7 @@ export default [
         featured: true
     },
     {
+        // Not really an extension, but it's easiest to present it as one
         name: (
             <FormattedMessage
                 defaultMessage="Custom Extension"
@@ -420,7 +421,7 @@ export default [
                 id="tw.customExtension.description"
             />
         ),
-        tags: ['tw'],
+        tags: ['dash'],
         featured: true
         // Not marked as incompatible with Scratch so that clicking on it doesn't show a prompt
     }
@@ -437,7 +438,6 @@ export const galleryLoading = {
             }}
         />
     ),
-    // TODO: Make an Extension Gallery for Dash
     href: 'https://dashblocks.github.io/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
@@ -464,7 +464,6 @@ export const galleryMore = {
             }}
         />
     ),
-    // TODO: Make an Extension Gallery for Dash
     href: 'https://dashblocks.github.io/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
@@ -491,7 +490,6 @@ export const galleryError = {
             }}
         />
     ),
-    // TODO: Make an Extension Gallery for Dash
     href: 'https://dashblocks.github.io/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,

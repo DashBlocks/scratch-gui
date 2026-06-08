@@ -71,6 +71,8 @@ const messages = defineMessages({
 const User = (props) => {
     const [id, setId] = useState(window.location.hash.replace('#', ''));
     const [userData, setUserData] = useState(null);
+    const [following, setFollowing] = useState(false);
+    const [followButtonDisabled, setFollowButtonDisabled] = useState(false);
     const [descriptionDisabled, setDescriptionDisabled] = useState(false);
     const [recommendProjectButtonDisabled, setRecommendProjectButtonDisabled] = useState(false);
     const [projects, setProjects] = useState([]);
@@ -103,13 +105,15 @@ const User = (props) => {
                 // Only Dasher+ or higher can do this
                 if (userData.user.role === "dasher") setDescriptionDisabled(true);
                 setUserData(userData.user);
+                setProjects(userData.user.projects.slice(0, 20));
+                setAchievements(userData.user.profile.achievements);
+                setLinks(userData.user.profile.links);
 
-                const projects = userData.user.projects.slice(0, 20);
-                const achievements = userData.user.profile.achievements;
-                const links = userData.user.profile.links;
-                setProjects(projects);
-                setAchievements(achievements);
-                setLinks(links);
+                const followingRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/is-following`, {
+                    credentials: 'include'
+                });
+                const followingData = await followingRes.json();
+                setFollowing(followingData.isFollowing);
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -243,6 +247,32 @@ const User = (props) => {
         }
     }
 
+    async function handleClickFollowButton () {
+        setFollowButtonDisabled(true);
+        const session = await getSession();
+        if (!session) {
+            window.open('./login', '_blank');
+            return;
+        }
+
+        const endpoint = following ? 'unfollow' : 'follow';
+        try {
+            const response = await fetch(`https://dashblocks-server.vercel.app/users/${id}/${endpoint}`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+            const data = await response.json();
+            if (!data.ok) {
+                throw new Error(data.error);
+            }
+            setFollowing(!following);
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setFollowButtonDisabled(false);
+        }
+    }
+
     async function handleChangeDescription (description) {
         if (!description) return;
         const prevDescription = userData.profile.description;
@@ -373,7 +403,7 @@ const User = (props) => {
                             accept='.png,.jpg,.jpeg,.img,.gif'
                             ref={fileInputRef}
                             onChange={handleChangeAvatar}
-                            style={{ display: 'none' }}
+                            style={{display: 'none'}}
                         />
                         <img
                             draggable={false}
@@ -381,7 +411,7 @@ const User = (props) => {
                             alt={userData.username}
                             onClick={() => isMyProfile ? fileInputRef.current.click() : null}
                             className={styles.avatarImg}
-                            style={isMyProfile ? { cursor: 'pointer' } : null}
+                            style={isMyProfile ? {cursor: 'pointer'} : null}
                         />
                         <div className={styles.userInfo}>
                             <div className={styles.userInfoRow}>
@@ -428,6 +458,30 @@ const User = (props) => {
                                             : '?'
                                     }}
                                 />
+                                {!isMyProfile && <Button
+                                    className={following ? styles.unfollowButton : styles.followButton}
+                                    disabled={followButtonDisabled}
+                                    onClick={handleClickFollowButton}
+                                >
+                                    {followButtonDisabled ? (
+                                        <Spinner
+                                            className={styles.spinner}
+                                            small
+                                        />
+                                    ) : (following ? (
+                                        <FormattedMessage
+                                            defaultMessage="Unfollow"
+                                            description="Unfollow button on user's profile"
+                                            id="dash.user.unfollow"
+                                        />
+                                    ) : (
+                                        <FormattedMessage
+                                            defaultMessage="Follow"
+                                            description="Follow button on user's profile"
+                                            id="dash.user.follow"
+                                        />
+                                    ))}
+                                </Button>}
                             </div>
                         </div>
                     </div>

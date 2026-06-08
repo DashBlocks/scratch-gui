@@ -138,6 +138,22 @@ body {
     width: fit-content;
 }
 
+.follow-button {
+    display: inline-block;
+    background-color: $looks-secondary;
+    color: $ui-white; 
+    margin-left: auto;
+    margin-right: $space;
+}
+
+.unfollow-button {
+    display: inline-block;
+    background-color: $ui-secondary;
+    color: $ui-white;
+    margin-left: auto;
+    margin-right: $space;
+}
+
 .spinner {
     display: flex;
     justify-content: center;

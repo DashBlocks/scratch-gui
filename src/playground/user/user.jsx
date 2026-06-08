@@ -737,7 +737,7 @@ const User = (props) => {
                                 <div
                                     key={followed.id}
                                     className={styles.followCard}
-                                    onClick={() => window.open(`./#${followed.id}`, '_blank')}
+                                    onClick={() => window.open(`./user#${followed.id}`, '_blank')}
                                 >
                                     <img
                                         draggable={false}
@@ -745,7 +745,7 @@ const User = (props) => {
                                         alt={followed.username}
                                         className={styles.followAvatar}
                                     />
-                                    <span>{followed.username}</span>
+                                    <span className={styles.followUsername}>{followed.username}</span>
                                 </div>
                             )) : (
                                 <FormattedMessage

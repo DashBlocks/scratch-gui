@@ -107,9 +107,12 @@ const User = (props) => {
                 // Only Dasher+ or higher can do this
                 if (userData.user.role === "dasher") setDescriptionDisabled(true);
                 setUserData(userData.user);
-                setProjects(userData.user.projects.slice(0, 20));
                 setAchievements(userData.user.profile.achievements);
                 setLinks(userData.user.profile.links);
+
+                const projectsRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/projects?limit=20&offset=0`);
+                const projectsData = await projectsRes.json();
+                setProjects(projectsData.projects);
 
                 const isFollowingRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/is-following`, {
                     credentials: 'include'

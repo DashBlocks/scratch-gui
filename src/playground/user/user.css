@@ -287,11 +287,11 @@ body {
 .follow-list {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: calc(3 * $space);
     max-height: 15vh;
     overflow-x: auto;
-    overflow-y: none;
+    overflow-y: hidden;
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
     padding: $space;

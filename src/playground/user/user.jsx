@@ -705,7 +705,7 @@ const User = (props) => {
                                 <div
                                     key={follower.id}
                                     className={styles.followCard}
-                                    onClick={() => window.open(`./#${follower.id}`, '_blank')}
+                                    onClick={() => window.open(`./user#${follower.id}`, '_blank')}
                                 >
                                     <img
                                         draggable={false}

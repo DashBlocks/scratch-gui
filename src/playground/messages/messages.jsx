@@ -189,6 +189,21 @@ const Messages = (props) => {
                     );
                 }
             }
+            case 'new-follower': {
+                return (
+                    <>
+                        {/* TODO: Icon */}
+                        <FormattedMessage
+                            defaultMessage="{user} is now following you"
+                            description="Displayed when someone starts following the user"
+                            id="dash.messages.newFollower"
+                            values={{
+                                user: <a href={`user#${message.user.username}`}>{message.user.username}</a>
+                            }}
+                        />
+                    </>
+                );
+            }
             default:
                 return (
                     <FormattedMessage

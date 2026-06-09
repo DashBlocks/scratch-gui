@@ -647,10 +647,22 @@ const User = (props) => {
                                 description="Projects section title on user's profile"
                                 id="dash.user.projects"
                                 values={{
-                                    projectsCount: userData.projects.length
+                                    projectsCount: userData.projects.length // TODO: Implement proper projects count
                                 }}
                             />
                         </h2>
+                        <a
+                            href={`https://dashblocks.github.io/user-projects#${userData.username}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className={styles.viewAllProjects}
+                        >
+                            <FormattedMessage
+                                defaultMessage="View all"
+                                description="Link text for viewing all projects on user's profile"
+                                id="dash.user.projects.viewAll"
+                            />
+                        </a>
                         <div className={styles.projectGrid}>
                             {projects.length > 0 ? projects.map((project) => (
                                 <div

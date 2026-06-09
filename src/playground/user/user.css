@@ -212,6 +212,15 @@ body {
     border-color: $ui-black-transparent !important; /* dont use hover border from custom input */
 }
 
+.view-all-projects-link {
+    display: inline-block;
+    margin-left: auto;
+    margin-right: $space;
+    color: $link-color;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
 .project-grid {
     display: flex;
     overflow-x: auto;
@@ -303,6 +312,7 @@ body {
     justify-content: flex-start;
     gap: $space;
     width: 4rem;
+    margin-left: 1rem;
 }
 
 .follow-avatar {

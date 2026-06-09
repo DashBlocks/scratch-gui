@@ -54,6 +54,10 @@ const messages = defineMessages({
 const Messages = (props) => {
     const [userData, setUserData] = useState(null);
     const [userMessages, setUserMessages] = useState([]);
+    const [limit, setLimit] = useState(40);
+    const [offset, setOffset] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
+    const [loadMoreButtonDisabled, setLoadMoreButtonDisabled] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -61,30 +65,39 @@ const Messages = (props) => {
     useEffect(() => {
         document.title = props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
 
-        const fetchFullProfile = async () => {
-            setLoading(true);
+        setLoading(true);
+        const fetchData = async () => {
             const session = await getSession();
             if (!session || !session.userId) {
                 setError('Not logged in');
                 setLoading(false);
                 return;
             }
-            let userData;
-            try {
-                const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${session.userId}`);
-                userData = await userRes.json();
-                if (!userData.ok) throw new Error(userData.error);
-                setUserData(userData.user);
-                setUserMessages(session.messages);
-            } catch (error) {
-                setError(error.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchFullProfile();
+            setUserData(session);
+            await fetchMessages();
+            setLoading(false);
+        }
+        fetchData();
     }, []);
+
+    const fetchMessages = async () => {
+        setLoadMoreButtonDisabled(true);
+        try {
+            const messagesRes = await fetch(`https://dashblocks-server.vercel.app/session/messages?limit=${limit}&offset=${offset}`, {
+                credentials: 'include'
+            });
+            if (!messagesRes.ok) throw new Error('Failed to fetch messages');
+            const messagesData = await messagesRes.json();
+            if (!messagesData.ok) throw new Error(messagesData.error);
+            setUserMessages([...userMessages, ...messagesData.messages]);
+            setHasMore(messagesData.messages.length === limit);
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoading(false);
+            setLoadMoreButtonDisabled(false);
+        }
+    };
 
     const getMessageContent = (message) => {
         switch (message.type) {
@@ -254,6 +267,29 @@ const Messages = (props) => {
                                     </div>
                                 </div>
                             ))}
+                            {hasMore && (
+                                <Button
+                                    className={styles.loadMoreButton}
+                                    disabled={loadMoreButtonDisabled}
+                                    onClick={() => {
+                                        setOffset(offset + limit);
+                                        fetchMessages();
+                                    }}
+                                >
+                                    {loadMoreButtonDisabled ? (
+                                        <Spinner
+                                            className={styles.spinner}
+                                            small
+                                        />
+                                    ) : (
+                                        <FormattedMessage
+                                            defaultMessage="Load more"
+                                            description="Button text for loading more messages"
+                                            id="dash.messages.loadMore"
+                                        />
+                                    )}
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </div>

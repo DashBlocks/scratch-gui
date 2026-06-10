@@ -217,7 +217,6 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin-bottom: 1rem;
 }
 
 .view-all-projects-link {
@@ -320,6 +319,7 @@ body {
     width: 4rem;
     margin-left: 1rem;
     margin-right: 1rem;
+    cursor: pointer;
 }
 
 .follow-avatar {

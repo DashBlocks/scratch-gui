@@ -654,7 +654,7 @@ const User = (props) => {
                             </h2>
                             {projects.length === 20 && (
                                 <a
-                                    href={`https://dashblocks.github.io/user-projects#${userData.username}`}
+                                    onClick={() => window.open(`./user-projects#${userData.username}`, '_blank')}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className={styles.viewAllProjectsLink}

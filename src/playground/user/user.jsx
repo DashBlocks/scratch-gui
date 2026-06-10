@@ -641,28 +641,32 @@ const User = (props) => {
                         )}
                     </div>
                     <div className={styles.section}>
-                        <h2>
-                            <FormattedMessage
-                                defaultMessage="Projects ({projectsCount})"
-                                description="Projects section title on user's profile"
-                                id="dash.user.projects"
-                                values={{
-                                    projectsCount: userData.projects.length // TODO: Implement proper projects count
-                                }}
-                            />
-                        </h2>
-                        <a
-                            href={`https://dashblocks.github.io/user-projects#${userData.username}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={styles.viewAllProjects}
-                        >
-                            <FormattedMessage
-                                defaultMessage="View all"
-                                description="Link text for viewing all projects on user's profile"
-                                id="dash.user.projects.viewAll"
-                            />
-                        </a>
+                        <div className={styles.projectsHeader}>
+                            <h2>
+                                <FormattedMessage
+                                    defaultMessage="Projects ({projectsCount})"
+                                    description="Projects section title on user's profile"
+                                    id="dash.user.projects"
+                                    values={{
+                                        projectsCount: "?" // TODO: Implement proper projects count
+                                    }}
+                                />
+                            </h2>
+                            {projects.length === 20 && (
+                                <a
+                                    href={`https://dashblocks.github.io/user-projects#${userData.username}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={styles.viewAllProjectsLink}
+                                >
+                                    <FormattedMessage
+                                        defaultMessage="View all"
+                                        description="Link text for viewing all projects on user's profile"
+                                        id="dash.user.projects.viewAll"
+                                    />
+                                </a>
+                            )}
+                        </div>
                         <div className={styles.projectGrid}>
                             {projects.length > 0 ? projects.map((project) => (
                                 <div

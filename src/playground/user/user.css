@@ -212,13 +212,20 @@ body {
     border-color: $ui-black-transparent !important; /* dont use hover border from custom input */
 }
 
+.projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
 .view-all-projects-link {
     display: inline-block;
-    margin-left: auto;
-    margin-right: $space;
     color: $link-color;
     cursor: pointer;
     text-decoration: underline;
+    margin: 0;
 }
 
 .project-grid {

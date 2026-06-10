@@ -150,6 +150,7 @@ module.exports = [
             'credits': './src/playground/credits/credits.jsx',
             'desktop': './src/playground/desktop/desktop.jsx',
             'user': './src/playground/user/user.jsx',
+            'user-projects': './src/playground/user-projects/user-projects.jsx',
             'login': './src/playground/login/login.jsx',
             'register': './src/playground/register/register.jsx',
             'account-settings': './src/playground/account-settings/account-settings.jsx',
@@ -246,6 +247,13 @@ module.exports = [
                 template: 'src/playground/simple.ejs',
                 filename: 'user.html',
                 title: `User - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['user-projects'],
+                template: 'src/playground/simple.ejs',
+                filename: 'user-projects.html',
+                title: `User's Projects (?) - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

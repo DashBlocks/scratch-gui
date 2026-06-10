@@ -1,0 +1,144 @@
+@import "../../css/colors.css";
+@import "../../css/units.css";
+@import "../../css/z-index.css";
+@import "../../css/default-colors.css";
+
+/* Base styles used by Scratch https://github.com/LLK/scratch-www/blob/develop/src/main.scss */
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: bold;
+    line-height: 1.7em;
+}
+h1 {
+    font-weight: 2.5rem;
+}
+h2 {
+    font-weight: 2rem;
+}
+h3 {
+    font-size: 1.4rem;
+}
+h4 {
+    font-size: 1rem;
+}
+a {
+    color: $link-color;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0px;
+}
+
+.container {
+    position: absolute;
+    top: $menu-bar-height;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    background: $page-background;
+    color: $page-foreground;
+}
+
+.user-projects-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space;
+    background: $ui-primary;
+    margin: 0px;
+    padding: $space;
+    width: 100%;
+}
+
+.section {
+    width: 100%;
+    max-width: 900px;
+    background: $ui-white;
+    margin: 0px;
+    padding: $space;
+    border-radius: $space;
+    border: 0.0625rem solid $ui-black-transparent;
+}
+
+.spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 10vh;
+}
+
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: $space;
+    width: 100%; 
+    border: 0.0625rem solid $ui-black-transparent;
+    border-radius: $space;
+    padding: $space;
+}
+
+.project-card {
+    border: 0.0625rem solid $ui-black-transparent;
+    border-radius: $space;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: $ui-secondary;
+    width: 100%; 
+    min-height: 12rem;
+}
+
+.thumb-wrapper img {
+    aspect-ratio: 4 / 3;
+    width: 100%;
+    background: #f3f4f6;
+}
+
+.project-info {
+    padding: 0.75rem;
+}
+
+.project-info h4 {
+    margin: 0 0 0.5rem 0;
+}
+
+.project-info p {
+    font-size: 0.85rem;
+    color: #4b5563;
+    margin: 0;
+}
+
+.loadMoreButton {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 0.75rem 1rem;
+    background: $looks-secondary;
+    color: $ui-white;
+    border: 1px solid $looks-secondary;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    grid-column: 1 / -1; 
+    width: 100%;
+    display: block;
+    justify-content: center;
+}

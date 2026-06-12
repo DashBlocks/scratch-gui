@@ -47,6 +47,8 @@ import {APP_NAME} from '../lib/brand.js';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import tabStyles from 'react-tabs/style/react-tabs.css';
 import TWRenderRecoloredImage from '../lib/tw-recolor/render.jsx';
+import Spinner from '../components/spinner/spinner.jsx';
+import Button from '../components/button/button.jsx';
 
 import aboutIcon from '!../lib/tw-recolor/build!./icons/icon--about.svg';
 import unsharedIcon from '!../lib/tw-recolor/build!./icons/icon--unshared.svg';
@@ -338,6 +340,168 @@ const Footer = () => (
     </footer>
 );
 
+const WhatsHappening = ({intl}) => {
+    const [actions, setActions] = useState([]);
+    const [limit, setLimit] = useState(10);
+    const [offset, setOffset] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
+    const [loadMoreButtonDisabled, setLoadMoreButtonDisabled] = useState(false);
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+
+    useEffect(() => {
+        fetchActivity(0);
+    }, []);
+
+    async function fetchActivity(currentOffset) {
+        setLoadMoreButtonDisabled(true);
+        try {
+            const res = await fetch(`https://dashblocks-server.vercel.app/session/activity?limit=${limit}&offset=${currentOffset}`, {
+                credentials: 'include'
+            });
+            
+            if (!res.ok) {
+                setHasMore(false);
+                setError("Failed to fetch activity");
+                setLoadMoreButtonDisabled(false);
+                setLoading(false);
+                return;
+            }
+            
+            const data = await res.json();
+            if (!data.ok) {
+                setHasMore(false);
+                setError(data.error);
+                setLoadMoreButtonDisabled(false);
+                setLoading(false);
+                return;
+            }
+
+            setActions(prevActions => [...prevActions, ...data.activity]);
+            setHasMore(data.activity.length === limit);
+        } catch (err) {
+            setError("Failed to fetch activity");
+            setHasMore(false);
+        } finally {
+            setLoadMoreButtonDisabled(false);
+            setLoading(false);
+        }
+    }
+
+    function getActionContent(action) {
+        switch (action.type) {
+            case 'shared-project':
+                return (
+                    <FormattedMessage
+                        defaultMessage="{user} shared project {project}"
+                        description="Displayed when someone shared project"
+                        id="dash.home.whatsHappening.sharedProject"
+                        values={{
+                            user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
+                            project: <a href={`/#${action.project.id}`}>{action.project.name}</a>
+                        }}
+                    />
+                );
+            case 'fired-project':
+                return (
+                    <FormattedMessage
+                        defaultMessage="{user} fired project {project}"
+                        description="Displayed when someone fired project"
+                        id="dash.home.whatsHappening.firedProject"
+                        values={{
+                            user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
+                            project: <a href={`/#${action.project.id}`}>{action.project.name}</a>
+                        }}
+                    />
+                );
+            case 'followed-user':
+                return (
+                    <FormattedMessage
+                        defaultMessage="{user} followed {target}"
+                        description="Displayed when someone followed someone"
+                        id="dash.home.whatsHappening.followedUser"
+                        values={{
+                            user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
+                            target: <a href={`user#${action.user.id}`}>{action.user.username}</a>
+                        }}
+                    />
+                );
+            default:
+                return (
+                    <FormattedMessage
+                        defaultMessage="Unknown action type"
+                        description="Displayed when there is an unknown action"
+                        id="dash.home.whatsHappening.unknown"
+                    />
+                );
+        }
+    }
+
+    if (loading && actions.length === 0) return <div>Loading...</div>;
+    if (error && actions.length === 0) return <div>An error occured: {error}</div>;
+
+    return (
+        <div className={styles.actionsGrid}>
+            {actions.map((action, index) => (
+                <div
+                    key={index}
+                    className={styles.actionContent}
+                >
+                    <img
+                        src={`https://dashblocks-server.vercel.app/users/avatars/${action.author.profile.avatarId}`}
+                        alt={action.author.username}
+                        className={styles.actionAvatar}
+                    />
+                    {getActionContent(action)}
+                    <div className={styles.actionDate}>
+                        <FormattedMessage
+                            defaultMessage="{date}"
+                            description="Displayed date for the action"
+                            id="dash.messages.date"
+                            values={{
+                                date: (action.date ? new Date(action.date) : null)
+                                    ? relativeTimeSupported()
+                                        ? (
+                                            <span title={`${intl.formatDate(new Date(action.date))}, ${intl.formatTime(new Date(action.date))}`}>
+                                                <FormattedRelative value={action.date} />
+                                            </span>
+                                        )
+                                        : (<FormattedDate value={new Date(action.date)} />)
+                                    : '?'
+                            }}
+                        />
+                    </div>
+                </div>
+            ))}
+            {hasMore && (
+                <Button
+                    className={styles.loadMoreButton}
+                    disabled={loadMoreButtonDisabled}
+                    onClick={() => {
+                        const newOffset = offset + limit;
+                        setOffset(newOffset);
+                        fetchActivity(newOffset);
+                    }}
+                >
+                    {loadMoreButtonDisabled ? (
+                        <Spinner
+                            className={styles.spinner}
+                            small
+                        />
+                    ) : (
+                        <FormattedMessage
+                            defaultMessage="Load more"
+                            description="Button text for loading more actions"
+                            id="dash.messages.loadMore"
+                        />
+                    )}
+                </Button>
+            )}
+        </div>
+    );
+};
+
 const WhatsNew = () => {
     const [commits, setCommits] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -449,6 +613,7 @@ class Interface extends React.PureComponent {
         const {
             /* eslint-disable no-unused-vars */
             intl,
+            session,
             hasCloudVariables,
             description,
             isFullScreen,
@@ -528,6 +693,21 @@ class Interface extends React.PureComponent {
                                                 values={{
                                                     APP_NAME
                                                 }}
+                                            />
+                                        </Tab>
+                                        <Tab
+                                            className={classNames(tabClassNames.tab, {
+                                                [tabClassNames.tabDisabled]: !session
+                                            })}
+                                        >
+                                            <TWRenderRecoloredImage
+                                                draggable={false}
+                                                src={whatsNewIcon /* TODO: Make other icon? */}
+                                            />
+                                            <FormattedMessage
+                                                defaultMessage="What's happening?"
+                                                description="Button to get to the What's happening? panel"
+                                                id="dash.home.tab.whatsHappening"
                                             />
                                         </Tab>
                                         <Tab className={tabClassNames.tab}>
@@ -614,6 +794,19 @@ class Interface extends React.PureComponent {
                                                 {lazyMessages[this.chooseRandomMessage()]}
                                             </p>*/}
                                         </div>
+                                    </TabPanel>
+                                    <TabPanel className={tabClassNames.tabPanel}>
+                                        {session && (
+                                            <div
+                                                className={styles.section}
+                                                style={{
+                                                    overflowY: "auto",
+                                                    maxHeight: "520px"
+                                                }}
+                                            >
+                                                <WhatsHappening intl={intl} />
+                                            </div>
+                                        )}
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>
                                         <div
@@ -727,6 +920,7 @@ class Interface extends React.PureComponent {
 
 Interface.propTypes = {
     intl: intlShape,
+    session: PropTypes.object,
     hasCloudVariables: PropTypes.bool,
     customStageSize: PropTypes.shape({
         width: PropTypes.number,
@@ -745,6 +939,7 @@ Interface.propTypes = {
 };
 
 const mapStateToProps = state => ({
+    session: state.scratchGui.dash.session,
     hasCloudVariables: state.scratchGui.tw.hasCloudVariables,
     customStageSize: state.scratchGui.customStageSize,
     description: state.scratchGui.tw.description,

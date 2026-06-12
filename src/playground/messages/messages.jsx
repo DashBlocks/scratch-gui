@@ -74,22 +74,22 @@ const Messages = (props) => {
                 return;
             }
             setUserData(session);
-            await fetchMessages();
+            await fetchMessages(0);
             setLoading(false);
         }
         fetchData();
     }, []);
 
-    const fetchMessages = async () => {
+    const fetchMessages = async (currentOffset) => {
         setLoadMoreButtonDisabled(true);
         try {
-            const messagesRes = await fetch(`https://dashblocks-server.vercel.app/session/messages?limit=${limit}&offset=${offset}`, {
+            const messagesRes = await fetch(`https://dashblocks-server.vercel.app/session/messages?limit=${limit}&offset=${currentOffset}`, {
                 credentials: 'include'
             });
             if (!messagesRes.ok) throw new Error('Failed to fetch messages');
             const messagesData = await messagesRes.json();
             if (!messagesData.ok) throw new Error(messagesData.error);
-            setUserMessages([...userMessages, ...messagesData.messages]);
+            setUserMessages(prevUserMessages => [...prevUserMessages, ...messagesData.messages]);
             setHasMore(messagesData.messages.length === limit);
         } catch (error) {
             setError(error.message);
@@ -110,8 +110,8 @@ const Messages = (props) => {
                             description="Displayed when user joins to Dash"
                             id="dash.messages.joined"
                             values={{
-                                creatingProject: <a href={'editor'}>{props.intl.formatMessage(messages.creatingProject)}</a>,
-                                exploringOthers: <a href={'trending'}>{props.intl.formatMessage(messages.exploringOthers)}</a>
+                                creatingProject: <a href="editor">{props.intl.formatMessage(messages.creatingProject)}</a>,
+                                exploringOthers: <a href="trending">{props.intl.formatMessage(messages.exploringOthers)}</a>
                             }}
                         />
                     </>
@@ -287,8 +287,9 @@ const Messages = (props) => {
                                     className={styles.loadMoreButton}
                                     disabled={loadMoreButtonDisabled}
                                     onClick={() => {
-                                        setOffset(offset + limit);
-                                        fetchMessages();
+                                        const newOffset = offset + limit;
+                                        setOffset(newOffset);
+                                        fetchMessages(newOffset);
                                     }}
                                 >
                                     {loadMoreButtonDisabled ? (

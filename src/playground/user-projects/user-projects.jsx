@@ -77,23 +77,23 @@ const UserProjects = (props) => {
                 projectsCount: '?' // TODO: Implement proper projects count
             }) + ' - ' + APP_NAME;
             setUserData(user.user);
-            await fetchProjects();
+            await fetchProjects(0);
             setLoading(false);
         }
         fetchData();
     }, []);
 
-    const fetchProjects = async () => {
+    const fetchProjects = async (currentOffset) => {
         setLoadMoreButtonDisabled(true);
         try {
-            const projectsRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/projects?limit=${limit}&offset=${offset}`, {
+            const projectsRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/projects?limit=${limit}&offset=${currentOffset}`, {
                 credentials: 'include'
             });
             if (!projectsRes.ok) throw new Error('Failed to fetch projects');
             const projectsData = await projectsRes.json();
             if (!projectsData.ok) throw new Error(projectsData.error);
-            setProjects([...projects, ...projectsData.projects]);
-            setHasMore(projects.length === limit);
+            setProjects(prevProjects => [...prevProjects, ...projectsData.projects]);
+            setHasMore(projectsData.projects.length === limit);
         } catch (error) {
             setError(error.message);
         } finally {
@@ -141,7 +141,7 @@ const UserProjects = (props) => {
                                 description="Title of /user-projects page"
                                 id="dash.userProjects.title"
                                 values={{
-                                    username: <a onClick={() => window.open(`./user#${userData.id}`)}>{userData.username}</a>,
+                                    username: <a href={`user#${userData.id}`}>{userData.username}</a>,
                                     projectsCount: "?" // TODO: Implement proper projects count
                                 }}
                             />
@@ -190,8 +190,9 @@ const UserProjects = (props) => {
                                     className={styles.loadMoreButton}
                                     disabled={loadMoreButtonDisabled}
                                     onClick={() => {
-                                        setOffset(offset + limit);
-                                        fetchProjects();
+                                        const newOffset = offset + limit;
+                                        setOffset(newOffset);
+                                        fetchProjects(newOffset);
                                     }}
                                 >
                                     {loadMoreButtonDisabled ? (

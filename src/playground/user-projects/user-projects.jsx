@@ -141,7 +141,7 @@ const UserProjects = (props) => {
                                 description="Title of /user-projects page"
                                 id="dash.userProjects.title"
                                 values={{
-                                    username: userData.username,
+                                    username: <a onClick={() => window.open(`./user#${userData.id}`)}>userData.username</a>,
                                     projectsCount: "?" // TODO: Implement proper projects count
                                 }}
                             />

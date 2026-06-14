@@ -16,8 +16,9 @@ import {detectTheme} from '../../lib/themes/themePersistance';
 import screenshotLight from './screenshot-light.png';
 import screenshotDark from './screenshot-dark.png';
 
-const version = '2.2.0';
-const releasesDownloadUrl = `https://github.com/DashBlocks/desktop/releases/download/v${version}`;
+const RELEASE_VERSION = '1.0.0-alpha';
+const VERSION_IN_FILENAME = '0.0.1-beta.2';
+const RELEASES_DOWNLOAD_URL = `https://github.com/DashBlocks/dash-desktop/releases/download/v${RELEASE_VERSION}`;
 
 /* eslint-disable react/jsx-no-literals */
 
@@ -41,7 +42,7 @@ const Desktop = () => (
             />
         </section>
         <section>
-            <h2>Download (v{version}):</h2>
+            <h2>Download (v{RELEASE_VERSION}):</h2>
         </section>
         <section>
             <h3>Windows:</h3>
@@ -49,29 +50,34 @@ const Desktop = () => (
                 <Button
                     className={styles.downloadButton}
                     onClick={() => {
-                        window.open(`${releasesDownloadUrl}/Dash.Desktop.Setup.${version}.exe`, '_blank', 'noreferrer');
+                        window.open(`${RELEASES_DOWNLOAD_URL}/Dash-Setup-${VERSION_IN_FILENAME}-x64.exe`, '_blank', 'noreferrer');
                     }}
                 >
                     Download for Windows (64-bit)
                 </Button>
-            </div>
-            <h3>Linux:</h3>
-            <div className={styles.downloadList}>
                 <Button
                     className={styles.downloadButton}
                     onClick={() => {
-                        window.open(`${releasesDownloadUrl}/Dash.Desktop-${version}.AppImage`, '_blank', 'noreferrer');
+                        window.open(`${RELEASES_DOWNLOAD_URL}/Dash-Setup-${VERSION_IN_FILENAME}-arm64.exe`, '_blank', 'noreferrer');
                     }}
                 >
-                    Download for AppImage
+                    Download for Windows (ARM 64-bit)
                 </Button>
                 <Button
                     className={styles.downloadButton}
                     onClick={() => {
-                        window.open(`${releasesDownloadUrl}/Dash.Desktop-${version}-arm64.AppImage`, '_blank', 'noreferrer');
+                        window.open(`${RELEASES_DOWNLOAD_URL}/Dash-Setup-${VERSION_IN_FILENAME}-ia32.exe`, '_blank', 'noreferrer');
                     }}
                 >
-                    Download for AppImage (ARM 64-bit)
+                    Download for Windows (ia32)
+                </Button>
+                <Button
+                    className={styles.downloadButton}
+                    onClick={() => {
+                        window.open(`${RELEASES_DOWNLOAD_URL}/Dash.Portable.${VERSION_IN_FILENAME}.x64.exe`, '_blank', 'noreferrer');
+                    }}
+                >
+                    Download portable for Windows (64-bit)
                 </Button>
             </div>
             <h3>macOS:</h3>
@@ -79,34 +85,10 @@ const Desktop = () => (
                 <Button
                     className={styles.downloadButton}
                     onClick={() => {
-                        window.open(`${releasesDownloadUrl}/Dash.Desktop-${version}.dmg`, '_blank', 'noreferrer');
+                        window.open(`${RELEASES_DOWNLOAD_URL}/Dash-Setup-${VERSION_IN_FILENAME}.dmg`, '_blank', 'noreferrer');
                     }}
                 >
                     Download for macOS
-                </Button>
-                <Button
-                    className={styles.downloadButton}
-                    onClick={() => {
-                        window.open(`${releasesDownloadUrl}/Dash.Desktop-${version}-arm64.dmg`, '_blank', 'noreferrer');
-                    }}
-                >
-                    Download for macOS (ARM 64-bit)
-                </Button>
-                <Button
-                    className={styles.downloadButton}
-                    onClick={() => {
-                        window.open(`${releasesDownloadUrl}/Dash.Desktop-${version}-mac.zip`, '_blank', 'noreferrer');
-                    }}
-                >
-                    Download ZIP for macOS
-                </Button>
-                <Button
-                    className={styles.downloadButton}
-                    onClick={() => {
-                        window.open(`${releasesDownloadUrl}/Dash.Desktop-${version}-arm64-mac.zip`, '_blank', 'noreferrer');
-                    }}
-                >
-                    Download ZIP for macOS (ARM 64-bit)
                 </Button>
             </div>
         </section>

@@ -95,30 +95,25 @@ const User = (props) => {
     useEffect(() => {
         const fetchFullProfile = async () => {
             setLoading(true);
-            let userData;
+            let user;
             try {
                 const session = await getSession();
                 setIsMyProfile(session?.userId?.toString() === id || session?.username?.toLowerCase() === id?.toLowerCase());
                 const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}`);
-                userData = await userRes.json();
+                user = await userRes.json();
 
-                if (!userData.ok) throw new Error(userData.error);
-                document.title = `${userData.user.username} - ${APP_NAME}`
+                if (!user.ok) throw new Error(user.error);
+                document.title = `${user.user.username} - ${APP_NAME}`
                 // Only Dasher+ or higher can do this
-                if (userData.user.role === "dasher") setDescriptionDisabled(true);
-                setUserData(userData.user);
-                setAchievements(userData.user.profile.achievements);
-                setLinks(userData.user.profile.links);
+                if (user.user.role === "dasher") setDescriptionDisabled(true);
+                setUserData(user.user);
+                setIsFollowing(user.user.isFollowing);
+                setAchievements(user.user.profile.achievements);
+                setLinks(user.user.profile.links);
 
                 const projectsRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/projects?limit=20&offset=0`);
                 const projectsData = await projectsRes.json();
                 setProjects(projectsData.projects);
-
-                const isFollowingRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/is-following`, {
-                    credentials: 'include'
-                });
-                const isFollowingData = await isFollowingRes.json();
-                setIsFollowing(isFollowingData.isFollowing);
 
                 const followersRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/followers?limit=20&offset=0`);
                 const followersData = await followersRes.json();

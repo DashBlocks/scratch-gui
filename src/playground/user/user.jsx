@@ -260,6 +260,7 @@ const User = (props) => {
         const session = await getSession();
         if (!session) {
             window.open('./login', '_blank');
+            setFollowButtonDisabled(false);
             return;
         }
 

@@ -6,10 +6,7 @@ const getSession = async (userId, password) => {
             body: JSON.stringify({userId, password}),
             credentials: 'include'
         });
-        if (res.ok) {
-            const data = await res.json();
-            return data.user;
-        }
+        if (res.ok) return await res.json();
         return null;
     }
 

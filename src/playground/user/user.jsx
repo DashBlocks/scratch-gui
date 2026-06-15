@@ -99,7 +99,7 @@ const User = (props) => {
             try {
                 const session = await getSession();
                 setIsMyProfile(session?.userId?.toString() === id || session?.username?.toLowerCase() === id?.toLowerCase());
-                const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}`);
+                const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}`, {credentials: "include"});
                 user = await userRes.json();
 
                 if (!user.ok) throw new Error(user.error);

@@ -6,7 +6,10 @@ const getSession = async (userId, password) => {
             body: JSON.stringify({userId, password}),
             credentials: 'include'
         });
-        if (res.ok) return await res.json();
+        if (res.ok) {
+            const data = await res.json();
+            return data.user;
+        }
         return null;
     }
 
@@ -14,7 +17,7 @@ const getSession = async (userId, password) => {
         const res = await fetch('https://dashblocks-server.vercel.app/session', {credentials: 'include'});
         if (res.ok) {
             const data = await res.json();
-            return data;
+            return data.user;
         }
     } catch (error) {
         console.warn(error?.message || error);

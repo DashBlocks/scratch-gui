@@ -218,6 +218,30 @@ const User = (props) => {
                         />
                     </>
                 )
+            case 'reached-followers-count':
+                return (
+                    <>
+                        {/* TODO: Icon */}
+                        <h4>
+                            <FormattedMessage
+                                defaultMessage='{count} followers have been reached.'
+                                description="Title for achievement of reached followers."
+                                id="dash.user.achievements.reachedFollowersCount.title"
+                                values={{
+                                    count: achievement.count
+                                }}
+                            />
+                        </h4>
+                        <FormattedMessage
+                            defaultMessage='The user has {count} followers on Dash.'
+                            description="Description for achievement of reached followers."
+                            id="dash.user.achievements.reachedFollowersCount.info"
+                            values={{
+                                count: achievement.count
+                            }}
+                        />
+                    </>
+                )
             default:
                 return (
                     <FormattedMessage

@@ -31,8 +31,8 @@ AccountNav.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    profileUrl: state.scratchGui.dash.session && state.scratchGui.dash.session.userId ?
-        `user#${state.scratchGui.dash.session.userId}` : '',
+    profileUrl: state.scratchGui.dash.session && state.scratchGui.dash.session.id ?
+        `user#${state.scratchGui.dash.session.id}` : '',
     thumbnailUrl: state.scratchGui.dash.session && state.scratchGui.dash.session.profile && state.scratchGui.dash.session.profile.avatarId ?
         `https://dashblocks-server.vercel.app/users/avatars/${state.scratchGui.dash.session.profile.avatarId}` : '',
     username: state.scratchGui.dash.session && state.scratchGui.dash.session.username ?

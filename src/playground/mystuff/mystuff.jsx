@@ -56,7 +56,7 @@ const User = (props) => {
         const fetchFullProfile = async () => {
             setLoading(true);
             const session = await getSession();
-            if (!session || !session.userId) {
+            if (!session || !session.id) {
                 setError('Not logged in');
                 setLoading(false);
                 return;

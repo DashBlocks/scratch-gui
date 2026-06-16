@@ -63,7 +63,7 @@ const User = (props) => {
             }
             let userData;
             try {
-                const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${session.userId}`);
+                const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${session.id}`);
                 userData = await userRes.json();
                 if (!userData.ok) throw new Error(userData.error);
                 setUserData(userData.user);

@@ -68,7 +68,7 @@ const Messages = (props) => {
         setLoading(true);
         const fetchData = async () => {
             const session = await getSession();
-            if (!session || !session.userId) {
+            if (!session || !session.id) {
                 setError('Not logged in');
                 setLoading(false);
                 return;

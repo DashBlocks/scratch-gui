@@ -98,7 +98,7 @@ const User = (props) => {
             let user;
             try {
                 const session = await getSession();
-                setIsMyProfile(session?.userId?.toString() === id || session?.username?.toLowerCase() === id?.toLowerCase());
+                setIsMyProfile(session?.id?.toString() === id || session?.username?.toLowerCase() === id?.toLowerCase());
                 const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}`, {credentials: "include"});
                 user = await userRes.json();
 

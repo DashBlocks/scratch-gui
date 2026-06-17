@@ -302,7 +302,7 @@ class MenuBar extends React.Component {
         if (!this.props.isShared && !this.state.isSharing) {
             if (this.props.canShare) { // save before transitioning to project page
                 const session = await getSession();
-                if (session) {
+                if (session && session.id) {
                     this.setState({
                         isSharing: true
                     });

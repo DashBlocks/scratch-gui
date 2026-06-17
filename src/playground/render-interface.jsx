@@ -697,7 +697,7 @@ class Interface extends React.PureComponent {
                                         </Tab>
                                         <Tab
                                             className={classNames(tabClassNames.tab, {
-                                                [tabClassNames.tabDisabled]: !session
+                                                [tabClassNames.tabDisabled]: !session?.id
                                             })}
                                         >
                                             <TWRenderRecoloredImage

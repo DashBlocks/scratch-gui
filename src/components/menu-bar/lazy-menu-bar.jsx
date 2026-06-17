@@ -124,7 +124,7 @@ class LazyMenuBar extends React.Component {
             const response = await fetch('https://dashblocks-server.vercel.app/auth/logout', {credentials: 'include'});
             const data = await response.json();
             if (!data.ok) return alert('Sign out failed');
-            this.props.setSession(null);
+            this.props.setSession({});
             window.location.reload();
         } catch (error) {
             console.warn(error?.message || error);

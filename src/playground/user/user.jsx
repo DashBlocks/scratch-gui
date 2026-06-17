@@ -282,7 +282,7 @@ const User = (props) => {
     async function handleClickFollowButton () {
         setFollowButtonDisabled(true);
         const session = await getSession();
-        if (!session) {
+        if (!session || !session.id) {
             window.open('./login', '_blank');
             setFollowButtonDisabled(false);
             return;

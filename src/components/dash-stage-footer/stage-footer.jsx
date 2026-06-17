@@ -61,7 +61,7 @@ const StageFooter = (props) => {
     }
 
     async function handleFireButtonClick() {
-        if (!props.session) {
+        if (!props.session || !props.session?.id) {
             window.open('./login', '_blank');
             return;
         }

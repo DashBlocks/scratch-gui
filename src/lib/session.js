@@ -7,7 +7,7 @@ const getSession = async (userId, password) => {
             credentials: 'include'
         });
         if (res.ok) return await res.json();
-        return null;
+        return {};
     }
 
     try {
@@ -18,10 +18,10 @@ const getSession = async (userId, password) => {
         }
     } catch (error) {
         console.warn(error?.message || error);
-        return null;
+        return {};
     }
 
-    return null;
+    return {};
 };
 
 export default getSession;

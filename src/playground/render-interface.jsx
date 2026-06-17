@@ -796,7 +796,7 @@ class Interface extends React.PureComponent {
                                         </div>
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>
-                                        {session && (
+                                        {session && session.id && (
                                             <div
                                                 className={styles.section}
                                                 style={{

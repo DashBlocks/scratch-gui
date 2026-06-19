@@ -77,7 +77,7 @@ const handleClickAddonSettings = addonId => {
 
 const messages = defineMessages({
     defaultTitle: {
-        defaultMessage: 'More Blocks, Extensions, and other',
+        defaultMessage: 'More cool stuff for editor',
         description: 'Title of homepage',
         id: 'dash.guiDefaultTitle'
     }
@@ -781,7 +781,7 @@ class Interface extends React.PureComponent {
                                             <p>
                                                 <FormattedMessage
                                                     // eslint-disable-next-line max-len
-                                                    defaultMessage="{APP_NAME} is a mod of TurboWarp and other mods that adds a JSON category, new blocks, extensions, accent colors, compiles projects to JavaScript to make them run really fast and other features. Try it out by clicking on 'See inside' button or by inputting a project ID or URL above or choosing a featured project below."
+                                                    defaultMessage="{APP_NAME} is a mod of TurboWarp that adds cool stuff and features for editor. Try it out by clicking on 'See inside' button or by inputting a project ID or URL above or choosing a featured project below."
                                                     description="Description of Dash on the homepage"
                                                     id="dash.home.description"
                                                     values={{
@@ -790,9 +790,6 @@ class Interface extends React.PureComponent {
                                                 />
                                             </p>
                                             <FeaturedProjects />
-                                            {/*<p>
-                                                {lazyMessages[this.chooseRandomMessage()]}
-                                            </p>*/}
                                         </div>
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>

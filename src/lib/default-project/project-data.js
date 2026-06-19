@@ -167,10 +167,10 @@ const projectData = translateFunction => {
                     blockId: "c",
                     x: 517.3106466222692,
                     y: 141.03703703703704,
-                    width: 500,
-                    height: 180,
+                    width: 315,
+                    height: 155,
                     minimized: false,
-                    text: "Hello, welcome to the Dash editor!\nDash is based on Scratch, TurboWarp and other mods that adds more blocks, extensions, colors, compiles projects to JavaScript to make them run really fast and other features.\n\nDon't wait, start creating right now!"
+                    text: "Hello, welcome to the Dash editor!\nDash is a mod of TurboWarp that adds cool stuff and features for editor.\n\nDon't wait, start creating right now!"
                 }
             },
             currentCostume: 3,

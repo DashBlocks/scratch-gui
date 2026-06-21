@@ -18,7 +18,7 @@ class ExtensionLibraryItem extends React.PureComponent {
                 className={classNames(
                     styles.libraryItem,
                     {
-                        [styles.disabled]: this.props.disabled
+                        [extensionItemStyles.disabled]: this.props.disabled
                     },
                     this.props.hidden ? styles.hidden : null
                 )}

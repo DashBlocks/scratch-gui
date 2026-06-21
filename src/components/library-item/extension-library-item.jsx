@@ -16,11 +16,9 @@ class ExtensionLibraryItem extends React.PureComponent {
             <div
                 className={classNames(
                     styles.libraryItem,
-                    styles.featuredItem,
                     {
                         [styles.disabled]: this.props.disabled
                     },
-                    typeof this.props.extensionId === 'string' ? styles.libraryItemExtension : null,
                     this.props.hidden ? styles.hidden : null
                 )}
                 onClick={this.props.onClick}

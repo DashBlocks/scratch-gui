@@ -4,6 +4,7 @@ import React from 'react';
 
 import Box from '../box/box.jsx';
 import styles from './library-item.css';
+import extensionItemStyles from './extension-library-item.css';
 import classNames from 'classnames';
 
 import bluetoothIconURL from './bluetooth.svg';
@@ -23,9 +24,9 @@ class ExtensionLibraryItem extends React.PureComponent {
                 )}
                 onClick={this.props.onClick}
             >
-                <div className={styles.featuredImageContainer}>
+                <div className={extensionItemStyles.libraryItemImageContainer}>
                     {this.props.disabled ? (
-                        <div className={styles.comingSoonText}>
+                        <div className={extensionItemStyles.comingSoonText}>
                             <FormattedMessage
                                 defaultMessage="Coming Soon"
                                 description="Label for extensions that are not yet implemented"
@@ -34,7 +35,7 @@ class ExtensionLibraryItem extends React.PureComponent {
                         </div>
                     ) : null}
                     <img
-                        className={styles.featuredImage}
+                        className={extensionItemStyles.libraryItemImage}
                         loading="lazy"
                         draggable={false}
                         src={this.props.iconURL}
@@ -49,11 +50,7 @@ class ExtensionLibraryItem extends React.PureComponent {
                         />
                     </div>
                 ) : null}
-                <div
-                    className={typeof this.props.extensionId === 'string' ?
-                        classNames(styles.featuredExtensionText, styles.featuredText) : styles.featuredText
-                    }
-                >
+                <div className={styles.featuredText}>
                     <span className={styles.libraryItemName}>{this.props.name}</span>
                     <br />
                     <span className={styles.featuredDescription}>{this.props.description}</span>
@@ -67,9 +64,14 @@ class ExtensionLibraryItem extends React.PureComponent {
                   this.props.docsURI ||
                   this.props.samples
                 ) ? (
-                    <div className={styles.featuredExtensionMetadata}>
+                    <div
+                        className={classNames(
+                            styles.libraryItemMetadata,
+                            extensionItemStyles.libraryItemMetadata
+                        )}
+                    >
                         {this.props.bluetoothRequired || this.props.internetConnectionRequired ? (
-                            <div className={styles.featuredExtensionMetadataSection}>
+                            <div className={styles.libraryItemMetadataSection}>
                                 <div>
                                     <div>
                                         <FormattedMessage
@@ -79,7 +81,7 @@ class ExtensionLibraryItem extends React.PureComponent {
                                         />
                                     </div>
                                     <div
-                                        className={styles.featuredExtensionMetadataDetail}
+                                        className={styles.libraryItemMetadataDetail}
                                     >
                                         {this.props.bluetoothRequired ? (
                                             <img
@@ -98,7 +100,7 @@ class ExtensionLibraryItem extends React.PureComponent {
                             </div>
                         ) : null}
                         {this.props.collaborator ? (
-                            <div className={styles.featuredExtensionMetadataSection}>
+                            <div className={styles.libraryItemMetadataSection}>
                                 <div>
                                     <div>
                                         <FormattedMessage
@@ -108,7 +110,7 @@ class ExtensionLibraryItem extends React.PureComponent {
                                         />
                                     </div>
                                     <div
-                                        className={styles.featuredExtensionMetadataDetail}
+                                        className={styles.libraryItemMetadataDetail}
                                     >
                                         {this.props.collaborator}
                                     </div>
@@ -116,7 +118,7 @@ class ExtensionLibraryItem extends React.PureComponent {
                             </div>
                         ) : null}
                         {this.props.credits && this.props.credits.length > 0 ? (
-                            <div className={styles.featuredExtensionMetadataSection}>
+                            <div className={styles.libraryItemMetadataSection}>
                                 <div>
                                     <div>
                                         <FormattedMessage
@@ -126,7 +128,7 @@ class ExtensionLibraryItem extends React.PureComponent {
                                         />
                                     </div>
                                     <div
-                                        className={styles.featuredExtensionMetadataDetail}
+                                        className={styles.libraryItemMetadataDetail}
                                     >
                                         {this.props.credits.map((credit, index) => (
                                             <React.Fragment key={index}>
@@ -141,7 +143,7 @@ class ExtensionLibraryItem extends React.PureComponent {
                             </div>
                         ) : null}
                         {this.props.docsURI || this.props.samples ? (
-                            <div className={styles.featuredExtensionMetadataSection}>
+                            <div className={styles.libraryItemMetadataSection}>
                                 <div>
                                     <div>
                                         <FormattedMessage
@@ -151,7 +153,7 @@ class ExtensionLibraryItem extends React.PureComponent {
                                         />
                                     </div>
                                     <div
-                                        className={styles.featuredExtensionMetadataDetail}
+                                        className={styles.libraryItemMetadataDetail}
                                     >
                                         {this.props.docsURI && (
                                             <a

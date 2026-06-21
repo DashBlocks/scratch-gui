@@ -8,7 +8,6 @@
     justify-content: flex-start;
     flex-basis: 160px;
     position: relative;
-    height: 160px;
     max-width: 160px;
     margin: $space;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -28,23 +27,8 @@
     border-color: $looks-secondary;
 }
 
-.extension-library-item {
-    flex-basis: 300px;
-    max-width: 300px;
-    height: auto;
-}
-
 .hidden {
     display: none;
-}
-
-.disabled {
-    opacity: .5;
-    cursor: auto;
-}
-
-.disabled:hover {
-    border-color: $ui-black-transparent;
 }
 
 .library-item-image-container-wrapper {
@@ -105,29 +89,18 @@
     min-width: 0;
 }
 
-.featured-image-container {
-    position: relative;
-    width: 100%;
-}
-
-.featured-image {
-    width: 100%;
-    aspect-ratio: 2;
-}
-
 .featured-text {
     font-weight: bold;
     padding: 10px;
-    /* height: 140px; */
     width: 300px;
 }
 
-[dir="ltr"] .featured-extension-text {
+[dir="ltr"] .featured-text {
     text-align: left;
     padding-left: 1.25rem;
 }
 
-[dir="rtl"] .featured-extension-text {
+[dir="rtl"] .featured-text {
     text-align: right;
     padding-right: 1.25rem;
 }
@@ -140,11 +113,11 @@
     padding-bottom: .25rem;
 }
 
-.featured-extension-metadata {
+.library-item-metadata {
     width: 100%;
     padding: 0 1.25rem 1rem 1.25rem;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     gap: .5rem;
     align-items: start;
     font-size: 12px;
@@ -152,49 +125,30 @@
     opacity: 0.75;
 }
 
-[dir="ltr"] .featured-extension-metadata {
+[dir="ltr"] .library-item-metadata {
     text-align: left;
 }
 
-[dir="rtl"] .featured-extension-metadata {
+[dir="rtl"] .library-item-metadata {
     text-align: right;
 }
 
-.featured-extension-metadata-section {
+.library-item-metadata-section {
     width: 100%;
     display: flex;
     flex-direction: column;
 }
 
-.featured-extension-metadata-detail {
+.library-item-metadata-detail {
     height: 100%;
     padding-top: 0.4rem;
     font-weight: bold;
 }
 
-.featured-extension-metadata-detail img {
+.library-item-metadata-detail img {
     margin-right: 0.25rem;
     width: 20px;
     height: 20px;
-}
-
-.coming-soon-text {
-    position: absolute;
-    background-color: $data-primary;
-    border-radius: 1rem;
-    box-shadow: 0 0 .5rem hsla(0, 0%, 0%, .25);
-    padding: .5rem 1rem;
-    font-size: .875rem;
-    font-weight: bold;
-    color: $ui-white;
-}
-
-[dir="ltr"] .coming-soon-text {
-    transform: translate(calc(2 * $space), calc(2 * $space));
-}
-
-[dir="rtl"] .coming-soon-text {
-    transform: translate(calc(-2 * $space), calc(2 * $space));
 }
 
 .favorite-container {

@@ -361,6 +361,8 @@ class LibraryComponent extends React.Component {
                                             dataItem.rawURL)
                                     )}
                                     name={dataItem.name}
+                                    rate={dataItem.rate}
+                                    sampleCount={dataItem.sampleCount}
                                     credits={dataItem.credits}
                                     samples={dataItem.samples}
                                     docsURI={dataItem.docsURI}

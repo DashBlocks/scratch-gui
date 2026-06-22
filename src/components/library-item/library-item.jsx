@@ -76,45 +76,9 @@ class LibraryItemComponent extends React.PureComponent {
 
 LibraryItemComponent.propTypes = {
     intl: intlShape,
-    bluetoothRequired: PropTypes.bool,
-    collaborator: PropTypes.string,
-    description: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.node
-    ]),
-    disabled: PropTypes.bool,
-    extensionId: PropTypes.string,
-    featured: PropTypes.bool,
-    hidden: PropTypes.bool,
-    iconURL: PropTypes.string,
-    insetIconURL: PropTypes.string,
-    internetConnectionRequired: PropTypes.bool,
-    isPlaying: PropTypes.bool,
     libraryId: PropTypes.string.isRequired,
-    name: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.node
-    ]),
-    credits: PropTypes.arrayOf(PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.node
-    ])),
-    docsURI: PropTypes.string,
-    samples: PropTypes.arrayOf(PropTypes.shape({
-        href: PropTypes.string,
-        text: PropTypes.string
-    })),
     favorite: PropTypes.bool,
-    onFavorite: PropTypes.func,
-    onBlur: PropTypes.func.isRequired,
-    onClick: PropTypes.func.isRequired,
-    onFocus: PropTypes.func.isRequired,
-    onKeyPress: PropTypes.func.isRequired,
-    onMouseEnter: PropTypes.func.isRequired,
-    onMouseLeave: PropTypes.func.isRequired,
-    onPlay: PropTypes.func.isRequired,
-    onStop: PropTypes.func.isRequired,
-    showPlayButton: PropTypes.bool
+    onFavorite: PropTypes.func
 };
 
 export default LibraryItemComponent;

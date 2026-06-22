@@ -1,3 +1,4 @@
+import {FormattedMessage} from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -42,6 +43,21 @@ class SpriteCostumeLibraryItem extends React.PureComponent {
                 </Box>
                 <div className={styles.featuredText}>
                     <span>{this.props.name}</span>
+                    {this.props.libraryId === "spriteLibrary" && (
+                        <>
+                            <br />
+                            <span className={styles.featuredThinDescription}>
+                                <FormattedMessage
+                                    defaultMessage="{costumesCount} costumes"
+                                    description="Appears in the sprite list. Shows the number of costumes the sprite has."
+                                    id="dash.costumesCount"
+                                    values={{
+                                        costumesCount: this.props.icons.length
+                                    }}
+                                />
+                            </span>
+                        </>
+                    )}
                 </div>
                 {/*this.props.showPlayButton ? (
                     <PlayButton

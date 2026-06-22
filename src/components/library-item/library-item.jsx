@@ -4,6 +4,7 @@ import React from 'react';
 
 import Box from '../box/box.jsx';
 import SpriteCostumeLibraryItem from './sprite-costume-library-item.jsx';
+import SoundLibraryItem from './sound-library-item.jsx';
 import ExtensionLibraryItem from './extension-library-item.jsx';
 import styles from './library-item.css';
 import classNames from 'classnames';
@@ -58,7 +59,7 @@ class LibraryItemComponent extends React.PureComponent {
                 {...this.props}
             />
         ) : this.props.libraryId === "soundLibrary" ? (
-            <SpriteCostumeLibraryItem
+            <SoundLibraryItem
                 favoriteButton={favorite}
                 {...this.props}
             />

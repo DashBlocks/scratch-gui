@@ -6,9 +6,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    flex-basis: 160px;
+    flex-basis: 175px;
     position: relative;
-    max-width: 160px;
+    max-width: 175px;
     margin: $space;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: $text-primary;
@@ -75,7 +75,6 @@
 }
 
 .library-item-name {
-    width: 80%;
     margin: 0.25rem 0;
     text-align: center;
 
@@ -92,7 +91,7 @@
 .featured-text {
     font-weight: bold;
     padding: 10px;
-    width: 300px;
+    width: 100%;
 }
 
 [dir="ltr"] .featured-text {

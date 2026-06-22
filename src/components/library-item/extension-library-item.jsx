@@ -1,4 +1,4 @@
-import {FormattedMessage, intlShape, defineMessages} from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -17,10 +17,11 @@ class ExtensionLibraryItem extends React.PureComponent {
             <div
                 className={classNames(
                     styles.libraryItem,
+                    extensionItemStyles.libraryItem,
                     {
+                        [styles.hidden]: this.props.hidden,
                         [extensionItemStyles.disabled]: this.props.disabled
-                    },
-                    this.props.hidden ? styles.hidden : null
+                    }
                 )}
                 onClick={this.props.onClick}
             >
@@ -211,7 +212,6 @@ class ExtensionLibraryItem extends React.PureComponent {
 
 
 ExtensionLibraryItem.propTypes = {
-    intl: intlShape,
     bluetoothRequired: PropTypes.bool,
     collaborator: PropTypes.string,
     description: PropTypes.oneOfType([

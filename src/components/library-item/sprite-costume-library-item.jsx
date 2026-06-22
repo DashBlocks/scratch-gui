@@ -41,7 +41,7 @@ class SpriteCostumeLibraryItem extends React.PureComponent {
                     </Box>
                 </Box>
                 <div className={styles.featuredText}>
-                    <span className={styles.libraryItemName}>{this.props.name}</span>
+                    <span>{this.props.name}</span>
                 </div>
                 {/*this.props.showPlayButton ? (
                     <PlayButton

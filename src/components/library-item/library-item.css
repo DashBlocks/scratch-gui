@@ -98,6 +98,14 @@
     padding-bottom: .25rem;
 }
 
+.featured-thin-description {
+    display: block;
+    font-weight: normal;
+    font-size: 12px;
+    padding-top: .3125rem;
+    padding-bottom: .25rem;
+}
+
 .library-item-metadata {
     width: 100%;
     padding: 0 1.25rem 1rem 1.25rem;

@@ -74,20 +74,6 @@
     width: 2.5rem;
 }
 
-.library-item-name {
-    margin: 0.25rem 0;
-    text-align: center;
-
-    /*
-        For truncating overflowing text gracefully
-        Min-width is for a bug: https://css-tricks.com/flexbox-truncated-text
-    */
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    min-width: 0;
-}
-
 .featured-text {
     font-weight: bold;
     padding: 10px;

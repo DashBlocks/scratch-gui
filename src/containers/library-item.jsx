@@ -161,6 +161,8 @@ class LibraryItem extends React.PureComponent {
                 isPlaying={this.props.isPlaying}
                 libraryId={this.props.libraryId}
                 name={this.props.name}
+                rate={this.props.rate}
+                sampleCount={this.props.sampleCount}
                 credits={this.props.credits}
                 docsURI={this.props.docsURI}
                 samples={this.props.samples}
@@ -211,6 +213,8 @@ LibraryItem.propTypes = {
         PropTypes.string,
         PropTypes.node
     ]),
+    rate: PropTypes.number,
+    sampleCount: PropTypes.number,
     credits: PropTypes.arrayOf(PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node

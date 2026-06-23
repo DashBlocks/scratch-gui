@@ -35,12 +35,13 @@
     height: 100px;
     width: 100%;
     position: relative;
+    padding: $space $space 0 $space;
 }
 
 .library-item-image-container {
     position: absolute;
-    height: 100px;
-    width: 100%;
+    height: calc(100px - $space);
+    width: calc(100% - $space * 2);
 }
 
 .library-item-inset-image-container {

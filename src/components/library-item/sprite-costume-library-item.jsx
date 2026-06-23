@@ -45,7 +45,7 @@ class SpriteCostumeLibraryItem extends React.PureComponent {
                             <br />
                             <span className={styles.featuredThinDescription}>
                                 <FormattedMessage
-                                    defaultMessage="{costumesCount} costumes"
+                                    defaultMessage="{costumesCount, plural, one {1 costume} other {# costumes}}"
                                     description="Appears in the sprite list. Shows the number of costumes the sprite has."
                                     id="dash.costumesCount"
                                     values={{

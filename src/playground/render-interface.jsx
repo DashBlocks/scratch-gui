@@ -172,7 +172,7 @@ const RenderVersion = () => {
             .then(data => {
                 const latestCommit = data[0];
                 const matchedVersion = latestCommit.commit.message.match(/^(\[(\d+(\.\d+)*)\])/);
-                setVersion(matchedVersion[2]);
+                setVersion((matchedVersion && matchedVersion.length > 2) ? matchedVersion[2] : null);
             });
     };
 
@@ -183,7 +183,7 @@ const RenderVersion = () => {
     return (
         <div className={styles.footerText}>
             <div className={styles.commitVersion}>
-                {window.location.href.startsWith('https://dashblocks.org/scratch-gui') ? 'Dev' : 'v' + version}
+                {window.location.href.startsWith('https://dashblocks.org/scratch-gui') ? 'Dev' : (version ? 'v' + version : '?')}
             </div>
         </div>
     );

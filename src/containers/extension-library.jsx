@@ -172,7 +172,7 @@ const fetchLibrary = async () => {
             }),
             ...(extension.notes ? [extension.notes] : [])
         ],
-        docsURI: extension.documentation ? `https://dashblocks.org/dash-extensions-gallery/static/documentations/${extension.documentation}.md` : null,
+        docsURI: extension.documentation ? `https://dashblocks.org/extensions/static/documentations/${extension.documentation}.md` : null,
         samples: /*extension.samples ? extension.samples.map(sample => ({
             href: `${process.env.ROOT}editor?project_url=https://extensions.turbowarp.org/samples/${encodeURIComponent(sample)}.sb3`,
             text: sample

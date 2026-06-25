@@ -183,7 +183,7 @@ const RenderVersion = () => {
     return (
         <div className={styles.footerText}>
             <div className={styles.commitVersion}>
-                {window.location.href.startsWith('https://dashblocks.github.io/scratch-gui') ? 'Dev' : 'v' + version}
+                {window.location.href.startsWith('https://dashblocks.org/scratch-gui') ? 'Dev' : 'v' + version}
             </div>
         </div>
     );
@@ -268,29 +268,29 @@ const Footer = () => (
                     </a>*/}
                 </div>
                 <div className={styles.footerSection}>
-                    <a href="https://dashblocks.github.io/desktop">
+                    <a href="https://dashblocks.org/desktop">
                         {/* Do not translate */}
                         {'Dash Desktop'}
                     </a>
-                    <a href="https://dashblocks.github.io/packager">
+                    <a href="https://dashblocks.org/packager">
                         {/* Do not translate */}
                         {'Dash Packager'}
                     </a>
-                    <a href="https://dashblocks.github.io/docs/embedding">
+                    <a href="https://dashblocks.org/docs/embedding">
                         <FormattedMessage
                             defaultMessage="Embedding"
                             description="Link in footer to embedding documentation for embedding link"
                             id="tw.footer.embed"
                         />
                     </a>
-                    <a href="https://dashblocks.github.io/docs/url-parameters">
+                    <a href="https://dashblocks.org/docs/url-parameters">
                         <FormattedMessage
                             defaultMessage="URL Parameters"
                             description="Link in footer to URL parameters documentation"
                             id="tw.footer.parameters"
                         />
                     </a>
-                    <a href="https://dashblocks.github.io/docs/">
+                    <a href="https://dashblocks.org/docs/">
                         <FormattedMessage
                             defaultMessage="Documentation"
                             description="Link in footer to additional documentation"
@@ -843,11 +843,11 @@ class Interface extends React.PureComponent {
                                                             values={{
                                                                 link: (
                                                                     <a
-                                                                        href="https://dashblocks.github.io/docs/unshared-projects"
+                                                                        href="https://dashblocks.org/docs/unshared-projects"
                                                                         target="_blank"
                                                                         rel="noopener noreferrer"
                                                                     >
-                                                                        {'https://dashblocks.github.io/docs/unshared-projects'}
+                                                                        {'https://dashblocks.org/docs/unshared-projects'}
                                                                     </a>
                                                                 )
                                                             }}

@@ -438,7 +438,7 @@ export const galleryLoading = {
             }}
         />
     ),
-    href: 'https://dashblocks.github.io/extensions',
+    href: 'https://dashblocks.org/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
@@ -464,13 +464,13 @@ export const galleryMore = {
             }}
         />
     ),
-    href: 'https://dashblocks.github.io/extensions',
+    href: 'https://dashblocks.org/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
-            defaultMessage="Learn more about extensions at dashblocks.github.io/extensions."
+            defaultMessage="Learn more about extensions at dashblocks.org/extensions."
             description="Appears after the extension list from the gallery was loaded successfully"
             id="dash.extensionGallery.more"
         />
@@ -490,13 +490,13 @@ export const galleryError = {
             }}
         />
     ),
-    href: 'https://dashblocks.github.io/extensions',
+    href: 'https://dashblocks.org/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
-            defaultMessage="Error loading extension gallery. Visit dashblocks.github.io/extensions to find more extensions."
+            defaultMessage="Error loading extension gallery. Visit dashblocks.org/extensions to find more extensions."
             description="Appears when an error occurred loading extension list from the custom extension gallery"
             id="dash.extensionGallery.error"
         />

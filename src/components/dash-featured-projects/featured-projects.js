@@ -303,7 +303,7 @@ FeaturedProjects.THUMBNAIL_SRC = 'https://dashblocks-server.vercel.app/projects/
 
 // The URL for project pages.
 // $id is replaced with the project ID.
-FeaturedProjects.PROJECT_PAGE = 'https://dashblocks.github.io/#$id';
+FeaturedProjects.PROJECT_PAGE = 'https://dashblocks.org/#$id';
 
 // The amount of "placeholders" to insert before the next page loads.
 FeaturedProjects.PLACEHOLDER_COUNT = 9;

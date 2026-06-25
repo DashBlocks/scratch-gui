@@ -43,7 +43,7 @@ const messages = defineMessages({
 
 const Packager = () => (
     <a
-        href="https://dashblocks.github.io/packager"
+        href="https://dashblocks.org/packager"
         target="_blank"
         rel="noopener noreferrer"
     >

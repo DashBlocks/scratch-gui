@@ -226,7 +226,7 @@ class Blocks extends React.Component {
             }
         });
         toolboxWorkspace.registerButtonCallback('OPEN_RETURN_DOCS', () => {
-            window.open('https://dashblocks.github.io/docs/return', '_blank');
+            window.open('https://dashblocks.org/docs/return', '_blank');
         });
 
         // Store the xml of the toolbox that is actually rendered.

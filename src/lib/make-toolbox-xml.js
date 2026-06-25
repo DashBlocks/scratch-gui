@@ -447,7 +447,7 @@ const events = function (isInitialSetup, isStage, targetId, colors) {
         <block type="event_open">
             <value name="OPEN_LINK">
                 <shadow type="text">
-                    <field name="TEXT">https://dashblocks.github.io</field>
+                    <field name="TEXT">https://dashblocks.org</field>
                 </shadow>
             </value>
         </block>

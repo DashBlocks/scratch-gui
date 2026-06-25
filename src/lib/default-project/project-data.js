@@ -232,7 +232,7 @@ const projectData = translateFunction => {
         agent: "",
         platform: {
             name: "Dash",
-            url: "https://dashblocks.github.io/"
+            url: "https://dashblocks.org/"
         }
     }
     })

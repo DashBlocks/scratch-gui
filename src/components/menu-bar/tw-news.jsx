@@ -66,7 +66,7 @@ class TWNews extends React.Component {
                         {/* eslint-disable-next-line max-len */}
                         {`We rewrote the ${APP_NAME} compiler to make projects run even faster. Bugs are possible. `}
                         <a
-                            href="https://dashblocks.github.io/docs/new-compiler"
+                            href="https://dashblocks.org/docs/new-compiler"
                             target="_blank"
                             rel="noreferrer"
                         >
@@ -74,7 +74,7 @@ class TWNews extends React.Component {
                         </a>
                         {' '}
                         <a
-                            href="https://dashblocks.github.io/old-compiler"
+                            href="https://dashblocks.org/old-compiler"
                             target="_blank"
                             rel="noreferrer"
                         >
@@ -91,7 +91,7 @@ class TWNews extends React.Component {
                         {/* eslint-disable-next-line max-len */}
                         {`This is a "Dev" version of ${APP_NAME}. Please do not use this version for real projects, as it may break your projects! `}
                         <a
-                            href="https://dashblocks.github.io"
+                            href="https://dashblocks.org"
                             rel="noreferrer"
                         >
                             {'Main version.'}
@@ -107,7 +107,7 @@ class TWNews extends React.Component {
                         {/* eslint-disable-next-line max-len */}
                         {`Happy New Year! Enjoy the festive theme while it lasts. `}
                         <a
-                            href={isNewYearMode() ? 'https://dashblocks.github.io' : 'https://dashblocks.github.io/?newYearMode'}
+                            href={isNewYearMode() ? 'https://dashblocks.org' : 'https://dashblocks.org/?newYearMode'}
                             rel="noreferrer"
                         >
                             {isNewYearMode() ? 'Switch to normal mode.' : 'Switch to new year mode.'}

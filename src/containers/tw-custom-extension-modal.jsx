@@ -198,7 +198,7 @@ class CustomExtensionModal extends React.Component {
                                 await this.props.vm.extensionManager.loadExtensionURL(
                                     url.replace(
                                         'https://extensions.turbowarp.org/',
-                                        'https://dashblocks.github.io/tw-extensions/'
+                                        'https://dashblocks.org/tw-extensions/'
                                     )
                                 );
                                 return;
@@ -210,7 +210,7 @@ class CustomExtensionModal extends React.Component {
                             await this.props.vm.extensionManager.loadExtensionURL(
                                 url.replace(
                                     'https://extensions.turbowarp.org/',
-                                    'https://dashblocks.github.io/tw-extensions/'
+                                    'https://dashblocks.org/tw-extensions/'
                                 )
                             );
                             return;

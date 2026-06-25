@@ -1,6 +1,6 @@
 const getSession = async (userId, password) => {
     if (userId && password) {
-        const res = await fetch('https://dashblocks-server.vercel.app/auth/login', {
+        const res = await fetch('https://api.dashblocks.org/auth/login', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({userId, password}),
@@ -11,7 +11,7 @@ const getSession = async (userId, password) => {
     }
 
     try {
-        const res = await fetch('https://dashblocks-server.vercel.app/session', {credentials: 'include'});
+        const res = await fetch('https://api.dashblocks.org/session', {credentials: 'include'});
         if (res.ok) {
             const data = await res.json();
             return data.user;

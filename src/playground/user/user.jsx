@@ -99,7 +99,7 @@ const User = (props) => {
             try {
                 const session = await getSession();
                 setIsMyProfile(session?.id?.toString() === id || session?.username?.toLowerCase() === id?.toLowerCase());
-                const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}`, {credentials: "include"});
+                const userRes = await fetch(`https://api.dashblocks.org/users/${id}`, {credentials: "include"});
                 user = await userRes.json();
 
                 if (!user.ok) throw new Error(user.error);
@@ -111,15 +111,15 @@ const User = (props) => {
                 setAchievements(user.user.profile.achievements);
                 setLinks(user.user.profile.links);
 
-                const projectsRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/projects?limit=20&offset=0`);
+                const projectsRes = await fetch(`https://api.dashblocks.org/users/${id}/projects?limit=20&offset=0`);
                 const projectsData = await projectsRes.json();
                 setProjects(projectsData.projects);
 
-                const followersRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/followers?limit=20&offset=0`);
+                const followersRes = await fetch(`https://api.dashblocks.org/users/${id}/followers?limit=20&offset=0`);
                 const followersData = await followersRes.json();
                 setFollowers(followersData.followers);
 
-                const followingRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/following?limit=20&offset=0`);
+                const followingRes = await fetch(`https://api.dashblocks.org/users/${id}/following?limit=20&offset=0`);
                 const followingData = await followingRes.json();
                 setFollowing(followingData.following);
             } catch (error) {
@@ -182,7 +182,7 @@ const User = (props) => {
 
         try {
             avgGradientByImgSections(
-                `https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId}`,
+                `https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}`,
                 5,
                 2
             ).then(avgGradient => setAvgGradient(avgGradient));
@@ -260,7 +260,7 @@ const User = (props) => {
         const formData = new FormData();
         formData.append('avatar', file);
 
-        const response = await fetch('https://dashblocks-server.vercel.app/users/upload-avatar', {
+        const response = await fetch('https://api.dashblocks.org/users/upload-avatar', {
             method: 'POST',
             body: formData,
             credentials: 'include'
@@ -290,7 +290,7 @@ const User = (props) => {
 
         const endpoint = isFollowing ? 'unfollow' : 'follow';
         try {
-            const response = await fetch(`https://dashblocks-server.vercel.app/users/${id}/${endpoint}`, {
+            const response = await fetch(`https://api.dashblocks.org/users/${id}/${endpoint}`, {
                 method: 'POST',
                 credentials: 'include'
             });
@@ -319,7 +319,7 @@ const User = (props) => {
             }
         }));
         try {
-            const response = await fetch('https://dashblocks-server.vercel.app/users/set-description', {
+            const response = await fetch('https://api.dashblocks.org/users/set-description', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -353,7 +353,7 @@ const User = (props) => {
 
         setRecommendProjectButtonDisabled(true);
         try {
-            const response = await fetch('https://dashblocks-server.vercel.app/users/set-recommended-project', {
+            const response = await fetch('https://api.dashblocks.org/users/set-recommended-project', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -365,7 +365,7 @@ const User = (props) => {
             if (!data.ok) {
                 throw new Error(data.error);
             }
-            const projectData = (await (await fetch(`https://dashblocks-server.vercel.app/projects/${projectId}`)).json())?.project;
+            const projectData = (await (await fetch(`https://api.dashblocks.org/projects/${projectId}`)).json())?.project;
             setUserData(prev => ({
                 ...prev,
                 profile: {
@@ -440,7 +440,7 @@ const User = (props) => {
                         />
                         <img
                             draggable={false}
-                            src={`https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId}`}
+                            src={`https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}`}
                             alt={userData.username}
                             onClick={() => isMyProfile ? fileInputRef.current.click() : null}
                             className={styles.avatarImg}
@@ -631,7 +631,7 @@ const User = (props) => {
                                     >
                                         <img
                                             draggable={false}
-                                            src={`https://dashblocks-server.vercel.app/projects/thumbnails/${userData.profile.recommendedProject.thumbnailId || 1}`}
+                                            src={`https://api.dashblocks.org/projects/thumbnails/${userData.profile.recommendedProject.thumbnailId || 1}`}
                                             alt={userData.profile.recommendedProject.id}
                                         />
                                         <h4>{userData.profile.recommendedProject.name || "Unknown"}</h4>
@@ -701,7 +701,7 @@ const User = (props) => {
                                     <div className={styles.thumbWrapper}>
                                         <img
                                             draggable={false}
-                                            src={`https://dashblocks-server.vercel.app/projects/thumbnails/${project.thumbnailId || 1}`}
+                                            src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
                                             alt={project.id}
                                         />
                                     </div>
@@ -745,7 +745,7 @@ const User = (props) => {
                                 >
                                     <img
                                         draggable={false}
-                                        src={`https://dashblocks-server.vercel.app/users/avatars/${follower.profile.avatarId}`}
+                                        src={`https://api.dashblocks.org/users/avatars/${follower.profile.avatarId}`}
                                         alt={follower.username}
                                         className={styles.followAvatar}
                                     />
@@ -777,7 +777,7 @@ const User = (props) => {
                                 >
                                     <img
                                         draggable={false}
-                                        src={`https://dashblocks-server.vercel.app/users/avatars/${followed.profile.avatarId}`}
+                                        src={`https://api.dashblocks.org/users/avatars/${followed.profile.avatarId}`}
                                         alt={followed.username}
                                         className={styles.followAvatar}
                                     />

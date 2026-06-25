@@ -37,7 +37,7 @@ const StageFooter = (props) => {
     useEffect(() => {
         async function fetchProjectMetadata() {
             setIsDashProject(false);
-            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${props.projectId}`);
+            const res = await fetch(`https://api.dashblocks.org/projects/${props.projectId}`);
             const data = await res.json();
             if (data.ok) {
                 setProjectMetadata(data.project);
@@ -66,7 +66,7 @@ const StageFooter = (props) => {
             return;
         }
         if (isFired) {
-            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${props.projectId}/fire`, {
+            const res = await fetch(`https://api.dashblocks.org/projects/${props.projectId}/fire`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -82,7 +82,7 @@ const StageFooter = (props) => {
                 }));
             }
         } else {
-            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${props.projectId}/fire`, {
+            const res = await fetch(`https://api.dashblocks.org/projects/${props.projectId}/fire`, {
                 method: 'POST',
                 credentials: 'include'
             });

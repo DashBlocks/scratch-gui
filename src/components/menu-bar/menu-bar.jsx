@@ -316,7 +316,7 @@ class MenuBar extends React.Component {
                         const description = prompt('Enter a description for your project:') || '';
                         formData.append('description', description);
 
-                        const response = await fetch('https://dashblocks-server.vercel.app/save-project', {
+                        const response = await fetch('https://api.dashblocks.org/save-project', {
                             method: 'POST',
                             body: formData,
                             credentials: 'include'
@@ -334,7 +334,7 @@ class MenuBar extends React.Component {
                                 });
                             });
                             formData.append('thumbnail', thumbnailBlob, 'thumbnail.png');
-                            const thumbnailResponse = await fetch(`https://dashblocks-server.vercel.app/projects/${result.projectId}/upload-thumbnail`, {
+                            const thumbnailResponse = await fetch(`https://api.dashblocks.org/projects/${result.projectId}/upload-thumbnail`, {
                                 method: 'POST',
                                 body: formData,
                                 credentials: 'include'
@@ -364,7 +364,7 @@ class MenuBar extends React.Component {
     }
     async handleClickLogOut () {
         try {
-            const response = await fetch('https://dashblocks-server.vercel.app/auth/logout', {credentials: 'include'});
+            const response = await fetch('https://api.dashblocks.org/auth/logout', {credentials: 'include'});
             const data = await response.json();
             if (!data.ok) return alert('Sign out failed');
             this.props.setSession({});

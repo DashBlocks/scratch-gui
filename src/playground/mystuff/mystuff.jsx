@@ -63,7 +63,7 @@ const User = (props) => {
             }
             let userData;
             try {
-                const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${session.id}`);
+                const userRes = await fetch(`https://api.dashblocks.org/users/${session.id}`);
                 userData = await userRes.json();
                 if (!userData.ok) throw new Error(userData.error);
                 setUserData(userData.user);
@@ -84,7 +84,7 @@ const User = (props) => {
             return;
 
         try {
-            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${projectId}`, {
+            const res = await fetch(`https://api.dashblocks.org/projects/${projectId}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -148,7 +148,7 @@ const User = (props) => {
                                     <div className={styles.thumbWrapper}>
                                         <img
                                             draggable={false}
-                                            src={`https://dashblocks-server.vercel.app/projects/thumbnails/${project.thumbnailId || 1}`}
+                                            src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
                                             alt={project.id}
                                         />
                                     </div>

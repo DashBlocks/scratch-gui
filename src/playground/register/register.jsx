@@ -46,7 +46,7 @@ const messages = defineMessages({
     } */
 });
 
-// const redirectLocation = btoa('https://dashblocks-server.vercel.app/auth/verify-scratch');
+// const redirectLocation = btoa('https://api.dashblocks.org/auth/verify-scratch');
 
 class Register extends React.Component {
     constructor (props) {
@@ -83,7 +83,7 @@ class Register extends React.Component {
     }
 
     /* handleVerificationMessage (event) {
-        if (event.origin !== 'https://dashblocks-server.vercel.app') return;
+        if (event.origin !== 'https://api.dashblocks.org') return;
         const data = event.data;
         if (data && data.type === 'verification_success') {
             this.setState({
@@ -116,7 +116,7 @@ class Register extends React.Component {
                 throw new Error(this.props.intl.formatMessage(messages.passwordsDontMatch));
             /* if (!verificationToken)
                 throw new Error(this.props.intl.formatMessage(messages.verificationMissingToken)); */
-            const response = await fetch('https://dashblocks-server.vercel.app/auth/register', {
+            const response = await fetch('https://api.dashblocks.org/auth/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({username, password /* , verificationToken */}),

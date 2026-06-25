@@ -60,7 +60,7 @@ const UserProjects = (props) => {
 
         setLoading(true);
         const fetchData = async () => {
-            const userReq = await fetch(`https://dashblocks-server.vercel.app/users/${id}`);
+            const userReq = await fetch(`https://api.dashblocks.org/users/${id}`);
             if (!userReq.ok) {
                 setError('Failed to fetch user data');
                 setLoading(false);
@@ -86,7 +86,7 @@ const UserProjects = (props) => {
     const fetchProjects = async (currentOffset) => {
         setLoadMoreButtonDisabled(true);
         try {
-            const projectsRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}/projects?limit=${limit}&offset=${currentOffset}`, {
+            const projectsRes = await fetch(`https://api.dashblocks.org/users/${id}/projects?limit=${limit}&offset=${currentOffset}`, {
                 credentials: 'include'
             });
             if (!projectsRes.ok) throw new Error('Failed to fetch projects');
@@ -160,7 +160,7 @@ const UserProjects = (props) => {
                                     <div className={styles.thumbWrapper}>
                                         <img
                                             draggable={false}
-                                            src={`https://dashblocks-server.vercel.app/projects/thumbnails/${project.thumbnailId || 1}`}
+                                            src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
                                             alt={project.id}
                                         />
                                     </div>

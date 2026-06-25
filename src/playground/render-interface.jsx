@@ -357,7 +357,7 @@ const WhatsHappening = ({intl}) => {
     async function fetchActivity(currentOffset) {
         setLoadMoreButtonDisabled(true);
         try {
-            const res = await fetch(`https://dashblocks-server.vercel.app/session/activity?limit=${limit}&offset=${currentOffset}`, {
+            const res = await fetch(`https://api.dashblocks.org/session/activity?limit=${limit}&offset=${currentOffset}`, {
                 credentials: 'include'
             });
             
@@ -449,7 +449,7 @@ const WhatsHappening = ({intl}) => {
                     className={styles.actionContent}
                 >
                     <img
-                        src={`https://dashblocks-server.vercel.app/users/avatars/${action.author.profile.avatarId}`}
+                        src={`https://api.dashblocks.org/users/avatars/${action.author.profile.avatarId}`}
                         alt={action.author.username}
                         className={styles.actionAvatar}
                     />

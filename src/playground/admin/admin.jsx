@@ -116,7 +116,7 @@ const Admin = (props) => {
         setFeatureProjectButtonLoading(true);
 
         try {
-            const res = await fetch(`https://dashblocks-server.vercel.app/featured-projects/${Number(projectId)}`, {
+            const res = await fetch(`https://api.dashblocks.org/featured-projects/${Number(projectId)}`, {
                 method: 'POST',
                 credentials: 'include'
             });
@@ -136,7 +136,7 @@ const Admin = (props) => {
         setUnfeatureProjectButtonLoading(true);
 
         try {
-            const res = await fetch(`https://dashblocks-server.vercel.app/featured-projects/${Number(projectId)}`, {
+            const res = await fetch(`https://api.dashblocks.org/featured-projects/${Number(projectId)}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -156,7 +156,7 @@ const Admin = (props) => {
         setDeleteProjectButtonLoading(true);
 
         try {
-            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${Number(projectId)}`, {
+            const res = await fetch(`https://api.dashblocks.org/projects/${Number(projectId)}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -181,7 +181,7 @@ const Admin = (props) => {
             const body = { targetUsername, action: manageAction };
             if (manageAction === 'promote') body.role = manageRole;
 
-            const res = await fetch('https://dashblocks-server.vercel.app/admin/manage-user', {
+            const res = await fetch('https://api.dashblocks.org/admin/manage-user', {
                 method: 'POST',
                 credentials: 'include',
                 headers: { 'Content-Type': 'application/json' },

@@ -33,7 +33,7 @@ export const fetchProjectMeta = async (projectId, reduxProjectId = projectId) =>
         throw firstError;
     } else {
         try {
-            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${projectId}`);
+            const res = await fetch(`https://api.dashblocks.org/projects/${projectId}`);
             const data = await res.json();
             if (res.ok) {
                 return data.project;
@@ -121,7 +121,7 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
                             }
                             const authorName = data.author.username;
                             const authorId = data.author.id;
-                            const authorThumbnail = `https://dashblocks-server.vercel.app/users/avatars/${data.author.profile.avatarId}`;
+                            const authorThumbnail = `https://api.dashblocks.org/users/avatars/${data.author.profile.avatarId}`;
                             this.props.onSetAuthor(authorName, authorId, authorThumbnail);
                             const description = data.description || '';
                             if (description) {

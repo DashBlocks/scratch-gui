@@ -83,7 +83,7 @@ const Messages = (props) => {
     const fetchMessages = async (currentOffset) => {
         setLoadMoreButtonDisabled(true);
         try {
-            const messagesRes = await fetch(`https://dashblocks-server.vercel.app/session/messages?limit=${limit}&offset=${currentOffset}`, {
+            const messagesRes = await fetch(`https://api.dashblocks.org/session/messages?limit=${limit}&offset=${currentOffset}`, {
                 credentials: 'include'
             });
             if (!messagesRes.ok) throw new Error('Failed to fetch messages');

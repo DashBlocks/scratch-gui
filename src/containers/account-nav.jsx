@@ -34,7 +34,7 @@ const mapStateToProps = state => ({
     profileUrl: state.scratchGui.dash.session && state.scratchGui.dash.session.id ?
         `user#${state.scratchGui.dash.session.id}` : '',
     thumbnailUrl: state.scratchGui.dash.session && state.scratchGui.dash.session.profile && state.scratchGui.dash.session.profile.avatarId ?
-        `https://dashblocks-server.vercel.app/users/avatars/${state.scratchGui.dash.session.profile.avatarId}` : '',
+        `https://api.dashblocks.org/users/avatars/${state.scratchGui.dash.session.profile.avatarId}` : '',
     username: state.scratchGui.dash.session && state.scratchGui.dash.session.username ?
         state.scratchGui.dash.session.username : '',
     role: state.scratchGui.dash.session && state.scratchGui.dash.session.role ?

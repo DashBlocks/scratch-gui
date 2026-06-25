@@ -295,11 +295,11 @@ FeaturedProjects.prototype.onselect = function (id, el) { };
 FeaturedProjects.prototype.onpageload = function () { };
 FeaturedProjects.prototype.onend = function () { };
 
-FeaturedProjects.FEATURED_API = 'https://dashblocks-server.vercel.app/featured-projects';
+FeaturedProjects.FEATURED_API = 'https://api.dashblocks.org/featured-projects';
 
 // The URL to download thumbnails from.
 // $id is replaced with the project's ID.
-FeaturedProjects.THUMBNAIL_SRC = 'https://dashblocks-server.vercel.app/projects/thumbnails/$id';
+FeaturedProjects.THUMBNAIL_SRC = 'https://api.dashblocks.org/projects/thumbnails/$id';
 
 // The URL for project pages.
 // $id is replaced with the project ID.

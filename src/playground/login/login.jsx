@@ -30,9 +30,9 @@ const messages = defineMessages({
         id: 'dash.login.signIn'
     },
     failedToLogIn: {
-        id: 'dash.login.failedToLogIn',
         defaultMessage: 'Failed to log in, try again later',
-        description: 'Title of error message when log in failed'
+        description: 'Title of error message when log in failed',
+        id: 'dash.login.failedToLogIn'
     }
 });
 

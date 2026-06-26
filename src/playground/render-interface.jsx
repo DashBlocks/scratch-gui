@@ -259,13 +259,13 @@ const Footer = () => (
                             id="tw.footer.credits"
                         />
                     </a>
-                    {/*<a href="...">
+                    <a href="donate">
                         <FormattedMessage
                             defaultMessage="Donate"
                             description="Donation link in footer"
                             id="tw.footer.donate"
                         />
-                    </a>*/}
+                    </a>
                 </div>
                 <div className={styles.footerSection}>
                     <a href="https://dashblocks.org/desktop">

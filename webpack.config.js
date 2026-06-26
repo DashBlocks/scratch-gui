@@ -30,7 +30,7 @@ const CACHE_EPOCH = 'pentapod';
 
 const base = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-    devtool: process.env.SOURCEMAP || (process.env.NODE_ENV === 'production' ? false : 'cheap-module-source-map'),
+    devtool: false, //process.env.SOURCEMAP || (process.env.NODE_ENV === 'production' ? false : 'cheap-module-source-map'),
     devServer: {
         contentBase: path.resolve(__dirname, 'build'),
         host: '0.0.0.0',
@@ -154,6 +154,7 @@ module.exports = [
             'login': './src/playground/login/login.jsx',
             'register': './src/playground/register/register.jsx',
             'account-settings': './src/playground/account-settings/account-settings.jsx',
+            'donate': './src/playground/donate/donate.jsx',
             'mystuff': './src/playground/mystuff/mystuff.jsx',
             'messages': './src/playground/messages/messages.jsx',
             'admin': './src/playground/admin/admin.jsx'
@@ -275,6 +276,13 @@ module.exports = [
                 template: 'src/playground/simple.ejs',
                 filename: 'account-settings.html',
                 title: `Account Settings - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['donate'],
+                template: 'src/playground/simple.ejs',
+                filename: 'donate.html',
+                title: `Donate - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

@@ -1,0 +1,169 @@
+@import "../../css/colors.css";
+@import "../../css/units.css";
+@import "../../css/z-index.css";
+@import "../../css/default-colors.css";
+
+/* Base styles used by Scratch https://github.com/LLK/scratch-www/blob/develop/src/main.scss */
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: bold;
+    line-height: 1.7em;
+}
+h1 {
+    font-weight: 2.5rem;
+}
+h2 {
+    font-weight: 2rem;
+}
+h3 {
+    font-size: 1.4rem;
+}
+h4 {
+    font-size: 1rem;
+}
+a {
+    color: $link-color;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 0px;
+}
+
+.container {
+    position: absolute;
+    top: $menu-bar-height;
+    left: 0;
+    width: 100%;
+    max-width: 100%;
+    background: $page-background;
+    color: $page-foreground;
+}
+
+.donate-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $space;
+    background: $ui-primary;
+    margin: 0px;
+    padding: $space;
+    width: 100%;
+}
+
+.section {
+    width: 100%;
+    max-width: 900px;
+    background: $ui-white;
+    margin: 0px;
+    padding: $space;
+    border-radius: $space;
+    border: 0.0625rem solid $ui-black-transparent;
+}
+
+.plan-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.plan-card {
+    border: 1px solid $ui-black-transparent;
+    border-radius: $space;
+    background: $ui-primary;
+    color: $page-foreground;
+    padding: 1rem;
+    text-align: left;
+    cursor: pointer;
+}
+
+.plan-card:hover {
+    border-color: $looks-secondary;
+}
+
+.selected {
+    border-color: $looks-secondary;
+    background: $looks-secondary;
+    color: $ui-white;
+}
+
+.plan-title {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+}
+
+.label {
+    font-weight: 600;
+}
+
+.select {
+    padding: 0.8rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid $ui-black-transparent;
+    background: $ui-white;
+    font-size: 0.95rem;
+}
+
+.actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.25rem;
+}
+
+.submit-button {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 0.75rem 1rem;
+    background: $looks-secondary;
+    color: white;
+    border: 1px solid $looks-secondary;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: inline-block;
+    width: fit-content;
+}
+
+.submit-button:disabled {
+    opacity: 0.7;
+}
+
+.error {
+    border: 1px solid $ui-black-transparent;
+    border-radius: calc($space / 2);
+    background-color: $error-primary;
+    color: white;
+    padding: 0.75rem 1rem;
+}
+
+@media (max-width: 640px) {
+    .plan-grid {
+        grid-template-columns: 1fr;
+    }
+}

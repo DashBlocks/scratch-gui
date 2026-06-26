@@ -43,7 +43,7 @@ const messages = defineMessages({
     }
 });
 
-const User = (props) => {
+const MyStuff = (props) => {
     const [userData, setUserData] = useState(null);
     const [projects, setProjects] = useState([]);
 
@@ -204,7 +204,7 @@ const User = (props) => {
     );
 };
 
-User.propTypes = {
+MyStuff.propTypes = {
     intl: intlShape,
     isRtl: PropTypes.bool
 };
@@ -215,11 +215,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = () => ({});
 
-const ConnectedUser = injectIntl(connect(
+const ConnectedMyStuff = injectIntl(connect(
     mapStateToProps,
     mapDispatchToProps
-)(User));
+)(MyStuff));
 
-const WrappedUser = AppStateHOC(ConnectedUser);
+const WrappedMyStuff = AppStateHOC(ConnectedMyStuff);
 
-render(<WrappedUser />);
+render(<WrappedMyStuff />);

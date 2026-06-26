@@ -46,6 +46,10 @@ const messages = defineMessages({
 const MyStuff = (props) => {
     const [userData, setUserData] = useState(null);
     const [projects, setProjects] = useState([]);
+    const [limit] = useState(40);
+    const [offset, setOffset] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
+    const [loadMoreButtonDisabled, setLoadMoreButtonDisabled] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -61,13 +65,13 @@ const MyStuff = (props) => {
                 setLoading(false);
                 return;
             }
-            let userData;
             try {
                 const userRes = await fetch(`https://api.dashblocks.org/users/${session.id}`);
-                userData = await userRes.json();
-                if (!userData.ok) throw new Error(userData.error);
-                setUserData(userData.user);
-                setProjects(userData.user.projects);
+                const userDataResult = await userRes.json();
+                if (!userDataResult.ok) throw new Error(userDataResult.error);
+
+                setUserData(userDataResult.user);
+                await fetchProjects(session.id, 0);
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -77,6 +81,26 @@ const MyStuff = (props) => {
 
         fetchFullProfile();
     }, []);
+
+    const fetchProjects = async (userId, currentOffset) => {
+        setLoadMoreButtonDisabled(true);
+        try {
+            const projectsRes = await fetch(`https://api.dashblocks.org/users/${userId}/projects?limit=${limit}&offset=${currentOffset}`, {
+                credentials: 'include'
+            });
+            const projectsData = await projectsRes.json();
+            if (!projectsData.ok) throw new Error(projectsData.error);
+            setProjects(prevProjects => currentOffset === 0
+                ? (projectsData.projects || [])
+                : [...prevProjects, ...(projectsData.projects || [])]);
+            setHasMore((projectsData.projects || []).length === limit);
+            setOffset(currentOffset);
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoadMoreButtonDisabled(false);
+        }
+    };
 
     async function handleDeleteProject(projectId) {
         const project = projects.find(p => p.id === projectId);
@@ -93,7 +117,7 @@ const MyStuff = (props) => {
             if (res.status_code === 202)
                 alert(props.intl.formatMessage(messages.deletedOnlyFromProfile));
 
-            setProjects(projects.filter(p => p.id !== projectId));
+            setProjects(prevProjects => prevProjects.filter(p => p.id !== projectId));
         } catch (error) {
             alert(`Error deleting ${project.name} project: ${error.message}`);
         }
@@ -195,6 +219,30 @@ const MyStuff = (props) => {
                                     </div>
                                 </div>
                             ))}
+                            {hasMore && (
+                                <Button
+                                    className={styles.loadMoreButton}
+                                    disabled={loadMoreButtonDisabled}
+                                    onClick={() => {
+                                        const newOffset = offset + limit;
+                                        setOffset(newOffset);
+                                        fetchProjects(userData.id, newOffset);
+                                    }}
+                                >
+                                    {loadMoreButtonDisabled ? (
+                                        <Spinner
+                                            className={styles.spinner}
+                                            small
+                                        />
+                                    ) : (
+                                        <FormattedMessage
+                                            defaultMessage="Load more"
+                                            description="Button text for loading more messages"
+                                            id="dash.messages.loadMore"
+                                        />
+                                    )}
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </div>

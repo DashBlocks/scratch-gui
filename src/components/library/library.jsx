@@ -348,6 +348,7 @@ class LibraryComponent extends React.Component {
                                     icons={dataItem.costumes}
                                     id={index}
                                     incompatibleWithScratch={dataItem.incompatibleWithScratch}
+                                    libraryId={this.props.id}
                                     favorite={this.state.favorites.includes(dataItem[this.props.persistableKey])}
                                     onFavorite={this.handleFavorite}
                                     insetIconURL={dataItem.insetIconURL}
@@ -360,6 +361,8 @@ class LibraryComponent extends React.Component {
                                             dataItem.rawURL)
                                     )}
                                     name={dataItem.name}
+                                    rate={dataItem.rate}
+                                    sampleCount={dataItem.sampleCount}
                                     credits={dataItem.credits}
                                     samples={dataItem.samples}
                                     docsURI={dataItem.docsURI}

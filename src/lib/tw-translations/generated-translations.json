@@ -3645,7 +3645,7 @@
         "dash.user.achevements.placeholder": "У пользователя нет достижений.",
         "dash.user.achievements.firstProject.info": "Создал первый проект \"{firstProject}\" на Dash",
         "dash.user.achievements.firstProject.title": "Первый проект",
-        "dash.user.achievements.reachedFollowersCount.info": "У пользователя теперь {count} проектов на Dash",
+        "dash.user.achievements.reachedFollowersCount.info": "У пользователя теперь {count} подписчиков на Dash",
         "dash.user.achievements.reachedFollowersCount.title": "{count} подписчиков было достигнуто.",
         "dash.user.achievements.unknown": "Неизвестное достижение",
         "dash.user.unfollow": "Отписаться",

@@ -159,7 +159,10 @@ class LibraryItem extends React.PureComponent {
                 insetIconURL={this.props.insetIconURL}
                 internetConnectionRequired={this.props.internetConnectionRequired}
                 isPlaying={this.props.isPlaying}
+                libraryId={this.props.libraryId}
                 name={this.props.name}
+                rate={this.props.rate}
+                sampleCount={this.props.sampleCount}
                 credits={this.props.credits}
                 docsURI={this.props.docsURI}
                 samples={this.props.samples}
@@ -205,10 +208,13 @@ LibraryItem.propTypes = {
     insetIconURL: PropTypes.string,
     internetConnectionRequired: PropTypes.bool,
     isPlaying: PropTypes.bool,
+    libraryId: PropTypes.string.isRequired,
     name: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node
     ]),
+    rate: PropTypes.number,
+    sampleCount: PropTypes.number,
     credits: PropTypes.arrayOf(PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node

@@ -211,7 +211,11 @@ export class Donate extends React.Component {
                                         </div>
                                     )}
                                     <div className={styles.actions}>
-                                        <Button className={styles.submitButton} type="submit" disabled={this.state.waiting}>
+                                        <Button
+                                            className={styles.submitButton}
+                                            onClick={this.handleSubmit}
+                                            disabled={this.state.waiting}
+                                        >
                                             {this.state.waiting ? (
                                                 <FormattedMessage
                                                     defaultMessage="Redirecting..."

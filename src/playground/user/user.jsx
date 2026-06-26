@@ -77,6 +77,7 @@ const User = (props) => {
     const [recommendProjectButtonDisabled, setRecommendProjectButtonDisabled] = useState(false);
     const [projects, setProjects] = useState([]);
     const [links, setLinks] = useState([]);
+    const [linksActionDisabled, setLinksActionDisabled] = useState(false);
     const [achievements, setAchievements] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
@@ -391,6 +392,77 @@ const User = (props) => {
         }
     }
 
+    async function handleAddLink () {
+        const label = prompt('Label (optional):');
+        const link = prompt('Link (must start with http:// or https://):');
+        if (!link) return;
+
+        setLinksActionDisabled(true);
+        try {
+            const response = await fetch('https://api.dashblocks.org/users/add-link', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ label, link }),
+                credentials: 'include'
+            });
+            const data = await response.json();
+            if (!data.ok) return alert(data.error || 'Failed to add link');
+            setUserData(data.user);
+            setLinks(data.user.profile?.links || data.user.links || []);
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setLinksActionDisabled(false);
+        }
+    }
+
+    async function handleUpdateLink (index) {
+        const prev = links[index] || {};
+        const label = prompt('Label (optional):', prev.label);
+        const link = prompt('Link (must start with http:// or https://):', prev.link);
+        if (!link) return;
+
+        setLinksActionDisabled(true);
+        try {
+            const response = await fetch('https://api.dashblocks.org/users/update-link', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ linkIndex: index, label, link }),
+                credentials: 'include'
+            });
+            const data = await response.json();
+            if (!data.ok) return alert(data.error || 'Failed to update link');
+            setUserData(data.user);
+            setLinks(data.user.profile?.links || data.user.links || []);
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setLinksActionDisabled(false);
+        }
+    }
+
+    async function handleRemoveLink (index) {
+        if (!confirm('Remove this link?')) return;
+
+        setLinksActionDisabled(true);
+        try {
+            const response = await fetch('https://api.dashblocks.org/users/remove-link', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ linkIndex: index }),
+                credentials: 'include'
+            });
+            const data = await response.json();
+            if (!data.ok) return alert(data.error || 'Failed to remove link');
+            setUserData(data.user);
+            setLinks(data.user.profile?.links || data.user.links || []);
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setLinksActionDisabled(false);
+        }
+    }
+
     if (loading) return (
         <>
             <LazyMenuBar />
@@ -560,19 +632,75 @@ const User = (props) => {
                                 {links.length > 0 ? (
                                     <ul className={styles.linkList}>
                                         {links.map((link, index) => (
-                                            <li key={index}>
+                                            <li key={index} className={styles.linkItem}>
                                                 <a href={link.link} target="_blank" rel="noopener noreferrer">
                                                     {link.label || "Link"}
                                                 </a>
+                                                {isMyProfile && (
+                                                    <div className={styles.linkActions}>
+                                                        <Button
+                                                            className={styles.setRecommendedProjectButton}
+                                                            disabled={linksActionDisabled}
+                                                            onClick={() => handleUpdateLink(index)}
+                                                        >
+                                                            {linksActionDisabled ? (
+                                                                <Spinner className={styles.spinner} small />
+                                                            ) : (
+                                                                <FormattedMessage
+                                                                    defaultMessage="Update link"
+                                                                    description="Button text for updating a link on user's profile"
+                                                                    id="dash.user.myLinks.update"
+                                                                />
+                                                            )}
+                                                        </Button>
+                                                        <Button
+                                                            className={styles.setRecommendedProjectButton}
+                                                            disabled={linksActionDisabled}
+                                                            onClick={() => handleRemoveLink(index)}
+                                                        >
+                                                            {linksActionDisabled ? (
+                                                                <Spinner className={styles.spinner} small />
+                                                            ) : (
+                                                                <FormattedMessage
+                                                                    defaultMessage="Remove link"
+                                                                    description="Button text for removing a link on user's profile"
+                                                                    id="dash.user.myLinks.remove"
+                                                                />
+                                                            )}
+                                                        </Button>
+                                                    </div>
+                                                )}
                                             </li>
                                         ))}
                                     </ul>
                                 ) : (
-                                    <FormattedMessage
-                                        defaultMessage="The user has no links"
-                                        description="Placeholder text when the user has no links"
-                                        id="dash.user.myLinks.placeholder"
-                                    />
+                                    <div className={styles.noLinksRow}>
+                                        <FormattedMessage
+                                            defaultMessage="The user has no links"
+                                            description="Placeholder text when the user has no links"
+                                            id="dash.user.myLinks.placeholder"
+                                        />
+                                    </div>
+                                )}
+
+                                {isMyProfile && (
+                                    <div className={styles.addLinkRow}>
+                                        <Button
+                                            className={styles.setRecommendedProjectButton}
+                                            disabled={linksActionDisabled}
+                                            onClick={handleAddLink}
+                                        >
+                                            {linksActionDisabled ? (
+                                                <Spinner className={styles.spinner} small />
+                                            ) : (
+                                                <FormattedMessage
+                                                    defaultMessage="Add link"
+                                                    description="Button text for adding a new link on user's profile"
+                                                    id="dash.user.myLinks.add"
+                                                />
+                                            )}
+                                        </Button>
+                                    </div>
                                 )}
                             </div>
                             <h2>

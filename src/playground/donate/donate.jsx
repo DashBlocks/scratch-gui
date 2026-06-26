@@ -143,7 +143,7 @@ export class Donate extends React.Component {
                             </h2>
                             <p>
                                 <FormattedMessage
-                                    defaultMessage="Support Dash development and get exclusive benefits by donating to Dash!"
+                                    defaultMessage="Support development and get exclusive benefits by donating to Dash!"
                                     description="Description of the donate page"
                                     id="dash.donate.description"
                                 />

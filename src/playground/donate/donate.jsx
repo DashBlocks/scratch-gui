@@ -66,7 +66,8 @@ export class Donate extends React.Component {
             currency: this.props.intl.locale === 'ru' ? 'RUB' : 'USD',
             method: 'SBP',
             waiting: false,
-            error: ''
+            error: '',
+            expirationDate: new Date(Date.now() + PLANS[0].days * 24 * 60 * 60 * 1000).toLocaleDateString(this.props.intl.locale)
         };
     }
 
@@ -75,7 +76,7 @@ export class Donate extends React.Component {
     }
 
     handlePlanChange (plan) {
-        this.setState({selectedPlan: plan, error: ''});
+        this.setState({selectedPlan: plan, error: '', expirationDate: new Date(Date.now() + plan.days * 24 * 60 * 60 * 1000).toLocaleDateString(this.props.intl.locale)});
     }
 
     handleCurrencyChange (event) {
@@ -83,12 +84,13 @@ export class Donate extends React.Component {
         this.setState({
             currency,
             method: currency === 'RUB' ? 'SBP' : '',
-            error: ''
+            error: '',
+            expirationDate: new Date(Date.now() + PLANS[0].days * 24 * 60 * 60 * 1000).toLocaleDateString(this.props.intl.locale)
         });
     }
 
     handleMethodChange (event) {
-        this.setState({method: event.target.value, error: ''});
+        this.setState({method: event.target.value, error: '', expirationDate: new Date(Date.now() + this.state.selectedPlan.days * 24 * 60 * 60 * 1000).toLocaleDateString(this.props.intl.locale)});
     }
 
     async handleSubmit (event) {
@@ -146,6 +148,74 @@ export class Donate extends React.Component {
                                     defaultMessage="Support development and get exclusive benefits by donating to Dash!"
                                     description="Description of the donate page"
                                     id="dash.donate.description"
+                                />
+                            </p>
+                            <p>
+                                <FormattedMessage
+                                    defaultMessage="After donating, the following benefits will be available for you in community:"
+                                    description="Description of the benefits of donating"
+                                    id="dash.donate.benefits"
+                                />
+                            </p>
+                            <ul>
+                                <li>
+                                    <FormattedMessage
+                                        defaultMessage="Exclusive role and badge in profile"
+                                        description="Benefit of donating"
+                                        id="dash.donate.benefits.exclusiveRole"
+                                    />
+                                </li>
+                                <li>
+                                    <FormattedMessage
+                                        defaultMessage="Bigger limits for projects"
+                                        description="Benefit of donating"
+                                        id="dash.donate.benefits.biggerLimits"
+                                    />
+                                </li>
+                                <li>
+                                    <FormattedMessage
+                                        defaultMessage="Banner gradient customization for your profile"
+                                        description="Benefit of donating"
+                                        id="dash.donate.benefits.betaAccess"
+                                    />
+                                </li>
+                                <li>
+                                    <FormattedMessage
+                                        defaultMessage="...and more benefits in the future!"
+                                        description="Benefit of donating"
+                                        id="dash.donate.benefits.more"
+                                    />
+                                </li>
+                            </ul>
+                            <p>
+                                <FormattedMessage
+                                    defaultMessage="Choose a plan and currency, then click 'Donate Now' to proceed with payment on Lava.top platform."
+                                    description="Instructions for donating"
+                                    id="dash.donate.instructions"
+                                />
+                            </p>
+                            <p>
+                                <FormattedMessage
+                                    defaultMessage="Your additional privileges will be active in your account approximately until: {expirationDate}"
+                                    description="Information about when the donation privileges will expire"
+                                    id="dash.donate.expiration"
+                                    values={{
+                                        expirationDate: (
+                                            <strong>{this.state.expirationDate}</strong>
+                                        )
+                                    }}
+                                />
+                            </p>
+                            <p>
+                                <FormattedMessage
+                                    defaultMessage="If you want to refund your donation, please {contactUs}!"
+                                    description="Contact information for donation refunds"
+                                    id="dash.donate.refundContact"
+                                    values={{
+                                        contactUs: (
+                                            <a href="contact-us">contact us</a>
+                                        )
+                                    }}
                                 />
                             </p>
                             <div className={styles.section}>

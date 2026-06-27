@@ -10,19 +10,95 @@ import styles from './welcome-modal.css';
 import FancyCheckbox from '../tw-fancy-checkbox/checkbox.jsx';
 import {APP_NAME} from '../../lib/brand.js';
 
+const messages = defineMessages({
+    welcomeModalTitle: {
+        defaultMessage: 'Welcome to Dash!',
+        description: 'Title for the welcoming modal',
+        id: 'dash.welcomeModal.title'
+    }
+});
+
 const WelcomeModalComponent = props => (
     <Modal
         className={styles.modalContent}
         onRequestClose={props.onClose}
-        contentLabel="Welcome to Dash!"
+        contentLabel={props.intl.formatMessage(messages.welcomeModalTitle)}
         id="welcomeModal"
     >
         <Box className={styles.body}>
             <p className={styles.text}>
-                <b>Dash</b> is based on <b>TurboWarp</b> and adds stuff like <b>JSON category</b>, <b>console mode</b>, <b>new blocks</b>, <b>extensions</b>, <b>editor customization</b>, and <b>other features</b>.
+                <FormattedMessage
+                    defaultMessage="{dash} is based on {turbowarp} and adds stuff like {jsonCategory}, {consoleMode}, {newBlocks}, {extensions}, {editorCustomization}, and {otherFeatures}."
+                    description="Text in Welcome Modal"
+                    id="dash.welcomeModal.text1"
+                    values={{
+                        dash: <b>Dash</b>,
+                        turbowarp: <b>TurboWarp</b>,
+                        jsonCategory: (
+                            <b>
+                                <FormattedMessage
+                                    defaultMessage="JSON category"
+                                    description="Subtext in Welcome Modal"
+                                    id="dash.welcomeModal.text1.subtext1"
+                                />
+                            </b>
+                        ),
+                        consoleMode: (
+                            <b>
+                                <FormattedMessage
+                                    defaultMessage="console mode"
+                                    description="Subtext in Welcome Modal"
+                                    id="dash.welcomeModal.text1.subtext2"
+                                />
+                            </b>
+                        ),
+                        newBlocks: (
+                            <b>
+                                <FormattedMessage
+                                    defaultMessage="new blocks"
+                                    description="Subtext in Welcome Modal"
+                                    id="dash.welcomeModal.text1.subtext3"
+                                />
+                            </b>
+                        ),
+                        extensions: (
+                            <b>
+                                <FormattedMessage
+                                    defaultMessage="extensions"
+                                    description="Subtext in Welcome Modal"
+                                    id="dash.welcomeModal.text1.subtext4"
+                                />
+                            </b>
+                        ),
+                        editorCustomization: (
+                            <b>
+                                <FormattedMessage
+                                    defaultMessage="editor customization"
+                                    description="Subtext in Welcome Modal"
+                                    id="dash.welcomeModal.text1.subtext5"
+                                />
+                            </b>
+                        ),
+                        otherFeatures: (
+                            <b>
+                                <FormattedMessage
+                                    defaultMessage="other features"
+                                    description="Subtext in Welcome Modal"
+                                    id="dash.welcomeModal.text1.subtext6"
+                                />
+                            </b>
+                        )
+                    }}
+                />
                 <br />
                 <br />
-                <b>Dash features are available only in English and Russian (at the moment).</b>
+                <b>
+                    <FormattedMessage
+                        defaultMessage="Dash features are available only in English and Russian (at the moment)."
+                        description="Text in Welcome Modal"
+                        id="dash.welcomeModal.text2"
+                    />
+                </b>
             </p>
             <br />
             <img
@@ -31,11 +107,44 @@ const WelcomeModalComponent = props => (
                 draggable={false}
             />
             <p className={styles.text}>
-                {APP_NAME} was made by <a href="https://scratch.mit.edu/users/damir2809">damir2809</a>, <a href="https://scratch.mit.edu/users/Den4ik-12">Den4ik-12</a>, <a href="https://scratch.mit.edu/users/scratch_craft_2">scratch_craft_2</a>, <a href="https://scratch.mit.edu/users/AnonimKing24">AnonimKing24</a> and other contributors.
+                <FormattedMessage
+                    defaultMessage="{APP_NAME} was made by {damir2809DBDev}, {Den4ik12}, {scratch_craft_2Creative}, {AnonimKing24AK24}, and {otherContributors}."
+                    description="Text in Welcome Modal"
+                    id="dash.welcomeModal.text3"
+                    values={{
+                        APP_NAME,
+                        damir2809DBDev: <a href="https://scratch.mit.edu/users/damir2809">damir2809</a> (<a href="user#15">DBDev</a>),
+                        Den4ik12: <a href="https://scratch.mit.edu/users/Den4ik-12">Den4ik-12</a> (<a href="user#17">Den4ik-12</a>),
+                        scratch_craft_2Creative: <a href="https://scratch.mit.edu/users/scratch_craft_2">scratch_craft_2</a> (<a href="user#20">Creative</a>),
+                        AnonimKing24AK24: <a href="https://scratch.mit.edu/users/AnonimKing24">AnonimKing24</a> (<a href="user#81">AK24</a>),
+                        otherContributors: (
+                            <a href="credits">
+                                <FormattedMessage
+                                    defaultMessage="other contributors"
+                                    description="Subtext in Welcome Modal"
+                                    id="dash.welcomeModal.text3.subtext1"
+                                />
+                            </a>
+                        )
+                    }}
+                />
                 <br />
-                View all contributors on <a href={`${process.env.ROOT}credits`}>credits page</a>.
-                <br />
-                Customize editor to your preference on the <a href={`${process.env.ROOT}addons`}>addons page</a>.
+                <FormattedMessage
+                    defaultMessage="Customize editor to your preference on the {addonsPage}"
+                    description="Text in Welcome Modal"
+                    id="dash.welcomeModal.text4"
+                    values={{
+                        addonsPage: (
+                            <a href="addons">
+                                <FormattedMessage
+                                    defaultMessage="addons page"
+                                    description="Subtext in Welcome Modal"
+                                    id="dash.welcomeModal.text4.subtext1"
+                                />
+                            </a>
+                        )
+                    }}
+                />
             </p>
         </Box>
         <Box className={styles.buttonRow}>
@@ -77,7 +186,13 @@ const WelcomeModalComponent = props => (
             <button
                 className={styles.closeButton}
                 onClick={props.onClose}
-            >Close</button>
+            >
+                <FormattedMessage
+                    defaultMessage="Close"
+                    description="Text of button to close Welcome Modal"
+                    id="dash.welcomeModal.close"
+                />
+            </button>
         </Box>
     </Modal>
 );

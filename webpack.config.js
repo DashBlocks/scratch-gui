@@ -308,8 +308,8 @@ module.exports = [
             }),
             new HtmlWebpackPlugin({
                 chunks: [],
-                template: 'yandex_27bc2812ef539133.html',
-                filename: 'yandex_27bc2812ef539133.html'
+                template: 'CNAME',
+                filename: 'CNAME'
             }),
             new CopyWebpackPlugin({
                 patterns: [

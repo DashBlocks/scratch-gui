@@ -19,6 +19,7 @@ import firedIcon from './icon--fired.svg';
 import featuredIcon from './icon--featured.svg';
 import promotedIcon from './icon--promoted.svg';
 import demotedIcon from './icon--demoted.svg';
+import newFollowerIcon from './icon--new-follower.svg';
 
 /* eslint-disable react/jsx-no-literals */
 
@@ -192,7 +193,11 @@ const Messages = (props) => {
             case 'new-follower': {
                 return (
                     <>
-                        {/* TODO: Icon */}
+                        <img
+                            className={styles.messageIcon}
+                            src={newFollowerIcon}
+                            draggable={false}
+                        />
                         <FormattedMessage
                             defaultMessage="{user} is now following you"
                             description="Displayed when someone starts following the user"

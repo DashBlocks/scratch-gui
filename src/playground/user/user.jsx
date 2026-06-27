@@ -41,6 +41,11 @@ const messages = defineMessages({
         description: '"Dasher+" role name',
         id: 'dash.user.role.dasherPlus'
     },
+    dashSupporterRole: {
+        defaultMessage: 'Dash Supporter',
+        description: '"Dash Supporter" role name',
+        id: 'dash.user.role.dashSupporter'
+    },
     dashTeamRole: {
         defaultMessage: 'Dash Team',
         description: '"Dash Team" role name',
@@ -526,7 +531,9 @@ const User = (props) => {
                                         ? props.intl.formatMessage(messages.dashTeamRole)
                                         : userData.role === 'dasher+'
                                             ? props.intl.formatMessage(messages.dasherPlusRole)
-                                            : props.intl.formatMessage(messages.dasherRole)}
+                                            : userData.role === "dash-supporter"
+                                                ? props.intl.formatMessage(messages.dashSupporterRole)
+                                                : props.intl.formatMessage(messages.dasherRole)}
                                 </span>
                             </div>
                             <div className={styles.userInfoRow}>

@@ -306,11 +306,6 @@ module.exports = [
                 title: `Admin Panel - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
-            new HtmlWebpackPlugin({
-                chunks: [],
-                template: 'CNAME',
-                filename: 'CNAME'
-            }),
             new CopyWebpackPlugin({
                 patterns: [
                     {

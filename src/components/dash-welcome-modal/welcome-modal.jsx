@@ -131,7 +131,7 @@ const WelcomeModalComponent = props => (
                 />
                 <br />
                 <FormattedMessage
-                    defaultMessage="Customize editor to your preference on the {addonsPage}"
+                    defaultMessage="Customize editor to your preference on the {addonsPage}."
                     description="Text in Welcome Modal"
                     id="dash.welcomeModal.text4"
                     values={{

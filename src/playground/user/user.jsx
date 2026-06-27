@@ -83,6 +83,7 @@ const User = (props) => {
     const [projects, setProjects] = useState([]);
     const [links, setLinks] = useState([]);
     const [linksActionDisabled, setLinksActionDisabled] = useState(false);
+    const [isManagingLinks, setIsManagingLinks] = useState(false);
     const [achievements, setAchievements] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
@@ -643,7 +644,7 @@ const User = (props) => {
                                                 <a href={link.link} target="_blank" rel="noopener noreferrer">
                                                     {link.label || "Link"}
                                                 </a>
-                                                {isMyProfile && (
+                                                {isMyProfile && isManagingLinks && (
                                                     <div className={styles.linkActions}>
                                                         <Button
                                                             className={styles.setRecommendedProjectButton}
@@ -690,7 +691,7 @@ const User = (props) => {
                                     </div>
                                 )}
 
-                                {isMyProfile && (
+                                {isMyProfile && isManagingLinks && (
                                     <div className={styles.addLinkRow}>
                                         <Button
                                             className={styles.setRecommendedProjectButton}
@@ -704,6 +705,32 @@ const User = (props) => {
                                                     defaultMessage="Add link"
                                                     description="Button text for adding a new link on user's profile"
                                                     id="dash.user.myLinks.add"
+                                                />
+                                            )}
+                                        </Button>
+                                    </div>
+                                )}
+
+                                {isMyProfile && (
+                                    <div className={styles.addLinkRow}>
+                                        <Button
+                                            className={styles.setRecommendedProjectButton}
+                                            disabled={linksActionDisabled}
+                                            onClick={isManagingLinks ? () => setIsManagingLinks(false) : () => setIsManagingLinks(true)}
+                                        >
+                                            {linksActionDisabled ? (
+                                                <Spinner className={styles.spinner} small />
+                                            ) : isManagingLinks ? (
+                                                <FormattedMessage
+                                                    defaultMessage="Done"
+                                                    description="Button text for hiding managing links buttons on user's profile"
+                                                    id="dash.user.myLinks.done"
+                                                />
+                                            ) : (
+                                                <FormattedMessage
+                                                    defaultMessage="Manage links"
+                                                    description="Button text for showing managing links buttons on user's profile"
+                                                    id="dash.user.myLinks.manage"
                                                 />
                                             )}
                                         </Button>

@@ -105,6 +105,7 @@ const WelcomeModalComponent = props => (
                 className={styles.poster}
                 src={poster}
                 draggable={false}
+                alt="Dash Poster"
             />
             <p className={styles.text}>
                 <FormattedMessage
@@ -113,10 +114,10 @@ const WelcomeModalComponent = props => (
                     id="dash.welcomeModal.text3"
                     values={{
                         APP_NAME,
-                        damir2809DBDev: <a href="https://scratch.mit.edu/users/damir2809">damir2809</a> (<a href="user#15">DBDev</a>),
-                        Den4ik12: <a href="https://scratch.mit.edu/users/Den4ik-12">Den4ik-12</a> (<a href="user#17">Den4ik-12</a>),
-                        scratch_craft_2Creative: <a href="https://scratch.mit.edu/users/scratch_craft_2">scratch_craft_2</a> (<a href="user#20">Creative</a>),
-                        AnonimKing24AK24: <a href="https://scratch.mit.edu/users/AnonimKing24">AnonimKing24</a> (<a href="user#81">AK24</a>),
+                        damir2809DBDev: <><a href="https://scratch.mit.edu/users/damir2809">damir2809</a> (<a href="user#15">DBDev</a>)</>,
+                        Den4ik12: <><a href="https://scratch.mit.edu/users/Den4ik-12">Den4ik-12</a> (<a href="user#17">Den4ik-12</a>)</>,
+                        scratch_craft_2Creative: <><a href="https://scratch.mit.edu/users/scratch_craft_2">scratch_craft_2</a> (<a href="user#20">Creative</a>)</>,
+                        AnonimKing24AK24: <><a href="https://scratch.mit.edu/users/AnonimKing24">AnonimKing24</a> (<a href="user#81">AK24</a>)</>,
                         otherContributors: (
                             <a href="credits">
                                 <FormattedMessage
@@ -154,7 +155,13 @@ const WelcomeModalComponent = props => (
                     checked={props.dontShow}
                     onChange={props.onChangeDontShow}
                 />
-                <p>Don't show this again</p>
+                <p>
+                    <FormattedMessage
+                        defaultMessage="Don't show this again"
+                        description="Label for the checkbox to hide the welcome modal in the future"
+                        id="dash.welcomeModal.dontShow"
+                    />
+                </p>
             </label>
             <p className={styles.text}>
                 <FormattedMessage
@@ -163,7 +170,7 @@ const WelcomeModalComponent = props => (
                     id="dash.tosAndPrivacy"
                     values={{
                         termsOfService: (
-                            <a href={`${process.env.ROOT}tos`} target="_blank">
+                            <a href={`${process.env.ROOT}tos`} target="_blank" rel="noopener noreferrer">
                                 <FormattedMessage
                                     defaultMessage="Terms of Service"
                                     description="Link to terms of service page"
@@ -172,7 +179,7 @@ const WelcomeModalComponent = props => (
                             </a>
                         ),
                         privacyPolicy: (
-                            <a href={`${process.env.ROOT}privacy`} target="_blank">
+                            <a href={`${process.env.ROOT}privacy`} target="_blank" rel="noopener noreferrer">
                                 <FormattedMessage
                                     defaultMessage="Privacy Policy"
                                     description="Link to privacy policy page"

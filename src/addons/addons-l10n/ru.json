@@ -81,7 +81,7 @@
     "clones/clones": "клонов: {cloneCount}",
     "color-picker/hex": "цвет hex",
     "remove-sprite-confirm/confirm": "Вы хотите удалить спрайт?",
-    "block-count/blocks": "{num, plural, one {1 блок} few {# блока} many {# блоков} other {# блоков}}",
+    "block-count/blocks": "{num, plural, one {# блок} few {# блока} many {# блоков} other {# блоков}}",
     "onion-skinning/behind": "Сзади",
     "onion-skinning/front": "Впереди",
     "onion-skinning/layering": "Наслоение",

@@ -197,7 +197,7 @@ module.exports = [
                 chunks: ['editor'],
                 template: 'src/playground/index.ejs',
                 filename: 'editor.html',
-                title: `${APP_NAME} - More Blocks, Extensions, and other`,
+                title: `${APP_NAME} - More cool stuff for editor`,
                 isEditor: true,
                 ...htmlWebpackPluginCommon
             }),
@@ -205,7 +205,7 @@ module.exports = [
                 chunks: ['player'],
                 template: 'src/playground/index.ejs',
                 filename: 'index.html',
-                title: `${APP_NAME} - More Blocks, Extensions, and other`,
+                title: `${APP_NAME} - More cool stuff for editor`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

@@ -527,7 +527,11 @@ const User = (props) => {
                         <div className={styles.userInfo}>
                             <div className={styles.userInfoRow}>
                                 <h2>{userData.username}</h2>
-                                <span className={styles.roleBadge}>
+                                <span
+                                    className={classNames(styles.roleBadge, {
+                                        [styles.dashSupporterRoleBadge]: userData.role === "dash-supporter"
+                                    })}
+                                >
                                     {userData.role === 'dashteam'
                                         ? props.intl.formatMessage(messages.dashTeamRole)
                                         : userData.role === 'dasher+'

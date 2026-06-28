@@ -140,6 +140,21 @@ body {
     width: fit-content;
 }
 
+.dash-supporter-role-badge {
+    background: linear-gradient(to right, #ff884c, #ff574d, #ffa74d, #f4654a);
+    background-size: 200%;
+    animation: dash-supporter-role-badge-anim ease-in-out 6s infinite;
+}
+
+@keyframes dash-supporter-role-badge-anim {
+    0%, 100% {
+        background-position-x: 0;
+    }
+    50% {
+        background-position-x: 100%;
+    }
+}
+
 .follow-button {
     display: inline-block;
     background-color: $looks-secondary;

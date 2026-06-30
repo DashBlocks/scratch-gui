@@ -92,7 +92,7 @@ class AccountSettings extends React.Component {
                 window.location.href = './login';
             if (this.state.newPassword !== this.state.confirmPassword)
                 throw new Error(this.props.intl.formatMessage(messages.passwordsDontMatch));
-            const response = await fetch('https://api.dashblocks.org/change-password', {
+            const response = await fetch('https://api.dashblocks.org/auth/change-password', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({

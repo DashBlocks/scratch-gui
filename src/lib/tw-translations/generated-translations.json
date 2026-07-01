@@ -3484,6 +3484,8 @@
         "dash.messages.demotedDasher": "Вас понизили до роли Дэшера",
         "dash.messages.newFollower": "{user} теперь на вас подписан(а)",
         "dash.messages.unknownMessageType": "Неизвестный тип сообщения",
+        "dash.messages.promotedDashSupporter": "Спасибо за вашу поддержку, теперь вы являетесь Dash Supporter! Теперь у вас есть эксклюзивные преимущества, прочитайте {donationPage}, чтобы узнать больше об этой роли",
+        "dash.messages.promotedDashSupporter.donationPage": "страницу пожертвований",
         "tw.notify.permission": "Если разрешить, ваш браузер может предложить вам включить уведомления, и дальнейшие уведомления будут разрешены автоматически.",
         "tw.notify.title": "Проект хочет отображать уведомления.",
         "tw.oldDownload": "Сохранить в отдельный файл...",

@@ -35,6 +35,11 @@ const messages = defineMessages({
         description: 'Title of /messages page',
         id: 'dash.messages.title'
     },
+    donationPage: {
+        defaultMessage: 'donation page',
+        description: 'Label for link to read donation page in promotedDashSupporter message',
+        id: 'dash.messages.promotedDashSupporter.donationPage'
+    },
     setDescription: {
         defaultMessage: 'set a description',
         description: 'Label for link to set profile description in promotedDasherPlus message',
@@ -155,7 +160,25 @@ const Messages = (props) => {
                     </>
                 );
             case 'promoted': {
-                if (message.role === 'dasher+') {
+                if (message.role === 'dash-supporter') {
+                    return (
+                        <>
+                            <img
+                                className={styles.messageIcon}
+                                src={promotedIcon /* TODO: Maybe other icon? */}
+                                draggable={false}
+                            />
+                            <FormattedMessage
+                                defaultMessage="Thank you for your support, you are now Dash Supporter! Now you have exclusive benefits, read {donationPage} to learn more about this role"
+                                description="Displayed when user got demoted to Dasher role"
+                                id="dash.messages.promotedDashSupporter"
+                                values={{
+                                    donationPage: <a href="donate">{props.intl.formatMessage(messages.donationPage)}</a>
+                                }}
+                            />
+                        </>
+                    );
+                } else if (message.role === 'dasher+') {
                     return (
                         <>
                             <img

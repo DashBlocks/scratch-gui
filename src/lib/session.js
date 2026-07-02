@@ -1,12 +1,20 @@
-const getSession = async (userId, password) => {
+const getSession = async (userId, password, verificationCode) => {
     if (userId && password) {
         const res = await fetch('https://api.dashblocks.org/auth/login', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({userId, password}),
+            body: JSON.stringify({
+                userId,
+                password,
+                ...(verificationCode ? {verificationCode} : {})
+            }),
             credentials: 'include'
         });
-        if (res.ok) return await res.json();
+        const data = await res.json();
+        if (res.ok) return {
+            ...data.user,
+            ...(!verificationCode ? {requiresVerification: data.requiresVerification} : {})
+        };
         return {};
     }
 

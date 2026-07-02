@@ -46,6 +46,8 @@ class Login extends React.Component {
         this.state = {
             userId: '',
             password: '',
+            verificationCode: '',
+            requiresVerification: false,
             waiting: false,
             error: null
         };
@@ -63,11 +65,15 @@ class Login extends React.Component {
         e.preventDefault();
 
         this.setState({waiting: true, error: null});
-        const {userId, password} = this.state;
+        const {userId, password, verificationCode, requiresVerification} = this.state;
         try {
-            const session = await getSession(userId, password);
+            const session = await getSession(userId, password, verificationCode);
             if (!session || !session.username)
                 throw new Error(this.props.intl.formatMessage(messages.failedToLogIn));
+            if (session.requiresVerification) {
+                this.setState({requiresVerification: true});
+                return;
+            }
             window.location.href = '/';
         } catch (error) {
             this.setState({error: error.message});
@@ -94,65 +100,95 @@ class Login extends React.Component {
                                     id="dash.login.signIn"
                                 />
                             </h2>
-                            <form
-                                className={styles.login}
-                                onSubmit={this.handleSubmit}
-                            >
-                                <label htmlFor="userId">
-                                    <FormattedMessage
-                                        defaultMessage="Target (user ID or username)"
-                                        description="Label for login target input"
-                                        id="dash.login.target"
+                            {this.state.requiresVerification ? (
+                                <form
+                                    className={styles.login}
+                                    onSubmit={this.handleSubmit}
+                                >
+                                    <label htmlFor="verificationCode">
+                                        <FormattedMessage
+                                            defaultMessage="Verification Code"
+                                            description="Label for verification code input"
+                                            id="dash.login.verificationCode"
+                                        />
+                                    </label>
+                                    <p>
+                                        <FormattedMessage
+                                            defaultMessage="Please enter the verification code sent to your account's email"
+                                            description="Instructions for entering verification code"
+                                            id="dash.login.verificationCode.instructions"
+                                        />
+                                    </p>
+                                    <Input
+                                        required
+                                        name="verificationCode"
+                                        type="text"
+                                        value={this.state.verificationCode}
+                                        onChange={this.handleChange}
                                     />
-                                </label>
-                                <Input
-                                    required
-                                    name="userId"
-                                    type="text"
-                                    value={this.state.userId}
-                                    onChange={this.handleChange}
-                                />
-            
-                                <label htmlFor="password">
-                                    <FormattedMessage
-                                        defaultMessage="Password"
-                                        description="Label for login password input"
-                                        id="dash.login.password"
+                                </form>
+                            ) : (
+                                <form
+                                    className={styles.login}
+                                    onSubmit={this.handleSubmit}
+                                >
+                                    <label htmlFor="userId">
+                                        <FormattedMessage
+                                            defaultMessage="Target (user ID or username)"
+                                            description="Label for login target input"
+                                            id="dash.login.target"
+                                        />
+                                    </label>
+                                    <Input
+                                        required
+                                        name="userId"
+                                        type="text"
+                                        value={this.state.userId}
+                                        onChange={this.handleChange}
                                     />
-                                </label>
-                                <Input
-                                    required
-                                    name="password"
-                                    type="password"
-                                    value={this.state.password}
-                                    onChange={this.handleChange}
-                                />
-            
-                                <div className={styles.submitRow}>
-                                    <Button
-                                        className={styles.submitButton}
-                                        disabled={this.state.waiting}
-                                        onClick={this.handleSubmit}
-                                    >
-                                        {this.state.waiting ? (
-                                            <Spinner
-                                                className={styles.spinner}
-                                                small
-                                            />
-                                        ) : (
-                                            <FormattedMessage
-                                                defaultMessage="Submit"
-                                                description="Button text for user to sign in"
-                                                id="dash.login.submit"
-                                            />
-                                        )}
-                                    </Button>
-                                </div>
-            
-                                {this.state.error && (
-                                    <div className={styles.error}>{this.state.error}</div>
-                                )}
-                            </form>
+
+                                    <label htmlFor="password">
+                                        <FormattedMessage
+                                            defaultMessage="Password"
+                                            description="Label for login password input"
+                                            id="dash.login.password"
+                                        />
+                                    </label>
+                                    <Input
+                                        required
+                                        name="password"
+                                        type="password"
+                                        value={this.state.password}
+                                        onChange={this.handleChange}
+                                    />
+                                </form>
+                            )}
+
+                            <div className={styles.submitRow}>
+                                <Button
+                                    className={styles.submitButton}
+                                    disabled={this.state.waiting}
+                                    onClick={this.handleSubmit}
+                                >
+                                    {this.state.waiting ? (
+                                        <Spinner
+                                            className={styles.spinner}
+                                            small
+                                        />
+                                    ) : (
+                                        <FormattedMessage
+                                            defaultMessage="Submit"
+                                            description="Button text for user to sign in"
+                                            id="dash.login.submit"
+                                        />
+                                    )}
+                                </Button>
+                            </div>
+
+                            {this.state.error && (
+                                <div className={styles.error}>{this.state.error}</div>
+                            )}
+
                             <div>
                                 <FormattedMessage
                                     defaultMessage="New to Dash or don't have an account yet? {signUp}"

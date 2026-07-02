@@ -68,12 +68,12 @@ class Login extends React.Component {
         const {userId, password, verificationCode, requiresVerification} = this.state;
         try {
             const session = await getSession(userId, password, verificationCode);
-            if (!session || !session.username)
-                throw new Error(this.props.intl.formatMessage(messages.failedToLogIn));
-            if (session.requiresVerification) {
+            if (session && session.requiresVerification) {
                 this.setState({requiresVerification: true});
                 return;
             }
+            if (!session || !session.username)
+                throw new Error(session && session.error ? session.error : this.props.intl.formatMessage(messages.failedToLogIn));
             window.location.href = '/';
         } catch (error) {
             this.setState({error: error.message});

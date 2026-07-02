@@ -11,11 +11,13 @@ const getSession = async (userId, password, verificationCode) => {
             credentials: 'include'
         });
         const data = await res.json();
-        if (res.ok) return {
-            ...data.user,
-            ...(!verificationCode ? {requiresVerification: data.requiresVerification} : {})
-        };
-        return {};
+        if (res.ok)
+            return {
+                ...data.user,
+                ...(!verificationCode ? {requiresVerification: data.requiresVerification} : {})
+            }
+        else
+            return data.error ? {error: data.error} : {};
     }
 
     try {

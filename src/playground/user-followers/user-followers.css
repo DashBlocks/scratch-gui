@@ -89,7 +89,8 @@ body {
 
 .follow-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    justify-items: center;
     gap: $space;
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
@@ -103,6 +104,7 @@ body {
     justify-content: flex-start;
     gap: $space;
     width: 100%;
+    max-width: 10rem;
     margin: 0;
     cursor: pointer;
 }
@@ -115,7 +117,7 @@ body {
 
 .follow-username {
     font-size: 0.8rem;
-    text-align: left;
+    text-align: center;
     width: 100%;
     white-space: nowrap;
     overflow: hidden;

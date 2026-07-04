@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {useState, useEffect} from 'react';
+import useHashUserId from './use-hash-user-id.jsx';
 import {connect} from 'react-redux';
 import {FormattedMessage, FormattedDate, FormattedRelative, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
@@ -14,7 +15,6 @@ import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 import getSession from '../../lib/session.js';
-import useHashUserId from '../user/use-hash-user-id';
 
 /* eslint-disable react/jsx-no-literals */
 

@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, {useState, useRef, useEffect} from 'react';
+import useHashUserId from './use-hash-user-id.jsx';
 import {connect} from 'react-redux';
 import {FormattedMessage, FormattedDate, FormattedRelative, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
@@ -21,7 +22,6 @@ import Spinner from '../../components/spinner/spinner.jsx';
 import BufferedInputHOC from '../../components/forms/buffered-input-hoc.jsx';
 import Input from '../../components/forms/input.jsx';
 const BufferedInput = BufferedInputHOC(Input);
-import useHashUserId from './use-hash-user-id';
 
 /* eslint-disable react/jsx-no-literals */
 

@@ -97,10 +97,6 @@ body {
     padding: 0.75rem;
 }
 
-.section h2 {
-    margin-bottom: 0.5rem;
-}
-
 .follow-card {
     display: flex;
     flex-direction: column;

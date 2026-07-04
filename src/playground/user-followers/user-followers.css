@@ -90,6 +90,7 @@ body {
 .follow-list {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: $space;
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
     padding: $space;
@@ -101,9 +102,8 @@ body {
     align-items: center;
     justify-content: flex-start;
     gap: $space;
-    width: 4rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    width: 100%;
+    margin: 0;
     cursor: pointer;
 }
 

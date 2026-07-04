@@ -917,29 +917,29 @@ const User = (props) => {
                                     />
                                 </a>
                             )}
-                            <div className={styles.followList}>
-                                {followers.length > 0 ? followers.map((follower) => (
-                                    <div
-                                        key={follower.id}
-                                        className={styles.followCard}
-                                        onClick={() => window.open(`./user#${follower.id}`, '_blank')}
-                                    >
-                                        <img
-                                            draggable={false}
-                                            src={`https://api.dashblocks.org/users/avatars/${follower.profile.avatarId}`}
-                                            alt={follower.username}
-                                            className={styles.followAvatar}
-                                        />
-                                        <span className={styles.followUsername}>{follower.username}</span>
-                                    </div>
-                                )) : (
-                                    <FormattedMessage
-                                        defaultMessage="This user has no followers"
-                                        description="Placeholder text when the user has no followers"
-                                        id="dash.user.followers.placeholder"
+                        </div>
+                        <div className={styles.followList}>
+                            {followers.length > 0 ? followers.map((follower) => (
+                                <div
+                                    key={follower.id}
+                                    className={styles.followCard}
+                                    onClick={() => window.open(`./user#${follower.id}`, '_blank')}
+                                >
+                                    <img
+                                        draggable={false}
+                                        src={`https://api.dashblocks.org/users/avatars/${follower.profile.avatarId}`}
+                                        alt={follower.username}
+                                        className={styles.followAvatar}
                                     />
-                                )}
-                            </div>
+                                    <span className={styles.followUsername}>{follower.username}</span>
+                                </div>
+                            )) : (
+                                <FormattedMessage
+                                    defaultMessage="This user has no followers"
+                                    description="Placeholder text when the user has no followers"
+                                    id="dash.user.followers.placeholder"
+                                />
+                            )}
                         </div>
                     </div>
                     <div className={styles.section}>
@@ -968,29 +968,29 @@ const User = (props) => {
                                     />
                                 </a>
                             )}
-                            <div className={styles.followList}>
-                                {following.length > 0 ? following.map((followed) => (
-                                    <div
-                                        key={followed.id}
-                                        className={styles.followCard}
-                                        onClick={() => window.open(`./user#${followed.id}`, '_blank')}
-                                    >
-                                        <img
-                                            draggable={false}
-                                            src={`https://api.dashblocks.org/users/avatars/${followed.profile.avatarId}`}
-                                            alt={followed.username}
-                                            className={styles.followAvatar}
-                                        />
-                                        <span className={styles.followUsername}>{followed.username}</span>
-                                    </div>
-                                )) : (
-                                    <FormattedMessage
-                                        defaultMessage="This user is not following anyone"
-                                        description="Placeholder text when the user is not following anyone"
-                                        id="dash.user.following.placeholder"
+                        </div>
+                        <div className={styles.followList}>
+                            {following.length > 0 ? following.map((followed) => (
+                                <div
+                                    key={followed.id}
+                                    className={styles.followCard}
+                                    onClick={() => window.open(`./user#${followed.id}`, '_blank')}
+                                >
+                                    <img
+                                        draggable={false}
+                                        src={`https://api.dashblocks.org/users/avatars/${followed.profile.avatarId}`}
+                                        alt={followed.username}
+                                        className={styles.followAvatar}
                                     />
-                                )}
-                            </div>
+                                    <span className={styles.followUsername}>{followed.username}</span>
+                                </div>
+                            )) : (
+                                <FormattedMessage
+                                    defaultMessage="This user is not following anyone"
+                                    description="Placeholder text when the user is not following anyone"
+                                    id="dash.user.following.placeholder"
+                                />
+                            )}
                         </div>
                     </div>
                 </div>

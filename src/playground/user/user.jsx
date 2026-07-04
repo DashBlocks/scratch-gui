@@ -21,6 +21,7 @@ import Spinner from '../../components/spinner/spinner.jsx';
 import BufferedInputHOC from '../../components/forms/buffered-input-hoc.jsx';
 import Input from '../../components/forms/input.jsx';
 const BufferedInput = BufferedInputHOC(Input);
+import useHashUserId from './use-hash-user-id';
 
 /* eslint-disable react/jsx-no-literals */
 
@@ -74,7 +75,7 @@ const messages = defineMessages({
 });
 
 const User = (props) => {
-    const [id, setId] = useState(window.location.hash.replace('#', ''));
+    const id = useHashUserId();
     const [userData, setUserData] = useState(null);
     const [isFollowing, setIsFollowing] = useState(false);
     const [followButtonDisabled, setFollowButtonDisabled] = useState(false);
@@ -94,10 +95,6 @@ const User = (props) => {
     const [error, setError] = useState(null);
 
     const fileInputRef = useRef(null);
-
-    useEffect(() => {
-        setId(window.location.hash.replace('#', ''));
-    }, [window.location.hash]);
 
     useEffect(() => {
         const fetchFullProfile = async () => {

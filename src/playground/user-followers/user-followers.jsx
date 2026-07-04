@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {FormattedMessage, FormattedDate, FormattedRelative, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import render from '../app-target';
-import styles from './user-projects.css';
+import styles from './user-followers.css';
 
 import Spinner from '../../components/spinner/spinner.jsx';
 import {Footer} from '../render-interface.jsx';
@@ -26,21 +26,16 @@ const relativeTimeSupported = () => typeof Intl !== 'undefined' && typeof Intl.R
 
 const messages = defineMessages({
     title: {
-        defaultMessage: '{username}\'s Projects ({projectsCount})',
-        description: 'Title of /user-projects page',
-        id: 'dash.userProjects.title'
-    },
-    hoverText: {
-        defaultMessage: '{title} by {author}',
-        description: 'Displayed when hovering on a project',
-        id: 'tw.studioview.hoverText'
-    },
+        defaultMessage: '{username}\'s Followers ({followersCount})',
+        description: 'Title of /user-followers page',
+        id: 'dash.userFollowers.title'
+    }
 });
 
-const UserProjects = (props) => {
+const UserFollowers = (props) => {
     const id = useHashUserId();
     const [userData, setUserData] = useState(null);
-    const [projects, setProjects] = useState([]);
+    const [followers, setFollowers] = useState([]);
     const [limit, setLimit] = useState(40);
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
@@ -52,7 +47,7 @@ const UserProjects = (props) => {
     useEffect(() => {
         document.title = props.intl.formatMessage(messages.title, {
             username: 'User',
-            projectsCount: '?'
+            followersCount: '?'
         }) + ' - ' + APP_NAME;
 
         setLoading(true);
@@ -71,26 +66,26 @@ const UserProjects = (props) => {
             }
             document.title = props.intl.formatMessage(messages.title, {
                 username: user.user.username,
-                projectsCount: user.user.profile.stats.projects
+                followersCount: user.user.profile.stats.followers
             }) + ' - ' + APP_NAME;
             setUserData(user.user);
-            await fetchProjects(0);
+            await fetchFollowers(0);
             setLoading(false);
         }
         fetchData();
     }, []);
 
-    const fetchProjects = async (currentOffset) => {
+    const fetchFollowers = async (currentOffset) => {
         setLoadMoreButtonDisabled(true);
         try {
-            const projectsRes = await fetch(`https://api.dashblocks.org/users/${id}/projects?limit=${limit}&offset=${currentOffset}`, {
+            const followersRes = await fetch(`https://api.dashblocks.org/users/${id}/followers?limit=${limit}&offset=${currentOffset}`, {
                 credentials: 'include'
             });
-            if (!projectsRes.ok) throw new Error('Failed to fetch projects');
-            const projectsData = await projectsRes.json();
-            if (!projectsData.ok) throw new Error(projectsData.error);
-            setProjects(prevProjects => [...prevProjects, ...projectsData.projects]);
-            setHasMore(projectsData.projects.length === limit);
+            if (!followersRes.ok) throw new Error('Failed to fetch followers');
+            const followersData = await followersRes.json();
+            if (!followersData.ok) throw new Error(followersData.error);
+            setFollowers(prevFollowers => [...prevFollowers, ...followersData.followers]);
+            setHasMore(followersData.followers.length === limit);
         } catch (error) {
             setError(error.message);
         } finally {
@@ -115,7 +110,7 @@ const UserProjects = (props) => {
             <Footer />
         </>
     );
-    if (!userData || !projects) return (
+    if (!userData || !followers) return (
         <>
             <LazyMenuBar />
             <div>Failed to load user data</div>
@@ -130,56 +125,39 @@ const UserProjects = (props) => {
                 className={styles.container}
                 dir={props.isRtl ? 'rtl' : 'ltr'}
             >
-                <div className={styles.userProjectsWrapper}>
+                <div className={styles.userFollowersWrapper}>
                     <div className={styles.section}>
                         <h2>
                             <FormattedMessage
-                                defaultMessage="{username}'s Projects ({projectsCount})"
-                                description="Title of /user-projects page"
-                                id="dash.userProjects.title"
+                                defaultMessage="{username}'s Followers ({followersCount})"
+                                description="Title of /user-followers page"
+                                id="dash.userFollowers.title"
                                 values={{
                                     username: <a href={`user#${userData.id}`}>{userData.username}</a>,
-                                    projectsCount: userData.profile.stats.projects
+                                    followersCount: userData.profile.stats.followers
                                 }}
                             />
                         </h2>
-                        <div className={styles.projectGrid}>
-                            {projects.length > 0 ? projects.map((project) => (
+                        <div className={styles.followList}>
+                            {followers.length > 0 ? followers.map((follower) => (
                                 <div
-                                    key={project.id}
-                                    className={styles.projectCard}
-                                    title={props.intl.formatMessage(messages.hoverText, {
-                                        author: userData.username,
-                                        title: project.name
-                                    })}
-                                    onClick={() => window.open(`./#${project.id}`, '_blank')}
+                                    key={follower.id}
+                                    className={styles.followCard}
+                                    onClick={() => window.open(`./user#${follower.id}`, '_blank')}
                                 >
-                                    <div className={styles.thumbWrapper}>
-                                        <img
-                                            draggable={false}
-                                            src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
-                                            alt={project.id}
-                                        />
-                                    </div>
-                                    <div className={styles.projectInfo}>
-                                        <h4>{project.name}</h4>
-                                        <p>
-                                            <FormattedMessage
-                                                defaultMessage="by {author}"
-                                                description="Displayed under project title to credit creator"
-                                                id="tw.studioview.authorAttribution"
-                                                values={{
-                                                    author: userData.username
-                                                }}
-                                            />
-                                        </p>
-                                    </div>
+                                    <img
+                                        draggable={false}
+                                        src={`https://api.dashblocks.org/users/avatars/${follower.profile.avatarId}`}
+                                        alt={follower.username}
+                                        className={styles.followAvatar}
+                                    />
+                                    <span className={styles.followUsername}>{follower.username}</span>
                                 </div>
                             )) : (
                                 <FormattedMessage
-                                    defaultMessage="This user has no projects"
-                                    description="Placeholder text when the user has no projects"
-                                    id="dash.user.projects.placeholder"
+                                    defaultMessage="This user has no followers"
+                                    description="Placeholder text when the user has no followers"
+                                    id="dash.user.followers.placeholder"
                                 />
                             )}
                             {hasMore && (
@@ -189,7 +167,7 @@ const UserProjects = (props) => {
                                     onClick={() => {
                                         const newOffset = offset + limit;
                                         setOffset(newOffset);
-                                        fetchProjects(newOffset);
+                                        fetchFollowers(newOffset);
                                     }}
                                 >
                                     {loadMoreButtonDisabled ? (
@@ -215,7 +193,7 @@ const UserProjects = (props) => {
     );
 };
 
-UserProjects.propTypes = {
+UserFollowers.propTypes = {
     intl: intlShape,
     isRtl: PropTypes.bool
 };
@@ -226,11 +204,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = () => ({});
 
-const ConnectedUserProjects = injectIntl(connect(
+const ConnectedUserFollowers = injectIntl(connect(
     mapStateToProps,
     mapDispatchToProps
-)(UserProjects));
+)(UserFollowers));
 
-const WrappedUserProjects = AppStateHOC(ConnectedUserProjects);
+const WrappedUserFollowers = AppStateHOC(ConnectedUserFollowers);
 
-render(<WrappedUserProjects />);
+render(<WrappedUserFollowers />);

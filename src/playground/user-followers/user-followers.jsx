@@ -73,7 +73,7 @@ const UserFollowers = (props) => {
             setLoading(false);
         }
         fetchData();
-    }, []);
+    }, [id]);
 
     const fetchFollowers = async (currentOffset) => {
         setLoadMoreButtonDisabled(true);

@@ -75,7 +75,7 @@ body {
     max-width: 900px;
     background: $ui-white;
     margin: 0px;
-    padding: $space;
+    padding: 0.75rem;
     border-radius: $space;
     border: 0.0625rem solid $ui-black-transparent;
 }
@@ -89,12 +89,16 @@ body {
 
 .follow-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
     justify-items: center;
-    gap: $space;
+    gap: 0.5rem;
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
-    padding: $space;
+    padding: 0.75rem;
+}
+
+.section h2 {
+    margin-bottom: 0.5rem;
 }
 
 .follow-card {
@@ -102,16 +106,16 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    gap: $space;
+    gap: 0.5rem;
     width: 100%;
-    max-width: 10rem;
+    max-width: 6.5rem;
     margin: 0;
     cursor: pointer;
 }
 
 .follow-avatar {
-    width: 5rem;
-    height: 5rem;
+    width: 4.5rem;
+    height: 4.5rem;
     border-radius: $space;
 }
 

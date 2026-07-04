@@ -227,14 +227,14 @@ body {
     border-color: $ui-black-transparent !important; /* dont use hover border from custom input */
 }
 
-.projects-header {
+.section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
 }
 
-.view-all-projects-link {
+.view-all-link {
     display: inline-block;
     color: $link-color;
     cursor: pointer;

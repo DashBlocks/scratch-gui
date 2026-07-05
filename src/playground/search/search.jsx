@@ -39,6 +39,7 @@ const messages = defineMessages({
 
 const Search = (props) => {
     const query = new URLSearchParams(window.location.search).get('q');
+    const [total, setTotal] = useState(0);
     const [projects, setProjects] = useState([]);
     const [limit, setLimit] = useState(40);
     const [offset, setOffset] = useState(0);
@@ -69,6 +70,7 @@ const Search = (props) => {
             if (!searchReq.ok) throw new Error('Failed to fetch search results');
             const searchResults = await searchReq.json();
             if (!searchResults.ok) throw new Error(searchResults.error);
+            setTotal(searchResults.total);
             setProjects(prevProjects => [...prevProjects, ...searchResults.results]);
             setHasMore(searchResults.results.length === limit);
         } catch (error) {
@@ -114,10 +116,10 @@ const Search = (props) => {
                     <div className={styles.section}>
                         <h2>
                             <FormattedMessage
-                                defaultMessage={"Search Results for \"{query}\""}
+                                defaultMessage={"Search Results for \"{query}\" ({total})"}
                                 description="Title of search results page"
                                 id="dash.searchResults.title"
-                                values={{query}}
+                                values={{query, total}}
                             />
                         </h2>
                         <div className={styles.projectGrid}>

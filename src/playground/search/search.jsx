@@ -125,6 +125,11 @@ const Search = (props) => {
                                 <div
                                     key={project.id}
                                     className={styles.projectCard}
+                                    title={props.intl.formatMessage(messages.hoverText, {
+                                        author: project.author.username,
+                                        title: project.name
+                                    })}
+                                    onClick={() => window.open(`./#${project.id}`, '_blank')}
                                 >
                                     <div className={styles.thumbWrapper}>
                                         <img

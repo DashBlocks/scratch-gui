@@ -159,6 +159,7 @@ module.exports = [
             'donate': './src/playground/donate/donate.jsx',
             'mystuff': './src/playground/mystuff/mystuff.jsx',
             'messages': './src/playground/messages/messages.jsx',
+            'search': './src/playground/search/search.jsx',
             'admin': './src/playground/admin/admin.jsx'
         },
         output: {
@@ -313,6 +314,13 @@ module.exports = [
                 template: 'src/playground/simple.ejs',
                 filename: 'messages.html',
                 title: `Messages - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['search'],
+                template: 'src/playground/simple.ejs',
+                filename: 'search.html',
+                title: `Search - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

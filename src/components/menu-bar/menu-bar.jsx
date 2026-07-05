@@ -102,7 +102,8 @@ import addonsIcon from './addons.svg';
 import errorIcon from './tw-error.svg';
 import advancedIcon from './tw-advanced.svg';
 import dashLogo from './dash.png';
-import dashNewYearLogo from './dash-new-year.png'
+import dashNewYearLogo from './dash-new-year.png';
+import searchIcon from './icon--search.png';
 
 import ninetiesLogo from './nineties_logo.svg';
 import catLogo from './cat_logo.svg';
@@ -128,6 +129,14 @@ const twMessages = defineMessages({
         id: 'tw.menuBar.compileError',
         defaultMessage: '{sprite}: {error}',
         description: 'Error message in error menu'
+    }
+});
+
+const searchMessages = defineMessages({
+    searchPlaceholder: {
+        id: 'dash.menuBar.searchPlaceholder',
+        defaultMessage: 'Search',
+        description: 'Placeholder text for the search field in the menu bar'
     }
 });
 
@@ -233,6 +242,7 @@ class MenuBar extends React.Component {
             'handleClickLogOut',
             'handleSetMode',
             'handleKeyPress',
+            'handleSearchSubmit',
             'handleRestoreOption',
             'getSaveToComputerHandler',
             'restoreOptionMessage'
@@ -422,6 +432,13 @@ class MenuBar extends React.Component {
             }
         }
     }
+    handleSearchSubmit (e) {
+        e.preventDefault();
+        const query = e.currentTarget.querySelector('input')?.value?.trim();
+        if (!query) return;
+        const encodedQuery = encodeURIComponent(query);
+        window.open(`/search?q=${encodedQuery}`, '_blank');
+    }
     getSaveToComputerHandler (downloadProjectCallback) {
         return () => {
             this.props.onRequestCloseFile();
@@ -542,6 +559,7 @@ class MenuBar extends React.Component {
                 id="gui.menuBar.new"
             />
         );
+        const searchPlaceholder = this.props.intl.formatMessage(searchMessages.searchPlaceholder);
         const remixButton = (
             <Button
                 className={classNames(
@@ -604,6 +622,27 @@ class MenuBar extends React.Component {
                         </a>
                     )}
                     {this.props.isPlayerOnly && <Divider className={styles.divider} />}
+                    {this.props.isPlayerOnly && (
+                        <form className={styles.menuBarSearch} onSubmit={this.handleSearchSubmit}>
+                            <input
+                                type="search"
+                                className={styles.menuBarSearchInput}
+                                placeholder={searchPlaceholder}
+                                aria-label={searchPlaceholder}
+                            />
+                            <button
+                                type="submit"
+                                className={styles.menuBarSearchButton}
+                                aria-label={searchPlaceholder}
+                            >
+                                <img
+                                    className={styles.menuBarSearchIcon}
+                                    src={searchIcon}
+                                    alt=""
+                                />
+                            </button>
+                        </form>
+                    )}
                     <div className={styles.fileGroup}>
                         {!this.props.isPlayerOnly && (this.props.canChangeTheme || this.props.canChangeLanguage) && (<SettingsMenu
                             className={styles.fileGroup}

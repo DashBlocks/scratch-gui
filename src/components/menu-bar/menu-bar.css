@@ -80,6 +80,76 @@
     cursor: pointer;
 }
 
+/* Styles for search panel from Scratch */
+/* https://github.com/scratchfoundation/scratch-www/blob/develop/src/components/navigation/www/navigation.scss */
+.menu-bar-search {
+    position: relative;
+    width: 14rem;
+    min-width: 14rem;
+    flex: 0 0 14rem;
+    height: $menu-bar-height;
+    display: flex;
+    align-items: center;
+}
+
+.menu-bar-search-input,
+.menu-bar-search-button {
+    display: inline-block;
+    outline: none;
+    border: 0;
+    background-color: $ui-black-transparent;
+    height: 2.25rem;
+    box-sizing: border-box;
+}
+
+.menu-bar-search-input {
+    transition: .15s ease background-color;
+    margin: 0;
+    padding: 0;
+    padding-right: 0.625rem;
+    padding-left: 2.5rem;
+    width: calc(100% - 2.5rem);
+    color: $menu-bar-foreground;
+    font-size: .85em;
+    border-radius: $form-radius;
+    line-height: 1.2;
+}
+
+.menu-bar-search-input::placeholder {
+    color: rgba(255, 255, 255, .75);
+}
+
+.menu-bar-search-input:focus {
+    transition: .15s ease background-color;
+    background-color: rgba(0, 0, 0, .25);
+}
+
+.menu-bar-search-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    background-color: transparent;
+    border: 0;
+    width: 2.5rem;
+    height: 100%;
+    padding: 0;
+    cursor: pointer;
+}
+
+.menu-bar-search-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    opacity: 0.75;
+}
+
+.menu-bar-search-button:hover .menu-bar-search-icon {
+    opacity: 1;
+}
+
 .menu-bar-item {
     display: flex;
     text-decoration: none;

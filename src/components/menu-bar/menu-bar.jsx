@@ -630,7 +630,7 @@ class MenuBar extends React.Component {
                                 className={styles.menuBarSearchInput}
                                 placeholder={searchPlaceholder}
                                 aria-label={searchPlaceholder}
-                                value={searchValue}
+                                defaultValue={searchValue}
                             />
                             <button
                                 type="submit"

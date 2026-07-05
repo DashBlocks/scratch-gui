@@ -145,7 +145,7 @@ class LazyMenuBar extends React.Component {
         const query = e.currentTarget.querySelector('input')?.value?.trim();
         if (!query) return;
         const encodedQuery = encodeURIComponent(query);
-        window.open(`/search?q=${encodedQuery}`, '_blank');
+        window.open(`search?q=${encodedQuery}`, '_blank');
     }
     render () {
         const searchPlaceholder = this.props.intl.formatMessage(searchMessages.searchPlaceholder);

@@ -149,6 +149,7 @@ class LazyMenuBar extends React.Component {
     }
     render () {
         const searchPlaceholder = this.props.intl.formatMessage(searchMessages.searchPlaceholder);
+        const searchValue = new URLSearchParams(window.location.search).get('q');
         const menuBar = (
             <Box
                 className={classNames(
@@ -233,6 +234,7 @@ class LazyMenuBar extends React.Component {
                             className={styles.menuBarSearchInput}
                             placeholder={searchPlaceholder}
                             aria-label={searchPlaceholder}
+                            value={searchValue}
                         />
                         <button
                             type="submit"

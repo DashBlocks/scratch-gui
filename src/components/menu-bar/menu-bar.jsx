@@ -560,6 +560,7 @@ class MenuBar extends React.Component {
             />
         );
         const searchPlaceholder = this.props.intl.formatMessage(searchMessages.searchPlaceholder);
+        const searchValue = new URLSearchParams(window.location.search).get('q');
         const remixButton = (
             <Button
                 className={classNames(
@@ -629,6 +630,7 @@ class MenuBar extends React.Component {
                                 className={styles.menuBarSearchInput}
                                 placeholder={searchPlaceholder}
                                 aria-label={searchPlaceholder}
+                                value={searchValue}
                             />
                             <button
                                 type="submit"

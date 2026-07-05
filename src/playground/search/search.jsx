@@ -131,17 +131,19 @@ const Search = (props) => {
                                         author: project.author.username,
                                         title: project.name
                                     })}
-                                    onClick={() => window.open(`./#${project.id}`, '_blank')}
                                 >
                                     <div className={styles.thumbWrapper}>
                                         <img
                                             draggable={false}
                                             src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
                                             alt={project.id}
+                                            onClick={() => window.open(`./#${project.id}`, '_blank')}
                                         />
                                     </div>
                                     <div className={styles.projectInfo}>
-                                        <h4>{project.name}</h4>
+                                        <h4
+                                            onClick={() => window.open(`./#${project.id}`, '_blank')}
+                                        >{project.name}</h4>
                                         <p>
                                             <FormattedMessage
                                                 defaultMessage="by {author}"

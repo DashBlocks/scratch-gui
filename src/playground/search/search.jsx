@@ -148,7 +148,7 @@ const Search = (props) => {
                                                 description="Displayed under project title to credit creator"
                                                 id="tw.studioview.authorAttribution"
                                                 values={{
-                                                    author: <a href={`user#${project.author.id}`}>{project.author.username}</a>
+                                                    author: <a href={`user#${project.author.id}`} target="_blank">{project.author.username}</a>
                                                 }}
                                             />
                                         </p>

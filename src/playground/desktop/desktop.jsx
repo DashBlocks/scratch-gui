@@ -16,8 +16,8 @@ import {detectTheme} from '../../lib/themes/themePersistance';
 import screenshotLight from './screenshot-light.png';
 import screenshotDark from './screenshot-dark.png';
 
-const RELEASE_VERSION = '1.0.0-alpha';
-const VERSION_IN_FILENAME = '0.0.1-beta.2';
+const RELEASE_VERSION = '1.1.0';
+const VERSION_IN_FILENAME = '1.1.0';
 const RELEASES_DOWNLOAD_URL = `https://github.com/DashBlocks/dash-desktop/releases/download/v${RELEASE_VERSION}`;
 
 /* eslint-disable react/jsx-no-literals */

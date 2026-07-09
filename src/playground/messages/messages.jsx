@@ -287,7 +287,10 @@ const Messages = (props) => {
                             {userMessages.map((message, index) => (
                                 <div
                                     key={index}
-                                    className={styles.messageContent}
+                                    className={classNames(
+                                        styles.messageContent,
+                                        index < userData.profile.unreadMessages ? styles.unreadMessage : null
+                                    )}
                                 >
                                     {getMessageContent(message)}
                                     <div className={styles.messageDate}>

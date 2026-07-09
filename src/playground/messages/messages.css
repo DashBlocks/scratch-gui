@@ -105,6 +105,10 @@ body {
     gap: $space;
 }
 
+.unread-message {
+    background-color: $ui-black-transparent;
+}
+
 .message-icon {
     width: 1.5rem;
     height: 1.5rem;

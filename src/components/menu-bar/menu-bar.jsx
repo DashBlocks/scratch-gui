@@ -1238,6 +1238,11 @@ class MenuBar extends React.Component {
                                         styles.messagesButton
                                     )}
                                 >
+                                    <span
+                                        className={
+                                            this.props.session?.profile.unreadMessages > 0 ? styles.messagesCountVisible : styles.messagesCount
+                                        }
+                                    >{this.props.session?.profile.unreadMessages}</span>
                                     <img
                                         className={styles.messagesIcon}
                                         src={messagesIcon}

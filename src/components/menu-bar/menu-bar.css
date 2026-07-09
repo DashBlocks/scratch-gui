@@ -276,6 +276,24 @@
     align-items: center;
 }
 
+.messages-count {
+    display: none;
+}
+.messages-count-visible {
+    display: block;
+    position: absolute;
+    top: .5rem;
+    right: .25rem;
+    border-radius: 1rem;
+    background-color: $data-primary;
+    padding: 0 .25rem;
+    text-indent: 0;
+    line-height: 1rem;
+    color: white;
+    font-size: .7rem;
+    font-weight: bold;
+}
+
 .profile-icon {
     margin: 0 .25rem;
     width: $menu-bar-button-size;

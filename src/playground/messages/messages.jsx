@@ -14,6 +14,7 @@ import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 import getSession from '../../lib/session.js';
+import {setSession} from '../../reducers/dash.js';
 
 import firedIcon from './icon--fired.svg';
 import featuredIcon from './icon--featured.svg';
@@ -60,6 +61,7 @@ const messages = defineMessages({
 const Messages = (props) => {
     const [userData, setUserData] = useState(null);
     const [userMessages, setUserMessages] = useState([]);
+    const [markAllAsReadButtonDisabled, setMarkAllAsReadButtonDisabled] = useState(false);
     const [limit, setLimit] = useState(40);
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
@@ -243,6 +245,32 @@ const Messages = (props) => {
         }
     };
 
+    async function handleClickMarkAllAsReadButton() {
+        setMarkAllAsReadButtonDisabled(true);
+        try {
+            const res = await fetch('https://api.dashblocks.org/session/messages/mark-all-as-read', {
+                method: 'POST',
+                credentials: 'include'
+            });
+            if (!res.ok) throw new Error('Failed to mark all messages as read');
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            setUserData(prevUserData => ({
+                ...prevUserData,
+                profile: {
+                    ...prevUserData.profile,
+                    unreadMessages: 0
+                }
+            }));
+            const session = await getSession();
+            setSession(session);
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setMarkAllAsReadButtonDisabled(false);
+        }
+    }
+
     if (loading) return (
         <>
             <LazyMenuBar />
@@ -283,6 +311,24 @@ const Messages = (props) => {
                                 id="dash.messages.title"
                             />
                         </h2>
+                        <Button
+                            className={styles.markAllAsReadButton}
+                            disabled={markAllAsReadButtonDisabled}
+                            onClick={handleClickMarkAllAsReadButton}
+                        >
+                            {markAllAsReadButtonDisabled ? (
+                                <Spinner
+                                    className={styles.spinner}
+                                    small
+                                />
+                            ) : (
+                                <FormattedMessage
+                                    defaultMessage="Mark all as read"
+                                    description="Button text for marking all messages as read"
+                                    id="dash.messages.markAllAsRead"
+                                />
+                            )}
+                        </Button>
                         <div className={styles.messagesGrid}>
                             {userMessages.map((message, index) => (
                                 <div

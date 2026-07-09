@@ -36,6 +36,18 @@
     filter: $filter-icon-gray;
 }
 
+.views-count {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    user-select: none;
+}
+
+.views-icon {
+    height: 2rem;
+}
+
 .footer-buttons-row {
     display: flex;
+    gap: $space;
 }

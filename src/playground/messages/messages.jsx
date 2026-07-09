@@ -312,24 +312,26 @@ const Messages = (props) => {
                                 id="dash.messages.title"
                             />
                         </h2>
-                        <Button
-                            className={styles.markAllAsReadButton}
-                            disabled={markAllAsReadButtonDisabled}
-                            onClick={handleClickMarkAllAsReadButton}
-                        >
-                            {markAllAsReadButtonDisabled ? (
-                                <Spinner
-                                    className={styles.spinner}
-                                    small
-                                />
-                            ) : (
-                                <FormattedMessage
-                                    defaultMessage="Mark all as read"
-                                    description="Button text for marking all messages as read"
-                                    id="dash.messages.markAllAsRead"
-                                />
-                            )}
-                        </Button>
+                        {userData.profile.unreadMessages > 0 && (
+                            <Button
+                                className={styles.markAllAsReadButton}
+                                disabled={markAllAsReadButtonDisabled}
+                                onClick={handleClickMarkAllAsReadButton}
+                            >
+                                {markAllAsReadButtonDisabled ? (
+                                    <Spinner
+                                        className={styles.spinner}
+                                        small
+                                    />
+                                ) : (
+                                    <FormattedMessage
+                                        defaultMessage="Mark all as read"
+                                        description="Button text for marking all messages as read"
+                                        id="dash.messages.markAllAsRead"
+                                    />
+                                )}
+                            </Button>
+                        )}
                         <div className={styles.messagesGrid}>
                             {userMessages.map((message, index) => (
                                 <div

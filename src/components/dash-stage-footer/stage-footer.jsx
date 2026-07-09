@@ -143,7 +143,7 @@ const StageFooter = (props) => {
                 alt={props.intl.formatMessage(messages.viewsCount)}
                 draggable={false}
             />
-            <span className={styles.viewsCountNumber}>
+            <span>
                 {projectMetadata?.stats?.views || 0}
             </span>
         </div>

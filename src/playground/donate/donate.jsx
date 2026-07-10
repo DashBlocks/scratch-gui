@@ -72,6 +72,8 @@ export class Donate extends React.Component {
     }
 
     componentDidMount () {
+        if (!this.props.session || !this.props.session?.username)
+            window.location.href = 'login';
         document.title = `${this.props.intl.formatMessage(messages.title)} - ${APP_NAME}`;
     }
 
@@ -129,7 +131,6 @@ export class Donate extends React.Component {
         return (
             <>
                 <LazyMenuBar />
-                {this.props.session && this.props.session.username ? window.location.href = "/" : null}
                 <div
                     className={styles.container}
                     dir={this.props.isRtl ? 'rtl' : 'ltr'}
@@ -314,10 +315,19 @@ export class Donate extends React.Component {
 }
 
 Donate.propTypes = {
-    intl: intlShape
+    intl: intlShape,
+    isRtl: PropTypes.bool,
+    session: PropTypes.object
 };
 
-const ConnectedDonate = injectIntl(Donate);
+const mapStateToProps = state => ({
+    isRtl: state.locales.isRtl,
+    session: state.scratchGui.dash.session
+});
+
+const ConnectedDonate = injectIntl(connect(
+    mapStateToProps
+)(Login));
 const WrappedDonate = AppStateHOC(ConnectedDonate);
 
 render(<WrappedDonate />);

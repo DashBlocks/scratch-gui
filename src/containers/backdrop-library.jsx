@@ -4,7 +4,9 @@ import React from 'react';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import VM from 'scratch-vm';
 
+import {costumeUpload} from '../lib/file-uploader.js';
 import {getBackdropLibrary} from '../lib/libraries/tw-async-libraries';
+import {handleAssetLoad} from '../lib/libraries/dash-web-libraries';
 import backdropTags from '../lib/libraries/backdrop-tags';
 import LibraryComponent from '../components/library/library.jsx';
 
@@ -35,6 +37,17 @@ class BackdropLibrary extends React.Component {
         }
     }
     handleItemSelect (item) {
+        if (item.src) {
+            handleAssetLoad(item.src.library, item.src.path, (buffer, fileType) => {
+                costumeUpload(buffer, fileType, vm, vmBackdrops => {
+                    vmBackdrops.forEach((backdrop, i) => {
+                        backdrop.name = `${item.name}${i ? i + 1 : ''}`;
+                        this.props.vm.addCostume(backdrop.md5, backdrop);
+                    });
+                });
+            });
+            return;
+        }
         const vmBackdrop = {
             name: item.name,
             rotationCenterX: item.rotationCenterX,

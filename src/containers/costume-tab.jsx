@@ -13,6 +13,7 @@ import DragConstants from '../lib/drag-constants';
 import {emptyCostume} from '../lib/empty-assets';
 import sharedMessages from '../lib/shared-messages';
 import downloadBlob from '../lib/download-blob';
+import {handleAsset} from '../lib/libraries/dash-web-libraries';
 
 import {
     openCostumeLibrary,
@@ -84,6 +85,7 @@ class CostumeTab extends React.Component {
             'handleSurpriseCostume',
             'handleSurpriseBackdrop',
             'handleFileUploadClick',
+            'handleCostumeFromWebLibrary',
             'handleCostumeUpload',
             'handleDrop',
             'setFileInput'
@@ -171,6 +173,10 @@ class CostumeTab extends React.Component {
     async handleSurpriseCostume () {
         const costumeLibraryContent = await getCostumeLibrary();
         const item = costumeLibraryContent[Math.floor(Math.random() * costumeLibraryContent.length)];
+        if (item.src) {
+            this.handleCostumeFromWebLibrary(item);
+            return;
+        }
         const vmCostume = {
             name: item.name,
             md5: item.md5ext,
@@ -184,6 +190,10 @@ class CostumeTab extends React.Component {
     async handleSurpriseBackdrop () {
         const backdropLibraryContent = await getBackdropLibrary();
         const item = backdropLibraryContent[Math.floor(Math.random() * backdropLibraryContent.length)];
+        if (item.src) {
+            this.handleCostumeFromWebLibrary(item);
+            return;
+        }
         const vmCostume = {
             name: item.name,
             md5: item.md5ext,
@@ -193,6 +203,10 @@ class CostumeTab extends React.Component {
             skinId: null
         };
         this.handleNewCostume(vmCostume);
+    }
+    handleCostumeFromWebLibrary (item) {
+        const targetId = this.props.vm.editingTarget.id;
+        handleAsset(item, this.props.vm, costumeUpload, (vmCostumes) => this.handleNewCostume(vmCostumes, false, targetId));
     }
     handleCostumeUpload (e) {
         const vm = this.props.vm;

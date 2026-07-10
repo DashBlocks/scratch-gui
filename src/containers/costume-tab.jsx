@@ -35,7 +35,7 @@ import surpriseIcon from '../components/action-menu/icon--surprise.svg';
 import searchIcon from '../components/action-menu/icon--search.svg';
 
 import {getCostumeLibrary, getBackdropLibrary} from '../lib/libraries/tw-async-libraries';
-import {handleAsset} from '../lib/libraries/dash-web-libraries';
+import {handleAssetLoad} from '../lib/libraries/dash-web-libraries';
 
 let messages = defineMessages({
     addLibraryBackdropMsg: {
@@ -205,8 +205,16 @@ class CostumeTab extends React.Component {
         this.handleNewCostume(vmCostume);
     }
     handleCostumeFromWebLibrary (item) {
+        const vm = this.props.vm;
         const targetId = this.props.vm.editingTarget.id;
-        handleAsset(item, this.props.vm, costumeUpload, (vmCostumes) => this.handleNewCostume(vmCostumes, false, targetId));
+        handleAssetLoad(item.src.library, item.src.path, (buffer, fileType) => {
+            costumeUpload(buffer, fileType, vm, vmCostumes => {
+                vmCostumes.forEach((costume, i) => {
+                    costume.name = `${fileName}${i ? i + 1 : ''}`;
+                });
+                this.handleNewCostume(vmCostumes, false, targetId);
+            });
+        });
     }
     handleCostumeUpload (e) {
         const vm = this.props.vm;

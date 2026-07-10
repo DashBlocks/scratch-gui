@@ -11,7 +11,9 @@ import LibraryComponent from '../components/library/library.jsx';
 import soundIcon from '../components/library-item/lib-icon--sound.svg';
 import soundIconRtl from '../components/library-item/lib-icon--sound-rtl.svg';
 
+import {soundUpload} from '../lib/file-uploader.js';
 import {getSoundLibrary} from '../lib/libraries/tw-async-libraries';
+import {handleAssetLoad} from '../lib/libraries/dash-web-libraries';
 import soundTags from '../lib/libraries/sound-tags';
 
 import {connect} from 'react-redux';
@@ -169,6 +171,17 @@ class SoundLibrary extends React.PureComponent {
         this.stopPlayingSound();
     }
     handleItemSelected (soundItem) {
+        if (soundItem.src) {
+            handleAssetLoad(soundItem.src.library, soundItem.src.path, (buffer, fileType) => {
+                soundUpload(buffer, fileType, this.props.vm.runtime.storage, newSound => {
+                    newSound.name = `${soundItem.name}${i ? i + 1 : ''}`;
+                    this.props.vm.addSound(newSound).then(() => {
+                        this.props.onNewSound();
+                    });
+                });
+            });
+            return;
+        }
         const vmSound = {
             format: soundItem.format,
             md5: soundItem._md5,

@@ -48,6 +48,7 @@
             "effects"
         ],
         "dataFormat": "",
+        "sampleCount": 147456,
         "rate": 44100,
         "src": {
             "library": "dash",
@@ -77,6 +78,7 @@
             "cartoon"
         ],
         "dataFormat": "",
+        "sampleCount": 185472,
         "rate": 44100,
         "src": {
             "library": "dash",

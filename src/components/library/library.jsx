@@ -363,6 +363,7 @@ class LibraryComponent extends React.Component {
                                     name={dataItem.name}
                                     rate={dataItem.rate}
                                     sampleCount={dataItem.sampleCount}
+                                    src={dataItem.src}
                                     credits={dataItem.credits}
                                     samples={dataItem.samples}
                                     docsURI={dataItem.docsURI}

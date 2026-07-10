@@ -3,7 +3,7 @@ const asyncLibrary = (...callbacks) => {
     return () => {
         if (data) return data;
         return Promise.all(callbacks.map(clbk => clbk()))
-            .then((...modules) => {
+            .then(modules => {
                 const sortedData = modules.map(mod => mod.default)
                     .reduce((acc, data) => acc.concat(...data))
                     .sort((item1, item2) => {

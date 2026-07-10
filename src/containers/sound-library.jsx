@@ -24,14 +24,16 @@ const messages = defineMessages({
     }
 });
 
-// @todo need to use this hack to avoid library using md5 for image
+// @todo need to use this hack to avoid library using md5/src for image
 const getSoundLibraryThumbnailData = (soundLibraryContent, isRtl) => soundLibraryContent.map(sound => {
     const {
         md5ext,
+        src,
         ...otherData
     } = sound;
     return {
         _md5: md5ext,
+        _src: src,
         rawURL: isRtl ? soundIconRtl : soundIcon,
         ...otherData
     };

@@ -9,6 +9,7 @@ export default [
     {tag: 'fantasy', intlLabel: messages.fantasy},
     {tag: 'dance', intlLabel: messages.dance},
     {tag: 'music', intlLabel: messages.music},
+    {tag: 'space', intlLabel: messages.space},
     {tag: 'sports', intlLabel: messages.sports},
     {tag: 'food', intlLabel: messages.food},
     {tag: 'fashion', intlLabel: messages.fashion},

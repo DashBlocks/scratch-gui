@@ -39,7 +39,7 @@ class CostumeLibrary extends React.PureComponent {
     handleItemSelected (item) {
         if (item.src) {
             handleAssetLoad(item.src.library, item.src.path, (buffer, fileType) => {
-                costumeUpload(buffer, fileType, vm, vmCostumes => {
+                costumeUpload(buffer, fileType, this.props.vm, vmCostumes => {
                     vmCostumes.forEach((costume, i) => {
                         costume.name = `${item.name}${i ? i + 1 : ''}`;
                         this.props.vm.addCostume(costume.md5, costume);

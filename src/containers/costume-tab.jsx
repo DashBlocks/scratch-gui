@@ -13,7 +13,6 @@ import DragConstants from '../lib/drag-constants';
 import {emptyCostume} from '../lib/empty-assets';
 import sharedMessages from '../lib/shared-messages';
 import downloadBlob from '../lib/download-blob';
-import {handleAsset} from '../lib/libraries/dash-web-libraries';
 
 import {
     openCostumeLibrary,
@@ -36,6 +35,7 @@ import surpriseIcon from '../components/action-menu/icon--surprise.svg';
 import searchIcon from '../components/action-menu/icon--search.svg';
 
 import {getCostumeLibrary, getBackdropLibrary} from '../lib/libraries/tw-async-libraries';
+import {handleAsset} from '../lib/libraries/dash-web-libraries';
 
 let messages = defineMessages({
     addLibraryBackdropMsg: {

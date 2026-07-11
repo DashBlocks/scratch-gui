@@ -141,6 +141,34 @@ class SoundLibrary extends React.PureComponent {
 
         // Save the promise so code to stop the sound may queue the stop
         // instruction after the play instruction.
+        if (soundItem._src) {
+            this.playingSoundPromise = handleAssetLoad(soundItem._src.library, soundItem._src.path, (buffer) => buffer)
+                .then(buffer => {
+                    if (buffer) {
+                        const sound = {
+                            data: {
+                                buffer,
+                                length: buffer.byteLength
+                            }
+                        };
+                        return this.audioEngine.decodeSoundPlayer(sound)
+                            .then(soundPlayer => {
+                                soundPlayer.connect(this.audioEngine);
+                                // Play the sound. Playing the sound will always come before a
+                                // paired stop if the sound must stop early.
+                                soundPlayer.play();
+                                soundPlayer.addListener('stop', this.onStop);
+                                // Set that the sound is playing. This affects the type of stop
+                                // instruction given if the sound must stop early.
+                                if (this.playingSoundPromise !== null) {
+                                    this.playingSoundPromise.isPlaying = true;
+                                }
+                                return soundPlayer;
+                            });
+                    }
+                });
+            return;
+        }
         this.playingSoundPromise = vm.runtime.storage.load(vm.runtime.storage.AssetType.Sound, md5)
             .then(soundAsset => {
                 if (soundAsset) {

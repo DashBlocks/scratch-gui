@@ -5,7 +5,7 @@ const webLibraries = {
             try {
                 const res = await fetch(`https://raw.githubusercontent.com/DashBlocks/assets/refs/heads/main${path}`);
                 const blob = await res.blob();
-                handleUpload(await blob.arrayBuffer(), blob.type);
+                return handleUpload(await blob.arrayBuffer(), blob.type);
             } catch (_) {
                 // ignore
             }

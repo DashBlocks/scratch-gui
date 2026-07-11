@@ -174,7 +174,7 @@ class SoundLibrary extends React.PureComponent {
         if (soundItem._src) {
             handleAssetLoad(soundItem._src.library, soundItem._src.path, (buffer, fileType) => {
                 soundUpload(buffer, fileType, this.props.vm.runtime.storage, newSound => {
-                    newSound.name = `${soundItem.name}${i ? i + 1 : ''}`;
+                    newSound.name = soundItem.name;
                     this.props.vm.addSound(newSound).then(() => {
                         this.props.onNewSound();
                     });

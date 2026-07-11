@@ -130,9 +130,6 @@ class SoundLibrary extends React.PureComponent {
         }
     }
     handleItemMouseEnter (soundItem) {
-        const md5ext = soundItem._md5;
-        const idParts = md5ext.split('.');
-        const md5 = idParts[0];
         const vm = this.props.vm;
 
         // In case enter is called twice without a corresponding leave
@@ -169,6 +166,9 @@ class SoundLibrary extends React.PureComponent {
                 });
             return;
         }
+        const md5ext = soundItem._md5;
+        const idParts = md5ext.split('.');
+        const md5 = idParts[0];
         this.playingSoundPromise = vm.runtime.storage.load(vm.runtime.storage.AssetType.Sound, md5)
             .then(soundAsset => {
                 if (soundAsset) {

@@ -524,6 +524,9 @@ const User = (props) => {
                         <div className={styles.userInfo}>
                             <div className={styles.userInfoRow}>
                                 <h2>{userData.username}</h2>
+                                <span className={styles.userId}>
+                                    #{userData.id}
+                                </span>
                                 <span
                                     className={classNames(styles.roleBadge, {
                                         [styles.dashSupporterRoleBadge]: userData.role === "dash-supporter"

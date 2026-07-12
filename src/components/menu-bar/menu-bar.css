@@ -346,7 +346,7 @@
     margin: 0 .25rem;
 }
 
-@media only screen and (max-width: 1124px) {
+@media only screen and (max-width: 1500px) {
     .tutorials-label, .collapsible-label {
         display: none;
     }

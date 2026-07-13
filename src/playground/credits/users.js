@@ -71,6 +71,11 @@ const contributors = [
         username: 'AnonimKing24'
     },
     {
+        link: 'dash',
+        userID: '7',
+        username: 'polzovatel_8787'
+    },
+    {
         userID: '12498592',
         username: 'LilyMakesThings'
     },

@@ -73,8 +73,6 @@ export class Donate extends React.Component {
     }
 
     componentDidMount () {
-        if (!this.props.session || !this.props.session?.username)
-            window.location.href = 'login';
         document.title = `${this.props.intl.formatMessage(messages.title)} - ${APP_NAME}`;
     }
 
@@ -98,6 +96,8 @@ export class Donate extends React.Component {
 
     async handleSubmit (event) {
         event.preventDefault();
+        if (!this.props.session || !this.props.session?.username)
+            window.location.href = 'login';
         this.setState({waiting: true, error: ''});
 
         try {

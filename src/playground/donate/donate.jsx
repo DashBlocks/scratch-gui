@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import bindAll from 'lodash.bindall';
@@ -327,7 +328,7 @@ const mapStateToProps = state => ({
 
 const ConnectedDonate = injectIntl(connect(
     mapStateToProps
-)(Login));
+)(Donate));
 const WrappedDonate = AppStateHOC(ConnectedDonate);
 
 render(<WrappedDonate />);

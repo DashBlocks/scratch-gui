@@ -88,7 +88,7 @@ const User = (props) => {
     const [achievements, setAchievements] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
-    const [avgGradient, setAvgGradient] = useState([]);
+    const [gradient, setGradient] = useState({});
     const [isMyProfile, setIsMyProfile] = useState(false);
 
     const [loading, setLoading] = useState(true);
@@ -181,19 +181,39 @@ const User = (props) => {
                     avgCssColors.push("var(--ui-white)");
                 }
             }
-            return avgCssColors;
+
+            return {
+                type: "linear",
+                angle: 90,
+                stops: avgCssColors.map((color, i) => ({
+                    color: color,
+                    position: avgCssColors.length === 1
+                        ? "0%"
+                        : `${i / (avgCssColors.length - 1) * 100}%`
+                }))
+            };
         }
 
         try {
-            avgGradientByImgSections(
-                `https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}`,
-                5,
-                2
-            ).then(avgGradient => setAvgGradient(avgGradient));
+            if (userData?.profile?.gradient) {
+                setGradient({
+                    ...userData.profile.gradient,
+                    stops: userData.profile.gradient.stops.map(stop => ({
+                        color: `color-mix(in srgb, ${stop.color}, var(--ui-white) 60%)`,
+                        position: stop.position
+                    }))
+                });
+            } else {
+                avgGradientByImgSections(
+                    `https://api.dashblocks.org/users/avatars/${userData?.profile?.avatarId}`,
+                    5,
+                    2
+                ).then(avgGradient => setGradient(avgGradient));
+            }
         } catch (_) {
             // Ignore errors
         }
-    }, [userData?.profile?.avatarId]);
+    }, [userData?.profile?.avatarId, userData?.profile?.gradient]);
 
     const getAchievement = (achievement) => {
         switch (achievement.type) {
@@ -502,8 +522,8 @@ const User = (props) => {
                 <div className={styles.userWrapper}>
                     <div
                         className={classNames(styles.section, styles.userHeader)}
-                        style={avgGradient.length > 0 ? {
-                            backgroundImage: `linear-gradient(to right, ${avgGradient.join(', ')})`
+                        style={gradient.stops?.length ? {
+                            backgroundImage: `linear-gradient(${gradient.angle}deg, ${gradient.stops.map(stop => `${stop.color} ${stop.position}`).join(', ')})`
                         } : {}}
                     >
                         <input

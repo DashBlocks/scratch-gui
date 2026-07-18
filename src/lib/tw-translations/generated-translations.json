@@ -3360,7 +3360,7 @@
         "tw.fonts.system1": "Добавить системный шрифт",
         "tw.fonts.system2": "Может работать в Scratch, но не будет отображаться правильно у всех.",
         "tw.fonts.title": "Шрифты",
-        "dash.footer.basedOnDisclaimer": "{APP_NAME} основан на Scratch, TurboWarp и других модах, но не связан с ними. TurboWarp доступен бесплатно на сайте {turbowarpDotOrg}.",
+        "dash.footer.basedOnDisclaimer": "{APP_NAME} основан на Scratch, TurboWarp, Dash и других модах, но не связан с ними. TurboWarp доступен бесплатно на сайте {turbowarpDotOrg}. Dash доступен бесплатно на сайте {dashSite}",
         "tw.footer.credits": "Благодарности",
         "tw.footer.disclaimer": "{APP_NAME} не связан со Scratch, командой Scratch или фондом Scratch Foundation.",
         "tw.footer.documentation": "Документация",

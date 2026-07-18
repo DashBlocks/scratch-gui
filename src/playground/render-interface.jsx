@@ -229,7 +229,7 @@ const Footer = () => (
             <div className={styles.footerText}>
                 <FormattedMessage
                     // eslint-disable-next-line max-len
-                    defaultMessage="{APP_NAME} is based on Scratch, TurboWarp, Dash and other mods, but not affiliated with these mods. TurboWarp is available for free at: {turbowarpDotOrg}. Dash is available for free at: {dashLink}"
+                    defaultMessage="{APP_NAME} is based on Scratch, TurboWarp, Dash and other mods, but not affiliated with these mods. TurboWarp is available for free at: {turbowarpDotOrg}. Dash is available for free at: {dashSite}"
                     description="Disclaimer that TSMod is based on Scratch and TurboWarp and other mods."
                     id="dash.footer.basedOnDisclaimer"
                     values={{
@@ -243,7 +243,7 @@ const Footer = () => (
                                 {'https://turbowarp.org/'}
                             </a>
                         ),
-                        dashLink: (
+                        dashSite: (
                             <a
                                 href="https://dashblocks.org/"
                                 target="_blank"
@@ -339,6 +339,13 @@ const Footer = () => (
                             defaultMessage="Terms of Service"
                             description="Link to terms of service"
                             id="dash.tos"
+                        />
+                    </a>
+                    <a href="/scratch-gui/">
+                        <FormattedMessage
+                            defaultMessage="Dev-version"
+                            description="Link to dev version"
+                            id="dash.devVersion"
                         />
                     </a>
                 </div>

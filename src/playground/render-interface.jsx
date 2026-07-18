@@ -165,10 +165,12 @@ const RenderVersion = () => {
     const [version, setVersion] = React.useState();
 
     const fetchVersion = () => {
-        fetch('https://api.github.com/repos/T-SMod/scratch-gui/commits')
+        fetch('https://api.github.com/repos/T-SMod/t-smod.github.io/commits')
             .then(response => response.json())
             .then(data => {
-                setVersion('0.0.1 Alpha');
+                const latestCommit = data[0];
+                const matchedVersion = latestCommit.commit.message.match(/^(\[(\d+(\.\d+)*)\])/);
+                setVersion((matchedVersion && matchedVersion.length > 2) ? matchedVersion[2] : null);
             });
     };
 
@@ -179,7 +181,7 @@ const RenderVersion = () => {
     return (
         <div className={styles.footerText}>
             <div className={styles.commitVersion}>
-                {'v' + version}
+                {window.location.href.startsWith('https://t-smod.github.io/scratch-gui') ? 'Dev' : (version ? 'v' + version : '?')}
             </div>
         </div>
     );
@@ -227,8 +229,8 @@ const Footer = () => (
             <div className={styles.footerText}>
                 <FormattedMessage
                     // eslint-disable-next-line max-len
-                    defaultMessage="{APP_NAME} is based on Scratch, TurboWarp, Dash and other mods, but not affiliated with these mods. TurboWarp is available for free at: {turbowarpDotOrg}."
-                    description="Disclaimer that Dash is based on Scratch and TurboWarp and other mods."
+                    defaultMessage="{APP_NAME} is based on Scratch, TurboWarp, Dash and other mods, but not affiliated with these mods. TurboWarp is available for free at: {turbowarpDotOrg}. Dash is available for free at: {dashLink}"
+                    description="Disclaimer that TSMod is based on Scratch and TurboWarp and other mods."
                     id="dash.footer.basedOnDisclaimer"
                     values={{
                         APP_NAME,
@@ -239,6 +241,15 @@ const Footer = () => (
                                 rel="noreferrer"
                             >
                                 {'https://turbowarp.org/'}
+                            </a>
+                        ),
+                        dashLink: (
+                            <a
+                                href="https://dashblocks.org/"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {'https://dashblocks.org/'}
                             </a>
                         )
                     }}
@@ -264,29 +275,29 @@ const Footer = () => (
                     </a>*/}
                 </div>
                 <div className={styles.footerSection}>
-                    <a href="https://dashblocks.github.io/desktop.html">
+                    <a href="https://dashblocks.org/desktop.html">
                         {/* Do not translate */}
                         {'Dash Desktop'}
                     </a>
-                    <a href="https://t-smod.github.io/scratch-gui/packager">
+                    <a href="https://t-smod.org/packager">
                         {/* Do not translate */}
                         {'TSMod Packager'}
                     </a>
-                    <a href="https://dashblocks.github.io/docs/embedding">
+                    <a href="https://dashblocks.org/docs/embedding">
                         <FormattedMessage
                             defaultMessage="Embedding"
                             description="Link in footer to embedding documentation for embedding link"
                             id="tw.footer.embed"
                         />
                     </a>
-                    <a href="https://dashblocks.github.io/docs/url-parameters">
+                    <a href="https://dashblocks.org/docs/url-parameters">
                         <FormattedMessage
                             defaultMessage="URL Parameters"
                             description="Link in footer to URL parameters documentation"
                             id="tw.footer.parameters"
                         />
                     </a>
-                    <a href="https://dashblocks.github.io/docs/">
+                    <a href="https://dashblocks.org/docs/">
                         <FormattedMessage
                             defaultMessage="Dash Documentation"
                             description="Link in footer to additional documentation"
@@ -309,7 +320,7 @@ const Footer = () => (
                             id="tw.feedback"
                         />
                     </a>
-                    <a href="https://github.com/T-SMos/">
+                    <a href="https://github.com/T-SMod/">
                         <FormattedMessage
                             defaultMessage="Source Code"
                             description="Link to source code"
@@ -342,7 +353,7 @@ const WhatsNew = () => {
     const [error, setError] = useState();
 
     useEffect(() => {
-        fetch('https://api.github.com/repos/T-SMod/scratch-gui/commits')
+        fetch('https://api.github.com/repos/T-SMod/t-smod.github.io/commits')
             .then(response => response.json())
             .then(data => {
                 setCommits(data.slice(0, 10));
@@ -651,11 +662,11 @@ class Interface extends React.PureComponent {
                                                             values={{
                                                                 link: (
                                                                     <a
-                                                                        href="https://dashblocks.github.io/docs/unshared-projects"
+                                                                        href="https://dashblocks.org/docs/unshared-projects"
                                                                         target="_blank"
                                                                         rel="noopener noreferrer"
                                                                     >
-                                                                        {'https://dashblocks.github.io/docs/unshared-projects'}
+                                                                        {'https://dashblocks.org/docs/unshared-projects'}
                                                                     </a>
                                                                 )
                                                             }}

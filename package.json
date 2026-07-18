@@ -12,7 +12,7 @@
   "main": "./dist/scratch-gui.js",
   "scripts": {
     "build": "npm run clean && webpack --colors --bail",
-    "build:prepublish": "rm -rf ../dashblocks.github.io/* && cp -r ./build/* ../dashblocks.github.io",
+    "build:prepublish": "rm -rf ../t-smod.github.io/* && cp -r ./build/* ../t-smod.github.io",
     "build:desktop": "rm -rf ../dash_d/public/* && cp -r ./build/* ../dash_d/public/",
     "render-fonts": "rm -rf ../penguinmod-render-fonts/* && cp -r ./src/lib/tw-scratch-render-fonts/* ../penguinmod-render-fonts",
     "clean": "rimraf ./build && mkdirp build && rimraf ./dist && mkdirp dist",

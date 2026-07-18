@@ -169,7 +169,7 @@ export class Donate extends React.Component {
                                 </li>
                                 <li>
                                     <FormattedMessage
-                                        defaultMessage="Bigger limits for projects"
+                                        defaultMessage="Increase of maximum project size limit from 75MB to 250MB"
                                         description="Benefit of donating"
                                         id="dash.donate.benefits.biggerLimits"
                                     />

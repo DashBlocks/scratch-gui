@@ -43,6 +43,11 @@ const messages = defineMessages({
         description: '"Dash Team" role name',
         id: 'dash.user.role.dashTeam'
     },
+    dashSupporterRole: {
+        defaultMessage: 'Dash Supporter',
+        description: '"Dash Supporter" role name',
+        id: 'dash.user.role.dashSupporter'
+    },
     hoverText: {
         defaultMessage: '{title} by {author}',
         description: 'Displayed when hovering on a project',
@@ -89,7 +94,7 @@ const User = (props) => {
             try {
                 const session = await getSession();
                 setIsMyProfile(session?.userId?.toString() === id || session?.username?.toLowerCase() === id?.toLowerCase());
-                const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${id}`);
+                const userRes = await fetch(`https://api.dashblocks.org/users/${id}`);
                 userData = await userRes.json();
 
                 if (!userData.ok) throw new Error(userData.error);
@@ -160,7 +165,7 @@ const User = (props) => {
 
         try {
             avgGradientByImgSections(
-                `https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId}`,
+                `https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}`,
                 5,
                 2
             ).then(avgGradient => setAvgGradient(avgGradient));
@@ -176,7 +181,7 @@ const User = (props) => {
         const formData = new FormData();
         formData.append('avatar', file);
 
-        const response = await fetch('https://dashblocks-server.vercel.app/users/upload-avatar', {
+        const response = await fetch('https://api.dashblocks.org/users/upload-avatar', {
             method: 'POST',
             body: formData,
             credentials: 'include'
@@ -265,7 +270,7 @@ const User = (props) => {
                     />
                     <img
                         draggable={false}
-                        src={`https://dashblocks-server.vercel.app/users/avatars/${userData.profile.avatarId}`}
+                        src={`https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}`}
                         alt={userData.username}
                         onClick={() => isMyProfile ? fileInputRef.current.click() : null}
                         className={styles.avatarImg}
@@ -277,9 +282,11 @@ const User = (props) => {
                             <span className={styles.roleBadge}>
                                 {userData.role === 'dashteam'
                                     ? props.intl.formatMessage(messages.dashTeamRole)
-                                    : userData.role === 'dasher+'
-                                        ? props.intl.formatMessage(messages.dasherPlusRole)
-                                        : props.intl.formatMessage(messages.dasherRole)}
+                                    : userData.role === 'supporter'
+                                        ? props.intl.formatMessage(messages.dashSupporterRole)
+                                        : userData.role === 'dasher+'
+                                            ? props.intl.formatMessage(messages.dasherPlusRole)
+                                            : props.intl.formatMessage(messages.dasherRole)}
                             </span>
                         </div>
                         <div className={styles.userInfoRow}>
@@ -367,7 +374,7 @@ const User = (props) => {
                                 <div className={styles.thumbWrapper}>
                                     <img
                                         draggable={false}
-                                        src={`https://dashblocks-server.vercel.app/projects/thumbnails/${project.thumbnailId || 1}`}
+                                        src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
                                         alt={project.id}
                                     />
                                 </div>

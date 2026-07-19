@@ -1,0 +1,23 @@
+<svg
+   width="5"
+   height="8"
+   viewBox="0 0 5 8"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <g
+     id="Page-1"
+     stroke="none"
+     stroke-width="1"
+     fill="#855CD6"
+     fill-rule="evenodd"
+     transform="translate(-1.5,1.5)">
+    <path
+       d="M 6.5,2.5 C 6.5,2.7747929 6.3969504,3.0483699 6.1896531,3.2587203 L 3.3066623,6.1853864 c -0.4133965,0.4194848 -1.0820203,0.4194848 -1.496615,0 -0.4133964,-0.4182688 -0.4133964,-6.95250396 0,-7.3707728 0.4133965,-0.4194848 1.0832185,-0.4194848 1.496615,0 L 6.1896531,1.7400638 C 6.3969504,1.9504142 6.5,2.2239912 6.5,2.5"
+       id="path1"/>
+  </g>
+</svg>

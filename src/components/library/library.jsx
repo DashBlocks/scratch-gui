@@ -2,11 +2,10 @@ import classNames from 'classnames';
 import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
-import {defineMessages, injectIntl, intlShape} from 'react-intl';
+import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
 
 import LibraryItem from '../../containers/library-item.jsx';
 import Modal from '../../containers/modal.jsx';
-import Divider from '../divider/divider.jsx';
 import Filter from '../filter/filter.jsx';
 import TagButton from '../../containers/tag-button.jsx';
 import Spinner from '../spinner/spinner.jsx';
@@ -14,6 +13,8 @@ import Separator from '../tw-extension-separator/separator.jsx';
 import RemovedTrademarks from '../tw-removed-trademarks/removed-trademarks.jsx';
 import {APP_NAME} from '../../lib/brand.js';
 
+import TWRenderRecoloredImage from '../../lib/tw-recolor/render.jsx';
+import arrowIcon from '!../../lib/tw-recolor/build!./icon--arrow.svg';
 import styles from './library.css';
 
 const messages = defineMessages({
@@ -21,16 +22,8 @@ const messages = defineMessages({
         id: 'gui.library.filterPlaceholder',
         defaultMessage: 'Search',
         description: 'Placeholder text for library search field'
-    },
-    allTag: {
-        id: 'gui.library.allTag',
-        defaultMessage: 'All',
-        description: 'Label for library tag to revert to all items after filtering by tag.'
     }
 });
-
-const ALL_TAG = {tag: 'all', intlLabel: messages.allTag};
-const tagListPrefix = [ALL_TAG];
 
 class LibraryComponent extends React.Component {
     constructor (props) {
@@ -45,13 +38,15 @@ class LibraryComponent extends React.Component {
             'handleSelect',
             'handleFavorite',
             'handleTagClick',
+            'handleFilterBarToggling',
             'setFilteredDataRef'
         ]);
         const favorites = this.readFavoritesFromStorage();
         this.state = {
             playingItem: null,
             filterQuery: '',
-            selectedTag: ALL_TAG.tag,
+            filterBarOpened: true,
+            selectedTags: new Set(),
             canDisplay: false,
             favorites,
             initialFavorites: favorites
@@ -69,7 +64,7 @@ class LibraryComponent extends React.Component {
     }
     componentDidUpdate (prevProps, prevState) {
         if (prevState.filterQuery !== this.state.filterQuery ||
-            prevState.selectedTag !== this.state.selectedTag) {
+            prevState.selectedTags !== this.state.selectedTags) {
             this.scrollToTop();
         }
 
@@ -115,18 +110,22 @@ class LibraryComponent extends React.Component {
         this.props.onRequestClose();
     }
     handleTagClick (tag) {
+        const lowerCaseTag = tag.toLowerCase();
+        const tagSet = new Set([lowerCaseTag]);
         if (this.state.playingItem === null) {
-            this.setState({
-                filterQuery: '',
-                selectedTag: tag.toLowerCase()
-            });
+            this.setState(oldState => ({
+                selectedTags: oldState.selectedTags.has(lowerCaseTag)
+                    ? oldState.selectedTags.difference(tagSet)
+                    : oldState.selectedTags.union(tagSet)
+            }));
         } else {
-            this.props.onItemMouseLeave(this.getFilteredData()[[this.state.playingItem]]);
-            this.setState({
-                filterQuery: '',
+            this.props.onItemMouseLeave(this.getFilteredData()[this.state.playingItem]);
+            this.setState(oldState => ({
                 playingItem: null,
-                selectedTag: tag.toLowerCase()
-            });
+                selectedTags: oldState.selectedTags.has(lowerCaseTag)
+                    ? oldState.selectedTags.difference(tagSet)
+                    : oldState.selectedTags.union(tagSet)
+            }));
         }
     }
     handleMouseEnter (id) {
@@ -156,24 +155,27 @@ class LibraryComponent extends React.Component {
     handleFilterChange (event) {
         if (this.state.playingItem === null) {
             this.setState({
-                filterQuery: event.target.value,
-                selectedTag: ALL_TAG.tag
+                filterQuery: event.target.value
             });
         } else {
-            this.props.onItemMouseLeave(this.getFilteredData()[[this.state.playingItem]]);
+            this.props.onItemMouseLeave(this.getFilteredData()[this.state.playingItem]);
             this.setState({
                 filterQuery: event.target.value,
-                playingItem: null,
-                selectedTag: ALL_TAG.tag
+                playingItem: null
             });
         }
     }
     handleFilterClear () {
         this.setState({filterQuery: ''});
     }
+    handleFilterBarToggling () {
+        this.setState(oldState => ({
+            filterBarOpened: !oldState.filterBarOpened
+        }));
+    }
     getFilteredData () {
         // When no filtering, favorites get their own section
-        if (this.state.selectedTag === 'all' && !this.state.filterQuery) {
+        if (this.state.selectedTags.size === 0 && !this.state.filterQuery) {
             const favoriteItems = this.props.data
                 .filter(dataItem => (
                     this.state.initialFavorites.includes(dataItem[this.props.persistableKey])
@@ -208,10 +210,10 @@ class LibraryComponent extends React.Component {
 
         let filteredItems = favoriteItems.concat(nonFavoriteItems);
 
-        if (this.state.selectedTag !== 'all') {
+        if (this.state.selectedTags.size > 0) {
             filteredItems = filteredItems.filter(dataItem => (
                 dataItem.tags &&
-                dataItem.tags.map(i => i.toLowerCase()).includes(this.state.selectedTag)
+                this.state.selectedTags.isSubsetOf(new Set(dataItem.tags.map(i => i.toLowerCase())))
             ));
         }
 
@@ -255,113 +257,140 @@ class LibraryComponent extends React.Component {
                 id={this.props.id}
                 onRequestClose={this.handleClose}
             >
-                {(this.props.filterable || this.props.tags) && (
-                    <div className={styles.filterBar}>
-                        {this.props.filterable && (
-                            <Filter
-                                className={classNames(
-                                    styles.filterBarItem,
-                                    styles.filter
-                                )}
-                                filterQuery={this.state.filterQuery}
-                                inputClassName={styles.filterInput}
-                                placeholderText={this.props.intl.formatMessage(messages.filterPlaceholder)}
-                                onChange={this.handleFilterChange}
-                                onClear={this.handleFilterClear}
-                            />
-                        )}
-                        {this.props.filterable && this.props.tags && (
-                            <Divider className={classNames(styles.filterBarItem, styles.divider)} />
-                        )}
-                        {this.props.tags &&
-                            <div className={styles.tagWrapper}>
-                                {tagListPrefix.concat(this.props.tags).map((tagProps, id) => (
-                                    <TagButton
-                                        active={this.state.selectedTag === tagProps.tag.toLowerCase()}
-                                        className={classNames(
-                                            styles.filterBarItem,
-                                            styles.tagButton,
-                                            tagProps.className
-                                        )}
-                                        key={`tag-button-${id}`}
-                                        onClick={this.handleTagClick}
-                                        {...tagProps}
-                                    />
-                                ))}
-                            </div>
-                        }
-                    </div>
-                )}
-                <div
-                    className={classNames(styles.libraryScrollGrid, {
-                        [styles.withFilterBar]: this.props.filterable || this.props.tags
-                    })}
-                    ref={this.setFilteredDataRef}
-                >
-                    {filteredData && this.getFilteredData().map((dataItem, index) => (
-                        dataItem === '---' ? (
-                            <Separator key={index} />
-                        ) : dataItem === 'twGalleryMirror' ? (
-                            <div key={index} className={styles.twGalleryMirrorNote}>
-                                {this.props.intl.formatMessage({
-                                    id: 'dash.extensionLibrary.twGalleryMirrorNote',
-                                    defaultMessage: 'Note: You are currently viewing a mirror of the TurboWarp Extension Gallery. Some extensions may be out of date or unavailable.',
-                                    description: 'Note indicating that the TurboWarp Extension Gallery is being served from a mirror site.'
-                                })}
-                            </div>
-                        ) : (
-                            <LibraryItem
-                                bluetoothRequired={dataItem.bluetoothRequired}
-                                collaborator={dataItem.collaborator}
-                                description={dataItem.description}
-                                disabled={dataItem.disabled}
-                                extensionId={dataItem.extensionId}
-                                href={dataItem.href}
-                                featured={dataItem.featured}
-                                hidden={dataItem.hidden}
-                                iconMd5={dataItem.costumes ? dataItem.costumes[0].md5ext : dataItem.md5ext}
-                                iconRawURL={dataItem.rawURL}
-                                icons={dataItem.costumes}
-                                id={index}
-                                incompatibleWithScratch={dataItem.incompatibleWithScratch}
-                                favorite={this.state.favorites.includes(dataItem[this.props.persistableKey])}
-                                onFavorite={this.handleFavorite}
-                                insetIconURL={dataItem.insetIconURL}
-                                internetConnectionRequired={dataItem.internetConnectionRequired}
-                                isPlaying={this.state.playingItem === index}
-                                key={dataItem.key || (
-                                    dataItem.extensionId ? dataItem.extensionId :
-                                    (typeof dataItem.name === 'string' ?
-                                        dataItem.name :
-                                        dataItem.rawURL)
-                                )}
-                                name={dataItem.name}
-                                credits={dataItem.credits}
-                                samples={dataItem.samples}
-                                docsURI={dataItem.docsURI}
-                                showPlayButton={this.props.showPlayButton}
-                                onMouseEnter={this.handleMouseEnter}
-                                onMouseLeave={this.handleMouseLeave}
-                                onSelect={this.handleSelect}
-                            />
-                        )
-                    ))}
-                    {filteredData && this.props.removedTrademarks && (
-                        <React.Fragment>
-                            {filteredData.length > 0 && (
-                                <Separator />
+                <div className={styles.libraryWrapper}>
+                    {(this.props.filterable || this.props.tags) && (
+                        <div className={styles.filterBar}>
+                            {this.state.filterBarOpened && (
+                                <div className={styles.filterBarContent}>
+                                    {this.props.filterable && (
+                                        <Filter
+                                            className={styles.filter}
+                                            filterQuery={this.state.filterQuery}
+                                            placeholderText={this.props.intl.formatMessage(messages.filterPlaceholder)}
+                                            onChange={this.handleFilterChange}
+                                            onClear={this.handleFilterClear}
+                                        />
+                                    )}
+                                    {this.props.filterable && this.props.tags && (
+                                        <div className={styles.divider} />
+                                    )}
+                                    {this.props.tags &&
+                                        <div className={styles.tagWrapper}>
+                                            {this.props.tags.map((tagProps, index) => (
+                                                tagProps === '---' ? (
+                                                    <div className={styles.divider} />
+                                                ) : tagProps.isGroup ? (
+                                                    <h4
+                                                        className={tagProps.className}
+                                                        key={index}
+                                                    >
+                                                        {typeof tagProps.intlLabel === 'string' ? tagProps.intlLabel : (
+                                                            <FormattedMessage {...tagProps.intlLabel} />
+                                                        )}
+                                                    </h4>
+                                                ) : (
+                                                    <TagButton
+                                                        active={this.state.selectedTags.has(tagProps.tag.toLowerCase())}
+                                                        className={classNames(
+                                                            styles.tagButton,
+                                                            tagProps.className
+                                                        )}
+                                                        key={index}
+                                                        onClick={this.handleTagClick}
+                                                        {...tagProps}
+                                                    />
+                                                )
+                                            ))}
+                                        </div>
+                                    }
+                                </div>
                             )}
-                            <RemovedTrademarks />
-                        </React.Fragment>
-                    )}
-                    {!filteredData && (
-                        <div className={styles.spinnerWrapper}>
-                            <Spinner
-                                large
-                                level="primary"
-                            />
+                            <div
+                                className={styles.arrowIconWrapper}
+                                onClick={this.handleFilterBarToggling}
+                            >
+                                <TWRenderRecoloredImage
+                                    className={classNames(styles.arrowIcon, {
+                                        [styles.isOpened]: this.state.filterBarOpened
+                                    })}
+                                    src={arrowIcon}
+                                />
+                            </div>
                         </div>
                     )}
+                    <div
+                        className={styles.libraryScrollGrid}
+                        ref={this.setFilteredDataRef}
+                    >
+                        {filteredData && this.getFilteredData().map((dataItem, index) => (
+                            dataItem === '---' ? (
+                                <Separator key={index} />
+                            ) : dataItem === 'twGalleryMirror' ? (
+                                <div key={index} className={styles.twGalleryMirrorNote}>
+                                    {this.props.intl.formatMessage({
+                                        id: 'dash.extensionLibrary.twGalleryMirrorNote',
+                                        defaultMessage: 'Note: You are currently viewing a mirror of the TurboWarp Extension Gallery. Some extensions may be out of date or unavailable.',
+                                        description: 'Note indicating that the TurboWarp Extension Gallery is being served from a mirror site.'
+                                    })}
+                                </div>
+                            ) : (
+                                <LibraryItem
+                                    bluetoothRequired={dataItem.bluetoothRequired}
+                                    collaborator={dataItem.collaborator}
+                                    description={dataItem.description}
+                                    disabled={dataItem.disabled}
+                                    extensionId={dataItem.extensionId}
+                                    href={dataItem.href}
+                                    featured={dataItem.featured}
+                                    hidden={dataItem.hidden}
+                                    iconMd5={dataItem.costumes ? dataItem.costumes[0].md5ext : dataItem.md5ext}
+                                    iconRawURL={dataItem.rawURL}
+                                    icons={dataItem.costumes}
+                                    id={index}
+                                    incompatibleWithScratch={dataItem.incompatibleWithScratch}
+                                    libraryId={this.props.id}
+                                    favorite={this.state.favorites.includes(dataItem[this.props.persistableKey])}
+                                    onFavorite={this.handleFavorite}
+                                    insetIconURL={dataItem.insetIconURL}
+                                    internetConnectionRequired={dataItem.internetConnectionRequired}
+                                    isPlaying={this.state.playingItem === index}
+                                    key={dataItem.key || (
+                                        dataItem.extensionId ? dataItem.extensionId :
+                                        (typeof dataItem.name === 'string' ?
+                                            dataItem.name :
+                                            dataItem.rawURL)
+                                    )}
+                                    name={dataItem.name}
+                                    rate={dataItem.rate}
+                                    sampleCount={dataItem.sampleCount}
+                                    src={dataItem.src}
+                                    credits={dataItem.credits}
+                                    samples={dataItem.samples}
+                                    docsURI={dataItem.docsURI}
+                                    showPlayButton={this.props.showPlayButton}
+                                    onMouseEnter={this.handleMouseEnter}
+                                    onMouseLeave={this.handleMouseLeave}
+                                    onSelect={this.handleSelect}
+                                />
+                            )
+                        ))}
+                        {filteredData && this.props.removedTrademarks && (
+                            <React.Fragment>
+                                {filteredData.length > 0 && (
+                                    <Separator />
+                                )}
+                                <RemovedTrademarks />
+                            </React.Fragment>
+                        )}
+                        {!filteredData && (
+                            <div className={styles.spinnerWrapper}>
+                                <Spinner
+                                    large
+                                    level="primary"
+                                />
+                            </div>
+                        )}
+                    </div>
                 </div>
             </Modal>
         );
@@ -397,7 +426,21 @@ LibraryComponent.propTypes = {
     onRequestClose: PropTypes.func,
     setStopHandler: PropTypes.func,
     showPlayButton: PropTypes.bool,
-    tags: PropTypes.arrayOf(PropTypes.shape(TagButton.propTypes)),
+    tags: PropTypes.arrayOf(PropTypes.oneOfType([
+        PropTypes.shape(TagButton.propTypes),
+        PropTypes.shape({
+            intlLabel: PropTypes.oneOfType([
+                PropTypes.shape({
+                    defaultMessage: PropTypes.string,
+                    description: PropTypes.string,
+                    id: PropTypes.string
+                }),
+                PropTypes.string
+            ]).isRequired,
+            isGroup: PropTypes.bool.isRequired
+        }),
+        PropTypes.string
+    ])),
     title: PropTypes.string.isRequired,
     removedTrademarks: PropTypes.bool
 };

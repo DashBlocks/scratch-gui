@@ -18,7 +18,6 @@ import SoundEditor from './sound-editor.jsx';
 import SoundLibrary from './sound-library.jsx';
 import SoundEditorNotSupported from '../components/tw-sound-editor-not-supported/sound-editor-not-supported.jsx';
 
-import {getSoundLibrary} from '../lib/libraries/tw-async-libraries';
 import {handleFileUpload, soundUpload} from '../lib/file-uploader.js';
 import errorBoundaryHOC from '../lib/error-boundary-hoc.jsx';
 import DragConstants from '../lib/drag-constants';
@@ -41,6 +40,9 @@ import {
 import {setRestore} from '../reducers/restore-deletion';
 import {showStandardAlert, closeAlertWithId} from '../reducers/alerts';
 
+import {getSoundLibrary} from '../lib/libraries/tw-async-libraries';
+import {handleAssetLoad} from '../lib/libraries/dash-web-libraries';
+
 class SoundTab extends React.Component {
     constructor (props) {
         super(props);
@@ -52,6 +54,7 @@ class SoundTab extends React.Component {
             'handleNewSound',
             'handleSurpriseSound',
             'handleFileUploadClick',
+            'handleSoundFromWebLibrary',
             'handleSoundUpload',
             'handleDrop',
             'setFileInput'
@@ -115,6 +118,10 @@ class SoundTab extends React.Component {
     async handleSurpriseSound () {
         const soundLibraryContent = await getSoundLibrary();
         const soundItem = soundLibraryContent[Math.floor(Math.random() * soundLibraryContent.length)];
+        if (soundItem.src) {
+            this.handleSoundFromWebLibrary(soundItem);
+            return;
+        }
         const vmSound = {
             format: soundItem.dataFormat,
             md5: soundItem.md5ext,
@@ -129,6 +136,19 @@ class SoundTab extends React.Component {
 
     handleFileUploadClick () {
         this.fileInput.click();
+    }
+
+    handleSoundFromWebLibrary (item) {
+        const storage = this.props.vm.runtime.storage;
+        const targetId = this.props.vm.editingTarget.id;
+        handleAssetLoad(item.src.library, item.src.path, (buffer, fileType) => {
+            soundUpload(buffer, fileType, storage, newSound => {
+                newSound.name = item.name;
+                this.props.vm.addSound(newSound, targetId).then(() => {
+                    this.handleNewSound();
+                });
+            });
+        });
     }
 
     handleSoundUpload (e) {

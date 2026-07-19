@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const DocumentationLink = ({slug, children}) => (
     <a
-        href={`https://dashblocks.github.io/docs/${slug}`}
+        href={`https://dashblocks.org/docs/${slug}`}
         target="_blank"
         rel="noopener noreferrer"
     >

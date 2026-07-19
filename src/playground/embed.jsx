@@ -13,7 +13,7 @@ import render from './app-target';
 
 const getProjectId = () => {
     // For compatibility reasons, we first look at the hash.
-    // eg. https://dashblocks.github.io/embed.html#1
+    // eg. https://dashblocks.org/embed#1
     const hashMatch = window.location.hash.match(/#(s?\d+)/);
     if (hashMatch !== null) {
         return hashMatch[1];

@@ -18,8 +18,8 @@ const links = {
         href: (username) => `https://github.com/${username}/`
     },
     dash: {
-        avatar: () => null, // We can't get link to avatar of Dasher without a request to API.
-        href: (username) => `https://dashblocks.github.io/user#${username}`
+        avatar: (userID) => `https://api.dashblocks.org/users/avatars/${userID}`,
+        href: (username) => `https://dashblocks.org/user#${username}`
     }
 };
 
@@ -69,6 +69,11 @@ const contributors = [
     {
         userID: '127142246',
         username: 'AnonimKing24'
+    },
+    {
+        link: 'dash',
+        userID: '7',
+        username: 'polzovatel_8787'
     },
     {
         userID: '12498592',
@@ -258,6 +263,7 @@ const dashExtensionDevelopers = [
     },
     {
         link: 'dash',
+        userID: '7',
         username: 'polzovatel_8787'
     },
     {

@@ -1,0 +1,37 @@
+<svg
+   width="16px"
+   height="16px"
+   viewBox="0 0 16 16"
+   version="1.1"
+   id="svg1"
+   sodipodi:docname="favorite.svg"
+   inkscape:version="1.4 (86a8ad7, 2024-10-11)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="24.075255"
+     inkscape:cx="5.5658808"
+     inkscape:cy="11.817113"
+     inkscape:current-layer="svg1" />
+  <!-- Generator: Sketch 43.2 (39069) - http://www.bohemiancoding.com/sketch -->
+  <title
+     id="title1">fav it</title>
+  <desc
+     id="desc1">Created with Sketch.</desc>
+  <defs
+     id="defs1" />
+  <path
+     d="M 7.7678049,13.382077 3.597119,15.573919 C 3.2312229,15.767473 2.8025764,15.456374 2.8723972,15.048055 L 3.6687075,10.403648 C 3.6969893,10.241911 3.6430771,10.076639 3.5255307,9.9617443 L 0.15115504,6.6730979 C -0.14492036,6.384093 0.01858396,5.8812066 0.42778671,5.8211077 L 5.0907531,5.1441115 C 5.2533736,5.1202486 5.3938989,5.0186108 5.4663711,4.871015 L 7.552156,0.64553316 c 0.1829481,-0.37119896 0.7123486,-0.37119896 0.8961804,0 L 10.533238,4.871015 c 0.07247,0.1475958 0.212997,0.2492336 0.375617,0.2730965 l 4.662966,0.6769962 c 0.409205,0.060099 0.573592,0.5629853 0.276633,0.8519902 l -3.373493,3.2886464 c -0.118429,0.1148947 -0.171458,0.2801667 -0.14406,0.4419037 l 0.796311,4.644407 c 0.07071,0.408319 -0.357942,0.719418 -0.723838,0.525864 L 8.2326876,13.382077 c -0.1458283,-0.0769 -0.3190544,-0.0769 -0.4648827,0 z"
+     id="fav-icon"
+     style="fill:#ffbf00;fill-opacity:1;stroke-width:1" />
+</svg>

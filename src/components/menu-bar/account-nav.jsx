@@ -27,7 +27,8 @@ const AccountNavComponent = ({
     onLogOut,
     profileUrl,
     thumbnailUrl,
-    username
+    username,
+    role
 }) => (
     <React.Fragment>
         <div
@@ -69,6 +70,13 @@ const AccountNavComponent = ({
                     id="gui.accountMenu.profile"
                 />
             </MenuItemContainer>
+            <MenuItemContainer href="messages">
+                <FormattedMessage
+                    defaultMessage="Messages"
+                    description="Text to link to list of messages, in the account navigation menu"
+                    id="gui.accountMenu.messages"
+                />
+            </MenuItemContainer>
             <MenuItemContainer href="mystuff">
                 <FormattedMessage
                     defaultMessage="My Stuff"
@@ -76,9 +84,18 @@ const AccountNavComponent = ({
                     id="gui.accountMenu.myStuff"
                 />
             </MenuItemContainer>
+            {role === "dashteam" && (
+                <MenuItemContainer href="admin">
+                    <FormattedMessage
+                        defaultMessage="Admin Panel"
+                        description="Text to link to admin panel for Dash Team, in the account navigation menu"
+                        id="gui.accountMenu.adminPanel"
+                    />
+                </MenuItemContainer>
+            )}
             <MenuItemContainer href="account-settings">
                 <FormattedMessage
-                    defaultMessage="Account settings"
+                    defaultMessage="Account Settings"
                     description="Text to link to my account settings, in the account navigation menu"
                     id="gui.accountMenu.accountSettings"
                 />
@@ -86,7 +103,7 @@ const AccountNavComponent = ({
             <MenuSection>
                 <MenuItemContainer onClick={onLogOut}>
                     <FormattedMessage
-                        defaultMessage="Sign out"
+                        defaultMessage="Sign Out"
                         description="Text to link to sign out, in the account navigation menu"
                         id="gui.accountMenu.signOut"
                     />
@@ -106,7 +123,8 @@ AccountNavComponent.propTypes = {
     onLogOut: PropTypes.func,
     profileUrl: PropTypes.string,
     thumbnailUrl: PropTypes.string,
-    username: PropTypes.string
+    username: PropTypes.string,
+    role: PropTypes.string
 };
 
 export default AccountNavComponent;

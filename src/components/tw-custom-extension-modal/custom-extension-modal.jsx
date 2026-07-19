@@ -86,7 +86,7 @@ const CustomExtensionModal = props => (
                         value={props.url}
                         onChange={props.onChangeURL}
                         onKeyDown={props.onKeyDown}
-                        placeholder="https://dashblocks.github.io/extensions/..."
+                        placeholder="https://dashblocks.org/extensions/..."
                         autoFocus
                     />
                 </React.Fragment>

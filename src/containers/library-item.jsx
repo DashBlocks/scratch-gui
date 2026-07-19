@@ -2,6 +2,7 @@ import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {injectIntl, intlShape, defineMessages} from 'react-intl';
+import {getAssetURL} from '../lib/libraries/dash-web-libraries';
 
 import LibraryItemComponent from '../components/library-item/library-item.jsx';
 
@@ -136,13 +137,26 @@ class LibraryItem extends React.PureComponent {
         }
         return iconMd5Prop;
     }
+    curSrc () {
+        const srcProp = this.props.src;
+        if (this.props.icons &&
+            this.state.isRotatingIcon &&
+            this.state.iconIndex < this.props.icons.length) {
+            const icon = this.props.icons[this.state.iconIndex] || {};
+            return icon.src || srcProp;
+        }
+        return srcProp;
+    }
     render () {
         /* const url = this.props.icons && this.props.icons.length > 0 ?
             this.props.icons[this.state.iconIndex].url : null; */
         const iconMd5 = this.curIconMd5();
-        const iconURL = iconMd5 ?
-            `https://cdn.assets.scratch.mit.edu/internalapi/asset/${iconMd5}/get/` :
-            this.props.iconRawURL;
+        const src = this.curSrc();
+        const iconURL = iconMd5
+            ? `https://cdn.assets.scratch.mit.edu/internalapi/asset/${iconMd5}/get/`
+            : src
+                ? getAssetURL(src.library, src.path)
+                : this.props.iconRawURL;
         return (
             <LibraryItemComponent
                 intl={this.props.intl}
@@ -159,7 +173,10 @@ class LibraryItem extends React.PureComponent {
                 insetIconURL={this.props.insetIconURL}
                 internetConnectionRequired={this.props.internetConnectionRequired}
                 isPlaying={this.props.isPlaying}
+                libraryId={this.props.libraryId}
                 name={this.props.name}
+                rate={this.props.rate}
+                sampleCount={this.props.sampleCount}
                 credits={this.props.credits}
                 docsURI={this.props.docsURI}
                 samples={this.props.samples}
@@ -205,10 +222,17 @@ LibraryItem.propTypes = {
     insetIconURL: PropTypes.string,
     internetConnectionRequired: PropTypes.bool,
     isPlaying: PropTypes.bool,
+    libraryId: PropTypes.string.isRequired,
     name: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node
     ]),
+    rate: PropTypes.number,
+    sampleCount: PropTypes.number,
+    src: PropTypes.shape({
+        library: PropTypes.string,
+        path: PropTypes.string
+    }),
     credits: PropTypes.arrayOf(PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.node

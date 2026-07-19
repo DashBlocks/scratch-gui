@@ -11,8 +11,12 @@ import Input from '../../components/forms/input.jsx';
 import Button from '../../components/button/button.jsx';
 import Spinner from '../../components/spinner/spinner.jsx';
 
+import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
+import {Footer} from '../render-interface.jsx';
+
 import styles from './account-settings.css';
 
+import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers.js';
 import {detectTheme} from '../../lib/themes/themePersistance.js';
 
@@ -20,6 +24,11 @@ const theme = detectTheme();
 applyGuiColors(theme);
 
 const messages = defineMessages({
+    title: {
+        id: 'dash.accountSettings.title',
+        defaultMessage: 'Account Settings',
+        description: 'Account settings page title'
+    },
     failedToChangePassword: {
         id: 'dash.accountSettings.failedToChangePassword',
         defaultMessage: 'Failed to change password, try again later',
@@ -54,6 +63,8 @@ class AccountSettings extends React.Component {
     }
 
     async componentDidMount () {
+        document.title = this.props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
+
         if (this.props.session && this.props.session?.username)
             return;
 
@@ -81,7 +92,7 @@ class AccountSettings extends React.Component {
                 window.location.href = './login';
             if (this.state.newPassword !== this.state.confirmPassword)
                 throw new Error(this.props.intl.formatMessage(messages.passwordsDontMatch));
-            const response = await fetch('https://dashblocks-server.vercel.app/auth/change-password', {
+            const response = await fetch('https://api.dashblocks.org/auth/change-password', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
@@ -105,6 +116,7 @@ class AccountSettings extends React.Component {
     render () {
         return (
             <>
+                <LazyMenuBar />
                 <div
                     className={styles.container}
                     dir={this.props.isRtl ? 'rtl' : 'ltr'}
@@ -114,8 +126,8 @@ class AccountSettings extends React.Component {
                             <h2>
                                 <FormattedMessage
                                     defaultMessage="Account Settings"
-                                    description="Account settings page header"
-                                    id="dash.accountSettings.header"
+                                    description="Account settings page title"
+                                    id="dash.accountSettings.title"
                                 />
                             </h2>
                             <div className={styles.section}>
@@ -203,6 +215,7 @@ class AccountSettings extends React.Component {
                             </div>
                         </div>
                     </div>
+                    <Footer />
                 </div>
             </>
         );

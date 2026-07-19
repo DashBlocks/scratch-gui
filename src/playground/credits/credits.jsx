@@ -1,7 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import render from '../app-target';
+import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import styles from './credits.css';
+
+import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
+import {Footer} from '../render-interface.jsx';
 
 import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
@@ -54,6 +58,7 @@ UserList.propTypes = {
 
 const Credits = () => (
     <main className={styles.main}>
+        <LazyMenuBar />
         <header className={styles.headerContainer}>
             <h1 className={styles.headerText}>
                 {APP_NAME} Credits
@@ -69,7 +74,7 @@ const Credits = () => (
             <section>
                 <h2>Dash</h2>
                 <p>
-                    {APP_NAME} is based on <a href="https://dashblocks.github.io/">Dash</a>.
+                    {APP_NAME} is based on <a href="https://dashblocks.org/">Dash</a>.
                 </p>
             </section>
         )}
@@ -157,7 +162,10 @@ const Credits = () => (
                 </i>
             </p>
         </section>
+        <Footer />
     </main>
 );
 
-render(<Credits />);
+const WrappedCredits = AppStateHOC(Credits);
+
+render(<WrappedCredits />);

@@ -368,6 +368,7 @@ const StageModeButtons = ({
                     id="dash.settingsModal.stageModeHelp"
                 />
             }
+            slug="stage-mode"
         />
     );
 };

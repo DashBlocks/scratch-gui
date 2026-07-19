@@ -495,7 +495,7 @@ export const galleryDash = {
             // eslint-disable-next-line max-len
             defaultMessage="Learn more about extensions at dashblocks.org/extensions."
             description="Appears after the extension list from the gallery was loaded successfully"
-            id="dash.extensionGallery.more"
+            id="dash.extensionGallery.dash.more"
         />
     ),
     tags: ['dash', 'gallery'],
@@ -516,9 +516,9 @@ export const galleryTW = {
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
-            defaultMessage="Learn more about extensions at dashblocks.org/extensions."
+            defaultMessage="Learn more about extensions at extensions.tubowarp.org."
             description="Appears after the extension list from the gallery was loaded successfully"
-            id="dash.extensionGallery.more"
+            id="dash.extensionGallery.tw.more"
         />
     ),
     tags: ['tw', 'gallery'],
@@ -539,9 +539,9 @@ export const galleryPM = {
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
-            defaultMessage="Learn more about extensions at dashblocks.org/extensions."
+            defaultMessage="Learn more about extensions at extensions.penguinmod.org."
             description="Appears after the extension list from the gallery was loaded successfully"
-            id="dash.extensionGallery.more"
+            id="dash.extensionGallery.pm.more"
         />
     ),
     tags: ['other', 'gallery'],
@@ -562,7 +562,7 @@ export const gallerySharkPool = {
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
-            defaultMessage="Learn more about extensions at dashblocks.org/extensions."
+            defaultMessage="Learn more about extensions at sharlpool-sp.github.io/SharkPools-Extensions."
             description="Appears after the extension list from the gallery was loaded successfully"
             id="dash.extensionGallery.more"
         />

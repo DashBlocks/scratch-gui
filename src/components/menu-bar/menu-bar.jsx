@@ -90,6 +90,7 @@ import collectMetadata from '../../lib/collect-metadata';
 import styles from './menu-bar.css';
 
 import helpIcon from '../../lib/assets/icon--tutorials.svg';
+import messagesIcon from './icon--messages.png';
 import mystuffIcon from './icon--mystuff.png';
 import profileIcon from './icon--profile.png';
 import remixIcon from './icon--remix.svg';
@@ -101,7 +102,8 @@ import addonsIcon from './addons.svg';
 import errorIcon from './tw-error.svg';
 import advancedIcon from './tw-advanced.svg';
 import dashLogo from './dash.png';
-import dashNewYearLogo from './dash-new-year.png'
+import dashNewYearLogo from './dash-new-year.png';
+import searchIcon from './icon--search.png';
 
 import ninetiesLogo from './nineties_logo.svg';
 import catLogo from './cat_logo.svg';
@@ -127,6 +129,14 @@ const twMessages = defineMessages({
         id: 'tw.menuBar.compileError',
         defaultMessage: '{sprite}: {error}',
         description: 'Error message in error menu'
+    }
+});
+
+const searchMessages = defineMessages({
+    searchPlaceholder: {
+        id: 'dash.menuBar.searchPlaceholder',
+        defaultMessage: 'Search',
+        description: 'Placeholder text for the search field in the menu bar'
     }
 });
 
@@ -232,10 +242,14 @@ class MenuBar extends React.Component {
             'handleClickLogOut',
             'handleSetMode',
             'handleKeyPress',
+            'handleSearchSubmit',
             'handleRestoreOption',
             'getSaveToComputerHandler',
             'restoreOptionMessage'
         ]);
+        this.state = {
+            isSharing: false
+        }
     }
     componentDidMount () {
         document.addEventListener('keydown', this.handleKeyPress);
@@ -295,71 +309,80 @@ class MenuBar extends React.Component {
         }
     }
     async handleClickShare (waitForUpdate) {
-        if (!this.props.isShared) {
+        if (!this.props.isShared && !this.state.isSharing) {
             if (this.props.canShare) { // save before transitioning to project page
                 const session = await getSession();
-                if (session) {
-                    let formData = new FormData();
-                    const content = await this.props.vm.saveProjectSb3();
-                    const fileBlob = new Blob([content], { type: 'application/x.dash.dbp' });
-                    formData.append('file', fileBlob, `${this.props.projectTitle}.dbp`);
-                    formData.append('name', this.props.projectTitle);
-                    // TODO: Description input instead of prompt
-                    const description = prompt('Enter a description for your project:') || '';
-                    formData.append('description', description);
-
-                    const response = await fetch('https://api.dashblocks.org/save-project', {
-                        method: 'POST',
-                        body: formData,
-                        credentials: 'include'
+                if (session && session.id) {
+                    this.setState({
+                        isSharing: true
                     });
-                    const result = await response.json();
-                    if (response.ok) {
-                        formData = new FormData();
-                        this.props.vm.postIOData('video', {forceTransparentPreview: true});
-                        const thumbnailBlob = await new Promise(resolve => {
-                            this.props.vm.renderer.requestSnapshot(async dataURI => {
-                                this.props.vm.postIOData('video', {forceTransparentPreview: false});
-                                const res = await fetch(dataURI);
-                                const blob = await res.blob();
-                                resolve(blob);
-                            });
-                        });
-                        formData.append('thumbnail', thumbnailBlob, 'thumbnail.png');
-                        const thumbnailResponse = await fetch(`https://api.dashblocks.org/projects/${result.projectId}/upload-thumbnail`, {
+                    try {
+                        let formData = new FormData();
+                        const content = await this.props.vm.saveProjectSb3();
+                        const fileBlob = new Blob([content], { type: 'application/x.dash.dbp' });
+                        formData.append('file', fileBlob, `${this.props.projectTitle}.dbp`);
+                        formData.append('name', this.props.projectTitle);
+                        // TODO: Description input instead of prompt
+                        const description = prompt('Enter a description for your project:') || '';
+                        formData.append('description', description);
+
+                        const response = await fetch('https://api.dashblocks.org/save-project', {
                             method: 'POST',
                             body: formData,
                             credentials: 'include'
                         });
-                        if (thumbnailResponse.ok) {
-                            alert('Project shared successfully!');
+                        const result = await response.json();
+                        if (response.ok) {
+                            formData = new FormData();
+                            this.props.vm.postIOData('video', {forceTransparentPreview: true});
+                            const thumbnailBlob = await new Promise(resolve => {
+                                this.props.vm.renderer.requestSnapshot(async dataURI => {
+                                    this.props.vm.postIOData('video', {forceTransparentPreview: false});
+                                    const res = await fetch(dataURI);
+                                    const blob = await res.blob();
+                                    resolve(blob);
+                                });
+                            });
+                            formData.append('thumbnail', thumbnailBlob, 'thumbnail.png');
+                            const thumbnailResponse = await fetch(`https://api.dashblocks.org/projects/${result.projectId}/upload-thumbnail`, {
+                                method: 'POST',
+                                body: formData,
+                                credentials: 'include'
+                            });
+                            if (thumbnailResponse.ok) {
+                                alert('Project shared successfully!');
+                            } else {
+                                alert('Project was shared but thumbnail upload failed');
+                            }
+                            window.open(`./#${result.projectId}`, '_self');
                         } else {
-                            alert('Project was shared but thumbnail upload failed');
+                            alert(result.error);
                         }
-                        window.location.hash = result.projectId;
-                    } else {
-                        alert(result.error);
+                    } catch (error) {
+                        alert(error?.message || error);
+                    } finally {
+                        this.setState({
+                            isSharing: false
+                        });
                     }
                     return;
                 }
                 window.open('./login', '_blank');
                 return;
             }
-            if (this.props.canSave) { // save before transitioning to project page
-                this.props.autoUpdateProject();
-                waitForUpdate(true); // queue the transition to project page
-            } else {
-                waitForUpdate(false); // immediately transition to project page
-            }
         }
     }
     async handleClickLogOut () {
-        const response = await fetch('https://api.dashblocks.org/auth/logout', {credentials: 'include'});
-        const data = await response.json();
-        if (!data.ok)
-            return alert('Sign out failed');
-        this.props.setSession(null);
-        window.location.reload();
+        try {
+            const response = await fetch('https://api.dashblocks.org/auth/logout', {credentials: 'include'});
+            const data = await response.json();
+            if (!data.ok) return alert('Sign out failed');
+            this.props.setSession({});
+            window.location.reload();
+        } catch (error) {
+            console.warn(error?.message || error);
+            alert('Sign out failed');
+        }
     }
     handleSetMode (mode) {
         return () => {
@@ -408,6 +431,13 @@ class MenuBar extends React.Component {
                 this.props.onStartSelectingFileUpload();
             }
         }
+    }
+    handleSearchSubmit (e) {
+        e.preventDefault();
+        const query = e.currentTarget.querySelector('input')?.value?.trim();
+        if (!query) return;
+        const encodedQuery = encodeURIComponent(query);
+        window.open(`search?q=${encodedQuery}`, '_blank');
     }
     getSaveToComputerHandler (downloadProjectCallback) {
         return () => {
@@ -529,6 +559,8 @@ class MenuBar extends React.Component {
                 id="gui.menuBar.new"
             />
         );
+        const searchPlaceholder = this.props.intl.formatMessage(searchMessages.searchPlaceholder);
+        const searchValue = new URLSearchParams(window.location.search).get('q');
         const remixButton = (
             <Button
                 className={classNames(
@@ -589,6 +621,29 @@ class MenuBar extends React.Component {
                                 draggable={false}
                             />
                         </a>
+                    )}
+                    {this.props.isPlayerOnly && <Divider className={styles.divider} />}
+                    {this.props.isPlayerOnly && (
+                        <form className={styles.menuBarSearch} onSubmit={this.handleSearchSubmit}>
+                            <input
+                                type="search"
+                                className={styles.menuBarSearchInput}
+                                placeholder={searchPlaceholder}
+                                aria-label={searchPlaceholder}
+                                defaultValue={searchValue}
+                            />
+                            <button
+                                type="submit"
+                                className={styles.menuBarSearchButton}
+                                aria-label={searchPlaceholder}
+                            >
+                                <img
+                                    className={styles.menuBarSearchIcon}
+                                    src={searchIcon}
+                                    alt=""
+                                />
+                            </button>
+                        </form>
                     )}
                     <div className={styles.fileGroup}>
                         {!this.props.isPlayerOnly && (this.props.canChangeTheme || this.props.canChangeLanguage) && (<SettingsMenu
@@ -824,7 +879,7 @@ class MenuBar extends React.Component {
                                                 />
                                             </MenuItem>
                                             <MenuItem
-                                                onClick={() => window.open("https://dashblocks.github.io/unpackager/", '_blank')}
+                                                onClick={() => window.open("https://dashblocks.org/unpackager/", '_blank')}
                                             >
                                                 <FormattedMessage
                                                     defaultMessage="Unpackager"
@@ -1092,6 +1147,7 @@ class MenuBar extends React.Component {
                                             <ShareButton
                                                 className={styles.menuBarButton}
                                                 isShared={this.props.isShared}
+                                                isSharing={this.state.isSharing}
                                                 /* eslint-disable react/jsx-no-bind */
                                                 onClick={() => {
                                                     this.handleClickShare(waitForUpdate);
@@ -1154,7 +1210,7 @@ class MenuBar extends React.Component {
                             {/* todo: icon */}
                             <Button className={styles.feedbackButton}>
                                 <FormattedMessage
-                                    defaultMessage="{APP_NAME} Forum"
+                                    defaultMessage="Dash Forum"
                                     description="Button to give link to forum in the menu bar"
                                     id="dash.forumButton"
                                     values={{
@@ -1174,6 +1230,25 @@ class MenuBar extends React.Component {
                     {this.props.sessionExists && this.props.session?.username ? (
                         // User is logged in
                         <React.Fragment>
+                            <a href="messages">
+                                <div
+                                    className={classNames(
+                                        styles.menuBarItem,
+                                        styles.hoverable,
+                                        styles.messagesButton
+                                    )}
+                                >
+                                    <span
+                                        className={
+                                            this.props.session?.profile.unreadMessages > 0 ? styles.messagesCountVisible : styles.messagesCount
+                                        }
+                                    >{this.props.session?.profile.unreadMessages}</span>
+                                    <img
+                                        className={styles.messagesIcon}
+                                        src={messagesIcon}
+                                    />
+                                </div>
+                            </a>
                             <a href="mystuff">
                                 <div
                                     className={classNames(
@@ -1247,6 +1322,7 @@ class MenuBar extends React.Component {
                 {/* !process.env.OLD_COMPILER && (<TWNews item='dash:news1' id='new-compiler' />) */}
                 {window.location.href.startsWith('https://t-smod.github.io/scratch-gui') && (<TWNews item='dash:news2' id='dev-version' />)}
                 {/* <TWNews item='dash:news3' id='new-year' /> */}
+                {<TWNews item='dash:news4' id='donate' />}
             </React.Fragment>
         );
     }

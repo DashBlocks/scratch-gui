@@ -80,6 +80,76 @@
     cursor: pointer;
 }
 
+/* Styles for search panel from Scratch */
+/* https://github.com/scratchfoundation/scratch-www/blob/develop/src/components/navigation/www/navigation.scss */
+.menu-bar-search {
+    position: relative;
+    width: 14rem;
+    min-width: 14rem;
+    flex: 0 0 14rem;
+    height: $menu-bar-height;
+    display: flex;
+    align-items: center;
+}
+
+.menu-bar-search-input,
+.menu-bar-search-button {
+    display: inline-block;
+    outline: none;
+    border: 0;
+    background-color: $ui-black-transparent;
+    height: 2.25rem;
+    box-sizing: border-box;
+}
+
+.menu-bar-search-input {
+    transition: .15s ease background-color;
+    margin: 0;
+    padding: 0;
+    padding-right: 0.625rem;
+    padding-left: 2.5rem;
+    width: calc(100% - 2.5rem);
+    color: $menu-bar-foreground;
+    font-size: .85em;
+    border-radius: $form-radius;
+    line-height: 1.2;
+}
+
+.menu-bar-search-input::placeholder {
+    color: rgba(255, 255, 255, .75);
+}
+
+.menu-bar-search-input:focus {
+    transition: .15s ease background-color;
+    background-color: rgba(0, 0, 0, .25);
+}
+
+.menu-bar-search-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: none;
+    background-color: transparent;
+    border: 0;
+    width: 2.5rem;
+    height: 100%;
+    padding: 0;
+    cursor: pointer;
+}
+
+.menu-bar-search-icon {
+    width: 0.875rem;
+    height: 0.875rem;
+    opacity: 0.75;
+}
+
+.menu-bar-search-button:hover .menu-bar-search-icon {
+    opacity: 1;
+}
+
 .menu-bar-item {
     display: flex;
     text-decoration: none;
@@ -186,7 +256,7 @@
     padding: 0 0.75rem;
 }
 
-.mystuff-icon {
+.mystuff-icon, .messages-icon {
     margin: 0 .25rem;
     height: 1rem;
 }
@@ -199,11 +269,29 @@
     margin: 0 0 0 .25rem;
 }
 
-.account-nav-menu, .mystuff-button {
+.account-nav-menu, .mystuff-button, .messages-button {
     padding: 0 .25rem;
     display: flex;
     flex-direction: row;
     align-items: center;
+}
+
+.messages-count {
+    display: none;
+}
+.messages-count-visible {
+    display: block;
+    position: absolute;
+    top: .5rem;
+    right: .25rem;
+    border-radius: 1rem;
+    background-color: $data-primary;
+    padding: 0 .25rem;
+    text-indent: 0;
+    line-height: 1rem;
+    color: white;
+    font-size: .7rem;
+    font-weight: bold;
 }
 
 .profile-icon {
@@ -258,7 +346,7 @@
     margin: 0 .25rem;
 }
 
-@media only screen and (max-width: 1124px) {
+@media only screen and (max-width: 1500px) {
     .tutorials-label, .collapsible-label {
         display: none;
     }
@@ -271,4 +359,8 @@
 .menu-item-link {
     color: inherit;
     text-decoration: none;
+}
+
+.editor-button {
+    padding: 1rem;
 }

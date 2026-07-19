@@ -10,12 +10,12 @@ const guiColors = {
 
     'data-primary': '#6992ff',
 
-    'extensions-primary': 'hsla(10, 85%, 65%, 1)',
+    'extensions-primary': '#4DB5FF',
     'extensions-tertiary': 'rgb(189, 99, 15)',
     'extensions-transparent': 'hsla(10, 85%, 65%, 0.35)',
     'extensions-light': 'hsla(10, 57%, 85%, 1)',
 
-    'drop-highlight': '#ff8c8c'
+    'drop-highlight': '#4DB5FF'
 };
 
 const blockColors = {

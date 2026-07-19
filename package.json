@@ -57,6 +57,7 @@
     "dash-assets": "github:DashBlocks/assets#main",
     "dash-extensions-gallery": "github:DashBlocks/extensions#develop",
     "tsmod-extensions-gallery": "github:T-SMod/extensions#main",
+    "neomod-extensions-gallery": "github:Neo-Mod/extensions#develop",
     "es6-object-assign": "1.1.0",
     "get-float-time-domain-data": "0.1.0",
     "get-user-media-promise": "1.1.4",

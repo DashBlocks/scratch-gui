@@ -1213,9 +1213,6 @@ class MenuBar extends React.Component {
                                     defaultMessage="Dash Forum"
                                     description="Button to give link to forum in the menu bar"
                                     id="dash.forumButton"
-                                    values={{
-                                        APP_NAME
-                                    }}
                                 />
                             </Button>
                         </a>

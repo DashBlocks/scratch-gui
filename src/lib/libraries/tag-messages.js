@@ -130,5 +130,15 @@ export default defineMessages({
         defaultMessage: 'Letters',
         description: 'Tag for filtering a library for letters',
         id: 'gui.libraryTags.letters'
+    },
+    musicSound: {
+        defaultMessage: 'Music',
+        description: 'Tag for filtering a library for music in sound',
+        id: 'tsmod.gallerySound.music.name'
+    },
+    gallerysInExtGallery: {
+        defaultMessage: 'Gallerys',
+        description: 'Tag for filtering a library for gallerys in extensions galler',
+        id: 'tsmod.gallery.gallerys.name'
     }
 });

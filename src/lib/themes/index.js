@@ -7,6 +7,7 @@ import * as accentOrange from './accent/orange';
 import * as accentGreen from './accent/green';
 import * as accentRainbow from './accent/rainbow';
 import * as accentCustom from './accent/custom';
+import * as accentTSMod from './accent/tsmod'
 
 import * as guiLight from './gui/light';
 import * as guiDark from './gui/dark';
@@ -22,6 +23,7 @@ const ACCENT_ORANGE = 'orange';
 const ACCENT_GREEN = 'green';
 const ACCENT_RAINBOW = 'rainbow';
 const ACCENT_CUSTOM = 'custom';
+const ACCENT_TSMod = 'TSMod'
 const ACCENT_MAP = {
     [ACCENT_PURPLE]: accentPurple,
     [ACCENT_BLUE]: accentBlue,
@@ -29,9 +31,10 @@ const ACCENT_MAP = {
     [ACCENT_ORANGE]: accentOrange,
     [ACCENT_GREEN]: accentGreen,
     [ACCENT_RAINBOW]: accentRainbow,
-    [ACCENT_CUSTOM]: accentCustom
+    [ACCENT_CUSTOM]: accentCustom,
+    [ACCENT_TSMod]: accentTSMod
 };
-const ACCENT_DEFAULT = ACCENT_ORANGE;
+const ACCENT_DEFAULT = ACCENT_TSMod;
 
 const GUI_LIGHT = 'light';
 const GUI_DARK = 'dark';
@@ -177,6 +180,7 @@ export {
     ACCENT_BLUE,
     ACCENT_RAINBOW,
     ACCENT_CUSTOM,
+    ACCENT_TSMod,
     ACCENT_MAP,
 
     GUI_LIGHT,

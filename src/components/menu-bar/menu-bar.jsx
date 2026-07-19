@@ -1210,9 +1210,12 @@ class MenuBar extends React.Component {
                             {/* todo: icon */}
                             <Button className={styles.feedbackButton}>
                                 <FormattedMessage
-                                    defaultMessage="Dash Forum"
+                                    defaultMessage="{APP_NAME} Forum"
                                     description="Button to give link to forum in the menu bar"
                                     id="dash.forumButton"
+                                    values={{
+                                        APP_NAME
+                                    }}
                                 />
                             </Button>
                         </a>

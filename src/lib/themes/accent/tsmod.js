@@ -6,14 +6,14 @@ const guiColors = {
     'looks-secondary': '#4DB5FF',
     'looks-transparent': 'rgba(255, 190, 77, 0.35)',
     'looks-light-transparent': '#ff4d4d26',
-    'looks-secondary-dark': 'hsla(0, 42%, 51%, 1)',
+    'looks-secondary-dark': 'hsla(205, 53%, 42%, 1)',
 
     'data-primary': '#6992ff',
 
     'extensions-primary': '#4DB5FF',
     'extensions-tertiary': 'rgb(189, 99, 15)',
-    'extensions-transparent': 'hsla(10, 85%, 65%, 0.35)',
-    'extensions-light': 'hsla(10, 57%, 85%, 1)',
+    'extensions-transparent': '#295d83',
+    'extensions-light': 'hsla(205, 100%, 76%, 1)',
 
     'drop-highlight': '#4DB5FF'
 };

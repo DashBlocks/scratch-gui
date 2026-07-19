@@ -354,7 +354,7 @@ export default [
                 id="tw.customReporters.description"
             />
         ),
-        tags: ['tw'],
+        tags: ['dash'],
         incompatibleWithScratch: true,
         featured: true
     },
@@ -400,10 +400,11 @@ export default [
             />
         ),
         incompatibleWithScratch: true,
-        tags: ['tsmod'],
+        tags: ['dash'],
         featured: true
     },
     {
+        // Not really an extension, but it's easiest to present it as one
         name: (
             <FormattedMessage
                 defaultMessage="Custom Extension"
@@ -420,69 +421,9 @@ export default [
                 id="tw.customExtension.description"
             />
         ),
-        tags: ['tw'],
+        tags: ['dash'],
         featured: true
         // Not marked as incompatible with Scratch so that clicking on it doesn't show a prompt
-    }, {
-        name: (
-            <FormattedMessage
-                defaultMessage="Dash Extensions Gallery"
-                description="Name of Dash extension gallery in extension library"
-                id="tsmod.gallery.dash.name"
-            />
-        ),
-        href: 'https://dashblocks.github.io/extensions',
-        extensionId: 'dashGallery',
-        iconURL: galleryIcon,
-        description: (
-            <FormattedMessage
-                defaultMessage="Extensions Gallery for Dash"
-                description="Description of dash extensions gallery"
-                id="tsmod.gallery.dash.description"
-            />
-        ),
-        tags: ['dash', 'gallerys'],
-        featured: true
-    }, {
-        name: (
-            <FormattedMessage
-                defaultMessage="TurboWarp Extensions Gallery"
-                description="Name of TurboWarp extension gallery in extension library"
-                id="tsmod.gallery.tw.name"
-            />
-        ),
-        href: 'https://extensions.turbowarp.org/',
-        extensionId: 'twGallery',
-        iconURL: galleryIcon,
-        description: (
-            <FormattedMessage
-                defaultMessage="Extensions Gallery for TurboWarp"
-                description="Description of TurboWarp extensions gallery"
-                id="tsmod.gallery.tw.description"
-            />
-        ),
-        tags: ['tw', 'gallerys'],
-        featured: true
-    }, {
-        name: (
-            <FormattedMessage
-                defaultMessage="PenguinMod Extensions Gallery"
-                description="Name of PenguinMod extension gallery in extension library"
-                id="tsmod.gallery.pm.name"
-            />
-        ),
-        href: 'https://extensions.penguinmod.com/',
-        extensionId: 'pmGallery',
-        iconURL: galleryIcon,
-        description: (
-            <FormattedMessage
-                defaultMessage="Extensions Gallery for PenguinMod"
-                description="Description of PenguinMod extensions gallery"
-                id="tsmod.gallery.pm.description"
-            />
-        ),
-        tags: ['other', 'gallerys'],
-        featured: true
     }
 ];
 
@@ -497,9 +438,8 @@ export const galleryLoading = {
             }}
         />
     ),
-    // TODO: Make an Extension Gallery for Dash
-    href: 'https://t-smod.github.io/extensions',
-    extensionId: 'galleryLoad',
+    href: 'https://dashblocks.org/extensions',
+    extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
         <FormattedMessage
@@ -509,7 +449,7 @@ export const galleryLoading = {
             id="dash.extensionGallery.loading"
         />
     ),
-    tags: ['tsmod', 'gallerys'],
+    tags: ['dash'],
     featured: true
 };
 
@@ -524,19 +464,18 @@ export const galleryMore = {
             }}
         />
     ),
-    // TODO: Make an Extension Gallery for Dash
-    href: 'https://t-smod.github.io/extensions',
+    href: 'https://dashblocks.org/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
-            defaultMessage="Learn more about extensions at t-smod.github.io/extensions."
+            defaultMessage="Learn more about extensions at dashblocks.org/extensions."
             description="Appears after the extension list from the gallery was loaded successfully"
             id="dash.extensionGallery.more"
         />
     ),
-    tags: ['tsmod', 'gallerys'],
+    tags: ['dash'],
     featured: true
 };
 
@@ -551,18 +490,17 @@ export const galleryError = {
             }}
         />
     ),
-    // TODO: Make an Extension Gallery for Dash
-    href: 'https://t-smod.github.io/extensions',
-    extensionId: 'galleryErr',
+    href: 'https://dashblocks.org/extensions',
+    extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
-            defaultMessage="Error loading extension gallery. Visit t-smod.github.io/extensions to find more extensions."
+            defaultMessage="Error loading extension gallery. Visit dashblocks.org/extensions to find more extensions."
             description="Appears when an error occurred loading extension list from the custom extension gallery"
             id="dash.extensionGallery.error"
         />
     ),
-    tags: ['tsmod', 'gallerys'],
+    tags: ['dash'],
     featured: true
 };

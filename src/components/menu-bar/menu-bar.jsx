@@ -101,7 +101,7 @@ import editIcon from './icon--edit.svg';
 import addonsIcon from './addons.svg';
 import errorIcon from './tw-error.svg';
 import advancedIcon from './tw-advanced.svg';
-import dashLogo from './TSMod.svg';
+import dashLogo from './dash.png';
 import dashNewYearLogo from './dash-new-year.png';
 import searchIcon from './icon--search.png';
 
@@ -1320,7 +1320,7 @@ class MenuBar extends React.Component {
             <React.Fragment>
                 {menuBar}
                 {/* !process.env.OLD_COMPILER && (<TWNews item='dash:news1' id='new-compiler' />) */}
-                {window.location.href.startsWith('https://t-smod.github.io/scratch-gui') && (<TWNews item='dash:news2' id='dev-version' />)}
+                {window.location.href.startsWith('https://dashblocks.org/scratch-gui') && (<TWNews item='dash:news2' id='dev-version' />)}
                 {/* <TWNews item='dash:news3' id='new-year' /> */}
                 {<TWNews item='dash:news4' id='donate' />}
             </React.Fragment>

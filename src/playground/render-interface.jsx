@@ -47,6 +47,8 @@ import {APP_NAME} from '../lib/brand.js';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import tabStyles from 'react-tabs/style/react-tabs.css';
 import TWRenderRecoloredImage from '../lib/tw-recolor/render.jsx';
+import Spinner from '../components/spinner/spinner.jsx';
+import Button from '../components/button/button.jsx';
 
 import aboutIcon from '!../lib/tw-recolor/build!./icons/icon--about.svg';
 import unsharedIcon from '!../lib/tw-recolor/build!./icons/icon--unshared.svg';
@@ -68,14 +70,14 @@ const relativeTimeSupported = () => typeof Intl !== 'undefined' && typeof Intl.R
 
 const handleClickAddonSettings = addonId => {
     // addonId might be a string of the addon to focus on, undefined, or an event (treat like undefined)
-    const path = process.env.ROUTING_STYLE === 'wildcard' ? 'addons' : 'addons.html';
+    const path = /*process.env.ROUTING_STYLE === 'wildcard' ?*/ 'addons' /*: 'addons.html'*/;
     const url = `${process.env.ROOT}${path}${typeof addonId === 'string' ? `#${addonId}` : ''}`;
     window.open(url);
 };
 
 const messages = defineMessages({
     defaultTitle: {
-        defaultMessage: 'More Blocks, Extensions, and other',
+        defaultMessage: 'More cool stuff for editor',
         description: 'Title of homepage',
         id: 'dash.guiDefaultTitle'
     }
@@ -165,7 +167,7 @@ const RenderVersion = () => {
     const [version, setVersion] = React.useState();
 
     const fetchVersion = () => {
-        fetch('https://api.github.com/repos/T-SMod/t-smod.github.io/commits')
+        fetch('https://api.github.com/repos/DashBlocks/dashblocks.github.io/commits')
             .then(response => response.json())
             .then(data => {
                 const latestCommit = data[0];
@@ -181,7 +183,7 @@ const RenderVersion = () => {
     return (
         <div className={styles.footerText}>
             <div className={styles.commitVersion}>
-                {window.location.href.startsWith('https://t-smod.github.io/scratch-gui') ? 'Dev' : (version ? 'v' + version : '?')}
+                {window.location.href.startsWith('https://dashblocks.org/scratch-gui') ? 'Dev' : (version ? 'v' + version : '?')}
             </div>
         </div>
     );
@@ -229,8 +231,8 @@ const Footer = () => (
             <div className={styles.footerText}>
                 <FormattedMessage
                     // eslint-disable-next-line max-len
-                    defaultMessage="{APP_NAME} is based on Scratch, TurboWarp, Dash and other mods, but not affiliated with these mods. TurboWarp is available for free at: {turbowarpDotOrg}. Dash is available for free at: {dashSite}"
-                    description="Disclaimer that TSMod is based on Scratch and TurboWarp and other mods."
+                    defaultMessage="{APP_NAME} is based on Scratch, TurboWarp and other mods, but not affiliated with these mods. TurboWarp is available for free at: {turbowarpDotOrg}."
+                    description="Disclaimer that Dash is based on Scratch and TurboWarp and other mods."
                     id="dash.footer.basedOnDisclaimer"
                     values={{
                         APP_NAME,
@@ -242,15 +244,6 @@ const Footer = () => (
                             >
                                 {'https://turbowarp.org/'}
                             </a>
-                        ),
-                        dashSite: (
-                            <a
-                                href="https://dashblocks.org/"
-                                target="_blank"
-                                rel="noreferrer"
-                            >
-                                {'https://dashblocks.org/'}
-                            </a>
                         )
                     }}
                 />
@@ -259,29 +252,29 @@ const Footer = () => (
             <div className={styles.footerColumns}>
                 <div className={styles.footerSection}>
                     <RenderWelcomeModal />
-                    <a href="credits.html">
+                    <a href="credits">
                         <FormattedMessage
                             defaultMessage="Credits"
                             description="Credits link in footer"
                             id="tw.footer.credits"
                         />
                     </a>
-                    {/*<a href="...">
+                    <a href="donate">
                         <FormattedMessage
                             defaultMessage="Donate"
                             description="Donation link in footer"
                             id="tw.footer.donate"
                         />
-                    </a>*/}
+                    </a>
                 </div>
                 <div className={styles.footerSection}>
-                    <a href="https://dashblocks.org/desktop.html">
+                    <a href="https://dashblocks.org/desktop">
                         {/* Do not translate */}
                         {'Dash Desktop'}
                     </a>
-                    <a href="https://t-smod.org/packager">
+                    <a href="https://dashblocks.org/packager">
                         {/* Do not translate */}
-                        {'TSMod Packager'}
+                        {'Dash Packager'}
                     </a>
                     <a href="https://dashblocks.org/docs/embedding">
                         <FormattedMessage
@@ -299,7 +292,7 @@ const Footer = () => (
                     </a>
                     <a href="https://dashblocks.org/docs/">
                         <FormattedMessage
-                            defaultMessage="Dash Documentation"
+                            defaultMessage="Documentation"
                             description="Link in footer to additional documentation"
                             id="tw.footer.documentation"
                         />
@@ -308,44 +301,37 @@ const Footer = () => (
                 <div className={styles.footerSection}>
                     <a href="https://scratch.mit.edu/discuss/topic/879252/">
                         <FormattedMessage
-                            defaultMessage="Dash Forum"
+                            defaultMessage="Our Forum"
                             description="Link to Dash's forum in Scratch"
                             id="dash.home.forum"
                         />
                     </a>
-                    <a href="https://scratch.mit.edu/users/shaman2016/#comments">
+                    <a href="https://scratch.mit.edu/users/damir2809/#comments">
                         <FormattedMessage
                             defaultMessage="Feedback & Bugs"
                             description="Link to feedback/bugs page"
                             id="tw.feedback"
                         />
                     </a>
-                    <a href="https://github.com/T-SMod/">
+                    <a href="https://github.com/DashBlocks/">
                         <FormattedMessage
                             defaultMessage="Source Code"
                             description="Link to source code"
                             id="tw.code"
                         />
                     </a>
-                    <a href="privacy.html">
+                    <a href="privacy">
                         <FormattedMessage
                             defaultMessage="Privacy Policy"
                             description="Link to privacy policy"
                             id="tw.privacy"
                         />
                     </a>
-                    <a href="tos.html">
+                    <a href="tos">
                         <FormattedMessage
                             defaultMessage="Terms of Service"
                             description="Link to terms of service"
                             id="dash.tos"
-                        />
-                    </a>
-                    <a href="/scratch-gui/">
-                        <FormattedMessage
-                            defaultMessage="Dev-version"
-                            description="Link to dev version"
-                            id="dash.devVersion"
                         />
                     </a>
                 </div>
@@ -354,13 +340,175 @@ const Footer = () => (
     </footer>
 );
 
+const WhatsHappening = ({intl}) => {
+    const [actions, setActions] = useState([]);
+    const [limit, setLimit] = useState(10);
+    const [offset, setOffset] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
+    const [loadMoreButtonDisabled, setLoadMoreButtonDisabled] = useState(false);
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+
+    useEffect(() => {
+        fetchActivity(0);
+    }, []);
+
+    async function fetchActivity(currentOffset) {
+        setLoadMoreButtonDisabled(true);
+        try {
+            const res = await fetch(`https://api.dashblocks.org/session/activity?limit=${limit}&offset=${currentOffset}`, {
+                credentials: 'include'
+            });
+            
+            if (!res.ok) {
+                setHasMore(false);
+                setError("Failed to fetch activity");
+                setLoadMoreButtonDisabled(false);
+                setLoading(false);
+                return;
+            }
+            
+            const data = await res.json();
+            if (!data.ok) {
+                setHasMore(false);
+                setError(data.error);
+                setLoadMoreButtonDisabled(false);
+                setLoading(false);
+                return;
+            }
+
+            setActions(prevActions => [...prevActions, ...data.activity]);
+            setHasMore(data.activity.length === limit);
+        } catch (err) {
+            setError("Failed to fetch activity");
+            setHasMore(false);
+        } finally {
+            setLoadMoreButtonDisabled(false);
+            setLoading(false);
+        }
+    }
+
+    function getActionContent(action) {
+        switch (action.type) {
+            case 'shared-project':
+                return (
+                    <FormattedMessage
+                        defaultMessage="{user} shared project {project}"
+                        description="Displayed when someone shared project"
+                        id="dash.home.whatsHappening.sharedProject"
+                        values={{
+                            user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
+                            project: <a href={`/#${action.project.id}`}>{action.project.name}</a>
+                        }}
+                    />
+                );
+            case 'fired-project':
+                return (
+                    <FormattedMessage
+                        defaultMessage="{user} fired project {project}"
+                        description="Displayed when someone fired project"
+                        id="dash.home.whatsHappening.firedProject"
+                        values={{
+                            user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
+                            project: <a href={`/#${action.project.id}`}>{action.project.name}</a>
+                        }}
+                    />
+                );
+            case 'followed-user':
+                return (
+                    <FormattedMessage
+                        defaultMessage="{user} followed {target}"
+                        description="Displayed when someone followed someone"
+                        id="dash.home.whatsHappening.followedUser"
+                        values={{
+                            user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
+                            target: <a href={`user#${action.user.id}`}>{action.user.username}</a>
+                        }}
+                    />
+                );
+            default:
+                return (
+                    <FormattedMessage
+                        defaultMessage="Unknown action type"
+                        description="Displayed when there is an unknown action"
+                        id="dash.home.whatsHappening.unknown"
+                    />
+                );
+        }
+    }
+
+    if (loading && actions.length === 0) return <div>Loading...</div>;
+    if (error && actions.length === 0) return <div>An error occured: {error}</div>;
+
+    return (
+        <div className={styles.actionsGrid}>
+            {actions.map((action, index) => (
+                <div
+                    key={index}
+                    className={styles.actionContent}
+                >
+                    <img
+                        src={`https://api.dashblocks.org/users/avatars/${action.author.profile.avatarId}`}
+                        alt={action.author.username}
+                        className={styles.actionAvatar}
+                    />
+                    {getActionContent(action)}
+                    <div className={styles.actionDate}>
+                        <FormattedMessage
+                            defaultMessage="{date}"
+                            description="Displayed date for the action"
+                            id="dash.messages.date"
+                            values={{
+                                date: (action.date ? new Date(action.date) : null)
+                                    ? relativeTimeSupported()
+                                        ? (
+                                            <span title={`${intl.formatDate(new Date(action.date))}, ${intl.formatTime(new Date(action.date))}`}>
+                                                <FormattedRelative value={action.date} />
+                                            </span>
+                                        )
+                                        : (<FormattedDate value={new Date(action.date)} />)
+                                    : '?'
+                            }}
+                        />
+                    </div>
+                </div>
+            ))}
+            {hasMore && (
+                <Button
+                    className={styles.loadMoreButton}
+                    disabled={loadMoreButtonDisabled}
+                    onClick={() => {
+                        const newOffset = offset + limit;
+                        setOffset(newOffset);
+                        fetchActivity(newOffset);
+                    }}
+                >
+                    {loadMoreButtonDisabled ? (
+                        <Spinner
+                            className={styles.spinner}
+                            small
+                        />
+                    ) : (
+                        <FormattedMessage
+                            defaultMessage="Load more"
+                            description="Button text for loading more actions"
+                            id="dash.messages.loadMore"
+                        />
+                    )}
+                </Button>
+            )}
+        </div>
+    );
+};
+
 const WhatsNew = () => {
     const [commits, setCommits] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
 
     useEffect(() => {
-        fetch('https://api.github.com/repos/T-SMod/t-smod.github.io/commits')
+        fetch('https://api.github.com/repos/DashBlocks/dashblocks.github.io/commits')
             .then(response => response.json())
             .then(data => {
                 setCommits(data.slice(0, 10));
@@ -465,6 +613,7 @@ class Interface extends React.PureComponent {
         const {
             /* eslint-disable no-unused-vars */
             intl,
+            session,
             hasCloudVariables,
             description,
             isFullScreen,
@@ -546,6 +695,21 @@ class Interface extends React.PureComponent {
                                                 }}
                                             />
                                         </Tab>
+                                        <Tab
+                                            className={classNames(tabClassNames.tab, {
+                                                [tabClassNames.tabDisabled]: !session?.id
+                                            })}
+                                        >
+                                            <TWRenderRecoloredImage
+                                                draggable={false}
+                                                src={whatsNewIcon /* TODO: Make other icon? */}
+                                            />
+                                            <FormattedMessage
+                                                defaultMessage="What's happening?"
+                                                description="Button to get to the What's happening? panel"
+                                                id="dash.home.tab.whatsHappening"
+                                            />
+                                        </Tab>
                                         <Tab className={tabClassNames.tab}>
                                             <TWRenderRecoloredImage
                                                 draggable={false}
@@ -617,7 +781,7 @@ class Interface extends React.PureComponent {
                                             <p>
                                                 <FormattedMessage
                                                     // eslint-disable-next-line max-len
-                                                    defaultMessage="{APP_NAME} is a mod of Dash and other mods that adds new blocks, extensions, accent colors, compiles projects to JavaScript to make them run really fast and other features. Try it out by clicking on 'See inside' button or by inputting a project ID or URL above or choosing a featured project below."
+                                                    defaultMessage="{APP_NAME} is a mod of TurboWarp that adds cool stuff and features for editor. Try it out by clicking on 'See inside' button or by inputting a project ID or URL above or choosing a featured project below."
                                                     description="Description of Dash on the homepage"
                                                     id="dash.home.description"
                                                     values={{
@@ -626,10 +790,20 @@ class Interface extends React.PureComponent {
                                                 />
                                             </p>
                                             <FeaturedProjects />
-                                            {/*<p>
-                                                {lazyMessages[this.chooseRandomMessage()]}
-                                            </p>*/}
                                         </div>
+                                    </TabPanel>
+                                    <TabPanel className={tabClassNames.tabPanel}>
+                                        {session && session.id && (
+                                            <div
+                                                className={styles.section}
+                                                style={{
+                                                    overflowY: "auto",
+                                                    maxHeight: "520px"
+                                                }}
+                                            >
+                                                <WhatsHappening intl={intl} />
+                                            </div>
+                                        )}
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>
                                         <div
@@ -743,6 +917,7 @@ class Interface extends React.PureComponent {
 
 Interface.propTypes = {
     intl: intlShape,
+    session: PropTypes.object,
     hasCloudVariables: PropTypes.bool,
     customStageSize: PropTypes.shape({
         width: PropTypes.number,
@@ -761,6 +936,7 @@ Interface.propTypes = {
 };
 
 const mapStateToProps = state => ({
+    session: state.scratchGui.dash.session,
     hasCloudVariables: state.scratchGui.tw.hasCloudVariables,
     customStageSize: state.scratchGui.customStageSize,
     description: state.scratchGui.tw.description,
@@ -787,3 +963,4 @@ const WrappedInterface = compose(
 )(ConnectedInterface);
 
 export default WrappedInterface;
+export {Footer};

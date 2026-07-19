@@ -1,4 +1,5 @@
 import React from 'react';
+import bindAll from 'lodash.bindall';
 import {APP_NAME} from '../../lib/brand';
 import {isScratchDesktop} from '../../lib/isScratchDesktop';
 import CloseButton from '../close-button/close-button.jsx';
@@ -24,30 +25,14 @@ const markAsClosedInLocalStorage = (key, id) => {
 class TWNews extends React.Component {
     constructor (props) {
         super(props);
+        bindAll(this, [
+            'handleClose'
+        ]);
         this.state = {
             closed: getIsClosedInLocalStorage(props.item, props.id)
         };
-        this.handleCloseNewCompiler = this.handleCloseNewCompiler.bind(this);
-        this.handleCloseDevVersion = this.handleCloseDevVersion.bind(this);
-        this.handleCloseNewYear = this.handleCloseNewYear.bind(this);
     }
-    handleCloseNewCompiler () {
-        markAsClosedInLocalStorage(this.props.item, this.props.id);
-        this.setState({
-            closed: true
-        }, () => {
-            window.dispatchEvent(new Event('resize'));
-        });
-    }
-    handleCloseDevVersion () {
-        markAsClosedInLocalStorage(this.props.item, this.props.id);
-        this.setState({
-            closed: true
-        }, () => {
-            window.dispatchEvent(new Event('resize'));
-        });
-    }
-    handleCloseNewYear () {
+    handleClose () {
         markAsClosedInLocalStorage(this.props.item, this.props.id);
         this.setState({
             closed: true
@@ -66,7 +51,7 @@ class TWNews extends React.Component {
                         {/* eslint-disable-next-line max-len */}
                         {`We rewrote the ${APP_NAME} compiler to make projects run even faster. Bugs are possible. `}
                         <a
-                            href="https://dashblocks.github.io/docs/new-compiler"
+                            href="https://dashblocks.org/docs/new-compiler"
                             target="_blank"
                             rel="noreferrer"
                         >
@@ -74,7 +59,7 @@ class TWNews extends React.Component {
                         </a>
                         {' '}
                         <a
-                            href="https://dashblocks.github.io/old-compiler"
+                            href="https://dashblocks.org/old-compiler"
                             target="_blank"
                             rel="noreferrer"
                         >
@@ -83,7 +68,23 @@ class TWNews extends React.Component {
                     </div>
                     <CloseButton
                         className={styles.close}
-                        onClick={this.handleCloseNewCompiler}
+                        onClick={this.handleClose}
+                    />
+                </div>)}
+                {this.props.id == 'dev-version' && (<div className={styles.news}>
+                    <div className={styles.text}>
+                        {/* eslint-disable-next-line max-len */}
+                        {`This is a "Dev" version of ${APP_NAME}. Please do not use this version for real projects, as it may break your projects! `}
+                        <a
+                            href="https://dashblocks.org"
+                            rel="noreferrer"
+                        >
+                            {'Main version.'}
+                        </a>
+                    </div>
+                    <CloseButton
+                        className={styles.close}
+                        onClick={this.handleClose}
                     />
                 </div>)}
                 {this.props.id == 'new-year' && (<div className={styles.news}>
@@ -91,7 +92,7 @@ class TWNews extends React.Component {
                         {/* eslint-disable-next-line max-len */}
                         {`Happy New Year! Enjoy the festive theme while it lasts. `}
                         <a
-                            href={isNewYearMode() ? 'https://t-smod.github.io/scratch-gui/' : 'https://t-smod.github.io/scratch-gui/?newYearMode'}
+                            href={isNewYearMode() ? 'https://dashblocks.org' : 'https://dashblocks.org/?newYearMode'}
                             rel="noreferrer"
                         >
                             {isNewYearMode() ? 'Switch to normal mode.' : 'Switch to new year mode.'}
@@ -99,7 +100,24 @@ class TWNews extends React.Component {
                     </div>
                     <CloseButton
                         className={styles.close}
-                        onClick={this.handleCloseNewYear}
+                        onClick={this.handleClose}
+                    />
+                </div>)}
+                {this.props.id == 'donate' && (<div className={styles.news}>
+                    <div className={styles.text}>
+                        {/* eslint-disable-next-line max-len */}
+                        {`Support development, help us host community, and get exclusive benefits by `}
+                        <a
+                            href="donate"
+                            rel="noreferrer"
+                        >
+                            {'donating us'}
+                        </a>
+                        {'!'}
+                    </div>
+                    <CloseButton
+                        className={styles.close}
+                        onClick={this.handleClose}
                     />
                 </div>)}
             </>

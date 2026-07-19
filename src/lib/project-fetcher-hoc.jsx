@@ -46,7 +46,7 @@ const fetchProjectToken = async (projectId, reduxProjectId) => {
         return metadata.project_token;
     } catch (e) {
         log.error(e);
-        throw new Error('Cannot access project token. Project is probably unshared. See https://dashblocks.github.io/docs/unshared-projects');
+        throw new Error('Cannot access project token. Project is probably unshared. See https://dashblocks.org/docs/unshared-projects');
     }
 };
 
@@ -138,7 +138,7 @@ const ProjectFetcherHOC = function (WrappedComponent) {
                             return storage.load(storage.AssetType.Project, projectId, storage.DataFormat.JSON);
                         });
                 } else {
-                    assetPromise = fetch(`https://shaman2016-trampline.vercel.app/dashImage/get-project/${projectId}`)
+                    assetPromise = fetch(`https://api.dashblocks.org/get-project/${projectId}`)
                         .then(r => {
                             if (!r.ok) {
                                 throw new Error(`Request returned status ${r.status} (${r.statusText})`);

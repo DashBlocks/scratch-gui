@@ -1,12 +1,9 @@
-import {APP_NAME} from '../brand';
 import messages from './tag-messages.js';
-
-// Because there are all brand names, it is unnecessary for them to be translatable.
+import tagGroupMessages from './dash-tag-group-messages.js';
 export default [
-    {tag: 'scratch', intlLabel: 'Scratch'},
-    {tag: 'tsmod', intlLabel: APP_NAME},
-    {tag: 'dash', intlLabel: 'Dash'},
-    {tag: 'tw', intlLabel: 'TurboWarp'},
-    {tag: 'other', intlLabel: 'Other'},
-    {tag: 'gallerys', intlLabel: messages.gallerysInExtGallery}
-]
+    {isGroup: true, intlLabel: tagGroupMessages.platform},
+    {tag: 'scratch', intlLabel: 'Scratch'}, // Because is a brand name, it's unnecessary for to be translatable.
+    {tag: 'dash', intlLabel: messages.dash},
+    {tag: 'tw', intlLabel: 'TurboWarp'}, // Because is a brand name, it's unnecessary for to be translatable.
+    {tag: 'other', intlLabel: messages.other}
+];

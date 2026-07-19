@@ -1,6 +1,6 @@
-# @T-SMod/scratch-gui
+# @DashBlocks/scratch-gui
 
-@Dashblocks/scratch-gui modified for use in [TSMod](https://T-SMod.github.io/scratch-gui/) (@T-SMod/scratch-gui)
+@TurboWarp/scratch-gui modified for use in [Dash](https://dashblocks.org/) (@DashBlocks/scratch-gui)
 
 ## Setup
 

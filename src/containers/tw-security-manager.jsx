@@ -7,7 +7,6 @@ import SecurityManagerModal from '../components/tw-security-manager-modal/securi
 import SecurityModals from '../lib/tw-security-manager-constants';
 import {getPersistedUnsandboxed, setPersistedUnsandboxed} from '../lib/tw-persisted-unsandboxed.js';
 import {extensions} from 'dash-extensions-gallery/src/lib/extensions.js';
-import tsExtensions from 'tsmod-extensions-gallery/src/lib/ext.js';
 
 /* eslint-disable require-atomic-updates */
 
@@ -27,6 +26,7 @@ const manuallyTrustExtension = url => {
  */
 const isTrustedUrl = url => (
     url.toLowerCase().startsWith('https://dashblocks.github.io') ||
+    url.toLowerCase().startsWith('https://dashblocks.org') ||
     url.toLowerCase().startsWith('https://github.com/dashblocks') ||
     url.toLowerCase().startsWith('https://scratch.org') ||
     url.toLowerCase().startsWith('https://scratch.mit.edu') ||
@@ -35,9 +35,7 @@ const isTrustedUrl = url => (
     url.toLowerCase().startsWith('https://penguinmod.com') ||
     url.toLowerCase().startsWith('https://studio.penguinmod.com') ||
     url.toLowerCase().startsWith('https://extensions.penguinmod.com') ||
-    url.toLowerCase().startsWith('https://t-smod.github.io') ||
     extensions.some(ext => ext?.code === url) ||
-    tsExtensions.some(ext => ext?.code === url) ||
 
     // For development.
     url.toLowerCase().startsWith('http://localhost:') ||
@@ -71,9 +69,9 @@ const isAlwaysTrustedForFetching = parsed => (
     // If we would trust loading an extension from here, we can trust loading resources too.
     isTrustedUrl(parsed.href) ||
 
-    // Any Dash and TSMod services
+    // Any Dash service
     parsed.origin === 'https://dashblocks.github.io' ||
-    parsed.origin === 'https://t-smod.github.io' ||
+    parsed.origin === 'https://dashblocks.org' ||
 
     // Any TurboWarp service such as trampoline
     parsed.origin === 'https://turbowarp.org' ||

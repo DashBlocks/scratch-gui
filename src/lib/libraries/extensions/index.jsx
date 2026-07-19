@@ -553,7 +553,7 @@ export const gallerySharkPool = {
         <FormattedMessage
             defaultMessage="Shark Pool's Extension Gallery"
             description="Name of Mod's extension gallery in extension library"
-            id="tsmod.extensionGallery..name"
+            id="tsmod.extensionGallery.sp.name"
         />
     ),
     href: 'https://sharkpool-sp.github.io/SharkPools-Extensions/',
@@ -564,7 +564,7 @@ export const gallerySharkPool = {
             // eslint-disable-next-line max-len
             defaultMessage="Learn more about extensions at sharlpool-sp.github.io/SharkPools-Extensions."
             description="Appears after the extension list from the gallery was loaded successfully"
-            id="dash.extensionGallery.more"
+            id="dash.extensionGallery.sp.more"
         />
     ),
     tags: ['other', 'gallery'],

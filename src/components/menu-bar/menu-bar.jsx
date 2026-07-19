@@ -101,7 +101,7 @@ import editIcon from './icon--edit.svg';
 import addonsIcon from './addons.svg';
 import errorIcon from './tw-error.svg';
 import advancedIcon from './tw-advanced.svg';
-import dashLogo from './dash.png';
+import dashLogo from './TSMod.svg';
 import dashNewYearLogo from './dash-new-year.png';
 import searchIcon from './icon--search.png';
 

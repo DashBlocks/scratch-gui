@@ -3386,7 +3386,7 @@
         "tw.fonts.system1": "Добавить системный шрифт",
         "tw.fonts.system2": "Может работать в Scratch, но не будет отображаться правильно у всех.",
         "tw.fonts.title": "Шрифты",
-        "dash.footer.basedOnDisclaimer": "{APP_NAME} основан на Scratch, TurboWarp, Dash и других модах, но не связан с ними. TurboWarp доступен бесплатно на сайте {turbowarpDotOrg}. Dash доступен бесплатно на сайте {dashSite}",
+        "dash.footer.basedOnDisclaimer": "{APP_NAME} основан на Scratch, TurboWarp и других модах, но не связан с ними. TurboWarp доступен бесплатно на сайте {turbowarpDotOrg}.",
         "tw.footer.credits": "Благодарности",
         "tw.footer.disclaimer": "{APP_NAME} не связан со Scratch, командой Scratch или фондом Scratch Foundation.",
         "tw.footer.documentation": "Документация",
@@ -3680,15 +3680,7 @@
         "dash.wallpaper.changeOpaquePrompt": "Введите новое значение непрозрачности рабочего места:",
         "dash.wallpaper.changeOpaque": "Изменить непрозрачность",
         "dash.wallpaper.choose": "Выбрать обои...",
-        "dash.wallpaper.remove": "Убрать обои",
-        "tsmod.gallery.dash.name": "Галерея расширений Dash",
-        "tsmod.gallery.tw.name": "Галерея расширений TurboWarp",
-        "tsmod.gallery.pm.name": "Галерея расширений PenguinMod",
-        "tsmod.gallery.dash.description": "Галерея расширений для Dash",
-        "tsmod.gallery.tw.description": "Галерея расширений для TurboWarp",
-        "tsmod.gallery.pm.description": "Галерея расширений для PenguinMod",
-        "tsmod.gallery.gallerys.name": "Галереи",
-        "tsmod.gallerySound.music.name": "Музыка"
+        "dash.wallpaper.remove": "Убрать обои"
     },
     "sk": {
         "tw.feedbackButton": "{APP_NAME} Spätná väzba",

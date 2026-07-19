@@ -44,9 +44,9 @@ const guiColors = {
     'pen-transparent': 'hsla(163, 85%, 40%, 0.25)', /* #0FBD8C */
     'pen-tertiary': 'hsla(163, 86%, 30%, 1)', /* #0B8E69 */
 
-    'error-primary': 'hsl(205, 100%, 65%)', /* #4DB5FF */
+    'error-primary': 'hsla(30, 100%, 55%, 1)', /* #FF8C1A */
     'error-light': 'hsla(30, 100%, 70%, 1)', /* #FFB366 */
-    'error-transparent': 'hsl(205, 100%, 65%)', /* #4DB5FF */
+    'error-transparent': 'hsla(30, 100%, 55%, 0.25)', /* #FF8C1A */
 
     'extensions-primary': 'hsla(163, 85%, 40%, 1)', /* #0FBD8C */
     'extensions-tertiary': 'hsla(163, 85%, 30%, 1)', /* #0B8E69 */
@@ -79,7 +79,7 @@ const guiColors = {
     'project-title-inactive': 'var(--ui-white-transparent)',
     'project-title-hover': '#ffffff7f',
 
-    'link-color': '#0831a2',
+    'link-color': '#2255dd',
 
     'filter-icon-black': 'none',
     'filter-icon-gray': 'grayscale(100%)',

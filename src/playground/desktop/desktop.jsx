@@ -78,7 +78,8 @@ const Desktop = () => {
                         Download portable (64-bit)
                     </Button>
                 </div>
-
+            </section>
+            <section>
                 <h2>Windows 7, 8, and 8.1</h2>
                 These versions of the app have the same features but are slower and less secure. Support will be removed at an unknown time in the future. If a Windows SmartScreen alert appears, click "More info" then "Run anyways".
                 <div className={styles.downloadList}>
@@ -95,7 +96,8 @@ const Desktop = () => {
                         32-bit
                     </Button>
                 </div>
-
+            </section>
+            <section>
                 <h2>macOS 12 and later</h2>
                 Open the .DMG, then drag {APP_NAME} into Applications. If it tells you that {APP_NAME} already exists, choose "Replace".
                 <div className={styles.downloadList}>
@@ -106,7 +108,8 @@ const Desktop = () => {
                         Download for macOS 12 and later
                     </Button>
                 </div>
-
+            </section>
+            <section>
                 <h2>macOS 10.13 - 11</h2>
                 These versions of the app have the same features but are slower and less secure. Support will be removed at an unknown time in the future. Open the .DMG, then drag {APP_NAME} into Applications. If it tells you that {APP_NAME} already exists, choose "Replace".
                 <div className={styles.downloadList}>
@@ -129,7 +132,8 @@ const Desktop = () => {
                         macOS 10.13 - 10.14
                     </Button>
                 </div>
-
+            </section>
+            <section>
                 <h2>Linux</h2>
                 <h3>Debian, Ubuntu, and Linux Mint</h3>
                 <div className={styles.downloadList}>

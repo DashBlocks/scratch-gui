@@ -215,7 +215,7 @@ export class Donate extends React.Component {
                                     id="dash.donate.refundContact"
                                     values={{
                                         contactUs: (
-                                            <a href="contact-us">contact us</a>
+                                            <a href="mailto:contact@dashblocks.org">contact us</a>
                                         )
                                     }}
                                 />

@@ -858,7 +858,7 @@ const User = (props) => {
                                     }}
                                 />
                             </h2>
-                            {projects.length === 20 && (
+                            {projects.length > 0 && (
                                 <a
                                     onClick={() => window.open(`./user-projects#${userData.username}`, '_blank')}
                                     target="_blank"
@@ -926,7 +926,7 @@ const User = (props) => {
                                     }}
                                 />
                             </h2>
-                            {followers.length === 20 && (
+                            {followers.length > 0 && (
                                 <a
                                     onClick={() => window.open(`./user-followers#${userData.username}`, '_blank')}
                                     target="_blank"
@@ -977,7 +977,7 @@ const User = (props) => {
                                     }}
                                 />
                             </h2>
-                            {following.length === 20 && (
+                            {following.length > 0 && (
                                 <a
                                     onClick={() => window.open(`./user-following#${userData.username}`, '_blank')}
                                     target="_blank"

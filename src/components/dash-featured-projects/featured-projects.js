@@ -286,7 +286,7 @@ FeaturedProjects.prototype.loadNextPage = function () {
     }.bind(this);
 
     var url = FeaturedProjects.FEATURED_API
-        // TODO: .replace('$offset', '' + this.offset);
+        .replace('$offset', '' + this.offset);
     xhr.open('GET', url);
     xhr.send();
 };
@@ -295,7 +295,7 @@ FeaturedProjects.prototype.onselect = function (id, el) { };
 FeaturedProjects.prototype.onpageload = function () { };
 FeaturedProjects.prototype.onend = function () { };
 
-FeaturedProjects.FEATURED_API = 'https://api.dashblocks.org/featured-projects';
+FeaturedProjects.FEATURED_API = 'https://api.dashblocks.org/featured-projects/?offset=$offset';
 
 // The URL to download thumbnails from.
 // $id is replaced with the project's ID.

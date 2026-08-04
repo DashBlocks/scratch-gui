@@ -17,7 +17,7 @@ const ShareButton = ({
         className={classNames(
             className,
             styles.shareButton,
-            {[styles.shareButtonIsDisabled]: isShared || isSharing}
+            {[styles.shareButtonIsDisabled]: isSharing}
         )}
         onClick={onClick}
     >

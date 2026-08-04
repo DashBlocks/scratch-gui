@@ -331,7 +331,7 @@ const User = (props) => {
     }
 
     async function handleChangeDescription (description) {
-        if (!description) return;
+        if (typeof description !== "string") return;
         const prevDescription = userData.profile.description;
 
         setDescriptionDisabled(true);

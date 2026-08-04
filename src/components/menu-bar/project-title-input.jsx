@@ -24,13 +24,14 @@ const ProjectTitleInput = ({
     intl,
     onSubmit,
     projectTitle,
-    projectId
+    projectId,
+    session
 }) => {
     const [saving, setSaving] = useState(false);
 
     const handleSubmit = title => {
         setSaving(true);
-        Promise.resolve(onSubmit(title, projectId))
+        Promise.resolve(onSubmit(title, projectId, session))
             .catch(error => {
                 alert(error.message || error); // eslint-disable-line no-alert
             })
@@ -57,17 +58,19 @@ ProjectTitleInput.propTypes = {
     intl: intlShape.isRequired,
     onSubmit: PropTypes.func,
     projectTitle: PropTypes.string,
-    projectId: PropTypes.string
+    projectId: PropTypes.string,
+    session: PropTypes.object
 };
 
 const mapStateToProps = state => ({
     projectTitle: state.scratchGui.projectTitle,
-    projectId: state.scratchGui.projectState.projectId
+    projectId: state.scratchGui.projectState.projectId,
+    session: state.scratchGui.dash.session
 });
 
 const mapDispatchToProps = dispatch => ({
-    onSubmit: async (title, projectId) => {
-        if (!projectId) {
+    onSubmit: async (title, projectId, session) => {
+        if (!session || !projectId || projectId === '0') {
             dispatch(setProjectTitle(title));
             return;
         }

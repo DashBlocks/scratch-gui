@@ -1526,8 +1526,11 @@ const mapStateToProps = (state, ownProps) => {
         isShowingProject: getIsShowingProject(loadingState),
         isShared: state.scratchGui.tw.author && state.scratchGui.dash.session ?
             state.scratchGui.tw.author.userId === state.scratchGui.dash.session.id : false,
-        canEditTitle: state.scratchGui.tw.author && state.scratchGui.dash.session ?
-            state.scratchGui.tw.author.userId === state.scratchGui.dash.session.id : false,
+        canEditTitle: state.scratchGui.dash.session ?
+            (state.scratchGui.tw.author ?
+                state.scratchGui.tw.author.userId === state.scratchGui.dash.session.id
+                : true
+            ) : true,
         locale: state.locales.locale,
         loginMenuOpen: loginMenuOpen(state),
         modeMenuOpen: modeMenuOpen(state),

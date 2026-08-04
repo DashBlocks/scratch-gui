@@ -1205,7 +1205,7 @@ class MenuBar extends React.Component {
                             username={this.props.authorUsername}
                         />
                     ) : null)}
-                    {this.props.canShare ? (
+                    {this.props.canShare && this.props.canEditTitle ? (
                         (this.props.isShowingProject || this.props.isUpdating) && (
                             <div className={classNames(styles.menuBarItem)}>
                                 <ProjectWatcher onDoneUpdating={this.props.onSeeCommunity}>
@@ -1235,7 +1235,7 @@ class MenuBar extends React.Component {
                             </MenuBarItemTooltip>
                         </div>
                     ) : null}
-                    {this.props.canRemix && (
+                    {this.props.canRemix && !this.props.canEditTitle && (
                         <div className={classNames(styles.menuBarItem)}>
                             {remixButton}
                         </div>
@@ -1526,8 +1526,8 @@ const mapStateToProps = (state, ownProps) => {
         isShowingProject: getIsShowingProject(loadingState),
         isShared: state.scratchGui.tw.author && state.scratchGui.dash.session ?
             state.scratchGui.tw.author.userId === state.scratchGui.dash.session.id : false,
-        canEditTitle: state.scratchGui.dash.session ?
-            (state.scratchGui.tw.author ?
+        canEditTitle: state.scratchGui.dash.session && state.scratchGui.dash.session.id ?
+            (state.scratchGui.tw.author && state.scratchGui.tw.author.userId ?
                 state.scratchGui.tw.author.userId === state.scratchGui.dash.session.id
                 : true
             ) : true,

@@ -21,16 +21,16 @@ const ShareButton = ({
         )}
         onClick={onClick}
     >
-        {isShared ? (
+        {isSharing ? (
+            <Spinner
+                className={styles.spinner}
+                small
+            />
+        ) : isShared ? (
             <FormattedMessage
                 defaultMessage="Update"
                 description="Label for shared project"
                 id="dash.menuBar.update"
-            />
-        ) : isSharing ? (
-            <Spinner
-                className={styles.spinner}
-                small
             />
         ) : (
             <FormattedMessage

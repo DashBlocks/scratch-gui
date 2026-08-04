@@ -23,9 +23,9 @@ const ShareButton = ({
     >
         {isShared ? (
             <FormattedMessage
-                defaultMessage="Shared"
+                defaultMessage="Update"
                 description="Label for shared project"
-                id="gui.menuBar.isShared"
+                id="dash.menuBar.update"
             />
         ) : isSharing ? (
             <Spinner

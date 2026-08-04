@@ -633,7 +633,7 @@ const User = (props) => {
                             </h2>
                             {isMyProfile ? (
                                 <BufferedInput
-                                    className={classNames(styles.descriptionField)}
+                                    className={styles.descriptionField}
                                     maxLength="1000"
                                     multiline
                                     placeholder={props.intl.formatMessage(userData.role === "dasher" ? messages.descriptionInputPlaceholderForDasher : messages.descriptionInputPlaceholder)}

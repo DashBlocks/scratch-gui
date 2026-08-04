@@ -132,11 +132,16 @@ const twMessages = defineMessages({
     }
 });
 
-const searchMessages = defineMessages({
+const dashMessages = defineMessages({
     searchPlaceholder: {
         id: 'dash.menuBar.searchPlaceholder',
         defaultMessage: 'Search',
         description: 'Placeholder text for the search field in the menu bar'
+    },
+    shareProjectWarning: {
+        id: 'dash.menuBar.shareProjectWarning',
+        defaultMessage: 'Are you sure you want to share project?',
+        description: 'Warning message when user clicks share button'
     }
 });
 
@@ -239,6 +244,7 @@ class MenuBar extends React.Component {
             'handleClickRestorePoints',
             'handleClickSeeCommunity',
             'handleClickShare',
+            'handleClickUpdate',
             'handleClickLogOut',
             'handleSetMode',
             'handleKeyPress',
@@ -313,18 +319,17 @@ class MenuBar extends React.Component {
             if (this.props.canShare) { // save before transitioning to project page
                 const session = await getSession();
                 if (session && session.id) {
+                    if (!confirm(this.props.intl.formatMessage(dashMessages.shareProjectWarning)))
+                        return;
                     this.setState({
                         isSharing: true
                     });
                     try {
                         let formData = new FormData();
                         const content = await this.props.vm.saveProjectSb3();
-                        const fileBlob = new Blob([content], { type: 'application/x.dash.dbp' });
+                        const fileBlob = new Blob([content], {type: 'application/x.dash.dbp'});
                         formData.append('file', fileBlob, `${this.props.projectTitle}.dbp`);
                         formData.append('name', this.props.projectTitle);
-                        // TODO: Description input instead of prompt
-                        const description = prompt('Enter a description for your project:') || '';
-                        formData.append('description', description);
 
                         const response = await fetch('https://api.dashblocks.org/save-project', {
                             method: 'POST',
@@ -332,7 +337,7 @@ class MenuBar extends React.Component {
                             credentials: 'include'
                         });
                         const result = await response.json();
-                        if (response.ok) {
+                        if (result.ok) {
                             formData = new FormData();
                             this.props.vm.postIOData('video', {forceTransparentPreview: true});
                             const thumbnailBlob = await new Promise(resolve => {
@@ -355,6 +360,68 @@ class MenuBar extends React.Component {
                                 alert('Project was shared but thumbnail upload failed');
                             }
                             window.open(`./#${result.projectId}`, '_self');
+                        } else {
+                            alert(result.error);
+                        }
+                    } catch (error) {
+                        alert(error?.message || error);
+                    } finally {
+                        this.setState({
+                            isSharing: false
+                        });
+                    }
+                    return;
+                }
+                window.open('./login', '_blank');
+                return;
+            }
+        }
+    }
+    async handleClickUpdate (waitForUpdate) {
+        if (this.props.isShared && !this.state.isSharing) {
+            if (this.props.canShare) { // save before transitioning to project page
+                const session = await getSession();
+                if (session && session.id) {
+                    if (!confirm(this.props.intl.formatMessage(dashMessages.shareProjectWarning)))
+                        return;
+                    this.setState({
+                        isSharing: true
+                    });
+                    try {
+                        let formData = new FormData();
+                        const content = await this.props.vm.saveProjectSb3();
+                        const fileBlob = new Blob([content], {type: 'application/x.dash.dbp'});
+                        formData.append('file', fileBlob, `${this.props.projectTitle}.dbp`);
+                        formData.append('name', this.props.projectTitle);
+
+                        const response = await fetch(`https://api.dashblocks.org/projects/${this.props.projectId}`, {
+                            method: 'PUT',
+                            body: formData,
+                            credentials: 'include'
+                        });
+                        const result = await response.json();
+                        if (result.ok) {
+                            formData = new FormData();
+                            this.props.vm.postIOData('video', {forceTransparentPreview: true});
+                            const thumbnailBlob = await new Promise(resolve => {
+                                this.props.vm.renderer.requestSnapshot(async dataURI => {
+                                    this.props.vm.postIOData('video', {forceTransparentPreview: false});
+                                    const res = await fetch(dataURI);
+                                    const blob = await res.blob();
+                                    resolve(blob);
+                                });
+                            });
+                            formData.append('thumbnail', thumbnailBlob, 'thumbnail.png');
+                            const thumbnailResponse = await fetch(`https://api.dashblocks.org/projects/${this.props.projectId}/upload-thumbnail`, {
+                                method: 'POST',
+                                body: formData,
+                                credentials: 'include'
+                            });
+                            if (thumbnailResponse.ok) {
+                                alert('Project updated successfully!');
+                            } else {
+                                alert('Project was updated but thumbnail upload failed');
+                            }
                         } else {
                             alert(result.error);
                         }
@@ -559,7 +626,7 @@ class MenuBar extends React.Component {
                 id="gui.menuBar.new"
             />
         );
-        const searchPlaceholder = this.props.intl.formatMessage(searchMessages.searchPlaceholder);
+        const searchPlaceholder = this.props.intl.formatMessage(dashMessages.searchPlaceholder);
         const searchValue = new URLSearchParams(window.location.search).get('q');
         const remixButton = (
             <Button
@@ -1150,7 +1217,9 @@ class MenuBar extends React.Component {
                                                 isSharing={this.state.isSharing}
                                                 /* eslint-disable react/jsx-no-bind */
                                                 onClick={() => {
-                                                    this.handleClickShare(waitForUpdate);
+                                                    this.props.isShared ?
+                                                        this.handleClickUpdate(waitForUpdate) :
+                                                        this.handleClickShare(waitForUpdate)
                                                 }}
                                                 /* eslint-enable react/jsx-no-bind */
                                             />
@@ -1455,6 +1524,10 @@ const mapStateToProps = (state, ownProps) => {
         isRtl: state.locales.isRtl,
         isUpdating: getIsUpdating(loadingState),
         isShowingProject: getIsShowingProject(loadingState),
+        isShared: state.scratchGui.tw.author && state.scratchGui.dash.session ?
+            state.scratchGui.tw.author.userId === state.scratchGui.dash.session.id : false,
+        canEditTitle: state.scratchGui.tw.author && state.scratchGui.dash.session ?
+            state.scratchGui.tw.author.userId === state.scratchGui.dash.session.id : false,
         locale: state.locales.locale,
         loginMenuOpen: loginMenuOpen(state),
         modeMenuOpen: modeMenuOpen(state),

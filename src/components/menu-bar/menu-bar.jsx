@@ -1508,11 +1508,19 @@ MenuBar.defaultProps = {
 const mapStateToProps = (state, ownProps) => {
     const loadingState = state.scratchGui.projectState.loadingState;
     const session = state.scratchGui.dash.session;
+    const projectId = state.scratchGui.projectState.projectId;
+    const isScratchProject = projectId.startsWith("s");
+    const userOwnsProject = (
+        !isScratchProject &&
+        state.scratchGui.tw.author.userId &&
+        session &&
+        state.scratchGui.tw.author.userId === session.id
+    );
     return {
         authorUsername: state.scratchGui.tw.author.username,
         authorId: state.scratchGui.tw.author.userId,
         authorThumbnailUrl: state.scratchGui.tw.author.thumbnail,
-        projectId: state.scratchGui.projectState.projectId,
+        projectId,
         aboutMenuOpen: aboutMenuOpen(state),
         accountMenuOpen: accountMenuOpen(state),
         currentLocale: state.locales.locale,
@@ -1524,22 +1532,17 @@ const mapStateToProps = (state, ownProps) => {
         isRtl: state.locales.isRtl,
         isUpdating: getIsUpdating(loadingState),
         isShowingProject: getIsShowingProject(loadingState),
-        isShared: state.scratchGui.tw.author && state.scratchGui.dash.session ?
-            state.scratchGui.tw.author.userId === state.scratchGui.dash.session.id : false,
-        canEditTitle: state.scratchGui.dash.session && state.scratchGui.dash.session.id ?
-            (state.scratchGui.tw.author && state.scratchGui.tw.author.userId ?
-                state.scratchGui.tw.author.userId === state.scratchGui.dash.session.id
-                : true
-            ) : true,
+        isShared: state.scratchGui.tw.author && session ?
+            state.scratchGui.tw.author.userId === session.id : false,
+        canEditTitle: projectId === "0" || userOwnsProject,
         locale: state.locales.locale,
         loginMenuOpen: loginMenuOpen(state),
         modeMenuOpen: modeMenuOpen(state),
         projectTitle: state.scratchGui.projectTitle,
-        sessionExists: state.scratchGui.dash.session !== null,
+        sessionExists: session !== null,
         settingsMenuOpen: settingsMenuOpen(state),
         session: session || null,
-        userOwnsProject: ownProps.authorUsername && session &&
-            (ownProps.authorUsername === session.username),
+        userOwnsProject,
         vm: state.scratchGui.vm,
         mode220022BC: isTimeTravel220022BC(state),
         mode1920: isTimeTravel1920(state),

@@ -804,7 +804,7 @@ class Interface extends React.PureComponent {
                                         <Tab
                                             className={classNames(tabClassNames.tab, {
                                                 [tabClassNames.tabDisabled]: !(
-                                                    (description.instructions || description.credits) &&
+                                                    (description.instructions || description.credits || session?.id === authorId) &&
                                                     !(description.instructions === 'unshared' || description.credits === 'unshared')
                                                 )
                                             })}
@@ -937,7 +937,7 @@ class Interface extends React.PureComponent {
                                         )}
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>
-                                        {description.instructions || description.credits || session?.id === authorId ? (
+                                        {(description.instructions || description.credits || session?.id === authorId) ? (
                                             <div
                                                 className={styles.section}
                                                 style={{

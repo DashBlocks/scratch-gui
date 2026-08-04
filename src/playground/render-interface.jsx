@@ -49,6 +49,9 @@ import tabStyles from 'react-tabs/style/react-tabs.css';
 import TWRenderRecoloredImage from '../lib/tw-recolor/render.jsx';
 import Spinner from '../components/spinner/spinner.jsx';
 import Button from '../components/button/button.jsx';
+import BufferedInputHOC from '../components/forms/buffered-input-hoc.jsx';
+import Input from '../components/forms/input.jsx';
+const BufferedInput = BufferedInputHOC(Input);
 
 import aboutIcon from '!../lib/tw-recolor/build!./icons/icon--about.svg';
 import unsharedIcon from '!../lib/tw-recolor/build!./icons/icon--unshared.svg';
@@ -80,6 +83,11 @@ const messages = defineMessages({
         defaultMessage: 'More cool stuff for editor',
         description: 'Title of homepage',
         id: 'dash.guiDefaultTitle'
+    },
+    descriptionInputPlaceholder: {
+        id: 'dash.project.description.inputPlaceholder',
+        description: 'Placeholder for the project description input when blank',
+        defaultMessage: 'What is this project about?'
     }
 });
 
@@ -567,9 +575,12 @@ class Interface extends React.PureComponent {
     constructor (props) {
         super(props);
         this.handleUpdateProjectTitle = this.handleUpdateProjectTitle.bind(this);
+        this.handleChangeProjectDescription = this.handleChangeProjectDescription.bind(this);
         this.state = {
             activeTabIndex: 0,
             messageNumber: 0,
+            descriptionOverride: null,
+            descriptionSaving: false
         };
     }
     componentDidUpdate (prevProps) {
@@ -597,6 +608,41 @@ class Interface extends React.PureComponent {
             document.title = `${title} - ${APP_NAME}`;
         }
     }
+    async handleChangeProjectDescription (text) {
+        if (typeof text !== 'string') return;
+ 
+        const {projectId} = this.props;
+        if (!projectId || projectId === '0') return;
+ 
+        const prevText = this.state.descriptionOverride !== null
+            ? this.state.descriptionOverride
+            : (this.props.description.instructions || '');
+ 
+        this.setState({
+            descriptionOverride: text,
+            descriptionSaving: true
+        });
+ 
+        try {
+            const res = await fetch(`https://api.dashblocks.org/projects/${projectId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({description: text}),
+                credentials: 'include'
+            });
+            const data = await res.json();
+            if (!res.ok || !data.ok) {
+                throw new Error(data.error || 'Failed to update project description');
+            }
+        } catch (error) {
+            this.setState({descriptionOverride: prevText});
+            alert(error.message || error); // eslint-disable-line no-alert
+        } finally {
+            this.setState({descriptionSaving: false});
+        }
+    }
     onActivateTab (tab) {
         this.setState({
             activeTabIndex: tab
@@ -614,6 +660,7 @@ class Interface extends React.PureComponent {
             /* eslint-disable no-unused-vars */
             intl,
             session,
+            authorId,
             hasCloudVariables,
             description,
             isFullScreen,
@@ -626,6 +673,9 @@ class Interface extends React.PureComponent {
         } = this.props;
         const isHomepage = isPlayerOnly && !isFullScreen;
         const isEditor = !isPlayerOnly;
+        const descriptionText = this.state.descriptionOverride !== null
+            ? this.state.descriptionOverride
+            : (description.instructions || '');
         return (
             <div
                 className={classNames(styles.container, {
@@ -887,7 +937,7 @@ class Interface extends React.PureComponent {
                                         )}
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>
-                                        {description.instructions || description.credits ? (
+                                        {description.instructions || description.credits || session?.id === authorId ? (
                                             <div
                                                 className={styles.section}
                                                 style={{
@@ -895,12 +945,25 @@ class Interface extends React.PureComponent {
                                                     maxHeight: "520px"
                                                 }}
                                             >
-                                                <Description
-                                                    instructions={description.instructions}
-                                                    credits={description.credits}
-                                                    isDashProject={description.isDashProject}
-                                                    projectId={projectId}
-                                                />
+                                                {session?.id === authorId ? (
+                                                    <BufferedInput
+                                                        className={styles.descriptionField}
+                                                        maxLength="1000"
+                                                        multiline
+                                                        placeholder={intl.formatMessage(messages.descriptionInputPlaceholder)}
+                                                        tabIndex="0"
+                                                        value={descriptionText}
+                                                        onSubmit={this.handleChangeProjectDescription}
+                                                        disabled={this.state.descriptionSaving}
+                                                    />
+                                                ) : (
+                                                    <Description
+                                                        instructions={description.instructions}
+                                                        credits={description.credits}
+                                                        isDashProject={description.isDashProject}
+                                                        projectId={projectId}
+                                                    />
+                                                )}
                                             </div>
                                         ) : null}
                                     </TabPanel>
@@ -918,6 +981,7 @@ class Interface extends React.PureComponent {
 Interface.propTypes = {
     intl: intlShape,
     session: PropTypes.object,
+    authorId: PropTypes.string,
     hasCloudVariables: PropTypes.bool,
     customStageSize: PropTypes.shape({
         width: PropTypes.number,
@@ -937,6 +1001,7 @@ Interface.propTypes = {
 
 const mapStateToProps = state => ({
     session: state.scratchGui.dash.session,
+    authorId: state.scratchGui.tw.author ? state.scratchGui.tw.author.userId : null,
     hasCloudVariables: state.scratchGui.tw.hasCloudVariables,
     customStageSize: state.scratchGui.customStageSize,
     description: state.scratchGui.tw.description,

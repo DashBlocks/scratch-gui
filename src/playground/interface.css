@@ -321,3 +321,35 @@ a {
     display: flex;
     justify-content: center;
 }
+
+.description-field {
+    width: 100% !important;
+    height: 7.5rem !important;
+    resize: none !important;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
+    border: 0.0625rem dashed $ui-black-transparent !important;
+    border-radius: $space !important;
+    background-color: $project-title-inactive !important;
+    background-clip: padding-box;
+    padding: $space !important;
+}
+
+.description-field {
+    color: $text-primary !important;
+    font-weight: bold !important;
+    font-size: .8rem !important;
+}
+
+.description-field::placeholder {
+    color: $text-primary !important;
+    opacity: 0.8 !important;
+    font-weight: normal !important;
+    font-size: .8rem !important;
+    font-style: italic !important;
+}
+
+.description-field:hover {
+    background-color: $project-title-hover !important;
+    border-color: $ui-black-transparent !important; /* dont use hover border from custom input */
+}

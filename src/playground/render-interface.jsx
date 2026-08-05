@@ -945,7 +945,7 @@ class Interface extends React.PureComponent {
                                                     maxHeight: "520px"
                                                 }}
                                             >
-                                                {session?.id === authorId ? (
+                                                {session?.id === authorId || session?.role === "dashteam" ? (
                                                     <BufferedInput
                                                         className={styles.descriptionField}
                                                         maxLength="1000"

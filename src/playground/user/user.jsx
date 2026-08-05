@@ -104,7 +104,7 @@ const User = (props) => {
             try {
                 const currentSession = await getSession();
                 setIsMyProfile(currentSession?.id?.toString() === id || currentSession?.username?.toLowerCase() === id?.toLowerCase());
-                setSession(session);
+                setSession(currentSession);
                 const userRes = await fetch(`https://api.dashblocks.org/users/${id}`, {credentials: "include"});
                 user = await userRes.json();
 

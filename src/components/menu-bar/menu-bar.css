@@ -35,7 +35,7 @@
 .menu-bar.centered {
     justify-content: space-between;
 }
-.menu-bar.centered > :is(.settings-menu, .main-menu, .account-info-group) {
+.menu-bar.centered > * {
     flex: 1;
 }
 

@@ -250,8 +250,8 @@ const User = (props) => {
                         {/* TODO: Icon */}
                         <h4>
                             <FormattedMessage
-                                defaultMessage='{count} followers have been reached.'
-                                description="Title for achievement of reached followers."
+                                defaultMessage='{count} Followers Reached'
+                                description="Title for achievement of reached followers"
                                 id="dash.user.achievements.reachedFollowersCount.title"
                                 values={{
                                     count: achievement.count
@@ -259,8 +259,8 @@ const User = (props) => {
                             />
                         </h4>
                         <FormattedMessage
-                            defaultMessage='The user has {count} followers on Dash.'
-                            description="Description for achievement of reached followers."
+                            defaultMessage='Reached {count} followers on Dash.'
+                            description="Description for achievement of reached followers"
                             id="dash.user.achievements.reachedFollowersCount.info"
                             values={{
                                 count: achievement.count

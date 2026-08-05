@@ -323,6 +323,7 @@ a {
 }
 
 .description-field {
+    box-sizing: border-box !important;
     width: 100% !important;
     height: 7.5rem !important;
     resize: none !important;

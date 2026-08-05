@@ -804,8 +804,8 @@ class Interface extends React.PureComponent {
                                         <Tab
                                             className={classNames(tabClassNames.tab, {
                                                 [tabClassNames.tabDisabled]: !(
-                                                    (description.instructions || description.credits || session?.id === authorId) &&
-                                                    !(description.instructions === 'unshared' || description.credits === 'unshared')
+                                                    (description.instructions || description.credits || session?.id === authorId || session?.role === "dashteam") &&
+                                                    (!description.isDashProject ? !(description.instructions === 'unshared' || description.credits === 'unshared') : true)
                                                 )
                                             })}
                                         >
@@ -937,7 +937,7 @@ class Interface extends React.PureComponent {
                                         )}
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>
-                                        {(description.instructions || description.credits || session?.id === authorId) ? (
+                                        {(description.instructions || description.credits || session?.id === authorId || session?.role === "dashteam") ? (
                                             <div
                                                 className={styles.section}
                                                 style={{

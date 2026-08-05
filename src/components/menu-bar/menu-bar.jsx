@@ -1509,7 +1509,7 @@ const mapStateToProps = (state, ownProps) => {
     const loadingState = state.scratchGui.projectState.loadingState;
     const session = state.scratchGui.dash.session;
     const projectId = state.scratchGui.projectState.projectId;
-    const isScratchProject = projectId.startsWith("s");
+    const isScratchProject = projectId && projectId.startsWith("s");
     const userOwnsProject = (
         !isScratchProject &&
         state.scratchGui.tw.author.userId &&

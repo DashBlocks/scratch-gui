@@ -344,8 +344,8 @@ const User = (props) => {
             }
         }));
         try {
-            let response
-            if (session?.role === "dashteam" && !isMyProfile)
+            let response;
+            if (session?.role === "dashteam" && !isMyProfile) {
                 response = await fetch(`https://api.dashblocks.org/users/set-description?target=${userData.username}`, {
                     method: 'POST',
                     headers: {
@@ -354,7 +354,7 @@ const User = (props) => {
                     body: JSON.stringify({description}),
                     credentials: 'include'
                 });
-            else
+            } else {
                 response = await fetch('https://api.dashblocks.org/users/set-description', {
                     method: 'POST',
                     headers: {
@@ -363,6 +363,7 @@ const User = (props) => {
                     body: JSON.stringify({description}),
                     credentials: 'include'
                 });
+            }
             const data = await response.json();
             if (!data.ok) {
                 throw new Error(data.error);

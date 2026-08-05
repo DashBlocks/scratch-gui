@@ -90,6 +90,7 @@ const User = (props) => {
     const [following, setFollowing] = useState([]);
     const [gradient, setGradient] = useState({});
     const [isMyProfile, setIsMyProfile] = useState(false);
+    const [session, setSession] = useState(null);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -101,8 +102,9 @@ const User = (props) => {
             setLoading(true);
             let user;
             try {
-                const session = await getSession();
-                setIsMyProfile(session?.id?.toString() === id || session?.username?.toLowerCase() === id?.toLowerCase());
+                const currentSession = await getSession();
+                setIsMyProfile(currentSession?.id?.toString() === id || currentSession?.username?.toLowerCase() === id?.toLowerCase());
+                setSession(session);
                 const userRes = await fetch(`https://api.dashblocks.org/users/${id}`, {credentials: "include"});
                 user = await userRes.json();
 
@@ -305,7 +307,6 @@ const User = (props) => {
 
     async function handleClickFollowButton () {
         setFollowButtonDisabled(true);
-        const session = await getSession();
         if (!session || !session.id) {
             window.open('./login', '_blank');
             setFollowButtonDisabled(false);
@@ -343,14 +344,25 @@ const User = (props) => {
             }
         }));
         try {
-            const response = await fetch('https://api.dashblocks.org/users/set-description', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({description}),
-                credentials: 'include'
-            });
+            let response
+            if (session?.role === "dashteam" && !isMyProfile)
+                response = await fetch(`https://api.dashblocks.org/users/set-description?target=${userData.username}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({description}),
+                    credentials: 'include'
+                });
+            else
+                response = await fetch('https://api.dashblocks.org/users/set-description', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({description}),
+                    credentials: 'include'
+                });
             const data = await response.json();
             if (!data.ok) {
                 throw new Error(data.error);
@@ -631,7 +643,7 @@ const User = (props) => {
                                     id="dash.home.tab.description"
                                 />
                             </h2>
-                            {isMyProfile ? (
+                            {isMyProfile || session?.role === "dashteam" ? (
                                 <BufferedInput
                                     className={styles.descriptionField}
                                     maxLength="1000"

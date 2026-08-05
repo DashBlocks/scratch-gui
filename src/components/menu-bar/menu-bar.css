@@ -33,7 +33,10 @@
     color: $menu-bar-foreground;
 }
 .menu-bar.centered {
-    justify-content: center;
+    justify-content: space-between;
+}
+.menu-bar.centered > :is(.settings-menu, .main-menu, .account-info-group) {
+    flex: 1;
 }
 
 .settings-menu {
@@ -43,13 +46,6 @@
     flex-wrap: nowrap;
     align-items: center;
     gap: 0.5rem;
-    position: absolute;
-}
-[dir="ltr"] .settings-menu {
-    left: 0;
-}
-[dir="rtl"] .settings-menu {
-    right: 0;
 }
 
 .main-menu {
@@ -60,9 +56,6 @@
     align-items: center;
     flex-grow: 1;
     gap: 0.5rem;
-}
-.menu-bar.centered > .main-menu {
-    flex-grow: 0;
 }
 
 .inactive {
@@ -228,7 +221,7 @@
     height: 1.25rem;
 }
 
-.coming-soon >:not(.coming-soon-tooltip) {
+.coming-soon > :not(.coming-soon-tooltip) {
     opacity: 0.5;
 }
 
@@ -240,16 +233,6 @@
     align-items: center;
     flex-grow: 1;
     gap: 0.5rem;
-}
-[dir="ltr"] .menu-bar.centered > .account-info-group {
-    flex-grow: 0;
-    position: absolute;
-    right: 0;
-}
-[dir="rtl"] .menu-bar.centered > .account-info-group {
-    flex-grow: 0;
-    position: absolute;
-    left: 0;
 }
 
 .account-info-group .menu-bar-item:not(:has(:global([class*="save-status_save-now_"]))) {

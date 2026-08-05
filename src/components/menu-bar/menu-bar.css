@@ -35,8 +35,13 @@
 .menu-bar.centered {
     justify-content: space-between;
 }
-.menu-bar.centered > * {
+.menu-bar.centered > .settings-menu,
+.menu-bar.centered > .account-info-group {
     flex: 1;
+}
+.menu-bar.centered > .main-menu {
+    flex: 1;
+    justify-content: center;
 }
 
 .settings-menu {

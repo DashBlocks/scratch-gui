@@ -1512,6 +1512,7 @@ const mapStateToProps = (state, ownProps) => {
     const isScratchProject = projectId && projectId.startsWith("s");
     const userOwnsProject = (
         !isScratchProject && ((
+            state.scratchGui.tw.author &&
             state.scratchGui.tw.author.userId &&
             session &&
             state.scratchGui.tw.author.userId === session.id
@@ -1536,8 +1537,7 @@ const mapStateToProps = (state, ownProps) => {
         isRtl: state.locales.isRtl,
         isUpdating: getIsUpdating(loadingState),
         isShowingProject: getIsShowingProject(loadingState),
-        isShared: !isScratchProject && state.scratchGui.tw.author && session ?
-            state.scratchGui.tw.author.userId === session.id || session.role === "dashteam" : false,
+        isShared: projectId !== "0" && userOwnsProject,
         canEditTitle: projectId === "0" || userOwnsProject,
         locale: state.locales.locale,
         loginMenuOpen: loginMenuOpen(state),

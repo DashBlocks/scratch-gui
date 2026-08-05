@@ -96,7 +96,7 @@
     "redux-throttle": "0.1.1",
     "scratch-audio": "github:DashBlocks/scratch-audio#develop",
     "scratch-blocks": "github:DashBlocks/scratch-blocks#develop-builds",
-    "scratch-paint": "github:DashBlocks/PenguinMod-Paint#develop",
+    "scratch-paint": "github:DashBlocks/PenguinMod-Paint#complex-gradients",
     "scratch-render": "github:TurboWarp/scratch-render#develop",
     "scratch-vm": "github:DashBlocks/scratch-vm#develop",
     "style-loader": "^0.23.0",

@@ -371,7 +371,7 @@ const WhatsHappening = ({intl}) => {
             
             if (!res.ok) {
                 setHasMore(false);
-                setError("Failed to fetch activity");
+                setError('Failed to fetch activity');
                 setLoadMoreButtonDisabled(false);
                 setLoading(false);
                 return;
@@ -389,7 +389,7 @@ const WhatsHappening = ({intl}) => {
             setActions(prevActions => [...prevActions, ...data.activity]);
             setHasMore(data.activity.length === limit);
         } catch (err) {
-            setError("Failed to fetch activity");
+            setError('Failed to fetch activity');
             setHasMore(false);
         } finally {
             setLoadMoreButtonDisabled(false);
@@ -773,7 +773,7 @@ class Interface extends React.PureComponent {
                                         </Tab>
                                         <Tab
                                             className={classNames(tabClassNames.tab, {
-                                                [tabClassNames.tabDisabled]: !(description.instructions === 'unshared' || description.credits === 'unshared')
+                                                [tabClassNames.tabDisabled]: !(!description.isDashProject ? description.instructions === 'unshared' || description.credits === 'unshared' : false)
                                             })}
                                         >
                                             <TWRenderRecoloredImage
@@ -804,7 +804,7 @@ class Interface extends React.PureComponent {
                                         <Tab
                                             className={classNames(tabClassNames.tab, {
                                                 [tabClassNames.tabDisabled]: !(
-                                                    (description.instructions || description.credits || session?.id === authorId || session?.role === "dashteam") &&
+                                                    (description.instructions || description.credits || session?.id === authorId || (session?.role === 'dashteam' && projectId !== '0')) &&
                                                     (!description.isDashProject ? !(description.instructions === 'unshared' || description.credits === 'unshared') : true)
                                                 )
                                             })}
@@ -868,7 +868,7 @@ class Interface extends React.PureComponent {
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>
                                         {(
-                                            description.instructions === 'unshared' || description.credits === 'unshared'
+                                            !description.isDashProject ? description.instructions === 'unshared' || description.credits === 'unshared' : false
                                         ) && (
                                             <div
                                                 className={styles.section}
@@ -937,7 +937,7 @@ class Interface extends React.PureComponent {
                                         )}
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>
-                                        {(description.instructions || description.credits || session?.id === authorId || session?.role === "dashteam") ? (
+                                        {(description.instructions || description.credits || session?.id === authorId || (session?.role === 'dashteam' && projectId !== '0')) ? (
                                             <div
                                                 className={styles.section}
                                                 style={{
@@ -945,7 +945,7 @@ class Interface extends React.PureComponent {
                                                     maxHeight: "520px"
                                                 }}
                                             >
-                                                {session?.id === authorId || session?.role === "dashteam" ? (
+                                                {session?.id === authorId || session?.role === 'dashteam' ? (
                                                     <BufferedInput
                                                         className={styles.descriptionField}
                                                         maxLength="1000"

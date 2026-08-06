@@ -7,6 +7,7 @@ import SB3Downloader from '../../containers/sb3-downloader.jsx';
 import {filterInlineAlerts} from '../../reducers/alerts';
 
 import styles from './save-status.css';
+import saveIcon from './dash-save.svg';
 
 const TWSaveStatus = ({
     alertsList,
@@ -25,21 +26,14 @@ const TWSaveStatus = ({
                     onClick={smartSave}
                     className={styles.saveNow}
                 >
-                    {fileHandle ? (
-                        <FormattedMessage
-                            defaultMessage="Save as {file}"
-                            description="Menu bar item to save project to an existing file on the user's computer"
-                            id="tw.menuBar.saveAs"
-                            values={{
-                                file: fileHandle.name
-                            }}
-                        />
-                    ) : (
-                        <FormattedMessage
-                            defaultMessage="Save to your computer"
-                            description="Menu bar item for downloading a project to your computer"
-                            id="gui.menuBar.downloadToComputer"
-                        />
+                    <img
+                        src={saveIcon}
+                        draggable={false}
+                        width={20}
+                        height={20}
+                    />
+                    {fileHandle && (
+                        <span>{fileHandle.name}</span>
                     )}
                 </div>
             )}

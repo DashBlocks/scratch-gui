@@ -132,6 +132,15 @@ export default function (vm) {
         return sprites;
     };
 
+    const runAsMenu = function () {
+        const myself = ScratchBlocks.ScratchMsgs.translate('CONTROL_CREATECLONEOF_MYSELF', 'myself');
+        if (vm.editingTarget && vm.editingTarget.isStage) {
+            return [[myself, '_myself_']].concat(spriteMenu());
+        }
+        const stage = ScratchBlocks.ScratchMsgs.translate('SENSING_OF_STAGE', 'Stage');
+        return [[myself, '_myself_'], [stage, '_stage_']].concat(spriteMenu());
+    };
+
     const cloneMenu = function () {
         if (vm.editingTarget && vm.editingTarget.isStage) {
             const menu = spriteMenu();
@@ -315,6 +324,11 @@ export default function (vm) {
             [mouse, '_mouse_'],
             [edge, '_edge_']
         ]);
+        this.jsonInit(json);
+    };
+
+    ScratchBlocks.Blocks.control_run_as_menu.init = function () {
+        const json = jsonForMenuBlock('OBJECT', runAsMenu, controlColors, []);
         this.jsonInit(json);
     };
 

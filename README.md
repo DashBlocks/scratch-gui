@@ -1,10 +1,10 @@
 # @DashBlocks/scratch-gui
 
-@TurboWarp/scratch-gui modified for use in [Dash](https://dashblocks.github.io/) (@DashBlocks/scratch-gui)
+@TurboWarp/scratch-gui modified for use in [Dash](https://dashblocks.org/) (@DashBlocks/scratch-gui)
 
 ## Setup
 
-See https://dashblocks.github.io/docs/development/getting-started to setup the complete TurboWarp environment.
+See https://dashblocks.org/docs/development/getting-started to setup the complete TurboWarp environment.
 
 If you just want to play with the GUI then it's the same process as upstream scratch-gui.
 

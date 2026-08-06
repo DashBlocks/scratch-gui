@@ -114,7 +114,7 @@ const CloudVariableBadge = props => {
             <a
                 target="_blank"
                 rel="noreferrer"
-                href="https://dashblocks.github.io/docs/cloud-variables"
+                href="https://dashblocks.org/docs/cloud-variables"
             >
                 <FormattedMessage
                     defaultMessage="Learn more about cloud variables."

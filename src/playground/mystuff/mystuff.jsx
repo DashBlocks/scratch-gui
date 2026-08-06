@@ -10,6 +10,7 @@ import Spinner from '../../components/spinner/spinner.jsx';
 import {Footer} from '../render-interface.jsx';
 import Button from '../../components/button/button.jsx';
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
+import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 import getSession from '../../lib/session.js';
@@ -20,6 +21,11 @@ const theme = detectTheme();
 applyGuiColors(theme);
 
 const messages = defineMessages({
+    title: {
+        defaultMessage: 'My Stuff',
+        description: 'Title of /mystuff page',
+        id: 'dash.mystuff.title'
+    },
     hoverText: {
         defaultMessage: '{title} by {author}',
         description: 'Displayed when hovering on a project',
@@ -37,31 +43,35 @@ const messages = defineMessages({
     }
 });
 
-const User = (props) => {
+const MyStuff = (props) => {
     const [userData, setUserData] = useState(null);
     const [projects, setProjects] = useState([]);
+    const [limit] = useState(40);
+    const [offset, setOffset] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
+    const [loadMoreButtonDisabled, setLoadMoreButtonDisabled] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        document.title = props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
+
         const fetchFullProfile = async () => {
             setLoading(true);
             const session = await getSession();
-            if (!session || !session.userId) {
+            if (!session || !session.id) {
                 setError('Not logged in');
                 setLoading(false);
                 return;
             }
-            let userData;
             try {
-                const userRes = await fetch(`https://dashblocks-server.vercel.app/users/${session.userId}`);
-                userData = await userRes.json();
-                if (!userData.ok) throw new Error(userData.error);
-                setUserData(userData.user);
+                const userRes = await fetch(`https://api.dashblocks.org/users/${session.id}`);
+                const userDataResult = await userRes.json();
+                if (!userDataResult.ok) throw new Error(userDataResult.error);
 
-                const projects = userData.user.projects.slice(0, 10);
-                setProjects(projects);
+                setUserData(userDataResult.user);
+                await fetchProjects(session.id, 0);
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -70,7 +80,27 @@ const User = (props) => {
         };
 
         fetchFullProfile();
-    }, []); // Let's say session won't change
+    }, []);
+
+    const fetchProjects = async (userId, currentOffset) => {
+        setLoadMoreButtonDisabled(true);
+        try {
+            const projectsRes = await fetch(`https://api.dashblocks.org/users/${userId}/projects?limit=${limit}&offset=${currentOffset}`, {
+                credentials: 'include'
+            });
+            const projectsData = await projectsRes.json();
+            if (!projectsData.ok) throw new Error(projectsData.error);
+            setProjects(prevProjects => currentOffset === 0
+                ? (projectsData.projects || [])
+                : [...prevProjects, ...(projectsData.projects || [])]);
+            setHasMore((projectsData.projects || []).length === limit);
+            setOffset(currentOffset);
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoadMoreButtonDisabled(false);
+        }
+    };
 
     async function handleDeleteProject(projectId) {
         const project = projects.find(p => p.id === projectId);
@@ -78,7 +108,7 @@ const User = (props) => {
             return;
 
         try {
-            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${projectId}`, {
+            const res = await fetch(`https://api.dashblocks.org/projects/${projectId}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -87,7 +117,7 @@ const User = (props) => {
             if (res.status_code === 202)
                 alert(props.intl.formatMessage(messages.deletedOnlyFromProfile));
 
-            setProjects(projects.filter(p => p.id !== projectId));
+            setProjects(prevProjects => prevProjects.filter(p => p.id !== projectId));
         } catch (error) {
             alert(`Error deleting ${project.name} project: ${error.message}`);
         }
@@ -142,7 +172,7 @@ const User = (props) => {
                                     <div className={styles.thumbWrapper}>
                                         <img
                                             draggable={false}
-                                            src={`https://dashblocks-server.vercel.app/projects/thumbnails/${project.thumbnailId || 1}`}
+                                            src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
                                             alt={project.id}
                                         />
                                     </div>
@@ -189,6 +219,30 @@ const User = (props) => {
                                     </div>
                                 </div>
                             ))}
+                            {hasMore && (
+                                <Button
+                                    className={styles.loadMoreButton}
+                                    disabled={loadMoreButtonDisabled}
+                                    onClick={() => {
+                                        const newOffset = offset + limit;
+                                        setOffset(newOffset);
+                                        fetchProjects(userData.id, newOffset);
+                                    }}
+                                >
+                                    {loadMoreButtonDisabled ? (
+                                        <Spinner
+                                            className={styles.spinner}
+                                            small
+                                        />
+                                    ) : (
+                                        <FormattedMessage
+                                            defaultMessage="Load more"
+                                            description="Button text for loading more messages"
+                                            id="dash.messages.loadMore"
+                                        />
+                                    )}
+                                </Button>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -198,7 +252,7 @@ const User = (props) => {
     );
 };
 
-User.propTypes = {
+MyStuff.propTypes = {
     intl: intlShape,
     isRtl: PropTypes.bool
 };
@@ -209,11 +263,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = () => ({});
 
-const ConnectedUser = injectIntl(connect(
+const ConnectedMyStuff = injectIntl(connect(
     mapStateToProps,
     mapDispatchToProps
-)(User));
+)(MyStuff));
 
-const WrappedUser = AppStateHOC(ConnectedUser);
+const WrappedMyStuff = AppStateHOC(ConnectedMyStuff);
 
-render(<WrappedUser />);
+render(<WrappedMyStuff />);

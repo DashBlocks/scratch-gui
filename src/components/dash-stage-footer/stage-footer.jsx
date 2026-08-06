@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import {defineMessages, injectIntl, intlShape} from 'react-intl';
+import {FormattedDate, FormattedTime, defineMessages, injectIntl, intlShape} from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {useState, useEffect} from 'react';
@@ -13,6 +13,7 @@ import {setSession} from '../../reducers/dash';
 
 import fireReactionOnIcon from './fire-reaction-on.svg';
 import fireReactionOffIcon from './fire-reaction-off.svg';
+import viewsIcon from './views.svg';
 
 import styles from './stage-footer.css';
 
@@ -26,6 +27,11 @@ const messages = defineMessages({
         defaultMessage: 'Unfire Project',
         description: 'Button to trigger unfire reaction',
         id: 'dash.project.unfire'
+    },
+    viewsCount: {
+        defaultMessage: 'Views Count',
+        description: 'Count of project\'s views',
+        id: 'dash.project.viewsCount'
     }
 });
 
@@ -37,11 +43,22 @@ const StageFooter = (props) => {
     useEffect(() => {
         async function fetchProjectMetadata() {
             setIsDashProject(false);
-            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${props.projectId}`);
+            const res = await fetch(`https://api.dashblocks.org/projects/${props.projectId}`);
             const data = await res.json();
             if (data.ok) {
-                setProjectMetadata(data.project);
                 setIsDashProject(true);
+                const viewRes = await fetch(`https://api.dashblocks.org/projects/${props.projectId}/view`, {
+                    method: "POST",
+                    credentials: "include"
+                });
+                const viewData = await viewRes.json();
+                setProjectMetadata({
+                    ...data.project,
+                    stats: {
+                        ...data.project.stats,
+                        views: viewData.views
+                    }
+                });
             }
         }
         fetchProjectMetadata();
@@ -61,12 +78,12 @@ const StageFooter = (props) => {
     }
 
     async function handleFireButtonClick() {
-        if (!props.session) {
+        if (!props.session || !props.session?.id) {
             window.open('./login', '_blank');
             return;
         }
         if (isFired) {
-            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${props.projectId}/fire`, {
+            const res = await fetch(`https://api.dashblocks.org/projects/${props.projectId}/fire`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -82,7 +99,7 @@ const StageFooter = (props) => {
                 }));
             }
         } else {
-            const res = await fetch(`https://dashblocks-server.vercel.app/projects/${props.projectId}/fire`, {
+            const res = await fetch(`https://api.dashblocks.org/projects/${props.projectId}/fire`, {
                 method: 'POST',
                 credentials: 'include'
             });
@@ -118,12 +135,37 @@ const StageFooter = (props) => {
         </Button>
     );
 
+    const viewsCount = (
+        <div className={styles.viewsCount}>
+            <img
+                className={styles.viewsIcon}
+                src={viewsIcon}
+                alt={props.intl.formatMessage(messages.viewsCount)}
+                draggable={false}
+            />
+            <span>
+                {projectMetadata?.stats?.views || 0}
+            </span>
+        </div>
+    );
+
+    const uploadDate = projectMetadata?.uploadedAt ? new Date(projectMetadata?.uploadedAt) : null;
+    const uploadDateNode = uploadDate ? (
+        <>
+            <FormattedDate value={uploadDate} />
+            {', '}
+            <FormattedTime value={uploadDate} />
+        </>
+    ) : '?';
+
     return (
         <Box className={styles.stageFooterWrapper}>
             <div className={styles.footerButtonsRow}>
-                <div className={styles.fireButtonWrapper}>
-                    {fireButton}
-                </div>
+                {fireButton}
+                {viewsCount}
+            </div>
+            <div className={styles.footerButtonsRow}>
+                {uploadDateNode}
             </div>
         </Box>
     );

@@ -286,7 +286,7 @@ FeaturedProjects.prototype.loadNextPage = function () {
     }.bind(this);
 
     var url = FeaturedProjects.FEATURED_API
-        // TODO: .replace('$offset', '' + this.offset);
+        .replace('$offset', '' + this.offset);
     xhr.open('GET', url);
     xhr.send();
 };
@@ -295,15 +295,15 @@ FeaturedProjects.prototype.onselect = function (id, el) { };
 FeaturedProjects.prototype.onpageload = function () { };
 FeaturedProjects.prototype.onend = function () { };
 
-FeaturedProjects.FEATURED_API = 'https://dashblocks-server.vercel.app/featured-projects';
+FeaturedProjects.FEATURED_API = 'https://api.dashblocks.org/featured-projects/?offset=$offset';
 
 // The URL to download thumbnails from.
 // $id is replaced with the project's ID.
-FeaturedProjects.THUMBNAIL_SRC = 'https://dashblocks-server.vercel.app/projects/thumbnails/$id';
+FeaturedProjects.THUMBNAIL_SRC = 'https://api.dashblocks.org/projects/thumbnails/$id';
 
 // The URL for project pages.
 // $id is replaced with the project ID.
-FeaturedProjects.PROJECT_PAGE = 'https://dashblocks.github.io/#$id';
+FeaturedProjects.PROJECT_PAGE = 'https://dashblocks.org/#$id';
 
 // The amount of "placeholders" to insert before the next page loads.
 FeaturedProjects.PLACEHOLDER_COUNT = 9;

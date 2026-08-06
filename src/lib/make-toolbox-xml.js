@@ -447,7 +447,7 @@ const events = function (isInitialSetup, isStage, targetId, colors) {
         <block type="event_open">
             <value name="OPEN_LINK">
                 <shadow type="text">
-                    <field name="TEXT">https://dashblocks.github.io</field>
+                    <field name="TEXT">https://dashblocks.org</field>
                 </shadow>
             </value>
         </block>
@@ -504,6 +504,13 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
         <block id="wait_until" type="control_wait_until"/>
         <block id="repeat_until" type="control_repeat_until"/>
         <block id="while" type="control_while"/>
+        ${blockSeparator}
+        <block type="control_all_at_once"/>
+        <block type="control_run_as">
+            <value name="OBJECT">
+                <shadow type="control_run_as_menu"/>
+            </value>
+        </block>
         ${blockSeparator}
         <block type="control_resume"/>
         <block type="control_pause"/>
@@ -645,6 +652,7 @@ const sensing = function (isInitialSetup, isStage, targetId, colors) {
         <block id="current" type="sensing_current"/>
         <block type="sensing_dayssince2000"/>
         ${blockSeparator}
+        <block id="online" type="sensing_online"/>
         <block type="sensing_username"/>
         ${categorySeparator}
     </category>

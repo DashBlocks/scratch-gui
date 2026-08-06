@@ -47,6 +47,11 @@ import {APP_NAME} from '../lib/brand.js';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import tabStyles from 'react-tabs/style/react-tabs.css';
 import TWRenderRecoloredImage from '../lib/tw-recolor/render.jsx';
+import Spinner from '../components/spinner/spinner.jsx';
+import Button from '../components/button/button.jsx';
+import BufferedInputHOC from '../components/forms/buffered-input-hoc.jsx';
+import Input from '../components/forms/input.jsx';
+const BufferedInput = BufferedInputHOC(Input);
 
 import aboutIcon from '!../lib/tw-recolor/build!./icons/icon--about.svg';
 import unsharedIcon from '!../lib/tw-recolor/build!./icons/icon--unshared.svg';
@@ -75,9 +80,14 @@ const handleClickAddonSettings = addonId => {
 
 const messages = defineMessages({
     defaultTitle: {
-        defaultMessage: 'More Blocks, Extensions, and other',
+        defaultMessage: 'More cool stuff for editor',
         description: 'Title of homepage',
         id: 'dash.guiDefaultTitle'
+    },
+    descriptionInputPlaceholder: {
+        id: 'dash.project.description.inputPlaceholder',
+        description: 'Placeholder for the project description input when blank',
+        defaultMessage: 'What is this project about?'
     }
 });
 
@@ -170,7 +180,7 @@ const RenderVersion = () => {
             .then(data => {
                 const latestCommit = data[0];
                 const matchedVersion = latestCommit.commit.message.match(/^(\[(\d+(\.\d+)*)\])/);
-                setVersion(matchedVersion[2]);
+                setVersion((matchedVersion && matchedVersion.length > 2) ? matchedVersion[2] : null);
             });
     };
 
@@ -181,7 +191,7 @@ const RenderVersion = () => {
     return (
         <div className={styles.footerText}>
             <div className={styles.commitVersion}>
-                {window.location.href.startsWith('https://dashblocks.github.io/scratch-gui') ? 'Dev' : 'v' + version}
+                {window.location.href.startsWith('https://dashblocks.org/scratch-gui') ? 'Dev' : (version ? 'v' + version : '?')}
             </div>
         </div>
     );
@@ -257,38 +267,38 @@ const Footer = () => (
                             id="tw.footer.credits"
                         />
                     </a>
-                    {/*<a href="...">
+                    <a href="donate">
                         <FormattedMessage
                             defaultMessage="Donate"
                             description="Donation link in footer"
                             id="tw.footer.donate"
                         />
-                    </a>*/}
+                    </a>
                 </div>
                 <div className={styles.footerSection}>
-                    <a href="https://dashblocks.github.io/desktop">
+                    <a href="https://dashblocks.org/desktop">
                         {/* Do not translate */}
                         {'Dash Desktop'}
                     </a>
-                    <a href="https://dashblocks.github.io/packager">
+                    <a href="https://dashblocks.org/packager">
                         {/* Do not translate */}
                         {'Dash Packager'}
                     </a>
-                    <a href="https://dashblocks.github.io/docs/embedding">
+                    <a href="https://dashblocks.org/docs/embedding">
                         <FormattedMessage
                             defaultMessage="Embedding"
                             description="Link in footer to embedding documentation for embedding link"
                             id="tw.footer.embed"
                         />
                     </a>
-                    <a href="https://dashblocks.github.io/docs/url-parameters">
+                    <a href="https://dashblocks.org/docs/url-parameters">
                         <FormattedMessage
                             defaultMessage="URL Parameters"
                             description="Link in footer to URL parameters documentation"
                             id="tw.footer.parameters"
                         />
                     </a>
-                    <a href="https://dashblocks.github.io/docs/">
+                    <a href="https://dashblocks.org/docs/">
                         <FormattedMessage
                             defaultMessage="Documentation"
                             description="Link in footer to additional documentation"
@@ -337,6 +347,168 @@ const Footer = () => (
         </div>
     </footer>
 );
+
+const WhatsHappening = ({intl}) => {
+    const [actions, setActions] = useState([]);
+    const [limit, setLimit] = useState(10);
+    const [offset, setOffset] = useState(0);
+    const [hasMore, setHasMore] = useState(true);
+    const [loadMoreButtonDisabled, setLoadMoreButtonDisabled] = useState(false);
+
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState();
+
+    useEffect(() => {
+        fetchActivity(0);
+    }, []);
+
+    async function fetchActivity(currentOffset) {
+        setLoadMoreButtonDisabled(true);
+        try {
+            const res = await fetch(`https://api.dashblocks.org/session/activity?limit=${limit}&offset=${currentOffset}`, {
+                credentials: 'include'
+            });
+            
+            if (!res.ok) {
+                setHasMore(false);
+                setError('Failed to fetch activity');
+                setLoadMoreButtonDisabled(false);
+                setLoading(false);
+                return;
+            }
+            
+            const data = await res.json();
+            if (!data.ok) {
+                setHasMore(false);
+                setError(data.error);
+                setLoadMoreButtonDisabled(false);
+                setLoading(false);
+                return;
+            }
+
+            setActions(prevActions => [...prevActions, ...data.activity]);
+            setHasMore(data.activity.length === limit);
+        } catch (err) {
+            setError('Failed to fetch activity');
+            setHasMore(false);
+        } finally {
+            setLoadMoreButtonDisabled(false);
+            setLoading(false);
+        }
+    }
+
+    function getActionContent(action) {
+        switch (action.type) {
+            case 'shared-project':
+                return (
+                    <FormattedMessage
+                        defaultMessage="{user} shared project {project}"
+                        description="Displayed when someone shared project"
+                        id="dash.home.whatsHappening.sharedProject"
+                        values={{
+                            user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
+                            project: <a href={`/#${action.project.id}`}>{action.project.name}</a>
+                        }}
+                    />
+                );
+            case 'fired-project':
+                return (
+                    <FormattedMessage
+                        defaultMessage="{user} fired project {project}"
+                        description="Displayed when someone fired project"
+                        id="dash.home.whatsHappening.firedProject"
+                        values={{
+                            user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
+                            project: <a href={`/#${action.project.id}`}>{action.project.name}</a>
+                        }}
+                    />
+                );
+            case 'followed-user':
+                return (
+                    <FormattedMessage
+                        defaultMessage="{user} followed {target}"
+                        description="Displayed when someone followed someone"
+                        id="dash.home.whatsHappening.followedUser"
+                        values={{
+                            user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
+                            target: <a href={`user#${action.user.id}`}>{action.user.username}</a>
+                        }}
+                    />
+                );
+            default:
+                return (
+                    <FormattedMessage
+                        defaultMessage="Unknown action type"
+                        description="Displayed when there is an unknown action"
+                        id="dash.home.whatsHappening.unknown"
+                    />
+                );
+        }
+    }
+
+    if (loading && actions.length === 0) return <div>Loading...</div>;
+    if (error && actions.length === 0) return <div>An error occured: {error}</div>;
+
+    return (
+        <div className={styles.actionsGrid}>
+            {actions.map((action, index) => (
+                <div
+                    key={index}
+                    className={styles.actionContent}
+                >
+                    <img
+                        src={`https://api.dashblocks.org/users/avatars/${action.author.profile.avatarId}`}
+                        alt={action.author.username}
+                        className={styles.actionAvatar}
+                    />
+                    {getActionContent(action)}
+                    <div className={styles.actionDate}>
+                        <FormattedMessage
+                            defaultMessage="{date}"
+                            description="Displayed date for the action"
+                            id="dash.messages.date"
+                            values={{
+                                date: (action.date ? new Date(action.date) : null)
+                                    ? relativeTimeSupported()
+                                        ? (
+                                            <span title={`${intl.formatDate(new Date(action.date))}, ${intl.formatTime(new Date(action.date))}`}>
+                                                <FormattedRelative value={action.date} />
+                                            </span>
+                                        )
+                                        : (<FormattedDate value={new Date(action.date)} />)
+                                    : '?'
+                            }}
+                        />
+                    </div>
+                </div>
+            ))}
+            {hasMore && (
+                <Button
+                    className={styles.loadMoreButton}
+                    disabled={loadMoreButtonDisabled}
+                    onClick={() => {
+                        const newOffset = offset + limit;
+                        setOffset(newOffset);
+                        fetchActivity(newOffset);
+                    }}
+                >
+                    {loadMoreButtonDisabled ? (
+                        <Spinner
+                            className={styles.spinner}
+                            small
+                        />
+                    ) : (
+                        <FormattedMessage
+                            defaultMessage="Load more"
+                            description="Button text for loading more actions"
+                            id="dash.messages.loadMore"
+                        />
+                    )}
+                </Button>
+            )}
+        </div>
+    );
+};
 
 const WhatsNew = () => {
     const [commits, setCommits] = useState([]);
@@ -403,9 +575,12 @@ class Interface extends React.PureComponent {
     constructor (props) {
         super(props);
         this.handleUpdateProjectTitle = this.handleUpdateProjectTitle.bind(this);
+        this.handleChangeProjectDescription = this.handleChangeProjectDescription.bind(this);
         this.state = {
             activeTabIndex: 0,
             messageNumber: 0,
+            descriptionOverride: null,
+            descriptionSaving: false
         };
     }
     componentDidUpdate (prevProps) {
@@ -433,6 +608,41 @@ class Interface extends React.PureComponent {
             document.title = `${title} - ${APP_NAME}`;
         }
     }
+    async handleChangeProjectDescription (text) {
+        if (typeof text !== 'string') return;
+ 
+        const {projectId} = this.props;
+        if (!projectId || projectId === '0') return;
+ 
+        const prevText = this.state.descriptionOverride !== null
+            ? this.state.descriptionOverride
+            : (this.props.description.instructions || '');
+ 
+        this.setState({
+            descriptionOverride: text,
+            descriptionSaving: true
+        });
+ 
+        try {
+            const res = await fetch(`https://api.dashblocks.org/projects/${projectId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({description: text}),
+                credentials: 'include'
+            });
+            const data = await res.json();
+            if (!res.ok || !data.ok) {
+                throw new Error(data.error || 'Failed to update project description');
+            }
+        } catch (error) {
+            this.setState({descriptionOverride: prevText});
+            alert(error.message || error); // eslint-disable-line no-alert
+        } finally {
+            this.setState({descriptionSaving: false});
+        }
+    }
     onActivateTab (tab) {
         this.setState({
             activeTabIndex: tab
@@ -449,6 +659,8 @@ class Interface extends React.PureComponent {
         const {
             /* eslint-disable no-unused-vars */
             intl,
+            session,
+            authorId,
             hasCloudVariables,
             description,
             isFullScreen,
@@ -461,6 +673,9 @@ class Interface extends React.PureComponent {
         } = this.props;
         const isHomepage = isPlayerOnly && !isFullScreen;
         const isEditor = !isPlayerOnly;
+        const descriptionText = this.state.descriptionOverride !== null
+            ? this.state.descriptionOverride
+            : (description.instructions || '');
         return (
             <div
                 className={classNames(styles.container, {
@@ -530,6 +745,21 @@ class Interface extends React.PureComponent {
                                                 }}
                                             />
                                         </Tab>
+                                        <Tab
+                                            className={classNames(tabClassNames.tab, {
+                                                [tabClassNames.tabDisabled]: !session?.id
+                                            })}
+                                        >
+                                            <TWRenderRecoloredImage
+                                                draggable={false}
+                                                src={whatsNewIcon /* TODO: Make other icon? */}
+                                            />
+                                            <FormattedMessage
+                                                defaultMessage="What's happening?"
+                                                description="Button to get to the What's happening? panel"
+                                                id="dash.home.tab.whatsHappening"
+                                            />
+                                        </Tab>
                                         <Tab className={tabClassNames.tab}>
                                             <TWRenderRecoloredImage
                                                 draggable={false}
@@ -543,7 +773,7 @@ class Interface extends React.PureComponent {
                                         </Tab>
                                         <Tab
                                             className={classNames(tabClassNames.tab, {
-                                                [tabClassNames.tabDisabled]: !(description.instructions === 'unshared' || description.credits === 'unshared')
+                                                [tabClassNames.tabDisabled]: !(!description.isDashProject ? description.instructions === 'unshared' || description.credits === 'unshared' : false)
                                             })}
                                         >
                                             <TWRenderRecoloredImage
@@ -574,8 +804,8 @@ class Interface extends React.PureComponent {
                                         <Tab
                                             className={classNames(tabClassNames.tab, {
                                                 [tabClassNames.tabDisabled]: !(
-                                                    (description.instructions || description.credits) &&
-                                                    !(description.instructions === 'unshared' || description.credits === 'unshared')
+                                                    (description.instructions || description.credits || session?.id === authorId || (session?.role === 'dashteam' && projectId !== '0')) &&
+                                                    (!description.isDashProject ? !(description.instructions === 'unshared' || description.credits === 'unshared') : true)
                                                 )
                                             })}
                                         >
@@ -601,7 +831,7 @@ class Interface extends React.PureComponent {
                                             <p>
                                                 <FormattedMessage
                                                     // eslint-disable-next-line max-len
-                                                    defaultMessage="{APP_NAME} is a mod of TurboWarp and other mods that adds a JSON category, new blocks, extensions, accent colors, compiles projects to JavaScript to make them run really fast and other features. Try it out by clicking on 'See inside' button or by inputting a project ID or URL above or choosing a featured project below."
+                                                    defaultMessage="{APP_NAME} is a mod of TurboWarp that adds cool stuff and features for editor. Try it out by clicking on 'See inside' button or by inputting a project ID or URL above or choosing a featured project below."
                                                     description="Description of Dash on the homepage"
                                                     id="dash.home.description"
                                                     values={{
@@ -610,10 +840,20 @@ class Interface extends React.PureComponent {
                                                 />
                                             </p>
                                             <FeaturedProjects />
-                                            {/*<p>
-                                                {lazyMessages[this.chooseRandomMessage()]}
-                                            </p>*/}
                                         </div>
+                                    </TabPanel>
+                                    <TabPanel className={tabClassNames.tabPanel}>
+                                        {session && session.id && (
+                                            <div
+                                                className={styles.section}
+                                                style={{
+                                                    overflowY: "auto",
+                                                    maxHeight: "520px"
+                                                }}
+                                            >
+                                                <WhatsHappening intl={intl} />
+                                            </div>
+                                        )}
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>
                                         <div
@@ -628,7 +868,7 @@ class Interface extends React.PureComponent {
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>
                                         {(
-                                            description.instructions === 'unshared' || description.credits === 'unshared'
+                                            !description.isDashProject ? description.instructions === 'unshared' || description.credits === 'unshared' : false
                                         ) && (
                                             <div
                                                 className={styles.section}
@@ -653,11 +893,11 @@ class Interface extends React.PureComponent {
                                                             values={{
                                                                 link: (
                                                                     <a
-                                                                        href="https://dashblocks.github.io/docs/unshared-projects"
+                                                                        href="https://dashblocks.org/docs/unshared-projects"
                                                                         target="_blank"
                                                                         rel="noopener noreferrer"
                                                                     >
-                                                                        {'https://dashblocks.github.io/docs/unshared-projects'}
+                                                                        {'https://dashblocks.org/docs/unshared-projects'}
                                                                     </a>
                                                                 )
                                                             }}
@@ -697,7 +937,7 @@ class Interface extends React.PureComponent {
                                         )}
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>
-                                        {description.instructions || description.credits ? (
+                                        {(description.instructions || description.credits || session?.id === authorId || (session?.role === 'dashteam' && projectId !== '0')) ? (
                                             <div
                                                 className={styles.section}
                                                 style={{
@@ -705,12 +945,25 @@ class Interface extends React.PureComponent {
                                                     maxHeight: "520px"
                                                 }}
                                             >
-                                                <Description
-                                                    instructions={description.instructions}
-                                                    credits={description.credits}
-                                                    isDashProject={description.isDashProject}
-                                                    projectId={projectId}
-                                                />
+                                                {session?.id === authorId || session?.role === 'dashteam' ? (
+                                                    <BufferedInput
+                                                        className={styles.descriptionField}
+                                                        maxLength="1000"
+                                                        multiline
+                                                        placeholder={intl.formatMessage(messages.descriptionInputPlaceholder)}
+                                                        tabIndex="0"
+                                                        value={descriptionText}
+                                                        onSubmit={this.handleChangeProjectDescription}
+                                                        disabled={this.state.descriptionSaving}
+                                                    />
+                                                ) : (
+                                                    <Description
+                                                        instructions={description.instructions}
+                                                        credits={description.credits}
+                                                        isDashProject={description.isDashProject}
+                                                        projectId={projectId}
+                                                    />
+                                                )}
                                             </div>
                                         ) : null}
                                     </TabPanel>
@@ -727,6 +980,8 @@ class Interface extends React.PureComponent {
 
 Interface.propTypes = {
     intl: intlShape,
+    session: PropTypes.object,
+    authorId: PropTypes.string,
     hasCloudVariables: PropTypes.bool,
     customStageSize: PropTypes.shape({
         width: PropTypes.number,
@@ -745,6 +1000,8 @@ Interface.propTypes = {
 };
 
 const mapStateToProps = state => ({
+    session: state.scratchGui.dash.session,
+    authorId: state.scratchGui.tw.author ? state.scratchGui.tw.author.userId : null,
     hasCloudVariables: state.scratchGui.tw.hasCloudVariables,
     customStageSize: state.scratchGui.customStageSize,
     description: state.scratchGui.tw.description,

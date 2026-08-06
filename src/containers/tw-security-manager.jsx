@@ -26,6 +26,7 @@ const manuallyTrustExtension = url => {
  */
 const isTrustedUrl = url => (
     url.toLowerCase().startsWith('https://dashblocks.github.io') ||
+    url.toLowerCase().startsWith('https://dashblocks.org') ||
     url.toLowerCase().startsWith('https://github.com/dashblocks') ||
     url.toLowerCase().startsWith('https://scratch.org') ||
     url.toLowerCase().startsWith('https://scratch.mit.edu') ||
@@ -70,6 +71,7 @@ const isAlwaysTrustedForFetching = parsed => (
 
     // Any Dash service
     parsed.origin === 'https://dashblocks.github.io' ||
+    parsed.origin === 'https://dashblocks.org' ||
 
     // Any TurboWarp service such as trampoline
     parsed.origin === 'https://turbowarp.org' ||

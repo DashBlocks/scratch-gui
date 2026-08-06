@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {FormattedMessage, injectIntl, intlShape} from 'react-intl';
+import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';
 import PropTypes from 'prop-types';
 import bindAll from 'lodash.bindall';
 import React from 'react';
@@ -33,9 +33,11 @@ import {
 
 import styles from './menu-bar.css';
 
+import messagesIcon from './icon--messages.png';
 import mystuffIcon from './icon--mystuff.png';
 import dashLogo from './dash.png';
 import dashNewYearLogo from './dash-new-year.png'
+import searchIcon from './icon--search.png';
 
 import isScratchDesktop from '../../lib/isScratchDesktop.js';
 import {APP_NAME} from '../../lib/brand.js';
@@ -94,6 +96,14 @@ MenuItemTooltip.propTypes = {
     isRtl: PropTypes.bool
 };
 
+const searchMessages = defineMessages({
+    searchPlaceholder: {
+        id: 'dash.menuBar.searchPlaceholder',
+        defaultMessage: 'Search',
+        description: 'Placeholder text for the search field in the menu bar'
+    }
+});
+
 // Unlike <MenuItem href="">, this uses an actual <a>
 const MenuItemLink = props => (
     <a
@@ -119,14 +129,27 @@ class LazyMenuBar extends React.Component {
         ]);
     }
     async handleClickLogOut () {
-        const response = await fetch('https://dashblocks-server.vercel.app/auth/logout', {credentials: 'include'});
-        const data = await response.json();
-        if (!data.ok)
-            return alert('Sign out failed');
-        this.props.setSession(null);
-        window.location.reload();
+        try {
+            const response = await fetch('https://api.dashblocks.org/auth/logout', {credentials: 'include'});
+            const data = await response.json();
+            if (!data.ok) return alert('Sign out failed');
+            this.props.setSession({});
+            window.location.reload();
+        } catch (error) {
+            console.warn(error?.message || error);
+            alert('Sign out failed');
+        }
+    }
+    handleSearchSubmit (e) {
+        e.preventDefault();
+        const query = e.currentTarget.querySelector('input')?.value?.trim();
+        if (!query) return;
+        const encodedQuery = encodeURIComponent(query);
+        window.open(`search?q=${encodedQuery}`, '_blank');
     }
     render () {
+        const searchPlaceholder = this.props.intl.formatMessage(searchMessages.searchPlaceholder);
+        const searchValue = new URLSearchParams(window.location.search).get('q');
         const menuBar = (
             <Box
                 className={classNames(
@@ -205,11 +228,50 @@ class LazyMenuBar extends React.Component {
                             />
                         </div>
                     )}
+                    <form className={styles.menuBarSearch} onSubmit={this.handleSearchSubmit}>
+                        <input
+                            type="search"
+                            className={styles.menuBarSearchInput}
+                            placeholder={searchPlaceholder}
+                            aria-label={searchPlaceholder}
+                            defaultValue={searchValue}
+                        />
+                        <button
+                            type="submit"
+                            className={styles.menuBarSearchButton}
+                            aria-label={searchPlaceholder}
+                        >
+                            <img
+                                className={styles.menuBarSearchIcon}
+                                src={searchIcon}
+                                alt=""
+                            />
+                        </button>
+                    </form>
                 </div>
                 <div className={styles.accountInfoGroup}>
                     {this.props.sessionExists && this.props.session?.username ? (
                         // User is logged in
                         <React.Fragment>
+                            <a href="messages">
+                                <div
+                                    className={classNames(
+                                        styles.menuBarItem,
+                                        styles.hoverable,
+                                        styles.messagesButton
+                                    )}
+                                >
+                                    <span
+                                        className={
+                                            this.props.session?.profile.unreadMessages > 0 ? styles.messagesCountVisible : styles.messagesCount
+                                        }
+                                    >{this.props.session?.profile.unreadMessages}</span>
+                                    <img
+                                        className={styles.messagesIcon}
+                                        src={messagesIcon}
+                                    />
+                                </div>
+                            </a>
                             <a href="mystuff">
                                 <div
                                     className={classNames(
@@ -280,8 +342,9 @@ class LazyMenuBar extends React.Component {
                 <React.Fragment>
                     {menuBar}
                     {/* !process.env.OLD_COMPILER && (<TWNews item='dash:news1' id='new-compiler' />) */}
-                    {window.location.href.startsWith('https://dashblocks.github.io/scratch-gui') && (<TWNews item='dash:news2' id='dev-version' />)}
+                    {window.location.href.startsWith('https://dashblocks.org/scratch-gui') && (<TWNews item='dash:news2' id='dev-version' />)}
                     {/* <TWNews item='dash:news3' id='new-year' /> */}
+                    {<TWNews item='dash:news4' id='donate' />}
                 </React.Fragment>
             </div>
         );

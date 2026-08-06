@@ -4,7 +4,9 @@ import React from 'react';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import VM from 'scratch-vm';
 
+import {costumeUpload} from '../lib/file-uploader.js';
 import {getCostumeLibrary} from '../lib/libraries/tw-async-libraries';
+import {handleAssetLoad} from '../lib/libraries/dash-web-libraries';
 import spriteTags from '../lib/libraries/sprite-tags';
 import LibraryComponent from '../components/library/library.jsx';
 
@@ -35,6 +37,17 @@ class CostumeLibrary extends React.PureComponent {
         }
     }
     handleItemSelected (item) {
+        if (item.src) {
+            handleAssetLoad(item.src.library, item.src.path, (buffer, fileType) => {
+                costumeUpload(buffer, fileType, this.props.vm, vmCostumes => {
+                    vmCostumes.forEach((costume, i) => {
+                        costume.name = `${item.name}${i ? i + 1 : ''}`;
+                        this.props.vm.addCostume(costume.md5, costume);
+                    });
+                });
+            });
+            return;
+        }
         const vmCostume = {
             name: item.name,
             rotationCenterX: item.rotationCenterX,

@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import log from './log';
 import {getIsShowingProject} from '../reducers/project-state';
 
-const PACKAGER_URL = 'https://dashblocks.github.io/packager';
-const PACKAGER_ORIGIN = 'https://dashblocks.github.io';
+const PACKAGER_URL = 'https://dashblocks.org/packager';
+const PACKAGER_ORIGIN = 'https://dashblocks.org';
 
 const PackagerIntegrationHOC = function (WrappedComponent) {
     class PackagerIntegrationComponent extends React.Component {

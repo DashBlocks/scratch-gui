@@ -14,13 +14,9 @@ class ListMonitorScroller extends React.Component {
         super(props);
         bindAll(this, [
             'rowRenderer',
-            'noRowsRenderer',
-            'handleEventFactory'
+            'noRowsRenderer'
         ]);
-    }
-    handleEventFactory (index) {
-        return () => this.props.onActivate(index);
-    }
+    }    
     noRowsRenderer () {
         return (
             <div className={classNames(styles.listRow, styles.listEmpty)}>
@@ -37,8 +33,12 @@ class ListMonitorScroller extends React.Component {
          * The implementation of array monitors was taken from AmpMod
          * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/list-monitor-scroller.jsx
          */
+        let rawValue = this.props.values[index];
+        let isObjEntry = rawValue && typeof rawValue === 'object' && rawValue.__isObjEntry;
         
-        const value = this.props.values[index];
+        let valKey = isObjEntry ? rawValue.key : index;
+        let value = isObjEntry ? rawValue.value : rawValue;
+
         const isNestedArray = Cast.isNormalArray(value);
         const isNestedObject = Cast.isNormalObject(value);
         return (
@@ -47,17 +47,24 @@ class ListMonitorScroller extends React.Component {
                 key={key}
                 style={style}
             >
-                <div className={styles.listIndex}>{index + 1 /* one indexed */}</div>
+                <div className={styles.listIndex}>{isObjEntry ? valKey : index + 1 /* one indexed */}</div>
                 <div
                     className={styles.listValue}
                     dataIndex={index}
                     style={{
                         background: this.props.categoryColor.background,
-                        color: this.props.categoryColor.text
+                        color: this.props.categoryColor.text,
+                        cursor: (isNestedArray || isNestedObject) ? 'pointer' : 'default'
                     }}
-                    onClick={this.props.draggable ? this.handleEventFactory(index) : null}
+                    onClick={() => {
+                        if (isNestedArray || isNestedObject) {
+                            this.props.onNavigateDown(valKey);
+                        } else if (this.props.draggable) {
+                            this.props.onActivate(valKey);
+                        }
+                    }}
                 >
-                    {this.props.draggable && this.props.activeIndex === index ? (
+                    {this.props.draggable && this.props.activeIndex === valKey ? (
                         <div className={styles.inputWrapper}>
                             <input
                                 autoFocus
@@ -126,7 +133,7 @@ class ListMonitorScroller extends React.Component {
 }
 
 ListMonitorScroller.propTypes = {
-    activeIndex: PropTypes.number,
+    activeIndex: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     activeValue: PropTypes.string,
     categoryColor: PropTypes.shape({
         background: PropTypes.string.isRequired,
@@ -140,6 +147,7 @@ ListMonitorScroller.propTypes = {
     onInput: PropTypes.func,
     onKeyPress: PropTypes.func,
     onRemove: PropTypes.func,
+    onNavigateDown: PropTypes.func,
     values: PropTypes.arrayOf(PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,

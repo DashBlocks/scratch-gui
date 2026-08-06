@@ -354,7 +354,7 @@ export default [
                 id="tw.customReporters.description"
             />
         ),
-        tags: ['tw'],
+        tags: ['dash'],
         incompatibleWithScratch: true,
         featured: true
     },
@@ -404,6 +404,7 @@ export default [
         featured: true
     },
     {
+        // Not really an extension, but it's easiest to present it as one
         name: (
             <FormattedMessage
                 defaultMessage="Custom Extension"
@@ -420,7 +421,7 @@ export default [
                 id="tw.customExtension.description"
             />
         ),
-        tags: ['tw'],
+        tags: ['dash'],
         featured: true
         // Not marked as incompatible with Scratch so that clicking on it doesn't show a prompt
     }
@@ -437,8 +438,7 @@ export const galleryLoading = {
             }}
         />
     ),
-    // TODO: Make an Extension Gallery for Dash
-    href: 'https://dashblocks.github.io/extensions',
+    href: 'https://dashblocks.org/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
@@ -464,14 +464,13 @@ export const galleryMore = {
             }}
         />
     ),
-    // TODO: Make an Extension Gallery for Dash
-    href: 'https://dashblocks.github.io/extensions',
+    href: 'https://dashblocks.org/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
-            defaultMessage="Learn more about extensions at dashblocks.github.io/extensions."
+            defaultMessage="Learn more about extensions at dashblocks.org/extensions."
             description="Appears after the extension list from the gallery was loaded successfully"
             id="dash.extensionGallery.more"
         />
@@ -491,14 +490,13 @@ export const galleryError = {
             }}
         />
     ),
-    // TODO: Make an Extension Gallery for Dash
-    href: 'https://dashblocks.github.io/extensions',
+    href: 'https://dashblocks.org/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
         <FormattedMessage
             // eslint-disable-next-line max-len
-            defaultMessage="Error loading extension gallery. Visit dashblocks.github.io/extensions to find more extensions."
+            defaultMessage="Error loading extension gallery. Visit dashblocks.org/extensions to find more extensions."
             description="Appears when an error occurred loading extension list from the custom extension gallery"
             id="dash.extensionGallery.error"
         />

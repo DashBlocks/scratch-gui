@@ -74,7 +74,7 @@ const Credits = () => (
             <section>
                 <h2>Dash</h2>
                 <p>
-                    {APP_NAME} is based on <a href="https://dashblocks.github.io/">Dash</a>.
+                    {APP_NAME} is based on <a href="https://dashblocks.org/">Dash</a>.
                 </p>
             </section>
         )}

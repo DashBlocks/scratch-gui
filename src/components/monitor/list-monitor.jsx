@@ -5,7 +5,7 @@ import {FormattedMessage} from 'react-intl';
 import styles from './monitor.css';
 import ListMonitorScroller from './list-monitor-scroller.jsx';
 
-const ListMonitor = ({draggable, label, width, height, value, onResizeMouseDown, onAdd, ...rowProps}) => (
+const ListMonitor = ({draggable, label, width, height, value, path, onNavigateTo, onNavigateDown, onResizeMouseDown, onAdd, ...rowProps}) => (
     <div
         className={styles.listMonitor}
         style={{
@@ -16,12 +16,24 @@ const ListMonitor = ({draggable, label, width, height, value, onResizeMouseDown,
         <div className={styles.listHeader}>
             {label}
         </div>
+        {(path?.length || 0) > 0 && (
+            <div className={styles.listPath}>
+                <span style={{cursor: 'pointer'}} onClick={() => onNavigateTo(0)}>{label}</span>
+                {path.map((p, i) => (
+                    <span key={i}>
+                        <span>/</span>
+                        <span style={{cursor: 'pointer'}} onClick={() => onNavigateTo(i + 1)}>{typeof p === 'number' ? p + 1 /* one indexed */ : p}</span>
+                    </span>
+                ))}
+            </div>
+        )}
         <div className={styles.listBody}>
             <ListMonitorScroller
                 draggable={draggable}
                 height={height}
                 values={value}
                 width={width}
+                onNavigateDown={onNavigateDown}
                 {...rowProps}
             />
         </div>
@@ -44,7 +56,8 @@ const ListMonitor = ({draggable, label, width, height, value, onResizeMouseDown,
             </div>
             <div
                 className={classNames(draggable ? styles.resizeHandle : null, 'no-drag')}
-                onMouseDown={draggable ? onResizeMouseDown : null}
+                onTouchStart={draggable ? onResizeMouseDown : null}
+                onPointerDown={draggable ? onResizeMouseDown : null}
             >
                 {'=' /* TODO waiting on asset */}
             </div>
@@ -53,7 +66,7 @@ const ListMonitor = ({draggable, label, width, height, value, onResizeMouseDown,
 );
 
 ListMonitor.propTypes = {
-    activeIndex: PropTypes.number,
+    activeIndex: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     categoryColor: PropTypes.shape({
         background: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired
@@ -64,12 +77,16 @@ ListMonitor.propTypes = {
     onActivate: PropTypes.func,
     onAdd: PropTypes.func,
     onResizeMouseDown: PropTypes.func,
+    path: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
+    onNavigateTo: PropTypes.func,
+    onNavigateDown: PropTypes.func,
     value: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number,
         PropTypes.arrayOf(PropTypes.oneOfType([
             PropTypes.string,
-            PropTypes.number
+            PropTypes.number,
+            PropTypes.object
         ]))
     ]),
     width: PropTypes.number

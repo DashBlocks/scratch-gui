@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useState} from 'react';
 import {defineMessages, intlShape, injectIntl} from 'react-intl';
 import {setProjectTitle} from '../../reducers/project-title';
 
@@ -23,32 +23,72 @@ const ProjectTitleInput = ({
     className,
     intl,
     onSubmit,
-    projectTitle
-}) => (
-    <BufferedInput
-        className={classNames(styles.titleField, className)}
-        maxLength="100"
-        placeholder={intl.formatMessage(messages.projectTitlePlaceholder)}
-        tabIndex="0"
-        type="text"
-        value={projectTitle}
-        onSubmit={onSubmit}
-    />
-);
+    projectTitle,
+    projectId,
+    session
+}) => {
+    const [saving, setSaving] = useState(false);
+
+    const handleSubmit = title => {
+        setSaving(true);
+        Promise.resolve(onSubmit(title, projectId, session))
+            .catch(error => {
+                alert(error.message || error); // eslint-disable-line no-alert
+            })
+            .finally(() => setSaving(false));
+    };
+
+    return (
+        <BufferedInput
+            className={classNames(styles.titleField, className)}
+            minLength="1"
+            maxLength="100"
+            placeholder={intl.formatMessage(messages.projectTitlePlaceholder)}
+            tabIndex="0"
+            type="text"
+            value={projectTitle}
+            onSubmit={handleSubmit}
+            disabled={saving}
+        />
+    );
+};
 
 ProjectTitleInput.propTypes = {
     className: PropTypes.string,
     intl: intlShape.isRequired,
     onSubmit: PropTypes.func,
-    projectTitle: PropTypes.string
+    projectTitle: PropTypes.string,
+    projectId: PropTypes.string,
+    session: PropTypes.object
 };
 
 const mapStateToProps = state => ({
-    projectTitle: state.scratchGui.projectTitle
+    projectTitle: state.scratchGui.projectTitle,
+    projectId: state.scratchGui.projectState.projectId,
+    session: state.scratchGui.dash.session
 });
 
 const mapDispatchToProps = dispatch => ({
-    onSubmit: title => dispatch(setProjectTitle(title))
+    onSubmit: async (title, projectId, session) => {
+        if (!session || !projectId || projectId === '0') {
+            dispatch(setProjectTitle(title));
+            return;
+        }
+
+        const res = await fetch(`https://api.dashblocks.org/projects/${projectId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({name: title}),
+            credentials: 'include'
+        });
+        const data = await res.json();
+        if (!res.ok || !data.ok) {
+            throw new Error(data.error || 'Failed to update project name');
+        }
+        dispatch(setProjectTitle(data.project.name));
+    }
 });
 
 export default injectIntl(connect(

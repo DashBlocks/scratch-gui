@@ -14,23 +14,23 @@ const InvalidEmbed = () => (
         <p>
             {'See '}
             <a
-                href="https://dashblocks.github.io/docs/embedding"
+                href="https://dashblocks.org/docs/embedding"
                 target="_blank"
                 rel="noreferrer"
             >
-                {'dashblocks.github.io/docs/embedding'}
+                {'dashblocks.org/docs/embedding'}
             </a>
             {/* eslint-disable-next-line max-len */}
             {' for more information. You need to replace the iframe src with the embed page:'}
         </p>
         <p className={styles.code}>
-            {'https://dashblocks.github.io/embed#<project ID>'}
+            {'https://dashblocks.org/embed#<project ID>'}
         </p>
         <p>
             {'Here\'s an example of a full iframe to embed a project:'}
         </p>
         <p className={styles.code}>
-            {`<iframe src="https://dashblocks.github.io/embed#60917032" width="482" height="412" allowtransparency="true" frameborder="0" scrolling="no" allowfullscreen></iframe>`}
+            {`<iframe src="https://dashblocks.org/embed#60917032" width="482" height="412" allowtransparency="true" frameborder="0" scrolling="no" allowfullscreen></iframe>`}
         </p>
         <p>
             {'If you are seeing this page even though you aren\'t embedding anything, let us know on '}

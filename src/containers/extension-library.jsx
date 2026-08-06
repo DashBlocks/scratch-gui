@@ -50,7 +50,7 @@ const translateGalleryItem = (extension, locale) => ({
 const creditLinkShortcuts = {
     '_scratch_': (credit) => `https://scratch.mit.edu/users/${credit.name}`,
     '_github_': (credit) => `https://github.com/${credit.name}`,
-    '_dash_': (credit) => `https://dashblocks.github.io/user#${credit.name}`
+    '_dash_': (credit) => `https://dashblocks.org/user#${credit.name}`
 };
 const creditLink = (credit) => credit.link;
 
@@ -65,11 +65,11 @@ const fetchTwLibrary = async () => {
         res = await fetch('https://extensions.turbowarp.org/generated-metadata/extensions-v0.json');
         twGalleryMirror = false;
         if (!res.ok) {
-            res = await fetch('https://dashblocks.github.io/tw-extensions/generated-metadata/extensions-v0.json');
+            res = await fetch('https://dashblocks.org/tw-extensions/generated-metadata/extensions-v0.json');
             twGalleryMirror = true;
         }
     } catch (_) {
-        res = await fetch('https://dashblocks.github.io/tw-extensions/generated-metadata/extensions-v0.json');
+        res = await fetch('https://dashblocks.org/tw-extensions/generated-metadata/extensions-v0.json');
         twGalleryMirror = true;
     }
     if (!res.ok) {
@@ -83,7 +83,7 @@ const fetchTwLibrary = async () => {
         descriptionTranslations: extension.descriptionTranslations || {},
         extensionId: extension.id,
         extensionURL: `https://extensions.turbowarp.org/${extension.slug}.js`,
-        iconURL: (twGalleryMirror ? 'https://dashblocks.github.io/tw-extensions/' : 'https://extensions.turbowarp.org/') + extension.image || 'images/unknown.svg',
+        iconURL: (twGalleryMirror ? 'https://dashblocks.org/tw-extensions/' : 'https://extensions.turbowarp.org/') + extension.image || 'images/unknown.svg',
         tags: ['tw'],
         credits: [
             ...(extension.original || []),
@@ -103,9 +103,9 @@ const fetchTwLibrary = async () => {
             }
             return credit.name;
         }),
-        docsURI: extension.docs ? (twGalleryMirror ? 'https://dashblocks.github.io/tw-extensions/' : 'https://extensions.turbowarp.org/') + extension.slug : null,
+        docsURI: extension.docs ? (twGalleryMirror ? 'https://dashblocks.org/tw-extensions/' : 'https://extensions.turbowarp.org/') + extension.slug : null,
         samples: extension.samples ? extension.samples.map(sample => ({
-            href: `${process.env.ROOT}editor?project_url=${(twGalleryMirror ? 'https://dashblocks.github.io/tw-extensions/samples/' : 'https://extensions.turbowarp.org/samples/') + encodeURIComponent(sample)}.sb3`,
+            href: `${process.env.ROOT}editor?project_url=${(twGalleryMirror ? 'https://dashblocks.org/tw-extensions/samples/' : 'https://extensions.turbowarp.org/samples/') + encodeURIComponent(sample)}.sb3`,
             text: sample
         })) : null,
         incompatibleWithScratch: !extension.scratchCompatible,
@@ -153,8 +153,8 @@ const fetchLibrary = async () => {
         description: extension.description,
         descriptionTranslations: extension.descriptionTranslations || {},
         extensionId: extension.id,
-        extensionURL: extension.code?.startsWith('http') ? extension.code : `https://dashblocks.github.io/extensions/static/extensions/${extension.code}`,
-        iconURL: extension.banner?.startsWith('http') ? extension.banner : `https://dashblocks.github.io/extensions/static/images/${extension.banner || 'unknown.svg'}`,
+        extensionURL: extension.code?.startsWith('http') ? extension.code : `https://dashblocks.org/extensions/static/extensions/${extension.code}`,
+        iconURL: extension.banner?.startsWith('http') ? extension.banner : `https://dashblocks.org/extensions/static/images/${extension.banner || 'unknown.svg'}`,
         tags: ['dash'],
         credits: [
             ...(Array.isArray(extension.creator) ? extension.creator : [extension.creator] || []).map(credit => {
@@ -172,7 +172,7 @@ const fetchLibrary = async () => {
             }),
             ...(extension.notes ? [extension.notes] : [])
         ],
-        docsURI: extension.documentation ? `https://dashblocks.github.io/dash-extensions-gallery/static/documentations/${extension.documentation}.md` : null,
+        docsURI: extension.documentation ? `https://dashblocks.org/extensions/static/documentations/${extension.documentation}.md` : null,
         samples: /*extension.samples ? extension.samples.map(sample => ({
             href: `${process.env.ROOT}editor?project_url=https://extensions.turbowarp.org/samples/${encodeURIComponent(sample)}.sb3`,
             text: sample
@@ -295,7 +295,7 @@ class ExtensionLibrary extends React.PureComponent {
                     this.props.vm.extensionManager.loadExtensionURL(
                         url.replace(
                             'https://extensions.turbowarp.org/',
-                            'https://dashblocks.github.io/tw-extensions/'
+                            'https://dashblocks.org/tw-extensions/'
                         )
                     )
                         .then(() => {

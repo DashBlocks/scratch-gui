@@ -150,10 +150,17 @@ module.exports = [
             'credits': './src/playground/credits/credits.jsx',
             'desktop': './src/playground/desktop/desktop.jsx',
             'user': './src/playground/user/user.jsx',
+            'user-projects': './src/playground/user-projects/user-projects.jsx',
+            'user-followers': './src/playground/user-followers/user-followers.jsx',
+            'user-following': './src/playground/user-following/user-following.jsx',
             'login': './src/playground/login/login.jsx',
             'register': './src/playground/register/register.jsx',
             'account-settings': './src/playground/account-settings/account-settings.jsx',
-            'mystuff': './src/playground/mystuff/mystuff.jsx'
+            'donate': './src/playground/donate/donate.jsx',
+            'mystuff': './src/playground/mystuff/mystuff.jsx',
+            'messages': './src/playground/messages/messages.jsx',
+            'search': './src/playground/search/search.jsx',
+            'admin': './src/playground/admin/admin.jsx'
         },
         output: {
             path: path.resolve(__dirname, 'build')
@@ -193,7 +200,7 @@ module.exports = [
                 chunks: ['editor'],
                 template: 'src/playground/index.ejs',
                 filename: 'editor.html',
-                title: `${APP_NAME} - More Blocks, Extensions, and other`,
+                title: `${APP_NAME} - More cool stuff for editor`,
                 isEditor: true,
                 ...htmlWebpackPluginCommon
             }),
@@ -201,7 +208,7 @@ module.exports = [
                 chunks: ['player'],
                 template: 'src/playground/index.ejs',
                 filename: 'index.html',
-                title: `${APP_NAME} - More Blocks, Extensions, and other`,
+                title: `${APP_NAME} - More cool stuff for editor`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({
@@ -247,6 +254,27 @@ module.exports = [
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({
+                chunks: ['user-projects'],
+                template: 'src/playground/simple.ejs',
+                filename: 'user-projects.html',
+                title: `User's Projects (?) - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['user-followers'],
+                template: 'src/playground/simple.ejs',
+                filename: 'user-followers.html',
+                title: `User's Followers (?) - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['user-following'],
+                template: 'src/playground/simple.ejs',
+                filename: 'user-following.html',
+                title: `User's Following (?) - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
                 chunks: ['login'],
                 template: 'src/playground/simple.ejs',
                 filename: 'login.html',
@@ -268,6 +296,13 @@ module.exports = [
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({
+                chunks: ['donate'],
+                template: 'src/playground/simple.ejs',
+                filename: 'donate.html',
+                title: `Donate - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
                 chunks: ['mystuff'],
                 template: 'src/playground/simple.ejs',
                 filename: 'mystuff.html',
@@ -275,9 +310,25 @@ module.exports = [
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({
-                chunks: [],
-                template: 'yandex_27bc2812ef539133.html',
-                filename: 'yandex_27bc2812ef539133.html'
+                chunks: ['messages'],
+                template: 'src/playground/simple.ejs',
+                filename: 'messages.html',
+                title: `Messages - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['search'],
+                template: 'src/playground/simple.ejs',
+                filename: 'search.html',
+                title: `Search - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['admin'],
+                template: 'src/playground/simple.ejs',
+                filename: 'admin.html',
+                title: `Admin Panel - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
             }),
             new CopyWebpackPlugin({
                 patterns: [

@@ -1184,7 +1184,7 @@ class MenuBar extends React.Component {
 
                     <Divider className={styles.divider} />
 
-                    {this.props.canEditTitle ? (
+                    {this.props.canEditTitle && !this.props.isPlayerOnly ? (
                         <div className={classNames(styles.menuBarItem, styles.growable)}>
                             <MenuBarItemTooltip
                                 enable
@@ -1195,7 +1195,7 @@ class MenuBar extends React.Component {
                                 />
                             </MenuBarItemTooltip>
                         </div>
-                    ) : ((this.props.authorUsername && this.props.authorUsername !== this.props.session?.username) ? (
+                    ) : (this.props.authorUsername ? (
                         <AuthorInfo
                             className={styles.authorInfo}
                             imageUrl={this.props.authorThumbnailUrl}

@@ -49,10 +49,7 @@ SliderMonitor.propTypes = {
     max: PropTypes.number,
     min: PropTypes.number,
     onSliderUpdate: PropTypes.func.isRequired,
-    value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number
-    ])
+    value: PropTypes.any
 };
 
 SliderMonitor.defaultProps = {

@@ -25,10 +25,7 @@ LargeMonitor.propTypes = {
         background: PropTypes.string.isRequired,
         text: PropTypes.string.isRequired
     }).isRequired,
-    value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number
-    ])
+    value: PropTypes.any
 };
 
 export default LargeMonitor;

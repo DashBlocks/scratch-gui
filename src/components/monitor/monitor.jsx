@@ -50,7 +50,7 @@ const MonitorComponent = props => {
      * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/monitor.jsx
      */
     
-    const mode = Cast.isNormalArray(props.value)
+    const mode = Array.isArray(props.value)
         ? 'list'
         : Cast.isNormalObject(props.value) ? 'object' : props.mode;
 

@@ -2,6 +2,9 @@ import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
 import VM from 'scratch-vm';
+import Cast from 'scratch-vm/src/util/cast';
+import NormalArray from 'scratch-vm/src/data-types/dash-normal-array';
+import NormalObject from 'scratch-vm/src/data-types/dash-normal-object';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import {connect} from 'react-redux';
 import {getEventXY} from '../lib/touch-utils';
@@ -27,6 +30,14 @@ const messages = defineMessages({
         id: 'dash.objectMonitor.keyAlreadyExists'
     }
 });
+
+const clone = (obj) => Cast.isNormalArray(obj)
+    ? new NormalArray(obj)
+    : Cast.isNormalObject(obj)
+        ? new NormalObject(obj)
+        : obj.slice();
+const set = (obj, indexOrKey, value) => Array.isArray(obj) ? (obj[indexOrKey] = value) : obj.set(indexOrKey, value);
+const get = (obj, indexOrKey) => Array.isArray(obj) ? obj[indexOrKey] : obj.get(indexOrKey);
 
 class ListMonitor extends React.Component {
     constructor (props) {
@@ -79,7 +90,7 @@ class ListMonitor extends React.Component {
             return;
         }
 
-        const newRoot = Array.isArray(rootValue) ? [...rootValue] : {...rootValue};
+        const newRoot = clone(rootValue);
         let current = newRoot;
         let parent = null;
         let lastKey = null;
@@ -87,11 +98,11 @@ class ListMonitor extends React.Component {
         for (let i = 0; i < this.state.path.length; i++) {
             parent = current;
             lastKey = this.state.path[i];
-            parent[lastKey] = Array.isArray(parent[lastKey]) ? [...parent[lastKey]] : {...parent[lastKey]};
-            current = parent[lastKey];
+            set(parent, lastKey, clone(parent[lastKey]));
+            current = get(parent, lastKey);
         }
 
-        parent[lastKey] = callback(current);
+        set(parent, lastKey, callback(current));
         setVariableValue(vm, targetId, variableId, newRoot);
     }
 
@@ -121,7 +132,7 @@ class ListMonitor extends React.Component {
         let currentList = this.getCurrentList();
         this.setState({
             activeIndex: indexOrKey,
-            activeValue: currentList[indexOrKey]
+            activeValue: get(currentList, indexOrKey)
         });
     }
 
@@ -129,8 +140,8 @@ class ListMonitor extends React.Component {
         // Submit any in-progress value edits on blur
         if (this.state.activeIndex !== null) {
             this.applyDeepUpdate(list => {
-                const newList = Array.isArray(list) ? [...list] : {...list};
-                newList[this.state.activeIndex] = this.state.activeValue;
+                const newList = clone(list);
+                set(newList, this.state.activeIndex, this.state.activeValue);
                 return newList;
             });
             this.setState({activeIndex: null, activeValue: null});
@@ -149,7 +160,7 @@ class ListMonitor extends React.Component {
         // Enter / shift+enter insert new blank item below / above.
         const previouslyActiveIndex = this.state.activeIndex;
         const currentList = this.getCurrentList();
-        const currentKeys = Array.isArray(currentList) ? currentList.map((_, i) => i) : Object.keys(currentList);
+        const currentKeys = Array.isArray(currentList) ? currentList.map((_, i) => i) : currentList.keys().toArray();
         const activePos = currentKeys.indexOf(previouslyActiveIndex);
 
         let navigateDirection = 0;
@@ -162,7 +173,7 @@ class ListMonitor extends React.Component {
             const newKey = currentKeys[newPos];
             this.setState({
                 activeIndex: newKey,
-                activeValue: currentList[newKey]
+                activeValue: get(currentList, newKey)
             });
             e.preventDefault(); // Stop default tab behavior, handled by this state change
         } else if (e.key === 'Enter') {
@@ -204,8 +215,8 @@ class ListMonitor extends React.Component {
                 });
                 return newListValue;
             } else {
-                const newListValue = {...list};
-                delete newListValue[this.state.activeIndex];
+                const newListValue = new NormalObject(list);
+                newListValue.delete(this.state.activeIndex);
                 this.setState({ activeIndex: null, activeValue: null });
                 return newListValue;
             }
@@ -236,17 +247,17 @@ class ListMonitor extends React.Component {
         }
 
         this.applyDeepUpdate(list => {
-            if (!list || typeof list !== 'object' || Array.isArray(list)) {
+            if (!Cast.isNormalObject(list)) {
                 return list;
             }
 
-            if (Object.keys(list).includes(key)) {
+            if (list.keys().toArray().includes(key)) {
                 alert(this.props.intl.formatMessage(messages.keyAlreadyExists, {key}));
                 this.setState({prompt: false, draggable: true});
                 return list;
             }
 
-            const newObjectValue = {...list, [key]: ''};
+            const newObjectValue = new NormalObject(list).set(key, '');
             this.setState({activeIndex: key, activeValue: '', prompt: false, draggable: true});
             return newObjectValue;
         });
@@ -299,11 +310,10 @@ class ListMonitor extends React.Component {
         } = this.props;
 
         let currentList = this.getCurrentList();
-        let isObj = currentList && typeof currentList === 'object' && !Array.isArray(currentList);
         let resolvedValues = [];
 
-        if (isObj) {
-            resolvedValues = Object.entries(currentList).map(([k, v]) => ({ __isObjEntry: true, key: k, value: v }));
+        if (Cast.isNormalObject(currentList)) {
+            resolvedValues = currentList.entries().map(([k, v]) => ({ __isObjEntry: true, key: k, value: v }));
         } else if (Array.isArray(currentList)) {
             resolvedValues = currentList;
         }
@@ -356,12 +366,7 @@ ListMonitor.propTypes = {
         height: PropTypes.number
     }),
     targetId: PropTypes.string,
-    value: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-        PropTypes.array,
-        PropTypes.object
-    ]),
+    value: PropTypes.any,
     intl: intlShape,
     vm: PropTypes.instanceOf(VM),
     width: PropTypes.number,

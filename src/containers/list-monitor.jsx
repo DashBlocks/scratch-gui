@@ -72,7 +72,7 @@ class ListMonitor extends React.Component {
         let current = this.props.value;
         for (const key of this.state.path) {
             if (current && typeof current === 'object') {
-                current = current[key];
+                current = get(current, key);
             } else {
                 return [];
             }

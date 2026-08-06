@@ -73,18 +73,17 @@ class ObjectMonitorScroller extends React.Component {
                                 spellCheck={false}
                                 style={{color: this.props.categoryColor.text}}
                                 type="text"
-                                value={isNestedArray
-                                    ? `Array(${this.props.activeValue.length})`
-                                    : isNestedObject
-                                        ? `Object(${this.props.activeValue.size})`
-                                        : String(Cast.isCustomType(this.props.activeValue) && typeof this.props.activeValue?.toListEditor === 'function'
-                                            ? this.props.activeValue.toListEditor()
-                                            : this.props.activeValue)}
+                                value={String(
+                                    (isNestedArray || isNestedObject || Cast.isCustomType(value)) &&
+                                        typeof this.props.activeValue?.toListEditor === 'function'
+                                        ? this.props.activeValue.toListEditor()
+                                        : this.props.activeValue
+                                )}
                                 onBlur={this.props.onDeactivate}
                                 onChange={this.props.onInput}
                                 onFocus={this.props.onFocus}
                                 onKeyDown={this.props.onKeyPress} // key down to get ahead of blur
-                                readOnly={isNestedArray || isNestedObject}
+                                readOnly={isNestedArray || isNestedObject || Cast.isCustomType(value)}
                             />
                             <div
                                 className={styles.removeButton}
@@ -148,12 +147,7 @@ ObjectMonitorScroller.propTypes = {
     onKeyPress: PropTypes.func,
     onRemove: PropTypes.func,
     onNavigateDown: PropTypes.func,
-    values: PropTypes.objectOf(PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.array,
-        PropTypes.object
-    ])),
+    values: PropTypes.any,
     width: PropTypes.number
 };
 export default ObjectMonitorScroller;

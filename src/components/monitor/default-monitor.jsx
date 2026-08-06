@@ -31,10 +31,7 @@ DefaultMonitor.propTypes = {
         text: PropTypes.string.isRequired
     }).isRequired,
     label: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number
-    ])
+    value: PropTypes.any
 };
 
 export default DefaultMonitor;

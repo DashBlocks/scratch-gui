@@ -29,20 +29,26 @@ export default async function ({ addon, console, msg }) {
       throw "Tried to report value on block that does not exist.";
     }
 
+    const valueIsComplicated = (
+      Cast.isCustomType(value) ||
+      Cast.isNormalArray(value) ||
+      Cast.isNormalObject(value)
+    );
+      
     ScratchBlocks.DropDownDiv.hideWithoutAnimation();
     ScratchBlocks.DropDownDiv.clearContent();
 
-    let contentDiv = ScratchBlocks.DropDownDiv.getContentDiv();
+    const contentDiv = ScratchBlocks.DropDownDiv.getContentDiv();
 
-    let valueReportBox = document.createElement("div");
+    const valueReportBox = document.createElement("div");
     valueReportBox.setAttribute("class", "valueReportBox");
-    if (Cast.isNormalArray(value)) {
-      valueReportBox.appendChild(this.generateReporterJSONContent(value));
-    } else if (Cast.isNormalObject(value)) {
-      if (Cast.isCustomType(value) && typeof value.toReporterContent === 'function') {
+    if (valueIsComplicated) {
+      if (typeof value.toReporterContent === 'function') {
         valueReportBox.appendChild(value.toReporterContent());
       } else {
-        valueReportBox.appendChild(this.generateReporterJSONContent(value));
+        const placeholder = document.createElement('i');
+        placeholder.textContent = '*custom type*';
+        valueReportBox.appendChild(placeholder);
       }
     } else {
       valueReportBox.textContent = String(value);
@@ -58,12 +64,7 @@ export default async function ({ addon, console, msg }) {
         }
       };
 
-      if (
-          value !== "" &&
-          !Cast.isCustomType(value) &&
-          !Cast.isNormalArray(value) &&
-          !Cast.isNormalObject(value)
-      ) {
+      if (value !== "" && !valueIsComplicated) {
         const copyButton = document.createElement("img");
         copyButton.setAttribute("role", "button");
         copyButton.setAttribute("tabindex", "0");

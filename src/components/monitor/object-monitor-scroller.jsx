@@ -33,7 +33,7 @@ class ObjectMonitorScroller extends React.Component {
          * The display of the nested array was taken from AmpMod
          * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/list-monitor-scroller.jsx
          */
-        let rawValue = Object.values(this.props.values)[index];
+        let rawValue = this.props.values[index];
         let isObjEntry = rawValue && typeof rawValue === 'object' && rawValue.__isObjEntry;
 
         let valKey = isObjEntry ? rawValue.key : index;
@@ -120,11 +120,11 @@ class ObjectMonitorScroller extends React.Component {
                 activeValue={activeValue}
                 height={(height) - 42 /* Header/footer size, approx */}
                 noRowsRenderer={this.noRowsRenderer}
-                rowCount={Object.keys(values).length}
+                rowCount={values.length}
                 rowHeight={24 /* Row size is same for all rows */}
                 rowRenderer={this.rowRenderer}
                 scrollToIndex={scrollToIndex} /* eslint-disable-line no-undefined */
-                values={Object.entries(values)}
+                values={values}
                 width={width}
             />
         );

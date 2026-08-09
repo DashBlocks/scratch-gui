@@ -50,7 +50,7 @@ const ObjectMonitor = ({draggable, label, width, height, value, path, onNavigate
                     description="Length label on list monitors. DO NOT translate {length} (with brackets)."
                     id="gui.monitor.listMonitor.listLength"
                     values={{
-                        length: Object.keys(value).length
+                        length: value.length
                     }}
                 />
             </div>

@@ -10,7 +10,6 @@ import DefaultMonitor from './default-monitor.jsx';
 import LargeMonitor from './large-monitor.jsx';
 import SliderMonitor from '../../containers/slider-monitor.jsx';
 import ListMonitor from '../../containers/list-monitor.jsx';
-import ObjectMonitor from '../../containers/object-monitor.jsx';
 import {Theme} from '../../lib/themes/index.js';
 import Cast from 'scratch-vm/src/util/cast';
 
@@ -33,7 +32,7 @@ const modes = {
     large: LargeMonitor,
     slider: SliderMonitor,
     list: ListMonitor,
-    object: ObjectMonitor
+    object: ListMonitor
 };
 
 const getCategoryColor = (theme, category, extensionRealColor) => {

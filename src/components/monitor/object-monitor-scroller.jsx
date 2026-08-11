@@ -114,7 +114,17 @@ class ObjectMonitorScroller extends React.Component {
     render () {
         const {height, values, width, activeIndex, activeValue} = this.props;
         // Keep the active index in view if defined, else must be undefined for List component
-        const scrollToIndex = activeIndex === null ? undefined : activeIndex; /* eslint-disable-line no-undefined */
+        let scrollToIndex;
+        if (activeIndex === null) {
+            scrollToIndex = undefined;
+        } else if (typeof activeIndex === 'number') {
+            scrollToIndex = activeIndex;
+        } else if (typeof activeIndex === 'string') {
+            const foundIndex = Object.keys(values || {}).indexOf(String(activeIndex));
+            scrollToIndex = foundIndex === -1 ? undefined : foundIndex;
+        } else {
+            scrollToIndex = undefined;
+        }
         return (
             <List
                 activeIndex={activeIndex}

@@ -112,15 +112,30 @@ class ListMonitorScroller extends React.Component {
     }
     render () {
         const {height, values, width, activeIndex, activeValue} = this.props;
-        // Keep the active index in view if defined, else must be undefined for List component
+        const listHeight = Math.max(0, (Number.isFinite(height) ? height : 0) - 42);
+        const safeValues = values || [];
+        const rowCount = Array.isArray(safeValues) ? safeValues.length : Object.keys(safeValues).length;
         let scrollToIndex;
-        if (activeIndex === null) {
+        // Keep the active index in view if defined, else must be undefined for List component
+        if (activeIndex === null || rowCount === 0) {
             scrollToIndex = undefined;
         } else if (typeof activeIndex === 'number') {
-            scrollToIndex = activeIndex;
+            scrollToIndex = (Number.isFinite(activeIndex) && activeIndex >= 0 && activeIndex < rowCount)
+                ? Math.floor(activeIndex)
+                : undefined;
         } else if (typeof activeIndex === 'string') {
-            const foundIndex = Object.keys(values || {}).indexOf(String(activeIndex));
-            scrollToIndex = foundIndex === -1 ? undefined : foundIndex;
+            if (Array.isArray(safeValues)) {
+                const found = safeValues.findIndex(v => v && v.__isObjEntry && String(v.key) === String(activeIndex));
+                if (found !== -1) {
+                    scrollToIndex = found;
+                } else {
+                    const number = Number(activeIndex);
+                    scrollToIndex = (Number.isFinite(number) && number >= 0 && number < rowCount) ? number : undefined;
+                }
+            } else {
+                const foundIndex = Object.keys(safeValues).indexOf(String(activeIndex));
+                scrollToIndex = foundIndex === -1 ? undefined : foundIndex;
+            }
         } else {
             scrollToIndex = undefined;
         }

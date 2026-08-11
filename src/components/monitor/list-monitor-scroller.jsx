@@ -33,7 +33,7 @@ class ListMonitorScroller extends React.Component {
          * The implementation of array monitors was taken from AmpMod
          * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/list-monitor-scroller.jsx
          */
-        let rawValue = this.props.values[index];
+        let rawValue = (this._safeValues || this.props.values || [])[index];
         let isObjEntry = rawValue && typeof rawValue === 'object' && rawValue.__isObjEntry;
         
         let valKey = isObjEntry ? rawValue.key : index;
@@ -50,7 +50,7 @@ class ListMonitorScroller extends React.Component {
                 <div className={styles.listIndex}>{isObjEntry ? valKey : index + 1 /* one indexed */}</div>
                 <div
                     className={styles.listValue}
-                    dataIndex={index}
+                    data-index={index}
                     style={{
                         background: this.props.categoryColor.background,
                         color: this.props.categoryColor.text,
@@ -139,17 +139,18 @@ class ListMonitorScroller extends React.Component {
         } else {
             scrollToIndex = undefined;
         }
+        this._safeValues = safeValues;
         return (
             <List
                 activeIndex={activeIndex}
                 activeValue={activeValue}
-                height={(height) - 42 /* Header/footer size, approx */}
+                height={listHeight /* Header/footer size, approx */}
                 noRowsRenderer={this.noRowsRenderer}
-                rowCount={values.length}
+                rowCount={rowCount}
                 rowHeight={24 /* Row size is same for all rows */}
                 rowRenderer={this.rowRenderer}
                 scrollToIndex={scrollToIndex} /* eslint-disable-line no-undefined */
-                values={values}
+                values={safeValues}
                 width={width}
             />
         );

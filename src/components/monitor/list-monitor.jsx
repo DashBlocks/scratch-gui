@@ -80,15 +80,7 @@ ListMonitor.propTypes = {
     path: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
     onNavigateTo: PropTypes.func,
     onNavigateDown: PropTypes.func,
-    value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.arrayOf(PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number,
-            PropTypes.object
-        ]))
-    ]),
+    value: PropTypes.any,
     width: PropTypes.number
 };
 

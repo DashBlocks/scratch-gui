@@ -33,7 +33,7 @@ class ListMonitorScroller extends React.Component {
          * The implementation of array monitors was taken from AmpMod
          * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/list-monitor-scroller.jsx
          */
-        let rawValue = this.props.values[index];
+        let rawValue = this.safeValues[index];
         let isObjEntry = rawValue && typeof rawValue === 'object' && rawValue.__isObjEntry;
         
         let valKey = isObjEntry ? rawValue.key : index;
@@ -50,7 +50,7 @@ class ListMonitorScroller extends React.Component {
                 <div className={styles.listIndex}>{isObjEntry ? valKey : index + 1 /* one indexed */}</div>
                 <div
                     className={styles.listValue}
-                    dataIndex={index}
+                    data-index={index}
                     style={{
                         background: this.props.categoryColor.background,
                         color: this.props.categoryColor.text,
@@ -60,11 +60,11 @@ class ListMonitorScroller extends React.Component {
                         if (isNestedArray || isNestedObject) {
                             this.props.onNavigateDown(valKey);
                         } else if (this.props.draggable) {
-                            this.props.onActivate(valKey);
+                            this.props.onActivate(index);
                         }
                     }}
                 >
-                    {this.props.draggable && this.props.activeIndex === valKey ? (
+                    {this.props.draggable && this.props.activeIndex === index ? (
                         <div className={styles.inputWrapper}>
                             <input
                                 autoFocus
@@ -73,18 +73,17 @@ class ListMonitorScroller extends React.Component {
                                 spellCheck={false}
                                 style={{color: this.props.categoryColor.text}}
                                 type="text"
-                                value={isNestedArray
-                                    ? "nested array"
-                                    : isNestedObject
-                                        ? "nested object"
-                                        : String(Cast.isCustomType(this.props.activeValue) && typeof this.props.activeValue?.toListEditor === 'function'
-                                            ? this.props.activeValue.toListEditor()
-                                            : this.props.activeValue)}
+                                value={String(
+                                    (isNestedArray || isNestedObject || Cast.isCustomType(value)) &&
+                                        typeof this.props.activeValue?.toListEditor === 'function'
+                                        ? this.props.activeValue.toListEditor()
+                                        : this.props.activeValue
+                                )}
                                 onBlur={this.props.onDeactivate}
                                 onChange={this.props.onInput}
                                 onFocus={this.props.onFocus}
                                 onKeyDown={this.props.onKeyPress} // key down to get ahead of blur
-                                readOnly={isNestedArray || isNestedObject}
+                                readOnly={isNestedArray || isNestedObject || Cast.isCustomType(value)}
                             />
                             <div
                                 className={styles.removeButton}
@@ -97,9 +96,9 @@ class ListMonitorScroller extends React.Component {
                     ) : (
                         <div className={styles.valueInner}>
                             {isNestedArray
-                                ? <i>nested array</i>
+                                ? <i>{`Array(${value.length})`}</i>
                                 : isNestedObject
-                                    ? <i>nested object</i>
+                                    ? <i>{`Object(${value.size})`}</i>
                                     : Cast.isCustomType(value) && (typeof value?.toListItem === 'function' || typeof value?.toMonitorContent === 'function')
                                         ? (<DOMElementRenderer domElement={typeof value?.toListItem === 'function'
                                             ? value.toListItem()
@@ -113,19 +112,30 @@ class ListMonitorScroller extends React.Component {
     }
     render () {
         const {height, values, width, activeIndex, activeValue} = this.props;
+        const listHeight = Math.max(0, (Number.isFinite(height) ? height : 0) - 42 /* Header/footer size, approx */);
+        const safeValues = values || [];
+        const rowCount = safeValues.length;
+        let scrollToIndex;
         // Keep the active index in view if defined, else must be undefined for List component
-        const scrollToIndex = activeIndex === null ? undefined : activeIndex; /* eslint-disable-line no-undefined */
+        if (activeIndex === null || rowCount === 0) {
+            scrollToIndex = undefined;
+        } else {
+            scrollToIndex = (Number.isFinite(activeIndex) && activeIndex >= 0 && activeIndex < rowCount)
+                ? Math.floor(activeIndex)
+                : undefined;
+        }
+        this.safeValues = safeValues;
         return (
             <List
                 activeIndex={activeIndex}
                 activeValue={activeValue}
-                height={(height) - 42 /* Header/footer size, approx */}
+                height={listHeight}
                 noRowsRenderer={this.noRowsRenderer}
-                rowCount={values.length}
+                rowCount={rowCount}
                 rowHeight={24 /* Row size is same for all rows */}
                 rowRenderer={this.rowRenderer}
                 scrollToIndex={scrollToIndex} /* eslint-disable-line no-undefined */
-                values={values}
+                values={safeValues}
                 width={width}
             />
         );
@@ -148,12 +158,7 @@ ListMonitorScroller.propTypes = {
     onKeyPress: PropTypes.func,
     onRemove: PropTypes.func,
     onNavigateDown: PropTypes.func,
-    values: PropTypes.arrayOf(PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.array,
-        PropTypes.object
-    ])),
+    values: PropTypes.any,
     width: PropTypes.number
 };
 export default ListMonitorScroller;

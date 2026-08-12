@@ -2,6 +2,9 @@ import bindAll from 'lodash.bindall';
 import PropTypes from 'prop-types';
 import React from 'react';
 import VM from 'scratch-vm';
+import Cast from 'scratch-vm/src/util/cast';
+import NormalArray from 'scratch-vm/src/data-types/dash-normal-array';
+import NormalObject from 'scratch-vm/src/data-types/dash-normal-object';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import {connect} from 'react-redux';
 import {getEventXY} from '../lib/touch-utils';
@@ -27,6 +30,14 @@ const messages = defineMessages({
         id: 'dash.objectMonitor.keyAlreadyExists'
     }
 });
+
+const clone = (obj) => Cast.isNormalArray(obj)
+    ? new NormalArray(obj)
+    : Cast.isNormalObject(obj)
+        ? new NormalObject(obj)
+        : obj.slice();
+const set = (obj, indexOrKey, value) => Array.isArray(obj) ? (obj[indexOrKey] = value) : obj.set(indexOrKey, value);
+const get = (obj, indexOrKey) => Array.isArray(obj) ? obj[indexOrKey] : obj.get(indexOrKey);
 
 class ListMonitor extends React.Component {
     constructor (props) {
@@ -61,7 +72,7 @@ class ListMonitor extends React.Component {
         let current = this.props.value;
         for (const key of this.state.path) {
             if (current && typeof current === 'object') {
-                current = current[key];
+                current = get(current, key);
             } else {
                 return [];
             }
@@ -79,7 +90,7 @@ class ListMonitor extends React.Component {
             return;
         }
 
-        const newRoot = Array.isArray(rootValue) ? [...rootValue] : {...rootValue};
+        const newRoot = clone(rootValue);
         let current = newRoot;
         let parent = null;
         let lastKey = null;
@@ -87,18 +98,18 @@ class ListMonitor extends React.Component {
         for (let i = 0; i < this.state.path.length; i++) {
             parent = current;
             lastKey = this.state.path[i];
-            parent[lastKey] = Array.isArray(parent[lastKey]) ? [...parent[lastKey]] : {...parent[lastKey]};
-            current = parent[lastKey];
+            set(parent, lastKey, clone(parent[lastKey]));
+            current = get(parent, lastKey);
         }
 
-        parent[lastKey] = callback(current);
+        set(parent, lastKey, callback(current));
         setVariableValue(vm, targetId, variableId, newRoot);
     }
 
     handleNavigateDown (key) {
         this.handleDeactivate();
         this.setState({
-            path: [...this.state.path, key],
+            path: this.state.path.concat([key]),
             activeIndex: null,
             activeValue: null
         });
@@ -113,15 +124,16 @@ class ListMonitor extends React.Component {
         });
     }
 
-    handleActivate (indexOrKey) {
+    handleActivate (index) {
         // Do nothing if activating the currently active item
-        if (this.state.activeIndex === indexOrKey) {
+        if (this.state.activeIndex === index) {
             return;
         }
         let currentList = this.getCurrentList();
+        const indexOrKey = Array.isArray(currentList) ? index : currentList.keys().toArray()[index];
         this.setState({
-            activeIndex: indexOrKey,
-            activeValue: currentList[indexOrKey]
+            activeIndex: index,
+            activeValue: get(currentList, indexOrKey)
         });
     }
 
@@ -129,8 +141,12 @@ class ListMonitor extends React.Component {
         // Submit any in-progress value edits on blur
         if (this.state.activeIndex !== null) {
             this.applyDeepUpdate(list => {
-                const newList = Array.isArray(list) ? [...list] : {...list};
-                newList[this.state.activeIndex] = this.state.activeValue;
+                const newList = clone(list);
+                if (Array.isArray(newList)) {
+                    set(newList, this.state.activeIndex, this.state.activeValue);
+                } else {
+                    set(newList, newList.keys().toArray()[this.state.activeIndex], this.state.activeValue);
+                }
                 return newList;
             });
             this.setState({activeIndex: null, activeValue: null});
@@ -147,10 +163,8 @@ class ListMonitor extends React.Component {
         // Tab / shift+tab navigate down / up the list.
         // Arrow down / arrow up navigate down / up the list.
         // Enter / shift+enter insert new blank item below / above.
-        const previouslyActiveIndex = this.state.activeIndex;
         const currentList = this.getCurrentList();
-        const currentKeys = Array.isArray(currentList) ? currentList.map((_, i) => i) : Object.keys(currentList);
-        const activePos = currentKeys.indexOf(previouslyActiveIndex);
+        const activePos = this.state.activeIndex;
 
         let navigateDirection = 0;
         if (e.key === 'Tab') navigateDirection = e.shiftKey ? -1 : 1;
@@ -158,11 +172,11 @@ class ListMonitor extends React.Component {
         else if (e.key === 'ArrowDown') navigateDirection = 1;
         if (navigateDirection) {
             this.handleDeactivate(); // Submit in-progress edits
-            const newPos = this.wrapListIndex(activePos + navigateDirection, currentKeys.length);
-            const newKey = currentKeys[newPos];
+            const newPos = this.wrapListIndex(activePos + navigateDirection, Array.isArray(currentList) ? currentList.length : currentList.size);
+            const newIndexOrKey = Array.isArray(currentList) ? newPos : currentList.keys().toArray()[newPos];
             this.setState({
-                activeIndex: newKey,
-                activeValue: currentList[newKey]
+                activeIndex: newPos,
+                activeValue: get(currentList, newIndexOrKey)
             });
             e.preventDefault(); // Stop default tab behavior, handled by this state change
         } else if (e.key === 'Enter') {
@@ -171,11 +185,11 @@ class ListMonitor extends React.Component {
                 this.applyDeepUpdate(list => {
                     const newListItemValue = '';
                     const newValueOffset = e.shiftKey ? 0 : 1;
-                    const newListValue = list.slice(0, previouslyActiveIndex + newValueOffset)
+                    const newListValue = list.slice(0, activePos + newValueOffset)
                         .concat([newListItemValue])
-                        .concat(list.slice(previouslyActiveIndex + newValueOffset));
+                        .concat(list.slice(activePos + newValueOffset));
                     
-                    const newIndex = this.wrapListIndex(previouslyActiveIndex + newValueOffset, newListValue.length);
+                    const newIndex = this.wrapListIndex(activePos + newValueOffset, newListValue.length);
                     this.setState({
                         activeIndex: newIndex,
                         activeValue: newListItemValue
@@ -204,8 +218,9 @@ class ListMonitor extends React.Component {
                 });
                 return newListValue;
             } else {
-                const newListValue = {...list};
-                delete newListValue[this.state.activeIndex];
+                const newListValue = new NormalObject(list);
+                const key = newListValue.keys().toArray()[this.state.activeIndex];
+                newListValue.delete(key);
                 this.setState({ activeIndex: null, activeValue: null });
                 return newListValue;
             }
@@ -236,18 +251,18 @@ class ListMonitor extends React.Component {
         }
 
         this.applyDeepUpdate(list => {
-            if (!list || typeof list !== 'object' || Array.isArray(list)) {
+            if (!Cast.isNormalObject(list)) {
                 return list;
             }
 
-            if (Object.keys(list).includes(key)) {
+            if (list.keys().toArray().includes(key)) {
                 alert(this.props.intl.formatMessage(messages.keyAlreadyExists, {key}));
                 this.setState({prompt: false, draggable: true});
                 return list;
             }
 
-            const newObjectValue = {...list, [key]: ''};
-            this.setState({activeIndex: key, activeValue: '', prompt: false, draggable: true});
+            const newObjectValue = new NormalObject(list).set(key, '');
+            this.setState({activeIndex: newObjectValue.size - 1, activeValue: '', prompt: false, draggable: true});
             return newObjectValue;
         });
     }
@@ -299,11 +314,10 @@ class ListMonitor extends React.Component {
         } = this.props;
 
         let currentList = this.getCurrentList();
-        let isObj = currentList && typeof currentList === 'object' && !Array.isArray(currentList);
         let resolvedValues = [];
 
-        if (isObj) {
-            resolvedValues = Object.entries(currentList).map(([k, v]) => ({ __isObjEntry: true, key: k, value: v }));
+        if (Cast.isNormalObject(currentList)) {
+            resolvedValues = currentList.entries().toArray().map(([k, v]) => ({ __isObjEntry: true, key: k, value: v }));
         } else if (Array.isArray(currentList)) {
             resolvedValues = currentList;
         }
@@ -356,12 +370,7 @@ ListMonitor.propTypes = {
         height: PropTypes.number
     }),
     targetId: PropTypes.string,
-    value: PropTypes.oneOfType([
-        PropTypes.number,
-        PropTypes.string,
-        PropTypes.array,
-        PropTypes.object
-    ]),
+    value: PropTypes.any,
     intl: intlShape,
     vm: PropTypes.instanceOf(VM),
     width: PropTypes.number,

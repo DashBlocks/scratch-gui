@@ -1,4 +1,6 @@
 import OpcodeLabels from './opcode-labels.js';
+import Cast from 'scratch-vm/src/util/cast';
+import NormalObject from 'scratch-vm/src/data-types/dash-normal-object';
 
 const isUndefined = a => typeof a === 'undefined';
 
@@ -38,22 +40,22 @@ export default function ({id, spriteName, opcode, params, value, vm}) {
         label = `${spriteName}: ${label}`;
     }
 
-    // If value is a number, round it to six decimal places
+    // If value is a number, round it to eight decimal places
     if (typeof value === 'number') {
         value = Number(value.toFixed(8));
     }
 
-    // Turn the value to a string, for handle boolean values
+    // Turn the value to a string, to handle boolean values
     if (typeof value === 'boolean') {
         value = value.toString();
     }
 
-    // Turn the value to a string, for handle null values
+    // Turn the value to a string, to handle null values
     if (value === null) {
         value = 'null';
     }
 
-    // Lists and Array values can contain booleans and null, which should also be turned to strings
+    // Lists and NormalArray values can contain booleans and null, which should also be turned to strings
     if (Array.isArray(value)) {
         value = value.slice();
         for (let i = 0; i < value.length; i++) {
@@ -67,15 +69,15 @@ export default function ({id, spriteName, opcode, params, value, vm}) {
         }
     }
 
-    // Object values can contain booleans and null, which should also be turned to strings
-    if (value?.constructor?.prototype === Object.prototype) {
-        for (let i = 0; i < Object.keys(value).length; i++) {
-            const item = value[Object.keys(value)[i]];
+    // NormalObject values can contain booleans and null, which should also be turned to strings
+    if (Cast.isNormalObject(value)) {
+        value = new NormalObject(value);
+        for (const [key, item] of value) {
             if (typeof item === 'boolean') {
-                value[Object.keys(value)[i]] = item.toString();
+                value.set(key, item.toString());
             }
             if (item === null) {
-                value[Object.keys(value)[i]] = 'null';
+                value.set(key, 'null');
             }
         }
     }

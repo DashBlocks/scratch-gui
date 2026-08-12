@@ -285,14 +285,7 @@ Monitor.propTypes = {
     targetId: PropTypes.string,
     theme: PropTypes.instanceOf(Theme),
     toolboxXML: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
-    value: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number,
-        PropTypes.arrayOf(PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number
-        ]))
-    ]), // eslint-disable-line react/no-unused-prop-types
+    value: PropTypes.any, // eslint-disable-line react/no-unused-prop-types
     vm: PropTypes.instanceOf(VM),
     width: PropTypes.number,
     x: PropTypes.number,

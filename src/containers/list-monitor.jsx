@@ -317,7 +317,7 @@ class ListMonitor extends React.Component {
         let resolvedValues = [];
 
         if (Cast.isNormalObject(currentList)) {
-            resolvedValues = currentList.entries().map(([k, v]) => ({ __isObjEntry: true, key: k, value: v }));
+            resolvedValues = currentList.entries().toArray().map(([k, v]) => ({ __isObjEntry: true, key: k, value: v }));
         } else if (Array.isArray(currentList)) {
             resolvedValues = currentList;
         }

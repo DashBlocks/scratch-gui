@@ -328,9 +328,12 @@ const User = (props) => {
                     setFollowers(followers.filter(follower => follower.id !== session.id));
                 setUserData(prev => ({
                     ...prev,
-                    stats: {
-                        ...prev.stats,
-                        followers: (prev.stats.followers || 1) - 1
+                    profile: {
+                        ...prev.profile,
+                        stats: {
+                            ...prev.profile.stats,
+                            followers: (prev.profile.stats.followers || 1) - 1
+                        }
                     }
                 }));
             } else {
@@ -338,9 +341,12 @@ const User = (props) => {
                     setFollowers([...followers, session]);
                 setUserData(prev => ({
                     ...prev,
-                    stats: {
-                        ...prev.stats,
-                        followers: prev.stats.followers + 1
+                    profile: {
+                        ...prev.profile,
+                        stats: {
+                            ...prev.profile.stats,
+                            followers: prev.profile.stats.followers + 1
+                        }
                     }
                 }));
             }

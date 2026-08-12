@@ -293,19 +293,11 @@ const User = (props) => {
         });
         const data = await response.json();
         if (data.ok) {
-            // To trigger re-render
             setUserData(prev => ({
                 ...prev,
                 profile: {
                     ...prev.profile,
-                    avatarId: 1
-                }
-            }));
-            setUserData(prev => ({
-                ...prev,
-                profile: {
-                    ...prev.profile,
-                    avatarId: data.avatarId
+                    avatarId: data.avatarId + `?t=${Date.now()}`
                 }
             }));
         } else {
@@ -333,7 +325,7 @@ const User = (props) => {
             }
             if (isFollowing) {
                 if (followers.find(follower => follower.id === session.id))
-                    setFollowers(followers.filter(follower => follower.id === session.id));
+                    setFollowers(followers.filter(follower => follower.id !== session.id));
                 setUserData(prev => ({
                     ...prev,
                     stats: {

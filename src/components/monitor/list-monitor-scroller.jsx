@@ -33,7 +33,7 @@ class ListMonitorScroller extends React.Component {
          * The implementation of array monitors was taken from AmpMod
          * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/list-monitor-scroller.jsx
          */
-        let rawValue = this.props.values[index];
+        let rawValue = this.safeValues[index];
         let isObjEntry = rawValue && typeof rawValue === 'object' && rawValue.__isObjEntry;
         
         let valKey = isObjEntry ? rawValue.key : index;
@@ -112,8 +112,9 @@ class ListMonitorScroller extends React.Component {
     }
     render () {
         const {height, values, width, activeIndex, activeValue} = this.props;
-        const listHeight = Math.max(0, (Number.isFinite(height) ? height : 0) - 42);
-        const rowCount = values.length;
+        const listHeight = Math.max(0, (Number.isFinite(height) ? height : 0) - 42 /* Header/footer size, approx */);
+        const safeValues = values || [];
+        const rowCount = safeValues.length;
         let scrollToIndex;
         // Keep the active index in view if defined, else must be undefined for List component
         if (activeIndex === null || rowCount === 0) {
@@ -123,17 +124,18 @@ class ListMonitorScroller extends React.Component {
                 ? Math.floor(activeIndex)
                 : undefined;
         }
+        this.safeValues = safeValues;
         return (
             <List
                 activeIndex={activeIndex}
                 activeValue={activeValue}
-                height={listHeight /* Header/footer size, approx */}
+                height={listHeight}
                 noRowsRenderer={this.noRowsRenderer}
                 rowCount={rowCount}
                 rowHeight={24 /* Row size is same for all rows */}
                 rowRenderer={this.rowRenderer}
                 scrollToIndex={scrollToIndex} /* eslint-disable-line no-undefined */
-                values={values}
+                values={safeValues}
                 width={width}
             />
         );

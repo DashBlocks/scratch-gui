@@ -293,6 +293,14 @@ const User = (props) => {
         });
         const data = await response.json();
         if (data.ok) {
+            // To trigger re-render
+            setUserData(prev => ({
+                ...prev,
+                profile: {
+                    ...prev.profile,
+                    avatarId: 1
+                }
+            }));
             setUserData(prev => ({
                 ...prev,
                 profile: {
@@ -322,6 +330,27 @@ const User = (props) => {
             const data = await response.json();
             if (!data.ok) {
                 throw new Error(data.error);
+            }
+            if (isFollowing) {
+                if (followers.find(follower => follower.id === session.id))
+                    setFollowers(followers.filter(follower => follower.id === session.id));
+                setUserData(prev => ({
+                    ...prev,
+                    stats: {
+                        ...prev.stats,
+                        followers: (prev.stats.followers || 1) - 1
+                    }
+                }));
+            } else {
+                if (followers < 20)
+                    setFollowers([...followers, session]);
+                setUserData(prev => ({
+                    ...prev,
+                    stats: {
+                        ...prev.stats,
+                        followers: prev.stats.followers + 1
+                    }
+                }));
             }
             setIsFollowing(!isFollowing);
         } catch (error) {

@@ -109,7 +109,7 @@ class ListMonitor extends React.Component {
     handleNavigateDown (key) {
         this.handleDeactivate();
         this.setState({
-            path: [...this.state.path, key],
+            path: this.state.path.concat([key]),
             activeIndex: null,
             activeValue: null
         });
@@ -124,14 +124,15 @@ class ListMonitor extends React.Component {
         });
     }
 
-    handleActivate (indexOrKey) {
+    handleActivate (index) {
         // Do nothing if activating the currently active item
-        if (this.state.activeIndex === indexOrKey) {
+        if (this.state.activeIndex === index) {
             return;
         }
         let currentList = this.getCurrentList();
+        const indexOrKey = Array.isArray(currentList) ? index : currentList.keys().toArray()[index];
         this.setState({
-            activeIndex: indexOrKey,
+            activeIndex: index,
             activeValue: get(currentList, indexOrKey)
         });
     }
@@ -141,7 +142,11 @@ class ListMonitor extends React.Component {
         if (this.state.activeIndex !== null) {
             this.applyDeepUpdate(list => {
                 const newList = clone(list);
-                set(newList, this.state.activeIndex, this.state.activeValue);
+                if (Array.isArray(newList)) {
+                    set(newList, this.state.activeIndex, this.state.activeValue);
+                } else {
+                    set(newList, newList.keys().toArray()[this.state.activeIndex], this.state.activeValue);
+                }
                 return newList;
             });
             this.setState({activeIndex: null, activeValue: null});
@@ -158,10 +163,8 @@ class ListMonitor extends React.Component {
         // Tab / shift+tab navigate down / up the list.
         // Arrow down / arrow up navigate down / up the list.
         // Enter / shift+enter insert new blank item below / above.
-        const previouslyActiveIndex = this.state.activeIndex;
         const currentList = this.getCurrentList();
-        const currentKeys = Array.isArray(currentList) ? currentList.map((_, i) => i) : currentList.keys().toArray();
-        const activePos = currentKeys.indexOf(previouslyActiveIndex);
+        const activePos = this.state.activeIndex;
 
         let navigateDirection = 0;
         if (e.key === 'Tab') navigateDirection = e.shiftKey ? -1 : 1;
@@ -169,11 +172,11 @@ class ListMonitor extends React.Component {
         else if (e.key === 'ArrowDown') navigateDirection = 1;
         if (navigateDirection) {
             this.handleDeactivate(); // Submit in-progress edits
-            const newPos = this.wrapListIndex(activePos + navigateDirection, currentKeys.length);
-            const newKey = currentKeys[newPos];
+            const newPos = this.wrapListIndex(activePos + navigateDirection, Array.isArray(currentList) ? currentList.length : currentList.size);
+            const newIndexOrKey = Array.isArray(currentList) ? newPos : currentList.keys().toArray()[newPos];
             this.setState({
-                activeIndex: newKey,
-                activeValue: get(currentList, newKey)
+                activeIndex: newPos,
+                activeValue: get(currentList, newIndexOrKey)
             });
             e.preventDefault(); // Stop default tab behavior, handled by this state change
         } else if (e.key === 'Enter') {
@@ -182,11 +185,11 @@ class ListMonitor extends React.Component {
                 this.applyDeepUpdate(list => {
                     const newListItemValue = '';
                     const newValueOffset = e.shiftKey ? 0 : 1;
-                    const newListValue = list.slice(0, previouslyActiveIndex + newValueOffset)
+                    const newListValue = list.slice(0, activePos + newValueOffset)
                         .concat([newListItemValue])
-                        .concat(list.slice(previouslyActiveIndex + newValueOffset));
+                        .concat(list.slice(activePos + newValueOffset));
                     
-                    const newIndex = this.wrapListIndex(previouslyActiveIndex + newValueOffset, newListValue.length);
+                    const newIndex = this.wrapListIndex(activePos + newValueOffset, newListValue.length);
                     this.setState({
                         activeIndex: newIndex,
                         activeValue: newListItemValue
@@ -216,7 +219,8 @@ class ListMonitor extends React.Component {
                 return newListValue;
             } else {
                 const newListValue = new NormalObject(list);
-                newListValue.delete(this.state.activeIndex);
+                const key = newListValue.keys().toArray()[this.state.activeIndex];
+                newListValue.delete(key);
                 this.setState({ activeIndex: null, activeValue: null });
                 return newListValue;
             }
@@ -258,7 +262,7 @@ class ListMonitor extends React.Component {
             }
 
             const newObjectValue = new NormalObject(list).set(key, '');
-            this.setState({activeIndex: key, activeValue: '', prompt: false, draggable: true});
+            this.setState({activeIndex: newObjectValue.size - 1, activeValue: '', prompt: false, draggable: true});
             return newObjectValue;
         });
     }

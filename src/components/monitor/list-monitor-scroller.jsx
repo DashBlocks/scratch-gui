@@ -33,7 +33,7 @@ class ListMonitorScroller extends React.Component {
          * The implementation of array monitors was taken from AmpMod
          * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/list-monitor-scroller.jsx
          */
-        let rawValue = (this._safeValues || this.props.values || [])[index];
+        let rawValue = this.props.values[index];
         let isObjEntry = rawValue && typeof rawValue === 'object' && rawValue.__isObjEntry;
         
         let valKey = isObjEntry ? rawValue.key : index;
@@ -60,11 +60,11 @@ class ListMonitorScroller extends React.Component {
                         if (isNestedArray || isNestedObject) {
                             this.props.onNavigateDown(valKey);
                         } else if (this.props.draggable) {
-                            this.props.onActivate(valKey);
+                            this.props.onActivate(index);
                         }
                     }}
                 >
-                    {this.props.draggable && this.props.activeIndex === valKey ? (
+                    {this.props.draggable && this.props.activeIndex === index ? (
                         <div className={styles.inputWrapper}>
                             <input
                                 autoFocus
@@ -113,33 +113,16 @@ class ListMonitorScroller extends React.Component {
     render () {
         const {height, values, width, activeIndex, activeValue} = this.props;
         const listHeight = Math.max(0, (Number.isFinite(height) ? height : 0) - 42);
-        const safeValues = values || [];
-        const rowCount = Array.isArray(safeValues) ? safeValues.length : Object.keys(safeValues).length;
+        const rowCount = values.length;
         let scrollToIndex;
         // Keep the active index in view if defined, else must be undefined for List component
         if (activeIndex === null || rowCount === 0) {
             scrollToIndex = undefined;
-        } else if (typeof activeIndex === 'number') {
+        } else {
             scrollToIndex = (Number.isFinite(activeIndex) && activeIndex >= 0 && activeIndex < rowCount)
                 ? Math.floor(activeIndex)
                 : undefined;
-        } else if (typeof activeIndex === 'string') {
-            if (Array.isArray(safeValues)) {
-                const found = safeValues.findIndex(v => v && v.__isObjEntry && String(v.key) === String(activeIndex));
-                if (found !== -1) {
-                    scrollToIndex = found;
-                } else {
-                    const number = Number(activeIndex);
-                    scrollToIndex = (Number.isFinite(number) && number >= 0 && number < rowCount) ? number : undefined;
-                }
-            } else {
-                const foundIndex = Object.keys(safeValues).indexOf(String(activeIndex));
-                scrollToIndex = foundIndex === -1 ? undefined : foundIndex;
-            }
-        } else {
-            scrollToIndex = undefined;
         }
-        this._safeValues = safeValues;
         return (
             <List
                 activeIndex={activeIndex}
@@ -150,7 +133,7 @@ class ListMonitorScroller extends React.Component {
                 rowHeight={24 /* Row size is same for all rows */}
                 rowRenderer={this.rowRenderer}
                 scrollToIndex={scrollToIndex} /* eslint-disable-line no-undefined */
-                values={safeValues}
+                values={values}
                 width={width}
             />
         );

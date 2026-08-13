@@ -77,6 +77,7 @@ const messages = defineMessages({
 const User = (props) => {
     const id = useHashUserId();
     const [userData, setUserData] = useState(null);
+    const [avatarCacheBuster, setAvatarCacheBuster] = useState(Date.now());
     const [isFollowing, setIsFollowing] = useState(false);
     const [followButtonDisabled, setFollowButtonDisabled] = useState(false);
     const [descriptionDisabled, setDescriptionDisabled] = useState(false);
@@ -207,7 +208,7 @@ const User = (props) => {
                 });
             } else {
                 avgGradientByImgSections(
-                    `https://api.dashblocks.org/users/avatars/${userData?.profile?.avatarId}`,
+                    `https://api.dashblocks.org/users/avatars/${userData?.profile?.avatarId}?t=${avatarCacheBuster}`,
                     5,
                     2
                 ).then(avgGradient => setGradient(avgGradient));
@@ -215,7 +216,7 @@ const User = (props) => {
         } catch (_) {
             // Ignore errors
         }
-    }, [userData?.profile?.avatarId, userData?.profile?.gradient]);
+    }, [userData?.profile?.avatarId, userData?.profile?.gradient, avatarCacheBuster]);
 
     const getAchievement = (achievement) => {
         switch (achievement.type) {
@@ -297,9 +298,10 @@ const User = (props) => {
                 ...prev,
                 profile: {
                     ...prev.profile,
-                    avatarId: data.avatarId + `?t=${Date.now()}`
+                    avatarId: data.avatarId
                 }
             }));
+            setAvatarCacheBuster(Date.now());
         } else {
             alert(data.error);
         }
@@ -323,34 +325,16 @@ const User = (props) => {
             if (!data.ok) {
                 throw new Error(data.error);
             }
-            if (isFollowing) {
-                if (followers.find(follower => follower.id === session.id))
-                    setFollowers(followers.filter(follower => follower.id !== session.id));
-                setUserData(prev => ({
-                    ...prev,
-                    profile: {
-                        ...prev.profile,
-                        stats: {
-                            ...prev.profile.stats,
-                            followers: (prev.profile.stats.followers || 1) - 1
-                        }
-                    }
-                }));
-            } else {
-                if (followers < 20)
-                    setFollowers([...followers, session]);
-                setUserData(prev => ({
-                    ...prev,
-                    profile: {
-                        ...prev.profile,
-                        stats: {
-                            ...prev.profile.stats,
-                            followers: prev.profile.stats.followers + 1
-                        }
-                    }
-                }));
-            }
-            setIsFollowing(!isFollowing);
+            setIsFollowing(prev => !prev);
+            const userRes = await fetch(`https://api.dashblocks.org/users/${id}`, {credentials: "include"});
+            const user = await userRes.json();
+            if (!user.ok) throw new Error(user.error);
+            // Only Dasher+ or higher can do this
+            if (user.user.role === "dasher") setDescriptionDisabled(true);
+            setUserData(user.user);
+            const followersRes = await fetch(`https://api.dashblocks.org/users/${id}/followers?limit=20&offset=0`);
+            const followersData = await followersRes.json();
+            setFollowers(followersData.followers);
         } catch (error) {
             alert(error.message);
         } finally {
@@ -575,7 +559,7 @@ const User = (props) => {
                         />
                         <img
                             draggable={false}
-                            src={`https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}`}
+                            src={`https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}?t=${avatarCacheBuster}`}
                             alt={userData.username}
                             onClick={() => isMyProfile ? fileInputRef.current.click() : null}
                             className={styles.avatarImg}

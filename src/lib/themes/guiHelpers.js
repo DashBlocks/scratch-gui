@@ -27,6 +27,7 @@ const BLOCK_COLOR_NAMES = [
  */
 const evaluateCSS = (css, noVar) => {
     let variableMatch = css.match(/^var\(([\w-]+)\)$/);
+    // eslint-disable-next-line no-unmodified-loop-condition
     for (let i = 0; (i === 0 || noVar) && variableMatch; i++) {
         css = document.documentElement.style.getPropertyValue(variableMatch[1]);
         variableMatch = css.match(/^var\(([\w-]+)\)$/);
@@ -46,7 +47,8 @@ const applyGuiColors = theme => {
     }
 
     const guiColors = theme.getGuiColors();
-    const anyUsesCustom = Object.values(guiColors).some(v => typeof v === 'string' && v.indexOf('--dash-accent-custom') !== -1);
+    const anyUsesCustom =
+        Object.values(guiColors).some(v => typeof v === 'string' && v.indexOf('--dash-accent-custom') !== -1);
     if (anyUsesCustom) {
         let base = document.documentElement.style.getPropertyValue('--dash-accent-custom');
         if (!base) {
@@ -98,9 +100,9 @@ const applyGuiColors = theme => {
                 const d = max - min;
                 s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
                 switch (max) {
-                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-                case g: h = (b - r) / d + 2; break;
-                case b: h = (r - g) / d + 4; break;
+                case r: h = ((g - b) / d) + (g < b ? 6 : 0); break;
+                case g: h = ((b - r) / d) + 2; break;
+                case b: h = ((r - g) / d) + 4; break;
                 }
                 h /= 6;
             }
@@ -108,7 +110,9 @@ const applyGuiColors = theme => {
         };
 
         const hslToString = ({h, s, l, a}) => {
-            if (typeof a === 'number' && a < 1) return `hsla(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%, ${a})`;
+            if (typeof a === 'number' && a < 1) {
+                return `hsla(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%, ${a})`;
+            }
             return `hsl(${Math.round(h)}, ${Math.round(s)}%, ${Math.round(l)}%)`;
         };
 
@@ -123,16 +127,21 @@ const applyGuiColors = theme => {
         if (rgb) {
             const hsl = rgbToHsl(rgb);
             const darkL = Math.max(0, hsl.l * 0.85);
-            const lightL = Math.min(100, hsl.l * 1.15);
 
             doc.style.setProperty('--dash-accent-custom-transparent', rgbaString({...rgb, a: 0.35}));
             doc.style.setProperty('--dash-accent-custom-light-transparent', rgbaString({...rgb, a: 0.15}));
             doc.style.setProperty('--dash-accent-custom-dark', hslToString({...hsl, l: darkL}));
             doc.style.setProperty('--dash-accent-custom-motion-primary-transparent', rgbaString({...rgb, a: 0.9}));
-            doc.style.setProperty('--dash-accent-custom-extensions-primary', hslToString({...hsl, l: Math.min(100, hsl.l + 10)}));
-            doc.style.setProperty('--dash-accent-custom-extensions-tertiary', hslToString({...hsl, l: Math.max(0, hsl.l - 10)}));
+            doc.style.setProperty('--dash-accent-custom-extensions-primary',
+                hslToString({...hsl, l: Math.min(100, hsl.l + 10)})
+            );
+            doc.style.setProperty('--dash-accent-custom-extensions-tertiary',
+                hslToString({...hsl, l: Math.max(0, hsl.l - 10)})
+            );
             doc.style.setProperty('--dash-accent-custom-extensions-transparent', rgbaString({...rgb, a: 0.35}));
-            doc.style.setProperty('--dash-accent-custom-extensions-light', hslToString({...hsl, l: Math.min(100, hsl.l + 30)}));
+            doc.style.setProperty('--dash-accent-custom-extensions-light',
+                hslToString({...hsl, l: Math.min(100, hsl.l + 30)})
+            );
             doc.style.setProperty('--dash-accent-custom-drop-highlight', rgbaString({...rgb, a: 0.5}));
         }
     }

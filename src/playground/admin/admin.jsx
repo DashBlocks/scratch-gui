@@ -110,7 +110,7 @@ const Admin = props => {
         fetchFullProfile();
     }, []);
 
-    async function handleFeatureProject (projectId) {
+    const handleFeatureProject = async projectId => {
         if (!projectId || featureProjectButtonLoading) return;
 
         setFeatureProjectButtonLoading(true);
@@ -123,14 +123,15 @@ const Admin = props => {
             const data = await res.json();
             if (!data.ok) throw new Error(data.error);
             setFeatureProjectId('');
-        } catch (error) {
-            alert(`Error featuring project with ID ${projectId}: ${error.message}`);
+        } catch (catchedError) {
+            // eslint-disable-next-line no-alert
+            alert(`Error featuring project with ID ${projectId}: ${catchedError.message}`);
         } finally {
             setFeatureProjectButtonLoading(false);
         }
-    }
+    };
 
-    async function handleUnfeatureProject (projectId) {
+    const handleUnfeatureProject = async projectId => {
         if (!projectId || unfeatureProjectButtonLoading) return;
 
         setUnfeatureProjectButtonLoading(true);
@@ -143,14 +144,15 @@ const Admin = props => {
             const data = await res.json();
             if (!data.ok) throw new Error(data.error);
             setUnfeatureProjectId('');
-        } catch (error) {
-            alert(`Error unfeaturing project with ID ${projectId}: ${error.message}`);
+        } catch (catchedError) {
+            // eslint-disable-next-line no-alert
+            alert(`Error unfeaturing project with ID ${projectId}: ${catchedError.message}`);
         } finally {
             setUnfeatureProjectButtonLoading(false);
         }
-    }
+    };
 
-    async function handleDeleteProject (projectId) {
+    const handleDeleteProject = async projectId => {
         if (!projectId || deleteProjectButtonLoading) return;
 
         setDeleteProjectButtonLoading(true);
@@ -162,18 +164,16 @@ const Admin = props => {
             });
             const data = await res.json();
             if (!data.ok) throw new Error(data.error);
-            if (res.status_code === 202) {
-                alert(props.intl.formatMessage(messages.deletedOnlyFromProfile));
-            }
             setDeleteProjectId('');
-        } catch (error) {
-            alert(`Error deleting project with ID ${projectId}: ${error.message}`);
+        } catch (catchedError) {
+            // eslint-disable-next-line no-alert
+            alert(`Error deleting project with ID ${projectId}: ${catchedError.message}`);
         } finally {
             setDeleteProjectButtonLoading(false);
         }
-    }
+    };
 
-    async function handleManageUser () {
+    const handleManageUser = async () => {
         if (!targetUsername || manageButtonLoading) return;
 
         setManageButtonLoading(true);
@@ -191,12 +191,13 @@ const Admin = props => {
             const data = await res.json();
             if (!data.ok) throw new Error(data.error);
             // Not clearing states to allow multiple actions on the same user
-        } catch (error) {
-            alert(`Error managing user ${targetUsername}: ${error.message}`);
+        } catch (catchedError) {
+            // eslint-disable-next-line no-alert
+            alert(`Error managing user ${targetUsername}: ${catchedError.message}`);
         } finally {
             setManageButtonLoading(false);
         }
-    }
+    };
 
     if (loading) {
         return (
@@ -282,6 +283,7 @@ const Admin = props => {
                             </div>
                             <Button
                                 className={styles.button}
+                                // eslint-disable-next-line react/jsx-no-bind
                                 onClick={() => handleFeatureProject(featureProjectId)}
                             >
                                 {featureProjectButtonLoading ? (
@@ -324,6 +326,7 @@ const Admin = props => {
                             </div>
                             <Button
                                 className={styles.button}
+                                // eslint-disable-next-line react/jsx-no-bind
                                 onClick={() => handleUnfeatureProject(unfeatureProjectId)}
                             >
                                 {unfeatureProjectButtonLoading ? (
@@ -366,6 +369,7 @@ const Admin = props => {
                             </div>
                             <Button
                                 className={styles.button}
+                                // eslint-disable-next-line react/jsx-no-bind
                                 onClick={() => handleDeleteProject(deleteProjectId)}
                             >
                                 {deleteProjectButtonLoading ? (
@@ -412,6 +416,7 @@ const Admin = props => {
                                 />
                                 <select
                                     value={manageAction}
+                                    // eslint-disable-next-line react/jsx-no-bind
                                     onChange={e => setManageAction(e.target.value)}
                                     className={styles.input}
                                 >
@@ -441,6 +446,7 @@ const Admin = props => {
                                     />
                                     <select
                                         value={manageRole}
+                                        // eslint-disable-next-line react/jsx-no-bind
                                         onChange={e => setManageRole(e.target.value)}
                                         className={styles.input}
                                     >
@@ -455,6 +461,7 @@ const Admin = props => {
                             )}
                             <Button
                                 className={styles.button}
+                                // eslint-disable-next-line react/jsx-no-bind
                                 onClick={handleManageUser}
                             >
                                 {manageButtonLoading ? (

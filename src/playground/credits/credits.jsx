@@ -12,7 +12,7 @@ import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 import UserData from './users';
 
-/* eslint-disable react/jsx-no-literals */
+/* eslint-disable react/jsx-no-literals, react/no-unescaped-entities */
 
 applyGuiColors(detectTheme());
 document.documentElement.lang = 'en';
@@ -101,6 +101,7 @@ const Credits = () => (
         <section>
             <h2>Other modifications</h2>
             <p>
+                {/* eslint-disable-next-line max-len */}
                 {APP_NAME} uses code from other free and open-source TurboWarp modifications/visual programming languages:
             </p>
             <ul>
@@ -129,6 +130,7 @@ const Credits = () => (
         <section>
             <h2>Dash Extensions Gallery</h2>
             <p>
+                {/* eslint-disable-next-line max-len */}
                 People who develop extensions for Dash Extensions Gallery or whose extensions are included in it are listed here.
             </p>
             <UserList users={UserData.dashExtensionDevelopers} />
@@ -136,6 +138,7 @@ const Credits = () => (
         <section>
             <h2>TurboWarp Extension Gallery</h2>
             <p>
+                {/* eslint-disable-next-line max-len */}
                 People who develop extensions for TurboWarp Extension Gallery are listed here. Thanks to them for the wonderful and useful extensions.
             </p>
             <UserList users={UserData.twExtensionDevelopers} />

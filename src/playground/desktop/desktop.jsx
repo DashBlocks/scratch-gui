@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import render from '../app-target';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import styles from './desktop.css';
@@ -20,7 +19,7 @@ const RELEASE_VERSION = '1.2.0';
 const VERSION_IN_FILENAME = '1.2.0';
 const RELEASES_DOWNLOAD_URL = `https://github.com/DashBlocks/dash-desktop/releases/download/v${RELEASE_VERSION}`;
 
-/* eslint-disable react/jsx-no-literals */
+/* eslint-disable react/jsx-no-literals, react/jsx-no-bind, react/no-unescaped-entities */
 
 const theme = detectTheme();
 applyGuiColors(theme);
@@ -81,6 +80,7 @@ const Desktop = () => {
             </section>
             <section>
                 <h2>Windows 7, 8, and 8.1</h2>
+                {/* eslint-disable-next-line max-len */}
                 These versions of the app have the same features but are slower and less secure. Support will be removed at an unknown time in the future. If a Windows SmartScreen alert appears, click "More info" then "Run anyways".
                 <div className={styles.downloadList}>
                     <Button
@@ -99,6 +99,7 @@ const Desktop = () => {
             </section>
             <section>
                 <h2>macOS 12 and later</h2>
+                {/* eslint-disable-next-line max-len */}
                 Open the .DMG, then drag {APP_NAME} into Applications. If it tells you that {APP_NAME} already exists, choose "Replace".
                 <div className={styles.downloadList}>
                     <Button
@@ -111,6 +112,7 @@ const Desktop = () => {
             </section>
             <section>
                 <h2>macOS 10.13 - 11</h2>
+                {/* eslint-disable-next-line max-len */}
                 These versions of the app have the same features but are slower and less secure. Support will be removed at an unknown time in the future. Open the .DMG, then drag {APP_NAME} into Applications. If it tells you that {APP_NAME} already exists, choose "Replace".
                 <div className={styles.downloadList}>
                     <Button

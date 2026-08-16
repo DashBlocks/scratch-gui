@@ -1,12 +1,10 @@
 import classNames from 'classnames';
-import {injectIntl} from 'react-intl';
+import {FormattedMessage, injectIntl} from 'react-intl';
 import PropTypes from 'prop-types';
 import bindAll from 'lodash.bindall';
 import React from 'react';
-import {FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
 import check from './check.svg';
-import cross from './cross.svg';
 import dropdownCaret from './dropdown-caret.svg';
 import {MenuItem, Submenu} from '../menu/menu.jsx';
 import {Theme} from '../../lib/themes/index.js';
@@ -156,8 +154,8 @@ class FontThemeMenu extends React.Component {
                             <img
                                 width={15}
                                 height={12}
-                                className={classNames(styles.check, {[styles.selected]: /* true*/ this.state.isForEverything})}
-                                src={/* this.state.isForEverything ?*/ check /* : cross*/}
+                                className={classNames(styles.check, {[styles.selected]: this.state.isForEverything})}
+                                src={check}
                                 draggable={false}
                             />
                             <FormattedMessage
@@ -167,8 +165,9 @@ class FontThemeMenu extends React.Component {
                             />
                         </MenuItem>
                         <MenuItem
-                            className={classNames({[styles.disabled]: this.props.theme.font.font == null})}
-                            onClick={this.props.theme.font.font == null ? () => {} : this.handleResetFont}
+                            className={classNames({[styles.disabled]: this.props.theme.font.font === null})}
+                            // eslint-disable-next-line react/jsx-no-bind
+                            onClick={this.props.theme.font.font === null ? () => {} : this.handleResetFont}
                         >
                             <FormattedMessage
                                 defaultMessage="Reset font"
@@ -188,7 +187,6 @@ FontThemeMenu.propTypes = {
     isRtl: PropTypes.bool,
     onChangeTheme: PropTypes.func,
     onOpenMenu: PropTypes.func,
-    onRequestClose: PropTypes.func,
     theme: PropTypes.instanceOf(Theme)
 };
 

@@ -159,6 +159,7 @@ const CustomProcedures = props => {
                             className={styles.colorOption}
                             role="button"
                             draggable={false}
+                            // eslint-disable-next-line react/jsx-no-bind
                             onClick={() => props.setColor(blockColors[category].primary)}
                         />
                     ))}
@@ -175,6 +176,7 @@ const CustomProcedures = props => {
                                 className={styles.colorOption}
                                 role="button"
                                 draggable={false}
+                                // eslint-disable-next-line react/jsx-no-bind
                                 onClick={() => props.setColor(extInfo.color1)}
                             />
                         ))}
@@ -187,6 +189,7 @@ const CustomProcedures = props => {
                         type="color"
                         value={props.color ?? blockColors.more.primary}
                         className={classNames(styles.colorOption, styles.colorPicker)}
+                        // eslint-disable-next-line react/jsx-no-bind
                         onChange={e => props.setColor(e.target.value)}
                     />
                 </div>
@@ -232,6 +235,7 @@ const CustomProcedures = props => {
 };
             
 CustomProcedures.propTypes = {
+    vm: PropTypes.object.isRequired,
     componentRef: PropTypes.func.isRequired,
     intl: intlShape,
     onAddInput: PropTypes.func.isRequired,
@@ -241,7 +245,11 @@ CustomProcedures.propTypes = {
     onCancel: PropTypes.func.isRequired,
     onOk: PropTypes.func.isRequired,
     onToggleWarp: PropTypes.func.isRequired,
-    warp: PropTypes.bool.isRequired
+    warp: PropTypes.bool.isRequired,
+    menuInput: PropTypes.string.isRequired,
+    theme: PropTypes.object.isRequired,
+    setColor: PropTypes.func.isRequired,
+    color: PropTypes.string
 };
 
 const mapStateToProps = state => ({

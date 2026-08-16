@@ -1,16 +1,13 @@
-import {FormattedMessage, intlShape, defineMessages} from 'react-intl';
+import {intlShape, defineMessages} from 'react-intl';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import Box from '../box/box.jsx';
 import SpriteCostumeLibraryItem from './sprite-costume-library-item.jsx';
 import SoundLibraryItem from './sound-library-item.jsx';
 import ExtensionLibraryItem from './extension-library-item.jsx';
 import styles from './library-item.css';
 import classNames from 'classnames';
 
-import bluetoothIconURL from './bluetooth.svg';
-import internetConnectionIconURL from './internet-connection.svg';
 import favoriteInactiveIcon from './favorite-inactive.svg';
 import favoriteActiveIcon from './favorite-active.svg';
 

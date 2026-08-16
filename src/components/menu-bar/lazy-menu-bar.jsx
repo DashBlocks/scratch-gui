@@ -6,8 +6,6 @@ import PropTypes from 'prop-types';
 import bindAll from 'lodash.bindall';
 import React from 'react';
 
-import VM from 'scratch-vm';
-
 import Box from '../box/box.jsx';
 import Button from '../button/button.jsx';
 import {ComingSoonTooltip} from '../coming-soon/coming-soon.jsx';
@@ -132,11 +130,13 @@ class LazyMenuBar extends React.Component {
         try {
             const response = await fetch('https://api.dashblocks.org/auth/logout', {credentials: 'include'});
             const data = await response.json();
+            // eslint-disable-next-line no-alert
             if (!data.ok) return alert('Sign out failed');
             this.props.setSession({});
             window.location.reload();
         } catch (error) {
             console.warn(error?.message || error);
+            // eslint-disable-next-line no-alert
             alert('Sign out failed');
         }
     }
@@ -218,6 +218,7 @@ class LazyMenuBar extends React.Component {
                     {!isScratchDesktop() && (
                         <div
                             className={classNames(styles.menuBarItem, styles.hoverable, styles.editorButton)}
+                            // eslint-disable-next-line react/jsx-no-bind
                             onClick={() => window.open('./editor', '_blank')}
                         >
                             {/* todo: icon */}
@@ -266,7 +267,9 @@ class LazyMenuBar extends React.Component {
                                 >
                                     <span
                                         className={
-                                            this.props.session?.profile.unreadMessages > 0 ? styles.messagesCountVisible : styles.messagesCount
+                                            this.props.session?.profile.unreadMessages > 0 ?
+                                                styles.messagesCountVisible :
+                                                styles.messagesCount
                                         }
                                     >{this.props.session?.profile.unreadMessages}</span>
                                     <img
@@ -312,6 +315,7 @@ class LazyMenuBar extends React.Component {
                                     styles.hoverable
                                 )}
                                 key="join"
+                                // eslint-disable-next-line react/jsx-no-bind
                                 onMouseUp={() => window.open('./register', '_blank')}
                             >
                                 <FormattedMessage
@@ -326,6 +330,7 @@ class LazyMenuBar extends React.Component {
                                     styles.hoverable
                                 )}
                                 key="login"
+                                // eslint-disable-next-line react/jsx-no-bind
                                 onMouseUp={() => window.open('./login', '_blank')}
                             >
                                 <FormattedMessage
@@ -365,21 +370,18 @@ LazyMenuBar.propTypes = {
     canChangeLanguage: PropTypes.bool,
     canChangeTheme: PropTypes.bool,
     className: PropTypes.string,
-    currentLocale: PropTypes.string.isRequired,
     intl: intlShape,
     isRtl: PropTypes.bool,
-    locale: PropTypes.string.isRequired,
     onClickAccount: PropTypes.func,
     onClickAddonSettings: PropTypes.func,
     onClickSettings: PropTypes.func,
-    onClickSettingsModal: PropTypes.func,
-    onLogOut: PropTypes.func,
+    onClickDesktopSettings: PropTypes.func,
     onRequestCloseAccount: PropTypes.func,
     onRequestCloseSettings: PropTypes.func,
+    session: PropTypes.object,
     sessionExists: PropTypes.bool,
     settingsMenuOpen: PropTypes.bool,
-    setSession: PropTypes.func,
-    vm: PropTypes.instanceOf(VM).isRequired
+    setSession: PropTypes.func
 };
 
 LazyMenuBar.defaultProps = {

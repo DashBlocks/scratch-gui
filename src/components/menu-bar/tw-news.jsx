@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import bindAll from 'lodash.bindall';
 import {APP_NAME} from '../../lib/brand';
 import {isScratchDesktop} from '../../lib/isScratchDesktop';
@@ -46,7 +47,7 @@ class TWNews extends React.Component {
         }
         return (
             <>
-                {this.props.id == 'new-compiler' && (<div className={styles.news}>
+                {this.props.id === 'new-compiler' && (<div className={styles.news}>
                     <div className={styles.text}>
                         {/* eslint-disable-next-line max-len */}
                         {`We rewrote the ${APP_NAME} compiler to make projects run even faster. Bugs are possible. `}
@@ -71,7 +72,7 @@ class TWNews extends React.Component {
                         onClick={this.handleClose}
                     />
                 </div>)}
-                {this.props.id == 'dev-version' && (<div className={styles.news}>
+                {this.props.id === 'dev-version' && (<div className={styles.news}>
                     <div className={styles.text}>
                         {/* eslint-disable-next-line max-len */}
                         {`This is a "Dev" version of ${APP_NAME}. Please do not use this version for real projects, as it may break your projects! `}
@@ -87,7 +88,7 @@ class TWNews extends React.Component {
                         onClick={this.handleClose}
                     />
                 </div>)}
-                {this.props.id == 'new-year' && (<div className={styles.news}>
+                {this.props.id === 'new-year' && (<div className={styles.news}>
                     <div className={styles.text}>
                         {/* eslint-disable-next-line max-len */}
                         {`Happy New Year! Enjoy the festive theme while it lasts. `}
@@ -103,7 +104,7 @@ class TWNews extends React.Component {
                         onClick={this.handleClose}
                     />
                 </div>)}
-                {this.props.id == 'donate' && (<div className={styles.news}>
+                {this.props.id === 'donate' && (<div className={styles.news}>
                     <div className={styles.text}>
                         {/* eslint-disable-next-line max-len */}
                         {`Support development, help us host community, and get exclusive benefits by `}
@@ -124,5 +125,9 @@ class TWNews extends React.Component {
         );
     }
 }
+TWNews.propTypes = {
+    id: PropTypes.string.isRequired,
+    item: PropTypes.string.isRequired
+};
 
 export default TWNews;

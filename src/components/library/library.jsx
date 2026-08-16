@@ -278,7 +278,10 @@ class LibraryComponent extends React.Component {
                                         <div className={styles.tagWrapper}>
                                             {this.props.tags.map((tagProps, index) => (
                                                 tagProps === '---' ? (
-                                                    <div className={styles.divider} />
+                                                    <div
+                                                        key={index}
+                                                        className={styles.divider}
+                                                    />
                                                 ) : tagProps.isGroup ? (
                                                     <h4
                                                         className={tagProps.className}
@@ -332,7 +335,9 @@ class LibraryComponent extends React.Component {
                                 >
                                     {this.props.intl.formatMessage({
                                         id: 'dash.extensionLibrary.twGalleryMirrorNote',
+                                        // eslint-disable-next-line max-len
                                         defaultMessage: 'Note: You are currently viewing a mirror of the TurboWarp Extension Gallery. Some extensions may be out of date or unavailable.',
+                                        // eslint-disable-next-line max-len
                                         description: 'Note indicating that the TurboWarp Extension Gallery is being served from a mirror site.'
                                     })}
                                 </div>

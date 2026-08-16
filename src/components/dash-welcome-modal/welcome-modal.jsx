@@ -3,12 +3,13 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Box from '../box/box.jsx';
 import Modal from '../../containers/modal.jsx';
-import classNames from 'classnames';
 
 import poster from './dash-poster.svg';
 import styles from './welcome-modal.css';
 import FancyCheckbox from '../tw-fancy-checkbox/checkbox.jsx';
 import {APP_NAME} from '../../lib/brand.js';
+
+/* eslint-disable react/jsx-no-literals */
 
 const messages = defineMessages({
     welcomeModalTitle: {
@@ -28,6 +29,7 @@ const WelcomeModalComponent = props => (
         <Box className={styles.body}>
             <p className={styles.text}>
                 <FormattedMessage
+                    // eslint-disable-next-line max-len
                     defaultMessage="{dash} is based on {turbowarp} and adds stuff like {jsonCategory}, {consoleMode}, {newBlocks}, {extensions}, {editorCustomization}, and {otherFeatures}."
                     description="Text in Welcome Modal"
                     id="dash.welcomeModal.text1"
@@ -109,6 +111,7 @@ const WelcomeModalComponent = props => (
             />
             <p className={styles.text}>
                 <FormattedMessage
+                    // eslint-disable-next-line max-len
                     defaultMessage="{APP_NAME} was made by {damir2809DBDev}, {Den4ik12}, {scratch_craft_2Creative}, {AnonimKing24AK24}, and {otherContributors}."
                     description="Text in Welcome Modal"
                     id="dash.welcomeModal.text3"

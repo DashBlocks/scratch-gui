@@ -81,6 +81,8 @@ SoundLibraryItem.propTypes = {
         PropTypes.string,
         PropTypes.node
     ]),
+    sampleCount: PropTypes.number,
+    rate: PropTypes.number.isRequired,
     onBlur: PropTypes.func.isRequired,
     onClick: PropTypes.func.isRequired,
     onFocus: PropTypes.func.isRequired,

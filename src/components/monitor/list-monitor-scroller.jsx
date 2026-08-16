@@ -31,7 +31,7 @@ class ListMonitorScroller extends React.Component {
     rowRenderer ({index, key, style}) {
         /**
          * The implementation of array monitors was taken from AmpMod
-         * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/list-monitor-scroller.jsx
+         * https://codeberg.org/ampmod/ampmod/src/branch/develop/packages/gui/src/components/monitor/list-monitor-scroller.jsx
          */
         const rawValue = this.safeValues[index];
         const isObjEntry = rawValue && typeof rawValue === 'object' && rawValue.__isObjEntry;
@@ -56,6 +56,7 @@ class ListMonitorScroller extends React.Component {
                         color: this.props.categoryColor.text,
                         cursor: (isNestedArray || isNestedObject) ? 'pointer' : 'default'
                     }}
+                    // eslint-disable-next-line react/jsx-no-bind
                     onClick={() => {
                         if (isNestedArray || isNestedObject) {
                             this.props.onNavigateDown(valKey);
@@ -99,7 +100,10 @@ class ListMonitorScroller extends React.Component {
                                 <i>{`Array(${value.length})`}</i> :
                                 isNestedObject ?
                                     <i>{`Object(${value.size})`}</i> :
-                                    Cast.isCustomType(value) && (typeof value?.toListItem === 'function' || typeof value?.toMonitorContent === 'function') ?
+                                    Cast.isCustomType(value) && (
+                                        typeof value?.toListItem === 'function' ||
+                                        typeof value?.toMonitorContent === 'function'
+                                    ) ?
                                         (<DOMElementRenderer
                                             domElement={typeof value?.toListItem === 'function' ?
                                                 value.toListItem() :
@@ -119,12 +123,16 @@ class ListMonitorScroller extends React.Component {
         const rowCount = safeValues.length;
         let scrollToIndex;
         // Keep the active index in view if defined, else must be undefined for List component
-        if (activeIndex === null || rowCount === 0) {
-            scrollToIndex = undefined;
-        } else {
-            scrollToIndex = (Number.isFinite(activeIndex) && activeIndex >= 0 && activeIndex < rowCount) ?
-                Math.floor(activeIndex) :
-                undefined;
+        if (
+            (
+                activeIndex !== null &&
+                rowCount !== 0
+            ) && (
+                Number.isFinite(activeIndex) &&
+                activeIndex >= 0 && activeIndex < rowCount
+            )
+        ) {
+            scrollToIndex = Math.floor(activeIndex);
         }
         this.safeValues = safeValues;
         return (

@@ -22,7 +22,6 @@ const LazySettingsMenu = ({
     canChangeTheme,
     isRtl,
     onClickDesktopSettings,
-    onOpenCustomSettings,
     onRequestClose,
     onRequestOpen,
     settingsMenuOpen
@@ -76,7 +75,6 @@ LazySettingsMenu.propTypes = {
     canChangeTheme: PropTypes.bool,
     isRtl: PropTypes.bool,
     onClickDesktopSettings: PropTypes.func,
-    onOpenCustomSettings: PropTypes.func,
     onRequestClose: PropTypes.func,
     onRequestOpen: PropTypes.func,
     settingsMenuOpen: PropTypes.bool

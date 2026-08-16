@@ -47,6 +47,7 @@ const ProjectTitleInput = ({
             tabIndex="0"
             type="text"
             value={projectTitle}
+            // eslint-disable-next-line react/jsx-no-bind
             onSubmit={handleSubmit}
             disabled={saving}
         />

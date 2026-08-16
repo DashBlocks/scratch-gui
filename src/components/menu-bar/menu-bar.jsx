@@ -15,7 +15,6 @@ import CommunityButton from './community-button.jsx';
 import ShareButton from './share-button.jsx';
 import {ComingSoonTooltip} from '../coming-soon/coming-soon.jsx';
 import Divider from '../divider/divider.jsx';
-import SaveStatus from './save-status.jsx';
 import ProjectWatcher from '../../containers/project-watcher.jsx';
 import MenuBarMenu from './menu-bar-menu.jsx';
 import MenuLabel from './tw-menu-label.jsx';
@@ -89,10 +88,8 @@ import collectMetadata from '../../lib/collect-metadata';
 
 import styles from './menu-bar.css';
 
-import helpIcon from '../../lib/assets/icon--tutorials.svg';
 import messagesIcon from './icon--messages.png';
 import mystuffIcon from './icon--mystuff.png';
-import profileIcon from './icon--profile.png';
 import remixIcon from './icon--remix.svg';
 import dropdownCaret from './dropdown-caret.svg';
 import aboutIcon from './icon--about.svg';
@@ -115,14 +112,6 @@ import sharedMessages from '../../lib/shared-messages';
 import SeeInsideButton from './tw-see-inside.jsx';
 import isScratchDesktop, {notScratchDesktop} from '../../lib/isScratchDesktop.js';
 import {APP_NAME} from '../../lib/brand.js';
-
-const ariaMessages = defineMessages({
-    tutorials: {
-        id: 'gui.menuBar.tutorialsLibrary',
-        defaultMessage: 'Tutorials',
-        description: 'accessibility text for the tutorials button'
-    }
-});
 
 const twMessages = defineMessages({
     compileError: {
@@ -314,11 +303,12 @@ class MenuBar extends React.Component {
             waitForUpdate(false); // immediately transition to project page
         }
     }
-    async handleClickShare (waitForUpdate) {
+    async handleClickShare () {
         if (!this.props.isShared && !this.state.isSharing) {
             if (this.props.canShare) { // save before transitioning to project page
                 const session = await getSession();
                 if (session && session.id) {
+                    // eslint-disable-next-line no-alert
                     if (!confirm(this.props.intl.formatMessage(dashMessages.shareProjectWarning))) {
                         return;
                     }
@@ -356,15 +346,19 @@ class MenuBar extends React.Component {
                                 credentials: 'include'
                             });
                             if (thumbnailResponse.ok) {
+                                // eslint-disable-next-line no-alert
                                 alert('Project shared successfully!');
                             } else {
+                                // eslint-disable-next-line no-alert
                                 alert('Project was shared but thumbnail upload failed');
                             }
                             window.open(`./#${result.projectId}`, '_self');
                         } else {
+                            // eslint-disable-next-line no-alert
                             alert(result.error);
                         }
                     } catch (error) {
+                        // eslint-disable-next-line no-alert
                         alert(error?.message || error);
                     } finally {
                         this.setState({
@@ -378,11 +372,12 @@ class MenuBar extends React.Component {
             }
         }
     }
-    async handleClickUpdate (waitForUpdate) {
+    async handleClickUpdate () {
         if (this.props.isShared && !this.state.isSharing) {
             if (this.props.canShare) { // save before transitioning to project page
                 const session = await getSession();
                 if (session && session.id) {
+                    // eslint-disable-next-line no-alert
                     if (!confirm(this.props.intl.formatMessage(dashMessages.shareProjectWarning))) {
                         return;
                     }
@@ -420,14 +415,18 @@ class MenuBar extends React.Component {
                                 credentials: 'include'
                             });
                             if (thumbnailResponse.ok) {
+                                // eslint-disable-next-line no-alert
                                 alert('Project updated successfully!');
                             } else {
+                                // eslint-disable-next-line no-alert
                                 alert('Project was updated but thumbnail upload failed');
                             }
                         } else {
+                            // eslint-disable-next-line no-alert
                             alert(result.error);
                         }
                     } catch (error) {
+                        // eslint-disable-next-line no-alert
                         alert(error?.message || error);
                     } finally {
                         this.setState({
@@ -445,11 +444,13 @@ class MenuBar extends React.Component {
         try {
             const response = await fetch('https://api.dashblocks.org/auth/logout', {credentials: 'include'});
             const data = await response.json();
+            // eslint-disable-next-line no-alert
             if (!data.ok) return alert('Sign out failed');
             this.props.setSession({});
             window.location.reload();
         } catch (error) {
             console.warn(error?.message || error);
+            // eslint-disable-next-line no-alert
             alert('Sign out failed');
         }
     }
@@ -477,7 +478,7 @@ class MenuBar extends React.Component {
             } else if (mode === '220022BC') {
                 document.getElementById('logo_img').src = prehistoricLogo;
             } else {
-                document.getElementById('logo_img').src = this.props.logo;
+                // document.getElementById('logo_img').src = this.props.logo;
             }
 
             this.props.onSetTimeTravelMode(mode);
@@ -718,7 +719,9 @@ class MenuBar extends React.Component {
                         </form>
                     )}
                     <div className={styles.fileGroup}>
-                        {!this.props.isPlayerOnly && (this.props.canChangeTheme || this.props.canChangeLanguage) && (<SettingsMenu
+                        {!this.props.isPlayerOnly && (
+                            this.props.canChangeTheme || this.props.canChangeLanguage
+                        ) && (<SettingsMenu
                             className={styles.fileGroup}
                             canChangeLanguage={this.props.canChangeLanguage}
                             canChangeTheme={this.props.canChangeTheme}
@@ -951,6 +954,7 @@ class MenuBar extends React.Component {
                                                 />
                                             </MenuItem>
                                             <MenuItem
+                                                // eslint-disable-next-line react/jsx-no-bind
                                                 onClick={() => window.open('https://dashblocks.org/unpackager/', '_blank')}
                                             >
                                                 <FormattedMessage
@@ -1220,7 +1224,7 @@ class MenuBar extends React.Component {
                                                 className={styles.menuBarButton}
                                                 isShared={this.props.isShared}
                                                 isSharing={this.state.isSharing}
-                                                /* eslint-disable react/jsx-no-bind */
+                                                /* eslint-disable react/jsx-no-bind, no-unused-expressions */
                                                 onClick={() => {
                                                     this.props.isShared ?
                                                         this.handleClickUpdate(waitForUpdate) :
@@ -1247,7 +1251,7 @@ class MenuBar extends React.Component {
                     )}
                     <div className={classNames(styles.menuBarItem, styles.communityButtonWrapper)}>
                         {this.props.enableCommunity ? (
-                            (!isScratchDesktop() && this.props.isShowingProject || this.props.isUpdating) && (
+                            (!isScratchDesktop() && (this.props.isShowingProject || this.props.isUpdating)) && (
                                 <ProjectWatcher onDoneUpdating={this.props.onSeeCommunity}>
                                     {
                                         waitForUpdate => (
@@ -1314,7 +1318,9 @@ class MenuBar extends React.Component {
                                 >
                                     <span
                                         className={
-                                            this.props.session?.profile.unreadMessages > 0 ? styles.messagesCountVisible : styles.messagesCount
+                                            this.props.session?.profile.unreadMessages > 0 ?
+                                                styles.messagesCountVisible :
+                                                styles.messagesCount
                                         }
                                     >{this.props.session?.profile.unreadMessages}</span>
                                     <img
@@ -1360,6 +1366,7 @@ class MenuBar extends React.Component {
                                     styles.hoverable
                                 )}
                                 key="join"
+                                // eslint-disable-next-line react/jsx-no-bind
                                 onMouseUp={() => window.open('./register', '_blank')}
                             >
                                 <FormattedMessage
@@ -1374,6 +1381,7 @@ class MenuBar extends React.Component {
                                     styles.hoverable
                                 )}
                                 key="login"
+                                // eslint-disable-next-line react/jsx-no-bind
                                 onMouseUp={() => window.open('./login', '_blank')}
                             >
                                 <FormattedMessage
@@ -1436,7 +1444,6 @@ MenuBar.propTypes = {
     onClickErrors: PropTypes.func,
     onRequestCloseErrors: PropTypes.func,
     confirmReadyToReplaceProject: PropTypes.func,
-    currentLocale: PropTypes.string.isRequired,
     editMenuOpen: PropTypes.bool,
     enableCommunity: PropTypes.bool,
     fileMenuOpen: PropTypes.bool,
@@ -1449,11 +1456,7 @@ MenuBar.propTypes = {
     isTotallyNormal: PropTypes.bool,
     isUpdating: PropTypes.bool,
     locale: PropTypes.string.isRequired,
-    loginMenuOpen: PropTypes.bool,
-    mode1920: PropTypes.bool,
-    mode1990: PropTypes.bool,
     mode2020: PropTypes.bool,
-    mode220022BC: PropTypes.bool,
     modeMenuOpen: PropTypes.bool,
     modeNow: PropTypes.bool,
     onClickAbout: PropTypes.oneOfType([
@@ -1472,7 +1475,6 @@ MenuBar.propTypes = {
     onClickRestorePoints: PropTypes.func,
     onClickEdit: PropTypes.func,
     onClickFile: PropTypes.func,
-    onClickLogin: PropTypes.func,
     onClickMode: PropTypes.func,
     onClickNew: PropTypes.func,
     onClickNewWindow: PropTypes.func,
@@ -1481,26 +1483,20 @@ MenuBar.propTypes = {
     onClickSaveAsCopy: PropTypes.func,
     onClickSettings: PropTypes.func,
     onClickSettingsModal: PropTypes.func,
-    onLogOut: PropTypes.func,
-    onOpenRegistration: PropTypes.func,
-    onOpenTipLibrary: PropTypes.func,
     onProjectTelemetryEvent: PropTypes.func,
     onRequestCloseAbout: PropTypes.func,
     onRequestCloseAccount: PropTypes.func,
     onRequestCloseEdit: PropTypes.func,
     onRequestCloseFile: PropTypes.func,
-    onRequestCloseLogin: PropTypes.func,
     onRequestCloseMode: PropTypes.func,
     onRequestCloseSettings: PropTypes.func,
     onRequestOpenAbout: PropTypes.func,
     onSeeCommunity: PropTypes.func,
     onSetTimeTravelMode: PropTypes.func,
-    onShare: PropTypes.func,
     onStartSelectingFileUpload: PropTypes.func,
-    onToggleLoginOpen: PropTypes.func,
     projectId: PropTypes.string,
     projectTitle: PropTypes.string,
-    renderLogin: PropTypes.func,
+    session: PropTypes.object,
     sessionExists: PropTypes.bool,
     settingsMenuOpen: PropTypes.bool,
     shouldSaveBeforeTransition: PropTypes.func,
@@ -1508,7 +1504,6 @@ MenuBar.propTypes = {
     showComingSoon: PropTypes.bool,
     setSession: PropTypes.func,
     username: PropTypes.string,
-    userOwnsProject: PropTypes.bool,
     vm: PropTypes.instanceOf(VM).isRequired
 };
 
@@ -1516,7 +1511,7 @@ MenuBar.defaultProps = {
     onShare: () => {}
 };
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = state => {
     const loadingState = state.scratchGui.projectState.loadingState;
     const session = state.scratchGui.dash.session;
     const projectId = state.scratchGui.projectState.projectId;

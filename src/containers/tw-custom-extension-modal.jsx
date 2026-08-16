@@ -23,11 +23,13 @@ const readAsDataURL = blob => new Promise((resolve, reject) => {
 const messages = defineMessages({
     swapWarning: {
         id: 'dash.customExtensionModal.swapWarning',
+        // eslint-disable-next-line max-len
         defaultMessage: 'If extensions swap will fail, it will cause the extension to be flatout removed, are you sure the inputed extension has matching id\'s and has no errors?',
         description: 'Warning message when swapping (editing) extensions'
     },
     differentSwapId: {
         id: 'dash.customExtensionModal.differentSwapId',
+        // eslint-disable-next-line max-len
         defaultMessage: 'The extension you used to for the edit had a different id to the one you where editing, so added it as new extension.',
         description: 'Warning message when the extension being swapped has a different ID'
     },
@@ -233,10 +235,10 @@ class CustomExtensionModal extends React.Component {
                     // eslint-disable-next-line no-alert
                     alert(this.props.intl.formatMessage(messages.swapFailed));
                     this.props.vm.runtime._removeExtensionPrimitive(this.props.swapId);
-                    return;
+                } else {
+                    // eslint-disable-next-line no-alert
+                    alert(this.props.intl.formatMessage(messages.extensionLoadFailed));
                 }
-                // eslint-disable-next-line no-alert
-                alert(this.props.intl.formatMessage(messages.extensionLoadFailed));
             }
         }
     }
@@ -349,7 +351,8 @@ CustomExtensionModal.propTypes = {
             extensionsURLCodes: PropTypes.object,
             prepareSwap: PropTypes.func,
             extensionURLFromId: PropTypes.func,
-            removeExtension: PropTypes.func
+            removeExtension: PropTypes.func,
+            extensionsIDs: PropTypes.array
         }),
         runtime: PropTypes.shape({
             _removeExtensionPrimitive: PropTypes.func,

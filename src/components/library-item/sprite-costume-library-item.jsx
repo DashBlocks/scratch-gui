@@ -46,6 +46,7 @@ class SpriteCostumeLibraryItem extends React.PureComponent {
                             <span className={styles.featuredThinDescription}>
                                 <FormattedMessage
                                     defaultMessage="{costumesCount, plural, one {1 costume} other {# costumes}}"
+                                    // eslint-disable-next-line max-len
                                     description="Appears in the sprite list. Shows the number of costumes the sprite has."
                                     id="dash.costumesCount"
                                     values={{
@@ -73,6 +74,8 @@ SpriteCostumeLibraryItem.propTypes = {
         PropTypes.string,
         PropTypes.node
     ]),
+    libraryId: PropTypes.string,
+    icons: PropTypes.arrayOf(PropTypes.string),
     onBlur: PropTypes.func.isRequired,
     onClick: PropTypes.func.isRequired,
     onFocus: PropTypes.func.isRequired,

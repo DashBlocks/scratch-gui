@@ -7,7 +7,17 @@ import {connect} from 'react-redux';
 import check from './check.svg';
 import dropdownCaret from './dropdown-caret.svg';
 import {MenuItem, Submenu} from '../menu/menu.jsx';
-import {ACCENT_BLUE, ACCENT_MAP, ACCENT_PURPLE, ACCENT_RED, ACCENT_ORANGE, ACCENT_GREEN, ACCENT_RAINBOW, ACCENT_CUSTOM, Theme} from '../../lib/themes/index.js';
+import {
+    ACCENT_BLUE,
+    ACCENT_MAP,
+    ACCENT_PURPLE,
+    ACCENT_RED,
+    ACCENT_ORANGE,
+    ACCENT_GREEN,
+    ACCENT_RAINBOW,
+    ACCENT_CUSTOM,
+    Theme
+} from '../../lib/themes/index.js';
 import {openAccentMenu, accentMenuOpen, closeSettingsMenu} from '../../reducers/menus.js';
 import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
@@ -123,7 +133,7 @@ class AccentThemeMenu extends React.Component {
         const color = e.target.value;
         try {
             localStorage.setItem('dash:accent_custom_color', color);
-        } catch (e) {
+        } catch (_) {
             // ignore
         }
         document.documentElement.style.setProperty('--dash-accent-custom', color);

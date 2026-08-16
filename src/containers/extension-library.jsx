@@ -217,12 +217,13 @@ class ExtensionLibrary extends React.PureComponent {
                     clearTimeout(timeout);
                 });
 
-            const otherExtensions = getOtherExtensions();
+            const formattedOtherExtensions = getOtherExtensions();
             const gallery = getLibrary();
             cachedOtherExtensions = gallery;
             cachedGallery = gallery;
+            // eslint-disable-next-line react/no-did-mount-set-state
             this.setState({
-                otherExtensions,
+                otherExtensions: formattedOtherExtensions,
                 gallery
             });
         }

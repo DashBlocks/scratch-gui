@@ -66,7 +66,5 @@ const loadFonts = function () {
     return Promise.resolve(getFonts());
 };
 
-export {
-    getFonts as default,
-    loadFonts
-};
+module.exports = getFonts;
+module.exports.loadFonts = loadFonts;

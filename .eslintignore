@@ -3,6 +3,7 @@ build/*
 dist/*
 test/*
 src/examples/*
+src/lib/tw-scratch-render-fonts/*
 
 # Files vendored from upstreams
 src/addons/addons

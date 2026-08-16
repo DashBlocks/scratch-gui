@@ -113,7 +113,7 @@ const fetchTwLibrary = async () => {
     }));
 };
 
-const fetchOtherExtensions = () => otherExtensions.map(extension => ({
+const getOtherExtensions = () => otherExtensions.map(extension => ({
     name: extension.name,
     nameTranslations: extension.nameTranslations || {},
     description: extension.description,
@@ -144,7 +144,7 @@ const fetchOtherExtensions = () => otherExtensions.map(extension => ({
     featured: true
 }));
 
-const fetchLibrary = () => extensions.map(extension => ({
+const getLibrary = () => extensions.map(extension => ({
     name: extension.name,
     nameTranslations: extension.nameTranslations || {},
     description: extension.description,
@@ -217,38 +217,14 @@ class ExtensionLibrary extends React.PureComponent {
                     clearTimeout(timeout);
                 });
 
-            
-            fetchOtherExtensions()
-                .then(gallery => {
-                    cachedOtherExtensions = gallery;
-                    this.setState({
-                        otherExtensions: gallery
-                    });
-                    clearTimeout(timeout);
-                })
-                .catch(error => {
-                    log.error(error);
-                    this.setState({
-                        galleryError: error
-                    });
-                    clearTimeout(timeout);
-                });
-
-            fetchLibrary()
-                .then(gallery => {
-                    cachedGallery = gallery;
-                    this.setState({
-                        gallery
-                    });
-                    clearTimeout(timeout);
-                })
-                .catch(error => {
-                    log.error(error);
-                    this.setState({
-                        galleryError: error
-                    });
-                    clearTimeout(timeout);
-                });
+            const otherExtensions = getOtherExtensions();
+            const gallery = getLibrary();
+            cachedOtherExtensions = gallery;
+            cachedGallery = gallery;
+            this.setState({
+                otherExtensions,
+                gallery
+            });
         }
     }
     handleItemSelect (item) {

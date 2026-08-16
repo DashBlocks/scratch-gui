@@ -1,5 +1,20 @@
 [
     {
+        "name": "Circles 2",
+        "tags": [
+            "dash",
+            "patterns"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 240,
+        "rotationCenterY": 180,
+        "src": {
+            "library": "dash",
+            "path": "/backdrops/Circles%202.svg"
+        }
+    },
+    {
         "name": "Confetti",
         "tags": [
             "dash",
@@ -27,6 +42,36 @@
         "src": {
             "library": "dash",
             "path": "/backdrops/Gaming%20Shapes.svg"
+        }
+    },
+    {
+        "name": "Grid",
+        "tags": [
+            "dash",
+            "patterns"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 240,
+        "rotationCenterY": 180,
+        "src": {
+            "library": "dash",
+            "path": "/backdrops/Grid.svg"
+        }
+    },
+    {
+        "name": "Lines",
+        "tags": [
+            "dash",
+            "patterns"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 240,
+        "rotationCenterY": 180,
+        "src": {
+            "library": "dash",
+            "path": "/backdrops/Lines.svg"
         }
     }
 ]

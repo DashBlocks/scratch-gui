@@ -448,6 +448,74 @@
         }
     },
     {
+        "name": "Voxel Icon-a",
+        "tags": [
+            "dash",
+            "icons",
+            "symbols"
+        ],
+        "license": "CC0 1.0 <https://creativecommons.org/publicdomain/zero/1.0/>",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 72,
+        "rotationCenterY": 100.5,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Voxel%20Icon-a.svg"
+        }
+    },
+    {
+        "name": "Voxel Icon-b",
+        "tags": [
+            "dash",
+            "icons",
+            "symbols"
+        ],
+        "license": "CC0 1.0 <https://creativecommons.org/publicdomain/zero/1.0/>",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 66.5,
+        "rotationCenterY": 71.5,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Voxel%20Icon-b.svg"
+        }
+    },
+    {
+        "name": "Voxel Icon-c",
+        "tags": [
+            "dash",
+            "icons",
+            "symbols"
+        ],
+        "license": "CC0 1.0 <https://creativecommons.org/publicdomain/zero/1.0/>",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 94.5,
+        "rotationCenterY": 115,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Voxel%20Icon-c.svg"
+        }
+    },
+    {
+        "name": "Voxel Icon-d",
+        "tags": [
+            "dash",
+            "icons",
+            "symbols"
+        ],
+        "license": "CC0 1.0 <https://creativecommons.org/publicdomain/zero/1.0/>",
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 100,
+        "rotationCenterY": 107.5,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Voxel%20Icon-d.svg"
+        }
+    },
+    {
         "name": "Warning",
         "tags": [
             "dash",

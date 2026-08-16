@@ -401,7 +401,7 @@ export default [
             />
         ),
         incompatibleWithScratch: true,
-        tags: ['tsmod'],
+        tags: ['dash'],
         featured: true
     },
     {
@@ -422,7 +422,7 @@ export default [
                 id="tw.customExtension.description"
             />
         ),
-        tags: ['tsmod'],
+        tags: ['dash'],
         featured: true
         // Not marked as incompatible with Scratch so that clicking on it doesn't show a prompt
     }
@@ -439,7 +439,7 @@ export const galleryLoading = {
             }}
         />
     ),
-    href: 'https://t-smod.github.io/extensions',
+    href: 'https://dashblocks.org/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (
@@ -465,29 +465,6 @@ export const galleryMore = {
             }}
         />
     ),
-    href: 'https://t-smod.github.io/extensions',
-    extensionId: 'gallery',
-    iconURL: galleryIcon,
-    description: (
-        <FormattedMessage
-            // eslint-disable-next-line max-len
-            defaultMessage="Learn more about extensions at t-smod.github.io/extensions."
-            description="Appears after the extension list from the gallery was loaded successfully"
-            id="dash.extensionGallery.more"
-        />
-    ),
-    tags: ['tsmod', 'gallery'],
-    featured: true
-};
-
-export const galleryDash = {
-    name: (
-        <FormattedMessage
-            defaultMessage="Dash Extension Gallery"
-            description="Name of Mod's extension gallery in extension library"
-            id="tsmod.extensionGallery.dash.name"
-        />
-    ),
     href: 'https://dashblocks.org/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
@@ -496,81 +473,12 @@ export const galleryDash = {
             // eslint-disable-next-line max-len
             defaultMessage="Learn more about extensions at dashblocks.org/extensions."
             description="Appears after the extension list from the gallery was loaded successfully"
-            id="dash.extensionGallery.dash.more"
+            id="dash.extensionGallery.more"
         />
     ),
-    tags: ['dash', 'gallery'],
+    tags: ['dash'],
     featured: true
-}
-
-export const galleryTW = {
-    name: (
-        <FormattedMessage
-            defaultMessage="TurboWarp Extension Gallery"
-            description="Name of Mod's extension gallery in extension library"
-            id="tsmod.extensionGallery.tw.name"
-        />
-    ),
-    href: 'https://extensions.turbowarp.org/',
-    extensionId: 'gallery',
-    iconURL: galleryIcon,
-    description: (
-        <FormattedMessage
-            // eslint-disable-next-line max-len
-            defaultMessage="Learn more about extensions at extensions.tubowarp.org."
-            description="Appears after the extension list from the gallery was loaded successfully"
-            id="dash.extensionGallery.tw.more"
-        />
-    ),
-    tags: ['tw', 'gallery'],
-    featured: true
-}
-
-export const galleryPM = {
-    name: (
-        <FormattedMessage
-            defaultMessage="TurboWarp Extension Gallery"
-            description="Name of Mod's extension gallery in extension library"
-            id="tsmod.extensionGallery.pm.name"
-        />
-    ),
-    href: 'https://extensions.penguinmod.com/',
-    extensionId: 'gallery',
-    iconURL: galleryIcon,
-    description: (
-        <FormattedMessage
-            // eslint-disable-next-line max-len
-            defaultMessage="Learn more about extensions at extensions.penguinmod.org."
-            description="Appears after the extension list from the gallery was loaded successfully"
-            id="dash.extensionGallery.pm.more"
-        />
-    ),
-    tags: ['other', 'gallery'],
-    featured: true
-}
-
-export const gallerySharkPool = {
-    name: (
-        <FormattedMessage
-            defaultMessage="Shark Pool's Extension Gallery"
-            description="Name of Mod's extension gallery in extension library"
-            id="tsmod.extensionGallery.sp.name"
-        />
-    ),
-    href: 'https://sharkpool-sp.github.io/SharkPools-Extensions/',
-    extensionId: 'gallery',
-    iconURL: galleryIcon,
-    description: (
-        <FormattedMessage
-            // eslint-disable-next-line max-len
-            defaultMessage="Learn more about extensions at sharlpool-sp.github.io/SharkPools-Extensions."
-            description="Appears after the extension list from the gallery was loaded successfully"
-            id="dash.extensionGallery.sp.more"
-        />
-    ),
-    tags: ['other', 'gallery'],
-    featured: true
-}
+};
 
 export const galleryError = {
     name: (
@@ -583,7 +491,7 @@ export const galleryError = {
             }}
         />
     ),
-    href: 'https://t-smod.github.io/extensions',
+    href: 'https://dashblocks.org/extensions',
     extensionId: 'gallery',
     iconURL: galleryIcon,
     description: (

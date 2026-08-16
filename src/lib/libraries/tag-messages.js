@@ -6,16 +6,6 @@ export default defineMessages({
         description: 'Tag for filtering a library for Dash-created content',
         id: 'dash.libraryTags.dash'
     },
-    tsmod: {
-        defaultMessage: 'TSMod',
-        description: 'Tag for filtering a library for TSMod-created content',
-        id: 'dash.libraryTags.tsmod'
-    },
-    gallery: {
-        defaultMessage: 'Galleries',
-        description: 'Tag for filtering a library for galleries',
-        id: 'dash.libraryTags.gallery'
-    },
     other: {
         defaultMessage: 'Other mods',
         description: 'Tag for filtering a library for extensions from other modifications',

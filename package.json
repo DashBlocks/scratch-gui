@@ -99,7 +99,7 @@
     "scratch-audio": "github:DashBlocks/scratch-audio#develop",
     "scratch-blocks": "github:DashBlocks/scratch-blocks#develop-builds",
     "scratch-paint": "github:DashBlocks/PenguinMod-Paint#develop",
-    "scratch-render": "github:TurboWarp/scratch-render#develop",
+    "scratch-render": "github:DashBlocks/scratch-render#develop",
     "scratch-vm": "github:T-SMod/scratch-vm#develop",
     "style-loader": "^0.23.0",
     "text-encoding": "0.7.0",

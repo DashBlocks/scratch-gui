@@ -61,7 +61,7 @@ class Register extends React.Component {
     }
 
     componentDidMount () {
-        document.title = this.props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
+        document.title = `${this.props.intl.formatMessage(messages.title)} - ${APP_NAME}`;
     }
 
     handleChange (e) {
@@ -75,8 +75,9 @@ class Register extends React.Component {
         const {email, username, password, confirmPassword, verificationCode} = this.state;
         try {
             // Maybe better to do this on backend ¯\_(ツ)_/¯
-            if (password !== confirmPassword)
+            if (password !== confirmPassword) {
                 throw new Error(this.props.intl.formatMessage(messages.passwordsDontMatch));
+            }
             const response = await fetch('https://api.dashblocks.org/auth/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -93,8 +94,9 @@ class Register extends React.Component {
                 return;
             }
             const result = await response.json();
-            if (!result.ok)
+            if (!result.ok) {
                 throw new Error(result.error || this.props.intl.formatMessage(messages.failedToSignUp));
+            }
             window.location.href = '/login';
         } catch (error) {
             this.setState({error: error.message});
@@ -107,7 +109,7 @@ class Register extends React.Component {
         return (
             <>
                 <LazyMenuBar />
-                {this.props.session && this.props.session.username ? window.location.href = "/" : null}
+                {this.props.session && this.props.session.username ? window.location.href = '/' : null}
                 <div
                     className={styles.container}
                 >
@@ -226,7 +228,11 @@ class Register extends React.Component {
                                             id="dash.tosAndPrivacy"
                                             values={{
                                                 termsOfService: (
-                                                    <a href={`${process.env.ROOT}tos`} target="_blank">
+                                                    <a
+                                                        href={`${process.env.ROOT}tos`}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                    >
                                                         <FormattedMessage
                                                             defaultMessage="Terms of Service"
                                                             description="Link to terms of service page"
@@ -235,7 +241,11 @@ class Register extends React.Component {
                                                     </a>
                                                 ),
                                                 privacyPolicy: (
-                                                    <a href={`${process.env.ROOT}privacy`} target="_blank">
+                                                    <a
+                                                        href={`${process.env.ROOT}privacy`}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                    >
                                                         <FormattedMessage
                                                             defaultMessage="Privacy Policy"
                                                             description="Link to privacy policy page"
@@ -278,10 +288,13 @@ class Register extends React.Component {
                                 <FormattedMessage
                                     defaultMessage="Already have an account? {logIn}"
                                     description="Text prompting user to log in if they already have an account"
-									id="dash.register.logIn"
+                                    id="dash.register.logIn"
                                     values={{
                                         logIn: (
-                                            <a href="./login" target="_blank">
+                                            <a
+                                                href="./login"
+                                                target="_blank"
+                                            >
                                                 <FormattedMessage
                                                     defaultMessage="Log in"
                                                     description="Link to log in page"

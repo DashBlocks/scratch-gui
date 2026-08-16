@@ -34,6 +34,7 @@ const decorate = (text, isDashProject) => {
             href={`https://scratch.mit.edu/search/projects?q=${match}`}
             target="_blank"
             key={match + i}
+            rel="noreferrer"
         >{`#${match}`}</a>
     ));
 

@@ -34,10 +34,10 @@ const messages = defineMessages({
         defaultMessage: '{title} by {author}',
         description: 'Displayed when hovering on a project',
         id: 'tw.studioview.hoverText'
-    },
+    }
 });
 
-const UserProjects = (props) => {
+const UserProjects = props => {
     const id = useHashUserId();
     const [userData, setUserData] = useState(null);
     const [projects, setProjects] = useState([]);
@@ -55,10 +55,10 @@ const UserProjects = (props) => {
         setOffset(0);
         setError(null);
 
-        document.title = props.intl.formatMessage(messages.title, {
+        document.title = `${props.intl.formatMessage(messages.title, {
             username: 'User',
             projectsCount: '?'
-        }) + ' - ' + APP_NAME;
+        })} - ${APP_NAME}`;
 
         setLoading(true);
         const fetchData = async () => {
@@ -74,18 +74,18 @@ const UserProjects = (props) => {
                 setLoading(false);
                 return;
             }
-            document.title = props.intl.formatMessage(messages.title, {
+            document.title = `${props.intl.formatMessage(messages.title, {
                 username: user.user.username,
                 projectsCount: user.user.profile.stats.projects
-            }) + ' - ' + APP_NAME;
+            })} - ${APP_NAME}`;
             setUserData(user.user);
             await fetchProjects(0);
             setLoading(false);
-        }
+        };
         fetchData();
     }, [id]);
 
-    const fetchProjects = async (currentOffset) => {
+    const fetchProjects = async currentOffset => {
         setLoadMoreButtonDisabled(true);
         try {
             const projectsRes = await fetch(`https://api.dashblocks.org/users/${id}/projects?limit=${limit}&offset=${currentOffset}`, {
@@ -104,29 +104,38 @@ const UserProjects = (props) => {
         }
     };
 
-    if (loading) return (
-        <>
-            <LazyMenuBar />
-            <div className={styles.spinner}>
-                <Spinner level={'primary'} large />
-            </div>
-            <Footer />
-        </>
-    );
-    if (error) return (
-        <>
-            <LazyMenuBar />
-            <div>Error: {error}</div>
-            <Footer />
-        </>
-    );
-    if (!userData || !projects) return (
-        <>
-            <LazyMenuBar />
-            <div>Failed to load user data</div>
-            <Footer />
-        </>
-    );
+    if (loading) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div className={styles.spinner}>
+                    <Spinner
+                        level={'primary'}
+                        large
+                    />
+                </div>
+                <Footer />
+            </>
+        );
+    }
+    if (error) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div>Error: {error}</div>
+                <Footer />
+            </>
+        );
+    }
+    if (!userData || !projects) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div>Failed to load user data</div>
+                <Footer />
+            </>
+        );
+    }
 
     return (
         <>
@@ -149,7 +158,7 @@ const UserProjects = (props) => {
                             />
                         </h2>
                         <div className={styles.projectGrid}>
-                            {projects.length > 0 ? projects.map((project) => (
+                            {projects.length > 0 ? projects.map(project => (
                                 <div
                                     key={project.id}
                                     className={styles.projectCard}

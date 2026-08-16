@@ -9,11 +9,11 @@ const setProjectId = (dispatch, projectId) => {
     if (process.env.ROUTING_STYLE === 'wildcard') {
         location.href = `${process.env.ROOT}${projectId}`;
         return;
-    } else {
-        location.href = `${process.env.ROOT}#${projectId}`;
-        window.location.reload();
-        return;
     }
+    location.href = `${process.env.ROOT}#${projectId}`;
+    window.location.reload();
+    return;
+    
 };
 
 const searchParamsToString = params => {

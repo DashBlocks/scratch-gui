@@ -279,7 +279,7 @@ class TWSecurityManagerComponent extends React.Component {
             log.info(`Loading extension ${url} automatically`);
             return true;
         }
-        const { showModal } = await this.acquireModalLock();
+        const {showModal} = await this.acquireModalLock();
         const allowed = await showModal(SecurityModals.LoadExtension, {
             url,
             unsandboxed: getPersistedUnsandboxed(),

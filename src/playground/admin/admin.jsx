@@ -72,7 +72,7 @@ const messages = defineMessages({
     }
 });
 
-const Admin = (props) => {
+const Admin = props => {
     const [userData, setUserData] = useState(null);
 
     const [featureProjectId, setFeatureProjectId] = useState('');
@@ -93,7 +93,7 @@ const Admin = (props) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        document.title = props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
+        document.title = `${props.intl.formatMessage(messages.title)} - ${APP_NAME}`;
 
         const fetchFullProfile = async () => {
             setLoading(true);
@@ -110,7 +110,7 @@ const Admin = (props) => {
         fetchFullProfile();
     }, []);
 
-    async function handleFeatureProject(projectId) {
+    async function handleFeatureProject (projectId) {
         if (!projectId || featureProjectButtonLoading) return;
 
         setFeatureProjectButtonLoading(true);
@@ -130,7 +130,7 @@ const Admin = (props) => {
         }
     }
 
-    async function handleUnfeatureProject(projectId) {
+    async function handleUnfeatureProject (projectId) {
         if (!projectId || unfeatureProjectButtonLoading) return;
 
         setUnfeatureProjectButtonLoading(true);
@@ -150,7 +150,7 @@ const Admin = (props) => {
         }
     }
 
-    async function handleDeleteProject(projectId) {
+    async function handleDeleteProject (projectId) {
         if (!projectId || deleteProjectButtonLoading) return;
 
         setDeleteProjectButtonLoading(true);
@@ -162,8 +162,9 @@ const Admin = (props) => {
             });
             const data = await res.json();
             if (!data.ok) throw new Error(data.error);
-            if (res.status_code === 202)
+            if (res.status_code === 202) {
                 alert(props.intl.formatMessage(messages.deletedOnlyFromProfile));
+            }
             setDeleteProjectId('');
         } catch (error) {
             alert(`Error deleting project with ID ${projectId}: ${error.message}`);
@@ -172,19 +173,19 @@ const Admin = (props) => {
         }
     }
 
-    async function handleManageUser() {
+    async function handleManageUser () {
         if (!targetUsername || manageButtonLoading) return;
 
         setManageButtonLoading(true);
 
         try {
-            const body = { targetUsername, action: manageAction };
+            const body = {targetUsername, action: manageAction};
             if (manageAction === 'promote') body.role = manageRole;
 
             const res = await fetch('https://api.dashblocks.org/admin/manage-user', {
                 method: 'POST',
                 credentials: 'include',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(body)
             });
             const data = await res.json();
@@ -197,36 +198,47 @@ const Admin = (props) => {
         }
     }
 
-    if (loading) return (
-        <>
-            <LazyMenuBar />
-            <div className={styles.spinner}>
-                <Spinner level={'primary'} large />
-            </div>
-            <Footer />
-        </>
-    );
-    if (error) return (
-        <>
-            <LazyMenuBar />
-            <div>Error: {error}</div>
-            <Footer />
-        </>
-    );
-    if (!userData) return (
-        <>
-            <LazyMenuBar />
-            <div>Failed to load user data</div>
-            <Footer />
-        </>
-    );
-    if (userData.role !== 'dashteam') return (
-        <>
-            <LazyMenuBar />
-            <div>Not an admin</div>
-            <Footer />
-        </>
-    )
+    if (loading) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div className={styles.spinner}>
+                    <Spinner
+                        level={'primary'}
+                        large
+                    />
+                </div>
+                <Footer />
+            </>
+        );
+    }
+    if (error) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div>Error: {error}</div>
+                <Footer />
+            </>
+        );
+    }
+    if (!userData) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div>Failed to load user data</div>
+                <Footer />
+            </>
+        );
+    }
+    if (userData.role !== 'dashteam') {
+        return (
+            <>
+                <LazyMenuBar />
+                <div>Not an admin</div>
+                <Footer />
+            </>
+        );
+    }
 
     return (
         <>
@@ -273,7 +285,10 @@ const Admin = (props) => {
                                 onClick={() => handleFeatureProject(featureProjectId)}
                             >
                                 {featureProjectButtonLoading ? (
-                                    <Spinner className={styles.spinner} small />
+                                    <Spinner
+                                        className={styles.spinner}
+                                        small
+                                    />
                                 ) : (
                                     <FormattedMessage
                                         defaultMessage="Feature"
@@ -312,7 +327,10 @@ const Admin = (props) => {
                                 onClick={() => handleUnfeatureProject(unfeatureProjectId)}
                             >
                                 {unfeatureProjectButtonLoading ? (
-                                    <Spinner className={styles.spinner} small />
+                                    <Spinner
+                                        className={styles.spinner}
+                                        small
+                                    />
                                 ) : (
                                     <FormattedMessage
                                         defaultMessage="Unfeature"
@@ -351,7 +369,10 @@ const Admin = (props) => {
                                 onClick={() => handleDeleteProject(deleteProjectId)}
                             >
                                 {deleteProjectButtonLoading ? (
-                                    <Spinner className={styles.spinner} small />
+                                    <Spinner
+                                        className={styles.spinner}
+                                        small
+                                    />
                                 ) : (
                                     <FormattedMessage
                                         defaultMessage="Delete"
@@ -437,7 +458,10 @@ const Admin = (props) => {
                                 onClick={handleManageUser}
                             >
                                 {manageButtonLoading ? (
-                                    <Spinner className={styles.spinner} small />
+                                    <Spinner
+                                        className={styles.spinner}
+                                        small
+                                    />
                                 ) : (
                                     <FormattedMessage
                                         defaultMessage="Manage"

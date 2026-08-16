@@ -111,15 +111,15 @@ class AccentThemeMenu extends React.Component {
         this.colorInput = React.createRef();
     }
 
-    handleItemClick = (item) => {
+    handleItemClick = item => {
         if (item === ACCENT_CUSTOM) {
             if (this.colorInput && this.colorInput.current) this.colorInput.current.click();
             return;
         }
         this.props.onChangeTheme(this.props.theme.set('accent', item));
-    }
+    };
 
-    handleColorChange = (e) => {
+    handleColorChange = e => {
         const color = e.target.value;
         try {
             localStorage.setItem('dash:accent_custom_color', color);
@@ -128,7 +128,7 @@ class AccentThemeMenu extends React.Component {
         }
         document.documentElement.style.setProperty('--dash-accent-custom', color);
         this.props.onChangeTheme(this.props.theme.set('accent', ACCENT_CUSTOM));
-    }
+    };
 
     render () {
         const {isOpen, isRtl, onOpen, theme} = this.props;

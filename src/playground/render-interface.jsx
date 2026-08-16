@@ -16,7 +16,7 @@
 
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
 import {FormattedMessage, FormattedDate, FormattedTime, FormattedRelative, defineMessages, injectIntl, intlShape} from 'react-intl';
@@ -60,7 +60,7 @@ import descriptionIcon from '!../lib/tw-recolor/build!./icons/icon--description.
 import whatsNewIcon from '!../lib/tw-recolor/build!./icons/icon--whatsnew.svg';
 
 import styles from './interface.css';
-import lazyMessages from '../components/loader/lazy-messages.json'
+import lazyMessages from '../components/loader/lazy-messages.json';
 import Loader from '../components/loader/loader.jsx';
 import {NewYearMode, isNewYearMode} from '../components/dash-new-year-mode/new-year-mode.jsx';
 
@@ -73,7 +73,7 @@ const relativeTimeSupported = () => typeof Intl !== 'undefined' && typeof Intl.R
 
 const handleClickAddonSettings = addonId => {
     // addonId might be a string of the addon to focus on, undefined, or an event (treat like undefined)
-    const path = /*process.env.ROUTING_STYLE === 'wildcard' ?*/ 'addons' /*: 'addons.html'*/;
+    const path = /* process.env.ROUTING_STYLE === 'wildcard' ?*/ 'addons';
     const url = `${process.env.ROOT}${path}${typeof addonId === 'string' ? `#${addonId}` : ''}`;
     window.open(url);
 };
@@ -148,11 +148,11 @@ const RenderLoader = () => {
 const RenderWelcomeModal = () => {
     const [isOpen, setIsOpen] = React.useState(false);
 
-    function handleOnOpen() {
+    function handleOnOpen () {
         setIsOpen(true);
     }
 
-    function handleOnClose() {
+    function handleOnClose () {
         setIsOpen(false);
     }
 
@@ -166,7 +166,7 @@ const RenderWelcomeModal = () => {
                     id="dash.home.welcomeModal"
                 />
             </a>
-            {isOpen && <DashWelcomeModal onClose={handleOnClose}/>}
+            {isOpen && <DashWelcomeModal onClose={handleOnClose} />}
         </>
     );
 };
@@ -191,7 +191,7 @@ const RenderVersion = () => {
     return (
         <div className={styles.footerText}>
             <div className={styles.commitVersion}>
-                {window.location.href.startsWith('https://dashblocks.org/scratch-gui') ? 'Dev' : (version ? 'v' + version : '?')}
+                {window.location.href.startsWith('https://dashblocks.org/scratch-gui') ? 'Dev' : (version ? `v${version}` : '?')}
             </div>
         </div>
     );
@@ -362,7 +362,7 @@ const WhatsHappening = ({intl}) => {
         fetchActivity(0);
     }, []);
 
-    async function fetchActivity(currentOffset) {
+    async function fetchActivity (currentOffset) {
         setLoadMoreButtonDisabled(true);
         try {
             const res = await fetch(`https://api.dashblocks.org/session/activity?limit=${limit}&offset=${currentOffset}`, {
@@ -397,52 +397,52 @@ const WhatsHappening = ({intl}) => {
         }
     }
 
-    function getActionContent(action) {
+    function getActionContent (action) {
         switch (action.type) {
-            case 'shared-project':
-                return (
-                    <FormattedMessage
-                        defaultMessage="{user} shared project {project}"
-                        description="Displayed when someone shared project"
-                        id="dash.home.whatsHappening.sharedProject"
-                        values={{
-                            user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
-                            project: <a href={`/#${action.project.id}`}>{action.project.name}</a>
-                        }}
-                    />
-                );
-            case 'fired-project':
-                return (
-                    <FormattedMessage
-                        defaultMessage="{user} fired project {project}"
-                        description="Displayed when someone fired project"
-                        id="dash.home.whatsHappening.firedProject"
-                        values={{
-                            user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
-                            project: <a href={`/#${action.project.id}`}>{action.project.name}</a>
-                        }}
-                    />
-                );
-            case 'followed-user':
-                return (
-                    <FormattedMessage
-                        defaultMessage="{user} followed {target}"
-                        description="Displayed when someone followed someone"
-                        id="dash.home.whatsHappening.followedUser"
-                        values={{
-                            user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
-                            target: <a href={`user#${action.user.id}`}>{action.user.username}</a>
-                        }}
-                    />
-                );
-            default:
-                return (
-                    <FormattedMessage
-                        defaultMessage="Unknown action type"
-                        description="Displayed when there is an unknown action"
-                        id="dash.home.whatsHappening.unknown"
-                    />
-                );
+        case 'shared-project':
+            return (
+                <FormattedMessage
+                    defaultMessage="{user} shared project {project}"
+                    description="Displayed when someone shared project"
+                    id="dash.home.whatsHappening.sharedProject"
+                    values={{
+                        user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
+                        project: <a href={`/#${action.project.id}`}>{action.project.name}</a>
+                    }}
+                />
+            );
+        case 'fired-project':
+            return (
+                <FormattedMessage
+                    defaultMessage="{user} fired project {project}"
+                    description="Displayed when someone fired project"
+                    id="dash.home.whatsHappening.firedProject"
+                    values={{
+                        user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
+                        project: <a href={`/#${action.project.id}`}>{action.project.name}</a>
+                    }}
+                />
+            );
+        case 'followed-user':
+            return (
+                <FormattedMessage
+                    defaultMessage="{user} followed {target}"
+                    description="Displayed when someone followed someone"
+                    id="dash.home.whatsHappening.followedUser"
+                    values={{
+                        user: <a href={`user#${action.author.id}`}>{action.author.username}</a>,
+                        target: <a href={`user#${action.user.id}`}>{action.user.username}</a>
+                    }}
+                />
+            );
+        default:
+            return (
+                <FormattedMessage
+                    defaultMessage="Unknown action type"
+                    description="Displayed when there is an unknown action"
+                    id="dash.home.whatsHappening.unknown"
+                />
+            );
         }
     }
 
@@ -468,15 +468,15 @@ const WhatsHappening = ({intl}) => {
                             description="Displayed date for the action"
                             id="dash.messages.date"
                             values={{
-                                date: (action.date ? new Date(action.date) : null)
-                                    ? relativeTimeSupported()
-                                        ? (
+                                date: (action.date ? new Date(action.date) : null) ?
+                                    relativeTimeSupported() ?
+                                        (
                                             <span title={`${intl.formatDate(new Date(action.date))}, ${intl.formatTime(new Date(action.date))}`}>
                                                 <FormattedRelative value={action.date} />
                                             </span>
-                                        )
-                                        : (<FormattedDate value={new Date(action.date)} />)
-                                    : '?'
+                                        ) :
+                                        (<FormattedDate value={new Date(action.date)} />) :
+                                    '?'
                             }}
                         />
                     </div>
@@ -547,7 +547,7 @@ const WhatsNew = () => {
                         <div className={styles.commitItem}>
                             <div className={styles.commitMessage}>
                                 {matchedMsg[2] && <span className={styles.commitVersion}>
-                                    {'v' + matchedMsg[2]}
+                                    {`v${matchedMsg[2]}`}
                                 </span>}
                                 {matchedMsg[4]}
                             </div>
@@ -588,7 +588,7 @@ class Interface extends React.PureComponent {
             loadServiceWorker();
         }
     }
-    componentDidMount() {
+    componentDidMount () {
         const sum = lazyMessages.en.reduce(acc => acc + 1, 0);
         let rand = sum * Math.random();
         for (let i = 0; i < lazyMessages.en.length; i++) {
@@ -614,9 +614,9 @@ class Interface extends React.PureComponent {
         const {projectId} = this.props;
         if (!projectId || projectId === '0') return;
  
-        const prevText = this.state.descriptionOverride !== null
-            ? this.state.descriptionOverride
-            : (this.props.description.instructions || '');
+        const prevText = this.state.descriptionOverride !== null ?
+            this.state.descriptionOverride :
+            (this.props.description.instructions || '');
  
         this.setState({
             descriptionOverride: text,
@@ -648,7 +648,7 @@ class Interface extends React.PureComponent {
             activeTabIndex: tab
         });
     }
-    chooseRandomMessage() {
+    chooseRandomMessage () {
         return this.state.messageNumber;
     }
     render () {
@@ -673,9 +673,9 @@ class Interface extends React.PureComponent {
         } = this.props;
         const isHomepage = isPlayerOnly && !isFullScreen;
         const isEditor = !isPlayerOnly;
-        const descriptionText = this.state.descriptionOverride !== null
-            ? this.state.descriptionOverride
-            : (description.instructions || '');
+        const descriptionText = this.state.descriptionOverride !== null ?
+            this.state.descriptionOverride :
+            (description.instructions || '');
         return (
             <div
                 className={classNames(styles.container, {
@@ -824,8 +824,8 @@ class Interface extends React.PureComponent {
                                         <div
                                             className={styles.section}
                                             style={{
-                                                overflowY: "auto",
-                                                maxHeight: "520px"
+                                                overflowY: 'auto',
+                                                maxHeight: '520px'
                                             }}
                                         >
                                             <p>
@@ -847,8 +847,8 @@ class Interface extends React.PureComponent {
                                             <div
                                                 className={styles.section}
                                                 style={{
-                                                    overflowY: "auto",
-                                                    maxHeight: "520px"
+                                                    overflowY: 'auto',
+                                                    maxHeight: '520px'
                                                 }}
                                             >
                                                 <WhatsHappening intl={intl} />
@@ -859,8 +859,8 @@ class Interface extends React.PureComponent {
                                         <div
                                             className={styles.section}
                                             style={{
-                                                overflowY: "auto",
-                                                maxHeight: "520px"
+                                                overflowY: 'auto',
+                                                maxHeight: '520px'
                                             }}
                                         >
                                             <WhatsNew />
@@ -873,8 +873,8 @@ class Interface extends React.PureComponent {
                                             <div
                                                 className={styles.section}
                                                 style={{
-                                                    overflowY: "auto",
-                                                    maxHeight: "520px"
+                                                    overflowY: 'auto',
+                                                    maxHeight: '520px'
                                                 }}
                                             >
                                                 <div className={classNames(styles.infobox, styles.unsharedUpdate)}>
@@ -928,8 +928,8 @@ class Interface extends React.PureComponent {
                                             <div
                                                 className={styles.section}
                                                 style={{
-                                                    overflowY: "auto",
-                                                    maxHeight: "520px"
+                                                    overflowY: 'auto',
+                                                    maxHeight: '520px'
                                                 }}
                                             >
                                                 <CloudVariableBadge />
@@ -941,8 +941,8 @@ class Interface extends React.PureComponent {
                                             <div
                                                 className={styles.section}
                                                 style={{
-                                                    overflowY: "auto",
-                                                    maxHeight: "520px"
+                                                    overflowY: 'auto',
+                                                    maxHeight: '520px'
                                                 }}
                                             >
                                                 {session?.id === authorId || session?.role === 'dashteam' ? (

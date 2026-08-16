@@ -96,8 +96,9 @@ export class Donate extends React.Component {
 
     async handleSubmit (event) {
         event.preventDefault();
-        if (!this.props.session || !this.props.session?.username)
+        if (!this.props.session || !this.props.session?.username) {
             window.location.href = 'login';
+        }
         this.setState({waiting: true, error: ''});
 
         try {
@@ -244,7 +245,10 @@ export class Donate extends React.Component {
                                         ))}
                                     </div>
                                     <div className={styles.formRow}>
-                                        <label className={styles.label} htmlFor="currency">
+                                        <label
+                                            className={styles.label}
+                                            htmlFor="currency"
+                                        >
                                             <FormattedMessage
                                                 defaultMessage="Currency"
                                                 description="Label for currency selection"
@@ -264,7 +268,10 @@ export class Donate extends React.Component {
                                     </div>
                                     {this.state.currency === 'RUB' && (
                                         <div className={styles.formRow}>
-                                            <label className={styles.label} htmlFor="method">
+                                            <label
+                                                className={styles.label}
+                                                htmlFor="method"
+                                            >
                                                 <FormattedMessage
                                                     defaultMessage="Payment Method"
                                                     description="Label for payment method selection"

@@ -18,11 +18,17 @@ const ListMonitor = ({draggable, label, width, height, value, path, onNavigateTo
         </div>
         {(path?.length || 0) > 0 && (
             <div className={styles.listPath}>
-                <span style={{cursor: 'pointer'}} onClick={() => onNavigateTo(0)}>{label}</span>
+                <span
+                    style={{cursor: 'pointer'}}
+                    onClick={() => onNavigateTo(0)}
+                >{label}</span>
                 {path.map((p, i) => (
                     <span key={i}>
                         <span>/</span>
-                        <span style={{cursor: 'pointer'}} onClick={() => onNavigateTo(i + 1)}>{typeof p === 'number' ? p + 1 /* one indexed */ : p}</span>
+                        <span
+                            style={{cursor: 'pointer'}}
+                            onClick={() => onNavigateTo(i + 1)}
+                        >{typeof p === 'number' ? p + 1 /* one indexed */ : p}</span>
                     </span>
                 ))}
             </div>

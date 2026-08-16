@@ -19,9 +19,9 @@ const SliderMonitor = ({categoryColor, isDiscrete, label, min, max, value, onSli
                     color: categoryColor.text
                 }}
             >
-                {Cast.isCustomType(value) && typeof value?.toMonitorContent === 'function'
-                    ? (<DOMElementRenderer domElement={value.toMonitorContent()} />)
-                    : String(value)}
+                {Cast.isCustomType(value) && typeof value?.toMonitorContent === 'function' ?
+                    (<DOMElementRenderer domElement={value.toMonitorContent()} />) :
+                    String(value)}
             </div>
         </div>
         <div className={styles.row}>

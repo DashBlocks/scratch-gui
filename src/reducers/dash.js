@@ -50,14 +50,14 @@ const setConsoleLines = function (lines) {
         type: SET_CONSOLE_LINES,
         lines: lines
     };
-}
+};
 
 const setConsoleCursor = function (cursorPos) {
     return {
         type: SET_CONSOLE_CURSOR,
         cursorPos: cursorPos
     };
-}
+};
 
 const setSession = session => ({
     type: SET_SESSION,

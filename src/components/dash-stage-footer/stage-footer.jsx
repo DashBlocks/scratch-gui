@@ -35,21 +35,21 @@ const messages = defineMessages({
     }
 });
 
-const StageFooter = (props) => {  
+const StageFooter = props => {
     const [projectMetadata, setProjectMetadata] = useState(null);
     const [isFired, setIsFired] = useState(false);
     const [isDashProject, setIsDashProject] = useState(false);
 
     useEffect(() => {
-        async function fetchProjectMetadata() {
+        async function fetchProjectMetadata () {
             setIsDashProject(false);
             const res = await fetch(`https://api.dashblocks.org/projects/${props.projectId}`);
             const data = await res.json();
             if (data.ok) {
                 setIsDashProject(true);
                 const viewRes = await fetch(`https://api.dashblocks.org/projects/${props.projectId}/view`, {
-                    method: "POST",
-                    credentials: "include"
+                    method: 'POST',
+                    credentials: 'include'
                 });
                 const viewData = await viewRes.json();
                 setProjectMetadata({
@@ -65,19 +65,19 @@ const StageFooter = (props) => {
     }, [props.projectId]);
 
     useEffect(() => {
-        function fetchFireStatus() {
+        function fetchFireStatus () {
             if (!props.session?.firedProjects) return;
             setIsFired(props.session.firedProjects.includes(+props.projectId));
         }
         fetchFireStatus();
     }, [props.session?.firedProjects || []]);
 
-    async function updateSession() {
+    async function updateSession () {
         const updatedSession = await getSession();
         setSession(updatedSession);
     }
 
-    async function handleFireButtonClick() {
+    async function handleFireButtonClick () {
         if (!props.session || !props.session?.id) {
             window.open('./login', '_blank');
             return;

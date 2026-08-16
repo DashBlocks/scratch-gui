@@ -89,7 +89,7 @@ class UsernameModal extends React.Component {
         this.props.vm.setStageSize(this.props.customStageSize.width, value);
     }
     handleCloudHostChange (value) {
-        this.props.onSetCloudHost(value)
+        this.props.onSetCloudHost(value);
     }
     handleStoreProjectOptions () {
         this.props.vm.storeProjectOptions();

@@ -9,7 +9,7 @@ import {getIsLoadingWithId} from '../../reducers/project-state';
 import topBlock from './top-block.svg';
 import middleBlock from './middle-block.svg';
 import bottomBlock from './bottom-block.svg';
-import lazyMessages from './lazy-messages.json'
+import lazyMessages from './lazy-messages.json';
 
 const mainMessages = {
     'gui.loader.headline': (
@@ -20,10 +20,10 @@ const mainMessages = {
         />
     ),
     'dash.loader.loadingPage': (
-        <FormattedMessage 
+        <FormattedMessage
             defaultMessage="Loading Page"
             description="Main page loading message"
-            id='dash.loader.loadingPage'
+            id="dash.loader.loadingPage"
         />
     ),
     'gui.loader.creating': (

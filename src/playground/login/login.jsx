@@ -54,7 +54,7 @@ class Login extends React.Component {
     }
 
     componentDidMount () {
-        document.title = this.props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
+        document.title = `${this.props.intl.formatMessage(messages.title)} - ${APP_NAME}`;
     }
 
     handleChange (e) {
@@ -72,8 +72,9 @@ class Login extends React.Component {
                 this.setState({requiresVerification: true});
                 return;
             }
-            if (!session || !session.username)
+            if (!session || !session.username) {
                 throw new Error(session && session.error ? session.error : this.props.intl.formatMessage(messages.failedToLogIn));
+            }
             window.location.href = '/';
         } catch (error) {
             this.setState({error: error.message});
@@ -86,7 +87,7 @@ class Login extends React.Component {
         return (
             <>
                 <LazyMenuBar />
-                {this.props.session && this.props.session.username ? window.location.href = "/" : null}
+                {this.props.session && this.props.session.username ? window.location.href = '/' : null}
                 <div
                     className={styles.container}
                     dir={this.props.isRtl ? 'rtl' : 'ltr'}
@@ -196,7 +197,10 @@ class Login extends React.Component {
                                     id="dash.login.register"
                                     values={{
                                         signUp: (
-                                            <a href="./register" target="_blank">
+                                            <a
+                                                href="./register"
+                                                target="_blank"
+                                            >
                                                 <FormattedMessage
                                                     defaultMessage="Sign up"
                                                     description="Link to sign up page"

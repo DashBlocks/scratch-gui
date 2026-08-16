@@ -50,6 +50,7 @@ const ActualAuthorInfo = ({
                                     className={styles.link}
                                     href={isDashProject ? `${process.env.ROOT}user#${userId}` : `https://scratch.mit.edu/users/${username}`}
                                     target="_blank"
+                                    rel="noreferrer"
                                 >
                                     <span className={styles.username}>{username}</span>
                                 </a>
@@ -75,7 +76,10 @@ ActualAuthorInfo.propTypes = {
 const AuthorInfo = props => (
     props.projectId?.startsWith('s') ?
         <ActualAuthorInfo {...props} /> :
-        <ActualAuthorInfo {...props} isDashProject={true} />
+        <ActualAuthorInfo
+            {...props}
+            isDashProject
+        />
 );
 AuthorInfo.propTypes = {
     projectId: PropTypes.string

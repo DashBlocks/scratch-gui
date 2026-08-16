@@ -74,7 +74,7 @@ const messages = defineMessages({
     }
 });
 
-const User = (props) => {
+const User = props => {
     const id = useHashUserId();
     const [userData, setUserData] = useState(null);
     const [avatarCacheBuster, setAvatarCacheBuster] = useState(Date.now());
@@ -106,13 +106,13 @@ const User = (props) => {
                 const currentSession = await getSession();
                 setIsMyProfile(currentSession?.id?.toString() === id || currentSession?.username?.toLowerCase() === id?.toLowerCase());
                 setSession(currentSession);
-                const userRes = await fetch(`https://api.dashblocks.org/users/${id}`, {credentials: "include"});
+                const userRes = await fetch(`https://api.dashblocks.org/users/${id}`, {credentials: 'include'});
                 user = await userRes.json();
 
                 if (!user.ok) throw new Error(user.error);
-                document.title = `${user.user.username} - ${APP_NAME}`
+                document.title = `${user.user.username} - ${APP_NAME}`;
                 // Only Dasher+ or higher can do this
-                if (user.user.role === "dasher") setDescriptionDisabled(true);
+                if (user.user.role === 'dasher') setDescriptionDisabled(true);
                 setUserData(user.user);
                 setIsFollowing(user.user.isFollowing);
                 setAchievements(user.user.profile.achievements);
@@ -142,14 +142,14 @@ const User = (props) => {
     useEffect(() => {
         const avgGradientByImgSections = async (src, sections, points) => {
             const img = new Image();
-            img.crossOrigin = "Anonymous";
+            img.crossOrigin = 'Anonymous';
             img.src = src;
             await img.decode();
 
-            const canvas = document.createElement("canvas");
+            const canvas = document.createElement('canvas');
             canvas.width = img.width;
             canvas.height = img.height;
-            const ctx = canvas.getContext("2d");
+            const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
             const imgData = ctx.getImageData(0, 0, img.width, img.height).data;
             
@@ -178,24 +178,24 @@ const User = (props) => {
                             ([r1, g1, b1, a1], [r2, g2, b2, a2]) => [r1 + r2, g1 + g2, b1 + b2, a1 + a2],
                             [0, 0, 0, 0]
                         )
-                        .map((v) => v / colors.length);
+                        .map(v => v / colors.length);
                     avgCssColors.push(`color-mix(in srgb, rgb(${r}, ${g}, ${b}), var(--ui-white) ${60 + (a - 255) / 2.55 * 0.4}%)`);
                 } else {
-                    avgCssColors.push("var(--ui-white)");
+                    avgCssColors.push('var(--ui-white)');
                 }
             }
 
             return {
-                type: "linear",
+                type: 'linear',
                 angle: 90,
                 stops: avgCssColors.map((color, i) => ({
                     color: color,
-                    position: avgCssColors.length === 1
-                        ? "0%"
-                        : `${i / (avgCssColors.length - 1) * 100}%`
+                    position: avgCssColors.length === 1 ?
+                        '0%' :
+                        `${i / (avgCssColors.length - 1) * 100}%`
                 }))
             };
-        }
+        };
 
         try {
             if (userData?.profile?.gradient) {
@@ -218,67 +218,71 @@ const User = (props) => {
         }
     }, [userData?.profile?.avatarId, userData?.profile?.gradient, avatarCacheBuster]);
 
-    const getAchievement = (achievement) => {
+    const getAchievement = achievement => {
         switch (achievement.type) {
-            case 'first-project':
-                return (
-                    <>
-                        {/* TODO: Icon */}
-                        <h4>
-                            <FormattedMessage
-                                defaultMessage='First Project'
-                                description="Title for achievement for creating the first project"
-                                id="dash.user.achievements.firstProject.title"
-                            />
-                        </h4>
+        case 'first-project':
+            return (
+                <>
+                    {/* TODO: Icon */}
+                    <h4>
                         <FormattedMessage
-                            defaultMessage='Created the first project "{firstProject}" on Dash.'
-                            description="Description for achievement for creating the first project, with a link to the project"
-                            id="dash.user.achievements.firstProject.info"
-                            values={{
-                                firstProject: (
-                                    <a href={`./#${achievement.project.id}`} target="_blank" rel="noopener noreferrer">
-                                        {achievement.project.name}
-                                    </a>
-                                )
-                            }}
+                            defaultMessage="First Project"
+                            description="Title for achievement for creating the first project"
+                            id="dash.user.achievements.firstProject.title"
                         />
-                    </>
-                )
-            case 'reached-followers-count':
-                return (
-                    <>
-                        {/* TODO: Icon */}
-                        <h4>
-                            <FormattedMessage
-                                defaultMessage='{count} Followers Reached'
-                                description="Title for achievement of reached followers"
-                                id="dash.user.achievements.reachedFollowersCount.title"
-                                values={{
-                                    count: achievement.count
-                                }}
-                            />
-                        </h4>
+                    </h4>
+                    <FormattedMessage
+                        defaultMessage='Created the first project "{firstProject}" on Dash.'
+                        description="Description for achievement for creating the first project, with a link to the project"
+                        id="dash.user.achievements.firstProject.info"
+                        values={{
+                            firstProject: (
+                                <a
+                                    href={`./#${achievement.project.id}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {achievement.project.name}
+                                </a>
+                            )
+                        }}
+                    />
+                </>
+            );
+        case 'reached-followers-count':
+            return (
+                <>
+                    {/* TODO: Icon */}
+                    <h4>
                         <FormattedMessage
-                            defaultMessage='Reached {count} followers on Dash.'
-                            description="Description for achievement of reached followers"
-                            id="dash.user.achievements.reachedFollowersCount.info"
+                            defaultMessage="{count} Followers Reached"
+                            description="Title for achievement of reached followers"
+                            id="dash.user.achievements.reachedFollowersCount.title"
                             values={{
                                 count: achievement.count
                             }}
                         />
-                    </>
-                )
-            default:
-                return (
+                    </h4>
                     <FormattedMessage
-                        defaultMessage='Unknown achievement.'
-                        description='Displayed when an achievement has an unknown type'
-                        id='dash.user.achievements.unknown'
+                        defaultMessage="Reached {count} followers on Dash."
+                        description="Description for achievement of reached followers"
+                        id="dash.user.achievements.reachedFollowersCount.info"
+                        values={{
+                            count: achievement.count
+                        }}
                     />
-                )
+                </>
+            );
+        default:
+            return (
+                <FormattedMessage
+                    defaultMessage="Unknown achievement."
+                    description="Displayed when an achievement has an unknown type"
+                    id="dash.user.achievements.unknown"
+                />
+            );
         }
-    }
+    };
 
     async function handleChangeAvatar (e) {
         const file = e.target.files[0];
@@ -326,11 +330,11 @@ const User = (props) => {
                 throw new Error(data.error);
             }
             setIsFollowing(prev => !prev);
-            const userRes = await fetch(`https://api.dashblocks.org/users/${id}`, {credentials: "include"});
+            const userRes = await fetch(`https://api.dashblocks.org/users/${id}`, {credentials: 'include'});
             const user = await userRes.json();
             if (!user.ok) throw new Error(user.error);
             // Only Dasher+ or higher can do this
-            if (user.user.role === "dasher") setDescriptionDisabled(true);
+            if (user.user.role === 'dasher') setDescriptionDisabled(true);
             setUserData(user.user);
             const followersRes = await fetch(`https://api.dashblocks.org/users/${id}/followers?limit=20&offset=0`);
             const followersData = await followersRes.json();
@@ -343,7 +347,7 @@ const User = (props) => {
     }
 
     async function handleChangeDescription (description) {
-        if (typeof description !== "string") return;
+        if (typeof description !== 'string') return;
         const prevDescription = userData.profile.description;
 
         setDescriptionDisabled(true);
@@ -356,7 +360,7 @@ const User = (props) => {
         }));
         try {
             let response;
-            if (session?.role === "dashteam" && !isMyProfile) {
+            if (session?.role === 'dashteam' && !isMyProfile) {
                 response = await fetch(`https://api.dashblocks.org/users/set-description?target=${userData.username}`, {
                     method: 'POST',
                     headers: {
@@ -395,7 +399,7 @@ const User = (props) => {
 
     async function handleSetRecommendedProject () {
         // TODO: Project selector instead of prompt
-        const projectId = Number(prompt("Project ID:"));
+        const projectId = Number(prompt('Project ID:'));
         if (!projectId) return;
         const prevRecommendedProject = userData.profile.recommendedProject;
 
@@ -420,7 +424,7 @@ const User = (props) => {
                     ...prev.profile,
                     recommendedProject: {
                         id: projectId,
-                        name: projectData?.name || "Unknown",
+                        name: projectData?.name || 'Unknown',
                         thumbnailId: projectData?.thumbnailId || 1
                     }
                 }
@@ -448,8 +452,8 @@ const User = (props) => {
         try {
             const response = await fetch('https://api.dashblocks.org/users/add-link', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ label, link }),
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({label, link}),
                 credentials: 'include'
             });
             const data = await response.json();
@@ -473,8 +477,8 @@ const User = (props) => {
         try {
             const response = await fetch('https://api.dashblocks.org/users/update-link', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ linkIndex: index, label, link }),
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({linkIndex: index, label, link}),
                 credentials: 'include'
             });
             const data = await response.json();
@@ -495,8 +499,8 @@ const User = (props) => {
         try {
             const response = await fetch('https://api.dashblocks.org/users/remove-link', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ linkIndex: index }),
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({linkIndex: index}),
                 credentials: 'include'
             });
             const data = await response.json();
@@ -510,29 +514,38 @@ const User = (props) => {
         }
     }
 
-    if (loading) return (
-        <>
-            <LazyMenuBar />
-            <div className={styles.spinner}>
-                <Spinner level={'primary'} large />
-            </div>
-            <Footer />
-        </>
-    );
-    if (error) return (
-        <>
-            <LazyMenuBar />
-            <div>Error: {error}</div>
-            <Footer />
-        </>
-    );
-    if (!userData) return (
-        <>
-            <LazyMenuBar />
-            <div>Failed to load user data</div>
-            <Footer />
-        </>
-    );
+    if (loading) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div className={styles.spinner}>
+                    <Spinner
+                        level={'primary'}
+                        large
+                    />
+                </div>
+                <Footer />
+            </>
+        );
+    }
+    if (error) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div>Error: {error}</div>
+                <Footer />
+            </>
+        );
+    }
+    if (!userData) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div>Failed to load user data</div>
+                <Footer />
+            </>
+        );
+    }
 
     const joinDate = userData.joinedAt ? new Date(userData.joinedAt) : null;
     const lastActiveDate = userData.lastActive ? new Date(userData.lastActive) : null;
@@ -551,8 +564,8 @@ const User = (props) => {
                         } : {}}
                     >
                         <input
-                            type='file'
-                            accept='.png,.jpg,.jpeg,.img,.gif'
+                            type="file"
+                            accept=".png,.jpg,.jpeg,.img,.gif"
                             ref={fileInputRef}
                             onChange={handleChangeAvatar}
                             style={{display: 'none'}}
@@ -561,7 +574,7 @@ const User = (props) => {
                             draggable={false}
                             src={`https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}?t=${avatarCacheBuster}`}
                             alt={userData.username}
-                            onClick={() => isMyProfile ? fileInputRef.current.click() : null}
+                            onClick={() => (isMyProfile ? fileInputRef.current.click() : null)}
                             className={styles.avatarImg}
                             style={isMyProfile ? {cursor: 'pointer'} : null}
                         />
@@ -573,16 +586,16 @@ const User = (props) => {
                                 </span>
                                 <span
                                     className={classNames(styles.roleBadge, {
-                                        [styles.dashSupporterRoleBadge]: userData.role === "dash-supporter"
+                                        [styles.dashSupporterRoleBadge]: userData.role === 'dash-supporter'
                                     })}
                                 >
-                                    {userData.role === 'dashteam'
-                                        ? props.intl.formatMessage(messages.dashTeamRole)
-                                        : userData.role === 'dasher+'
-                                            ? props.intl.formatMessage(messages.dasherPlusRole)
-                                            : userData.role === "dash-supporter"
-                                                ? props.intl.formatMessage(messages.dashSupporterRole)
-                                                : props.intl.formatMessage(messages.dasherRole)}
+                                    {userData.role === 'dashteam' ?
+                                        props.intl.formatMessage(messages.dashTeamRole) :
+                                        userData.role === 'dasher+' ?
+                                            props.intl.formatMessage(messages.dasherPlusRole) :
+                                            userData.role === 'dash-supporter' ?
+                                                props.intl.formatMessage(messages.dashSupporterRole) :
+                                                props.intl.formatMessage(messages.dasherRole)}
                                 </span>
                             </div>
                             <div className={styles.userInfoRow}>
@@ -591,15 +604,15 @@ const User = (props) => {
                                     description="User's account registration date"
                                     id="dash.user.joinedAt"
                                     values={{
-                                        date: joinDate
-                                            ? relativeTimeSupported()
-                                                ? (
+                                        date: joinDate ?
+                                            relativeTimeSupported() ?
+                                                (
                                                     <span title={`${props.intl.formatDate(joinDate)}, ${props.intl.formatTime(joinDate)}`}>
                                                         <FormattedRelative value={joinDate} />
                                                     </span>
-                                                )
-                                                : (<FormattedDate value={joinDate} />)
-                                            : '?'
+                                                ) :
+                                                (<FormattedDate value={joinDate} />) :
+                                            '?'
                                     }}
                                 />
                                 <div className={styles.userInfoDivider} />
@@ -608,15 +621,15 @@ const User = (props) => {
                                     description="User's last active date"
                                     id="dash.user.lastActive"
                                     values={{
-                                        date: lastActiveDate
-                                            ? relativeTimeSupported()
-                                                ? (
+                                        date: lastActiveDate ?
+                                            relativeTimeSupported() ?
+                                                (
                                                     <span title={`${props.intl.formatDate(lastActiveDate)}, ${props.intl.formatTime(lastActiveDate)}`}>
                                                         <FormattedRelative value={lastActiveDate} />
                                                     </span>
-                                                )
-                                                : (<FormattedDate value={lastActiveDate} />)
-                                            : '?'
+                                                ) :
+                                                (<FormattedDate value={lastActiveDate} />) :
+                                            '?'
                                     }}
                                 />
                                 {!isMyProfile && <Button
@@ -655,12 +668,12 @@ const User = (props) => {
                                     id="dash.home.tab.description"
                                 />
                             </h2>
-                            {isMyProfile || session?.role === "dashteam" ? (
+                            {isMyProfile || session?.role === 'dashteam' ? (
                                 <BufferedInput
                                     className={styles.descriptionField}
                                     maxLength="1000"
                                     multiline
-                                    placeholder={props.intl.formatMessage(userData.role === "dasher" ? messages.descriptionInputPlaceholderForDasher : messages.descriptionInputPlaceholder)}
+                                    placeholder={props.intl.formatMessage(userData.role === 'dasher' ? messages.descriptionInputPlaceholderForDasher : messages.descriptionInputPlaceholder)}
                                     tabIndex="0"
                                     value={userData.profile.description}
                                     onSubmit={handleChangeDescription}
@@ -688,9 +701,16 @@ const User = (props) => {
                                 {links.length > 0 ? (
                                     <ul className={styles.linkList}>
                                         {links.map((link, index) => (
-                                            <li key={index} className={styles.linkItem}>
-                                                <a href={link.link} target="_blank" rel="noopener noreferrer">
-                                                    {link.label || "Link"}
+                                            <li
+                                                key={index}
+                                                className={styles.linkItem}
+                                            >
+                                                <a
+                                                    href={link.link}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                >
+                                                    {link.label || 'Link'}
                                                 </a>
                                                 {isMyProfile && isManagingLinks && (
                                                     <div className={styles.linkActions}>
@@ -700,7 +720,10 @@ const User = (props) => {
                                                             onClick={() => handleUpdateLink(index)}
                                                         >
                                                             {linksActionDisabled ? (
-                                                                <Spinner className={styles.spinner} small />
+                                                                <Spinner
+                                                                    className={styles.spinner}
+                                                                    small
+                                                                />
                                                             ) : (
                                                                 <FormattedMessage
                                                                     defaultMessage="Update link"
@@ -715,7 +738,10 @@ const User = (props) => {
                                                             onClick={() => handleRemoveLink(index)}
                                                         >
                                                             {linksActionDisabled ? (
-                                                                <Spinner className={styles.spinner} small />
+                                                                <Spinner
+                                                                    className={styles.spinner}
+                                                                    small
+                                                                />
                                                             ) : (
                                                                 <FormattedMessage
                                                                     defaultMessage="Remove link"
@@ -747,7 +773,10 @@ const User = (props) => {
                                             onClick={handleAddLink}
                                         >
                                             {linksActionDisabled ? (
-                                                <Spinner className={styles.spinner} small />
+                                                <Spinner
+                                                    className={styles.spinner}
+                                                    small
+                                                />
                                             ) : (
                                                 <FormattedMessage
                                                     defaultMessage="Add link"
@@ -767,7 +796,10 @@ const User = (props) => {
                                             onClick={isManagingLinks ? () => setIsManagingLinks(false) : () => setIsManagingLinks(true)}
                                         >
                                             {linksActionDisabled ? (
-                                                <Spinner className={styles.spinner} small />
+                                                <Spinner
+                                                    className={styles.spinner}
+                                                    small
+                                                />
                                             ) : isManagingLinks ? (
                                                 <FormattedMessage
                                                     defaultMessage="Done"
@@ -796,18 +828,21 @@ const User = (props) => {
                                 {achievements.length > 0 ? (
                                     <div className={styles.achievementList}>
                                         {achievements.map((achievement, index) => (
-                                            <div className={styles.achievement} key={index}>
+                                            <div
+                                                className={styles.achievement}
+                                                key={index}
+                                            >
                                                 {getAchievement(achievement)}
                                                 <div className={styles.achievementDate}>
-                                                    {achievement.date
-                                                        ? relativeTimeSupported()
-                                                            ? (
+                                                    {achievement.date ?
+                                                        relativeTimeSupported() ?
+                                                            (
                                                                 <span title={`${props.intl.formatDate(new Date(achievement.date))}, ${props.intl.formatTime(new Date(achievement.date))}`}>
                                                                     <FormattedRelative value={new Date(achievement.date)} />
                                                                 </span>
-                                                            )
-                                                        : (<FormattedDate value={new Date(achievement.date)} />)
-                                                    : '?'}
+                                                            ) :
+                                                            (<FormattedDate value={new Date(achievement.date)} />) :
+                                                        '?'}
                                                 </div>
                                             </div>
                                         ))}
@@ -835,7 +870,7 @@ const User = (props) => {
                                         className={styles.recommendedProject}
                                         title={props.intl.formatMessage(messages.hoverText, {
                                             author: userData.username,
-                                            title: userData.profile.recommendedProject.name || "Unknown"
+                                            title: userData.profile.recommendedProject.name || 'Unknown'
                                         })}
                                         onClick={() => window.open(`./#${userData.profile.recommendedProject.id}`, '_blank')}
                                     >
@@ -844,7 +879,7 @@ const User = (props) => {
                                             src={`https://api.dashblocks.org/projects/thumbnails/${userData.profile.recommendedProject.thumbnailId || 1}`}
                                             alt={userData.profile.recommendedProject.id}
                                         />
-                                        <h4>{userData.profile.recommendedProject.name || "Unknown"}</h4>
+                                        <h4>{userData.profile.recommendedProject.name || 'Unknown'}</h4>
                                     </div>
                                 )}
                                 {isMyProfile && (
@@ -898,7 +933,7 @@ const User = (props) => {
                             )}
                         </div>
                         <div className={styles.projectGrid}>
-                            {projects.length > 0 ? projects.map((project) => (
+                            {projects.length > 0 ? projects.map(project => (
                                 <div
                                     key={project.id}
                                     className={styles.projectCard}
@@ -966,7 +1001,7 @@ const User = (props) => {
                             )}
                         </div>
                         <div className={styles.followList}>
-                            {followers.length > 0 ? followers.map((follower) => (
+                            {followers.length > 0 ? followers.map(follower => (
                                 <div
                                     key={follower.id}
                                     className={styles.followCard}
@@ -1017,7 +1052,7 @@ const User = (props) => {
                             )}
                         </div>
                         <div className={styles.followList}>
-                            {following.length > 0 ? following.map((followed) => (
+                            {following.length > 0 ? following.map(followed => (
                                 <div
                                     key={followed.id}
                                     className={styles.followCard}

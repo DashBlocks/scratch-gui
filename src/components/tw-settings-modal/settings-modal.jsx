@@ -193,7 +193,7 @@ const CustomFPS = ({
                 defaultMessage="Runs scripts with custom times per second instead of 30. 60 FPS recommended. Most projects will not work properly with this enabled. You should try Interpolation with 30 FPS if that is the case."
                 description="FPS setting help"
                 id="tw.settingsModal.fpsHelp"
-                /*values={{
+                /* values={{
                     customFramerate: (
                         <a
                             onClick={props.onCustomizeFramerate}
@@ -346,7 +346,7 @@ const StageModeButtons = ({
     ];
     return (
         <Setting
-            active={true}
+            active
             primary={
                 <div className={classNames(styles.label, styles.stageMode)}>
                     <FormattedMessage
@@ -508,7 +508,7 @@ const CustomCloudVarServer = ({
 CustomCloudVarServer.propTypes = {
     customCloudVarServerEnabled: PropTypes.bool,
     cloudHost: PropTypes.string,
-    onCloudHostChange: PropTypes.func,
+    onCloudHostChange: PropTypes.func
 };
 
 const StoreProjectOptions = ({onStoreProjectOptions}) => (

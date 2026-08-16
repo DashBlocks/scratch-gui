@@ -136,19 +136,19 @@ class CustomProcedures extends React.Component {
     handleAddInput () {
         if (this.mutationRoot) {
             switch (this.state.menuInput) {
-                case 's':
-                    this.mutationRoot.addStringNumberExternal();
-                    break;
-                case 'b':
-                    this.mutationRoot.addBooleanExternal();
-                    break;
-                case 'a':
-                    this.mutationRoot.addArrayExternal();
-                    break;
-                case 'o':
-                    this.mutationRoot.addObjectExternal();
-                    break;
-            };
+            case 's':
+                this.mutationRoot.addStringNumberExternal();
+                break;
+            case 'b':
+                this.mutationRoot.addBooleanExternal();
+                break;
+            case 'a':
+                this.mutationRoot.addArrayExternal();
+                break;
+            case 'o':
+                this.mutationRoot.addObjectExternal();
+                break;
+            }
         }
     }
     handleToggleWarp () {

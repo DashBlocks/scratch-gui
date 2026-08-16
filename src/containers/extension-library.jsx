@@ -48,11 +48,11 @@ const translateGalleryItem = (extension, locale) => ({
 });
 
 const creditLinkShortcuts = {
-    '_scratch_': (credit) => `https://scratch.mit.edu/users/${credit.name}`,
-    '_github_': (credit) => `https://github.com/${credit.name}`,
-    '_dash_': (credit) => `https://dashblocks.org/user#${credit.name}`
+    _scratch_: credit => `https://scratch.mit.edu/users/${credit.name}`,
+    _github_: credit => `https://github.com/${credit.name}`,
+    _dash_: credit => `https://dashblocks.org/user#${credit.name}`
 };
-const creditLink = (credit) => credit.link;
+const creditLink = credit => credit.link;
 
 let cachedTwGallery = null;
 let twGalleryMirror = false;
@@ -113,75 +113,71 @@ const fetchTwLibrary = async () => {
     }));
 };
 
-const fetchOtherExtensions = async () => {
-    return otherExtensions.map(extension => ({
-        name: extension.name,
-        nameTranslations: extension.nameTranslations || {},
-        description: extension.description,
-        descriptionTranslations: extension.descriptionTranslations || {},
-        extensionId: extension.id,
-        extensionURL: extension.code.startsWith('http') ? extension.code : `https://extensions.penguinmod.com/extensions/${extension.code}`,
-        iconURL: extension.banner.startsWith('http') ? extension.banner : `https://extensions.penguinmod.com/images/${extension.banner || 'unknown.svg'}`,
-        tags: ['other'],
-        credits: [
-            ...(typeof extension.creator == 'object' ? extension.creator : [extension.creator] || []),
-            ...(extension.notes ? [extension.notes] : [])
-        ].map(credit => {
-            if (extension.notes && credit == extension.notes) return credit;
+const fetchOtherExtensions = async () => otherExtensions.map(extension => ({
+    name: extension.name,
+    nameTranslations: extension.nameTranslations || {},
+    description: extension.description,
+    descriptionTranslations: extension.descriptionTranslations || {},
+    extensionId: extension.id,
+    extensionURL: extension.code.startsWith('http') ? extension.code : `https://extensions.penguinmod.com/extensions/${extension.code}`,
+    iconURL: extension.banner.startsWith('http') ? extension.banner : `https://extensions.penguinmod.com/images/${extension.banner || 'unknown.svg'}`,
+    tags: ['other'],
+    credits: [
+        ...(typeof extension.creator === 'object' ? extension.creator : [extension.creator] || []),
+        ...(extension.notes ? [extension.notes] : [])
+    ].map(credit => {
+        if (extension.notes && credit == extension.notes) return credit;
+        return (
+            <a
+                href={extension.isGitHub ? `https://github.com/${credit}` : `https://scratch.mit.edu/users/${credit}`}
+                target="_blank"
+                rel="noreferrer"
+                key={credit}
+            >
+                {credit}
+            </a>
+        );
+    }),
+    docsURI: extension.documentation ? `https://extensions.penguinmod.com/docs/${extension.documentation}` : null,
+    samples: null,
+    incompatibleWithScratch: !(extension.scratchCompatible || false),
+    featured: true
+}));
+
+const fetchLibrary = async () => extensions.map(extension => ({
+    name: extension.name,
+    nameTranslations: extension.nameTranslations || {},
+    description: extension.description,
+    descriptionTranslations: extension.descriptionTranslations || {},
+    extensionId: extension.id,
+    extensionURL: extension.code?.startsWith('http') ? extension.code : `https://dashblocks.org/extensions/static/extensions/${extension.code}`,
+    iconURL: extension.banner?.startsWith('http') ? extension.banner : `https://dashblocks.org/extensions/static/images/${extension.banner || 'unknown.svg'}`,
+    tags: ['dash'],
+    credits: [
+        ...(Array.isArray(extension.creator) ? extension.creator : [extension.creator] || []).map(credit => {
+            if (typeof credit === 'string') return credit;
             return (
                 <a
-                    href={extension.isGitHub ? `https://github.com/${credit}` : `https://scratch.mit.edu/users/${credit}`}
+                    href={(creditLinkShortcuts[credit.link] || creditLink)(credit)}
                     target="_blank"
                     rel="noreferrer"
-                    key={credit}
+                    key={credit.name}
                 >
-                    {credit}
+                    {credit.name}
                 </a>
             );
         }),
-        docsURI: extension.documentation ? `https://extensions.penguinmod.com/docs/${extension.documentation}` : null,
-        samples: null,
-        incompatibleWithScratch: !(extension.scratchCompatible || false),
-        featured: true
-    }));
-};
-
-const fetchLibrary = async () => {
-    return extensions.map(extension => ({
-        name: extension.name,
-        nameTranslations: extension.nameTranslations || {},
-        description: extension.description,
-        descriptionTranslations: extension.descriptionTranslations || {},
-        extensionId: extension.id,
-        extensionURL: extension.code?.startsWith('http') ? extension.code : `https://dashblocks.org/extensions/static/extensions/${extension.code}`,
-        iconURL: extension.banner?.startsWith('http') ? extension.banner : `https://dashblocks.org/extensions/static/images/${extension.banner || 'unknown.svg'}`,
-        tags: ['dash'],
-        credits: [
-            ...(Array.isArray(extension.creator) ? extension.creator : [extension.creator] || []).map(credit => {
-                if (typeof credit === 'string') return credit;
-                return (
-                    <a
-                        href={(creditLinkShortcuts[credit.link] || creditLink)(credit)}
-                        target="_blank"
-                        rel="noreferrer"
-                        key={credit.name}
-                    >
-                        {credit.name}
-                    </a>
-                );
-            }),
-            ...(extension.notes ? [extension.notes] : [])
-        ],
-        docsURI: extension.documentation ? `https://dashblocks.org/extensions/static/documentations/${extension.documentation}.md` : null,
-        samples: /*extension.samples ? extension.samples.map(sample => ({
+        ...(extension.notes ? [extension.notes] : [])
+    ],
+    docsURI: extension.documentation ? `https://dashblocks.org/extensions/static/documentations/${extension.documentation}.md` : null,
+    samples: /* extension.samples ? extension.samples.map(sample => ({
             href: `${process.env.ROOT}editor?project_url=https://extensions.turbowarp.org/samples/${encodeURIComponent(sample)}.sb3`,
             text: sample
         })) :*/ null,
-        incompatibleWithScratch: !(extension.scratchCompatible || false),
-        internetConnectionRequired: extension.internetConnectionRequired || false,
-        featured: true
-    }));
-};
+    incompatibleWithScratch: !(extension.scratchCompatible || false),
+    internetConnectionRequired: extension.internetConnectionRequired || false,
+    featured: true
+}));
 
 class ExtensionLibrary extends React.PureComponent {
     constructor (props) {

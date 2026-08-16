@@ -36,7 +36,7 @@ import styles from './menu-bar.css';
 import messagesIcon from './icon--messages.png';
 import mystuffIcon from './icon--mystuff.png';
 import dashLogo from './dash.png';
-import dashNewYearLogo from './dash-new-year.png'
+import dashNewYearLogo from './dash-new-year.png';
 import searchIcon from './icon--search.png';
 
 import isScratchDesktop from '../../lib/isScratchDesktop.js';
@@ -218,7 +218,7 @@ class LazyMenuBar extends React.Component {
                     {!isScratchDesktop() && (
                         <div
                             className={classNames(styles.menuBarItem, styles.hoverable, styles.editorButton)}
-                            onClick={() => window.open("./editor", "_blank")}
+                            onClick={() => window.open('./editor', '_blank')}
                         >
                             {/* todo: icon */}
                             <FormattedMessage
@@ -228,7 +228,10 @@ class LazyMenuBar extends React.Component {
                             />
                         </div>
                     )}
-                    <form className={styles.menuBarSearch} onSubmit={this.handleSearchSubmit}>
+                    <form
+                        className={styles.menuBarSearch}
+                        onSubmit={this.handleSearchSubmit}
+                    >
                         <input
                             type="search"
                             className={styles.menuBarSearchInput}
@@ -309,7 +312,7 @@ class LazyMenuBar extends React.Component {
                                     styles.hoverable
                                 )}
                                 key="join"
-                                onMouseUp={() => window.open("./register", '_blank')}
+                                onMouseUp={() => window.open('./register', '_blank')}
                             >
                                 <FormattedMessage
                                     defaultMessage="Join Dash"
@@ -323,7 +326,7 @@ class LazyMenuBar extends React.Component {
                                     styles.hoverable
                                 )}
                                 key="login"
-                                onMouseUp={() => window.open("./login", '_blank')}
+                                onMouseUp={() => window.open('./login', '_blank')}
                             >
                                 <FormattedMessage
                                     defaultMessage="Sign in"
@@ -342,9 +345,15 @@ class LazyMenuBar extends React.Component {
                 <React.Fragment>
                     {menuBar}
                     {/* !process.env.OLD_COMPILER && (<TWNews item='dash:news1' id='new-compiler' />) */}
-                    {window.location.href.startsWith('https://dashblocks.org/scratch-gui') && (<TWNews item='dash:news2' id='dev-version' />)}
+                    {window.location.href.startsWith('https://dashblocks.org/scratch-gui') && (<TWNews
+                        item="dash:news2"
+                        id="dev-version"
+                    />)}
                     {/* <TWNews item='dash:news3' id='new-year' /> */}
-                    {<TWNews item='dash:news4' id='donate' />}
+                    {<TWNews
+                        item="dash:news4"
+                        id="donate"
+                    />}
                 </React.Fragment>
             </div>
         );

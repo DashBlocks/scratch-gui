@@ -48,22 +48,22 @@ class LibraryItemComponent extends React.PureComponent {
             </button>
         );
 
-        return this.props.libraryId === "backdropLibrary" ? (
+        return this.props.libraryId === 'backdropLibrary' ? (
             <SpriteCostumeLibraryItem
                 favoriteButton={favorite}
                 {...this.props}
             />
-        ) : this.props.libraryId === "spriteLibrary" || this.props.libraryId === "costumeLibrary" ? (
+        ) : this.props.libraryId === 'spriteLibrary' || this.props.libraryId === 'costumeLibrary' ? (
             <SpriteCostumeLibraryItem
                 favoriteButton={favorite}
                 {...this.props}
             />
-        ) : this.props.libraryId === "soundLibrary" ? (
+        ) : this.props.libraryId === 'soundLibrary' ? (
             <SoundLibraryItem
                 favoriteButton={favorite}
                 {...this.props}
             />
-        ) : this.props.libraryId === "extensionLibrary" ? (
+        ) : this.props.libraryId === 'extensionLibrary' ? (
             <ExtensionLibraryItem
                 favoriteButton={favorite}
                 {...this.props}

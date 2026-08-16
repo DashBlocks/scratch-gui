@@ -34,10 +34,10 @@ const messages = defineMessages({
         defaultMessage: '{title} by {author}',
         description: 'Displayed when hovering on a project',
         id: 'tw.studioview.hoverText'
-    },
+    }
 });
 
-const Search = (props) => {
+const Search = props => {
     const query = new URLSearchParams(window.location.search).get('q');
     const [total, setTotal] = useState(0);
     const [projects, setProjects] = useState([]);
@@ -55,13 +55,13 @@ const Search = (props) => {
         setOffset(0);
         setError(null);
 
-        document.title = props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
+        document.title = `${props.intl.formatMessage(messages.title)} - ${APP_NAME}`;
 
         setLoading(true);
         fetchProjects(0);
     }, [query]);
 
-    const fetchProjects = async (currentOffset) => {
+    const fetchProjects = async currentOffset => {
         setLoadMoreButtonDisabled(true);
         try {
             const searchReq = await fetch(`https://api.dashblocks.org/search/projects?q=${encodeURIComponent(query)}&limit=${limit}&offset=${currentOffset}`, {
@@ -81,29 +81,38 @@ const Search = (props) => {
         }
     };
 
-    if (loading) return (
-        <>
-            <LazyMenuBar />
-            <div className={styles.spinner}>
-                <Spinner level={'primary'} large />
-            </div>
-            <Footer />
-        </>
-    );
-    if (error) return (
-        <>
-            <LazyMenuBar />
-            <div>Error: {error}</div>
-            <Footer />
-        </>
-    );
-    if (!projects) return (
-        <>
-            <LazyMenuBar />
-            <div>Failed to load search results</div>
-            <Footer />
-        </>
-    );
+    if (loading) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div className={styles.spinner}>
+                    <Spinner
+                        level={'primary'}
+                        large
+                    />
+                </div>
+                <Footer />
+            </>
+        );
+    }
+    if (error) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div>Error: {error}</div>
+                <Footer />
+            </>
+        );
+    }
+    if (!projects) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div>Failed to load search results</div>
+                <Footer />
+            </>
+        );
+    }
 
     return (
         <>
@@ -116,14 +125,14 @@ const Search = (props) => {
                     <div className={styles.section}>
                         <h2>
                             <FormattedMessage
-                                defaultMessage={"Search Results for \"{query}\" ({total})"}
+                                defaultMessage={'Search Results for "{query}" ({total})'}
                                 description="Title of search results page"
                                 id="dash.searchResults.title"
                                 values={{query, total}}
                             />
                         </h2>
                         <div className={styles.projectGrid}>
-                            {projects.length > 0 ? projects.map((project) => (
+                            {projects.length > 0 ? projects.map(project => (
                                 <div
                                     key={project.id}
                                     className={styles.projectCard}
@@ -150,7 +159,11 @@ const Search = (props) => {
                                                 description="Displayed under project title to credit creator"
                                                 id="tw.studioview.authorAttribution"
                                                 values={{
-                                                    author: <a href={`user#${project.author.id}`} target="_blank">{project.author.username}</a>
+                                                    author: <a
+                                                        href={`user#${project.author.id}`}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                    >{project.author.username}</a>
                                                 }}
                                             />
                                         </p>

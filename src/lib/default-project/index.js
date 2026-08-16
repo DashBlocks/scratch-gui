@@ -4,7 +4,7 @@ import projectData from './project-data';
 import overrideDefaultProject from '!arraybuffer-loader!./override-default-project.sb3';
 import DashBackdrop from '!raw-loader!./Dash Backdrop.svg';
 import Dashy from '!raw-loader!./Dashy.svg';
-import Dashy2 from '!raw-loader!./ffda3f9a80afaaa9dbe00292f892e46e.svg'
+import Dashy2 from '!raw-loader!./ffda3f9a80afaaa9dbe00292f892e46e.svg';
 import Dashy3 from '!raw-loader!./d3f97e3555feeea9c292eb9a52c5d592.svg';
 import Dashy4 from '!raw-loader!./a30c76b27d418899ffcabc35097ccfe7.svg';
 /* eslint-enable import/no-unresolved */

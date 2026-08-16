@@ -26,7 +26,7 @@ const theme = detectTheme();
 applyGuiColors(theme);
 
 const Desktop = () => {
-    const openFile = (file) => {
+    const openFile = file => {
         window.open(`${RELEASES_DOWNLOAD_URL}/${file}`, '_blank', 'noreferrer');
     };
     

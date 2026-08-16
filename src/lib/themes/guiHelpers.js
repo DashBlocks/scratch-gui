@@ -57,7 +57,7 @@ const applyGuiColors = theme => {
             }
         }
 
-        const parseHex = (hex) => {
+        const parseHex = hex => {
             if (hex.startsWith('#')) {
                 const h = hex.slice(1);
                 if (h.length === 3) {
@@ -80,7 +80,7 @@ const applyGuiColors = theme => {
             return null;
         };
 
-        const parseRgbString = (s) => {
+        const parseRgbString = s => {
             const m = s.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([0-9.]+))?\)/i);
             if (m) {
                 return {r: Number(m[1]), g: Number(m[2]), b: Number(m[3]), a: m[4] ? Number(m[4]) : 1};
@@ -90,8 +90,8 @@ const applyGuiColors = theme => {
 
         const rgbToHsl = ({r, g, b}) => {
             r /= 255; g /= 255; b /= 255;
-            const max = Math.max(r, g, b), min = Math.min(r, g, b);
-            let h, s, l = (max + min) / 2;
+            const max = Math.max(r, g, b); const min = Math.min(r, g, b);
+            let h; let s; const l = (max + min) / 2;
             if (max === min) {
                 h = s = 0;
             } else {
@@ -169,10 +169,11 @@ const applyGuiColors = theme => {
 
     // Not a GUI color, but we apply it here anyway lol
     const fontFace = new FontFace('customFont', `url(${theme.font.font})`);
-    fontFace.load().then((loadedFont) => {
+    fontFace.load().then(loadedFont => {
         document.fonts.add(loadedFont);
         document.body.style.fontFamily = 'customFont, "Helvetica Neue", Helvetica, sans-serif';
-    }).catch(console.error);
+    })
+        .catch(console.error);
 };
 
 export {

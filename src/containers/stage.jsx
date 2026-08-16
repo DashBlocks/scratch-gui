@@ -524,7 +524,7 @@ const mapDispatchToProps = dispatch => ({
     onHighQualityPenChanged: enabled => dispatch(setHighQualityPenState(enabled)),
     onActivateColorPicker: () => dispatch(activateColorPicker()),
     onDeactivateColorPicker: color => dispatch(deactivateColorPicker(color)),
-    onSetStageMode: stageMode => dispatch(setStageMode(stageMode)),
+    onSetStageMode: stageMode => dispatch(setStageMode(stageMode))
 });
 
 export default connect(

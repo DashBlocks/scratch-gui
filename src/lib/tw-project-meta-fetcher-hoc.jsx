@@ -78,63 +78,60 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
 
                 if ((projectId.includes('s') ? projectId.replace('s', '') : projectId) === '0') {
                     // don't try to get metadata
+                } else if (projectId.includes('s')) {
+                    projectId = projectId.replace('s', '');
+                    fetchProjectMeta(projectId, this.props.reduxProjectId).then(data => {
+                        // If project ID changed, ignore the results.
+                        if (this.props.reduxProjectId.replace('s', '') !== projectId) {
+                            return;
+                        }
+
+                        const title = data.title;
+                        if (title) {
+                            this.props.onSetProjectTitle(title);
+                        }
+                        const authorName = data.author.username;
+                        const authorThumbnail = `https://trampoline.turbowarp.org/avatars/${data.author.id}`;
+                        this.props.onSetAuthor(authorName, '', authorThumbnail);
+                        const instructions = data.instructions || '';
+                        const credits = data.description || '';
+                        if (instructions || credits) {
+                            this.props.onSetDescription(instructions, credits);
+                        }
+                        setIndexable(true);
+                    })
+                        .catch(err => {
+                            setIndexable(false);
+                            if (`${err}`.includes('unshared')) {
+                                this.props.onSetDescription('unshared', 'unshared');
+                            }
+                            log.warn('cannot fetch project meta', err);
+                        });
                 } else {
-                    if (projectId.includes('s')) {
-                        projectId = projectId.replace('s', '');
-                        fetchProjectMeta(projectId, this.props.reduxProjectId).then(data => {
-                            // If project ID changed, ignore the results.
-                            if (this.props.reduxProjectId.replace('s', '') !== projectId) {
-                                return;
-                            }
+                    fetchProjectMeta(projectId, this.props.reduxProjectId).then(data => {
+                        // If project ID changed, ignore the results.
+                        if (this.props.reduxProjectId !== projectId) {
+                            return;
+                        }
 
-                            const title = data.title;
-                            if (title) {
-                                this.props.onSetProjectTitle(title);
-                            }
-                            const authorName = data.author.username;
-                            const authorThumbnail = `https://trampoline.turbowarp.org/avatars/${data.author.id}`;
-                            this.props.onSetAuthor(authorName, '', authorThumbnail);
-                            const instructions = data.instructions || '';
-                            const credits = data.description || '';
-                            if (instructions || credits) {
-                                this.props.onSetDescription(instructions, credits);
-                            }
-                            setIndexable(true);
-                        })
-                            .catch(err => {
-                                setIndexable(false);
-                                if (`${err}`.includes('unshared')) {
-                                    this.props.onSetDescription('unshared', 'unshared');
-                                }
-                                log.warn('cannot fetch project meta', err);
-                            });
-                    } else {
-                        fetchProjectMeta(projectId, this.props.reduxProjectId).then(data => {
-                            // If project ID changed, ignore the results.
-                            if (this.props.reduxProjectId !== projectId) {
-                                return;
-                            }
-
-                            const title = data.name;
-                            if (title) {
-                                this.props.onSetProjectTitle(title);
-                            }
-                            const authorName = data.author.username;
-                            const authorId = data.author.id;
-                            const authorThumbnail = `https://api.dashblocks.org/users/avatars/${data.author.profile.avatarId}`;
-                            this.props.onSetAuthor(authorName, authorId, authorThumbnail);
-                            const description = data.description || '';
-                            if (description) {
-                                this.props.onSetDescription(description, '', true);
-                            }
-                            setIndexable(true);
-                        })
-                            .catch(err => {
-                                setIndexable(false);
-                                log.warn('cannot fetch project meta', err);
-                            });
-                    };
-
+                        const title = data.name;
+                        if (title) {
+                            this.props.onSetProjectTitle(title);
+                        }
+                        const authorName = data.author.username;
+                        const authorId = data.author.id;
+                        const authorThumbnail = `https://api.dashblocks.org/users/avatars/${data.author.profile.avatarId}`;
+                        this.props.onSetAuthor(authorName, authorId, authorThumbnail);
+                        const description = data.description || '';
+                        if (description) {
+                            this.props.onSetDescription(description, '', true);
+                        }
+                        setIndexable(true);
+                    })
+                        .catch(err => {
+                            setIndexable(false);
+                            log.warn('cannot fetch project meta', err);
+                        });
                 }
             }
         }

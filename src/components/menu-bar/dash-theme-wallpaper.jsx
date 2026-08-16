@@ -12,7 +12,7 @@ import {openWallpaperThemeMenu, wallpaperThemeMenuOpen, closeSettingsMenu} from 
 import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
 import Prompt from '../../containers/prompt.jsx';
-import wallpaperIcon from './dash-wallpaper.svg'
+import wallpaperIcon from './dash-wallpaper.svg';
 import styles from './settings-menu.css';
 
 const messages = defineMessages({
@@ -50,7 +50,7 @@ class WallpaperThemeMenu extends React.Component {
         if (files && files.length > 0) {
             const file = files[0];
             const reader = new FileReader();
-            reader.onload = (e) => {
+            reader.onload = e => {
                 const dataUrl = e.target.result;
                 this.props.onChangeTheme(
                     this.props.theme.set('wallpaper', {
@@ -66,9 +66,9 @@ class WallpaperThemeMenu extends React.Component {
     handleOpenFilePicker () {
         const input = document.createElement('input');
         input.type = 'file';
-        input.accept = ".img, .png, .jpg, .jpeg, .gif, .svg, .webp, .bmp, .ico, .tif, .tiff, .jfif, .pjpeg, .pjp, .avif, .cur, .apng";
+        input.accept = '.img, .png, .jpg, .jpeg, .gif, .svg, .webp, .bmp, .ico, .tif, .tiff, .jfif, .pjpeg, .pjp, .avif, .cur, .apng';
         input.multiple = false;
-        input.addEventListener('change', (e) => {
+        input.addEventListener('change', e => {
             if (e.target.files && e.target.files.length) {
                 this.handleFileChange(e.target.files);
             } else {
@@ -89,7 +89,7 @@ class WallpaperThemeMenu extends React.Component {
         if (!value || (!num && num !== 0)) {
             this.setState({prompt: false});
             return;
-        };
+        }
         const opaque = Math.max(0, Math.min(1, num / 100));
         this.props.onChangeTheme(
             this.props.theme.set('wallpaper', {url: this.props.theme.wallpaper.url, opaque})

@@ -53,7 +53,7 @@ class ProjectInput extends React.Component {
 
         if (idPart.startsWith('s')) {
             const numbersMatch = idPart.slice(1).match(/\d*/);
-            return 's' + (numbersMatch ? numbersMatch[0] : '');
+            return `s${numbersMatch ? numbersMatch[0] : ''}`;
         }
 
         const numbersMatch = idPart.match(/\d+/);

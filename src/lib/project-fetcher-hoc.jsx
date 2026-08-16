@@ -128,25 +128,24 @@ const ProjectFetcherHOC = function (WrappedComponent) {
                         return r.arrayBuffer();
                     })
                     .then(buffer => ({data: buffer}));
-            } else {
-                if (projectId.includes('s') || projectId === '0') {
-                    if (projectId.includes('s'))
-                        projectId = projectId.replace('s', '');
-                    assetPromise = fetchProjectToken(projectId, this.props.reduxProjectId)
-                        .then(token => {
-                            storage.setProjectToken(token);
-                            return storage.load(storage.AssetType.Project, projectId, storage.DataFormat.JSON);
-                        });
-                } else {
-                    assetPromise = fetch(`https://api.dashblocks.org/get-project/${projectId}`)
-                        .then(r => {
-                            if (!r.ok) {
-                                throw new Error(`Request returned status ${r.status} (${r.statusText})`);
-                            }
-                            return r.arrayBuffer();
-                        })
-                        .then(buffer => ({data: buffer}));
+            } else if (projectId.includes('s') || projectId === '0') {
+                if (projectId.includes('s')) {
+                    projectId = projectId.replace('s', '');
                 }
+                assetPromise = fetchProjectToken(projectId, this.props.reduxProjectId)
+                    .then(token => {
+                        storage.setProjectToken(token);
+                        return storage.load(storage.AssetType.Project, projectId, storage.DataFormat.JSON);
+                    });
+            } else {
+                assetPromise = fetch(`https://api.dashblocks.org/get-project/${projectId}`)
+                    .then(r => {
+                        if (!r.ok) {
+                            throw new Error(`Request returned status ${r.status} (${r.statusText})`);
+                        }
+                        return r.arrayBuffer();
+                    })
+                    .then(buffer => ({data: buffer}));
             }
 
             return assetPromise

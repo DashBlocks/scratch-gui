@@ -115,7 +115,7 @@ class Monitor extends React.Component {
         }
         const {opcode, theme, vm} = this.props;
         const realCategory = opcode.split('_')[0];
-        const extColor = vm.runtime._blockInfo.find((extInfo) => realCategory === extInfo.id)?.color1;
+        const extColor = vm.runtime._blockInfo.find(extInfo => realCategory === extInfo.id)?.color1;
         // If primary color of extension is same as default primary color for extensions,
         // then return null, instead of extension color
         if (!extColor || extColor.toLowerCase() === blockColors.pen.primary.toLowerCase()) {

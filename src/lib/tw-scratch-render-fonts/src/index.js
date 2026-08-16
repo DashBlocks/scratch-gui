@@ -60,7 +60,7 @@ const getFonts = function () {
     }
 
     return FONTS;
-}
+};
 
 const loadFonts = function () {
     return Promise.resolve(getFonts());

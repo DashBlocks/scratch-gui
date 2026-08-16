@@ -31,13 +31,13 @@ const messages = defineMessages({
     }
 });
 
-const clone = (obj) => Cast.isNormalArray(obj)
-    ? new NormalArray(obj)
-    : Cast.isNormalObject(obj)
-        ? new NormalObject(obj)
-        : obj.slice();
-const set = (obj, indexOrKey, value) => Array.isArray(obj) ? (obj[indexOrKey] = value) : obj.set(indexOrKey, value);
-const get = (obj, indexOrKey) => Array.isArray(obj) ? obj[indexOrKey] : obj.get(indexOrKey);
+const clone = obj => (Cast.isNormalArray(obj) ?
+    new NormalArray(obj) :
+    Cast.isNormalObject(obj) ?
+        new NormalObject(obj) :
+        obj.slice());
+const set = (obj, indexOrKey, value) => (Array.isArray(obj) ? (obj[indexOrKey] = value) : obj.set(indexOrKey, value));
+const get = (obj, indexOrKey) => (Array.isArray(obj) ? obj[indexOrKey] : obj.get(indexOrKey));
 
 class ListMonitor extends React.Component {
     constructor (props) {
@@ -68,7 +68,7 @@ class ListMonitor extends React.Component {
         };
     }
 
-    getCurrentList() {
+    getCurrentList () {
         let current = this.props.value;
         for (const key of this.state.path) {
             if (current && typeof current === 'object') {
@@ -80,7 +80,7 @@ class ListMonitor extends React.Component {
         return current || [];
     }
 
-    applyDeepUpdate(callback) {
+    applyDeepUpdate (callback) {
         const {vm, targetId, id: variableId} = this.props;
         const rootValue = getVariableValue(vm, targetId, variableId);
 
@@ -129,7 +129,7 @@ class ListMonitor extends React.Component {
         if (this.state.activeIndex === index) {
             return;
         }
-        let currentList = this.getCurrentList();
+        const currentList = this.getCurrentList();
         const indexOrKey = Array.isArray(currentList) ? index : currentList.keys().toArray()[index];
         this.setState({
             activeIndex: index,
@@ -217,13 +217,13 @@ class ListMonitor extends React.Component {
                     activeValue: newListValue[newActiveIndex]
                 });
                 return newListValue;
-            } else {
-                const newListValue = new NormalObject(list);
-                const key = newListValue.keys().toArray()[this.state.activeIndex];
-                newListValue.delete(key);
-                this.setState({ activeIndex: null, activeValue: null });
-                return newListValue;
             }
+            const newListValue = new NormalObject(list);
+            const key = newListValue.keys().toArray()[this.state.activeIndex];
+            newListValue.delete(key);
+            this.setState({activeIndex: null, activeValue: null});
+            return newListValue;
+            
         });
     }
 
@@ -255,7 +255,8 @@ class ListMonitor extends React.Component {
                 return list;
             }
 
-            if (list.keys().toArray().includes(key)) {
+            if (list.keys().toArray()
+                .includes(key)) {
                 alert(this.props.intl.formatMessage(messages.keyAlreadyExists, {key}));
                 this.setState({prompt: false, draggable: true});
                 return list;
@@ -313,11 +314,12 @@ class ListMonitor extends React.Component {
             ...props
         } = this.props;
 
-        let currentList = this.getCurrentList();
+        const currentList = this.getCurrentList();
         let resolvedValues = [];
 
         if (Cast.isNormalObject(currentList)) {
-            resolvedValues = currentList.entries().toArray().map(([k, v]) => ({ __isObjEntry: true, key: k, value: v }));
+            resolvedValues = currentList.entries().toArray()
+                .map(([k, v]) => ({__isObjEntry: true, key: k, value: v}));
         } else if (Array.isArray(currentList)) {
             resolvedValues = currentList;
         }

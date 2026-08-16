@@ -10,20 +10,20 @@ const shuffle = list => {
 
 const links = {
     scratch: {
-        avatar: (userID) => `https://trampoline.turbowarp.org/avatars/${userID}`,
-        href: (username) => `https://scratch.mit.edu/users/${username}/`
+        avatar: userID => `https://trampoline.turbowarp.org/avatars/${userID}`,
+        href: username => `https://scratch.mit.edu/users/${username}/`
     },
     github: {
-        avatar: (userID) => `https://avatars.githubusercontent.com/u/${userID}?v=4`,
-        href: (username) => `https://github.com/${username}/`
+        avatar: userID => `https://avatars.githubusercontent.com/u/${userID}?v=4`,
+        href: username => `https://github.com/${username}/`
     },
     dash: {
-        avatar: (userID) => `https://api.dashblocks.org/users/avatars/${userID}`,
-        href: (username) => `https://dashblocks.org/user#${username}`
+        avatar: userID => `https://api.dashblocks.org/users/avatars/${userID}`,
+        href: username => `https://dashblocks.org/user#${username}`
     }
 };
 
-const fromHardcoded = ({userID = '0', username, link = "scratch"}) => {
+const fromHardcoded = ({userID = '0', username, link = 'scratch'}) => {
     const result = {
         text: username
     };
@@ -211,7 +211,7 @@ const addonDevelopers = [
     {
         link: 'github',
         userID: 139097378,
-        username: 'SharkPool-SP',
+        username: 'SharkPool-SP'
     }
 ].map(fromHardcoded);
 

@@ -47,7 +47,7 @@ const reducer = function (state, action) {
     if (typeof state === 'undefined') state = initialState;
     switch (action.type) {
     case OPEN_MODAL: {
-        const makeState =  {
+        const makeState = {
             [action.modal]: true
         };
         if (action.extensionSwapId) makeState.extensionSwapId = action.extensionSwapId;

@@ -84,7 +84,7 @@ const AccountNavComponent = ({
                     id="gui.accountMenu.myStuff"
                 />
             </MenuItemContainer>
-            {role === "dashteam" && (
+            {role === 'dashteam' && (
                 <MenuItemContainer href="admin">
                     <FormattedMessage
                         defaultMessage="Admin Panel"

@@ -43,7 +43,7 @@ const messages = defineMessages({
     }
 });
 
-const MyStuff = (props) => {
+const MyStuff = props => {
     const [userData, setUserData] = useState(null);
     const [projects, setProjects] = useState([]);
     const [limit] = useState(40);
@@ -55,7 +55,7 @@ const MyStuff = (props) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        document.title = props.intl.formatMessage(messages.title) + ' - ' + APP_NAME;
+        document.title = `${props.intl.formatMessage(messages.title)} - ${APP_NAME}`;
 
         const fetchFullProfile = async () => {
             setLoading(true);
@@ -90,9 +90,9 @@ const MyStuff = (props) => {
             });
             const projectsData = await projectsRes.json();
             if (!projectsData.ok) throw new Error(projectsData.error);
-            setProjects(prevProjects => currentOffset === 0
-                ? (projectsData.projects || [])
-                : [...prevProjects, ...(projectsData.projects || [])]);
+            setProjects(prevProjects => (currentOffset === 0 ?
+                (projectsData.projects || []) :
+                [...prevProjects, ...(projectsData.projects || [])]));
             setHasMore((projectsData.projects || []).length === limit);
             setOffset(currentOffset);
         } catch (error) {
@@ -102,10 +102,11 @@ const MyStuff = (props) => {
         }
     };
 
-    async function handleDeleteProject(projectId) {
+    async function handleDeleteProject (projectId) {
         const project = projects.find(p => p.id === projectId);
-        if (!project || !window.confirm(props.intl.formatMessage(messages.confirmDeleteProject, {projectName: project.name})))
+        if (!project || !window.confirm(props.intl.formatMessage(messages.confirmDeleteProject, {projectName: project.name}))) {
             return;
+        }
 
         try {
             const res = await fetch(`https://api.dashblocks.org/projects/${projectId}`, {
@@ -114,8 +115,9 @@ const MyStuff = (props) => {
             });
             const data = await res.json();
             if (!data.ok) throw new Error(data.error);
-            if (res.status_code === 202)
+            if (res.status_code === 202) {
                 alert(props.intl.formatMessage(messages.deletedOnlyFromProfile));
+            }
 
             setProjects(prevProjects => prevProjects.filter(p => p.id !== projectId));
         } catch (error) {
@@ -123,29 +125,38 @@ const MyStuff = (props) => {
         }
     }
 
-    if (loading) return (
-        <>
-            <LazyMenuBar />
-            <div className={styles.spinner}>
-                <Spinner level={'primary'} large />
-            </div>
-            <Footer />
-        </>
-    );
-    if (error) return (
-        <>
-            <LazyMenuBar />
-            <div>Error: {error}</div>
-            <Footer />
-        </>
-    );
-    if (!userData) return (
-        <>
-            <LazyMenuBar />
-            <div>Failed to load user data</div>
-            <Footer />
-        </>
-    );
+    if (loading) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div className={styles.spinner}>
+                    <Spinner
+                        level={'primary'}
+                        large
+                    />
+                </div>
+                <Footer />
+            </>
+        );
+    }
+    if (error) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div>Error: {error}</div>
+                <Footer />
+            </>
+        );
+    }
+    if (!userData) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div>Failed to load user data</div>
+                <Footer />
+            </>
+        );
+    }
 
     return (
         <>
@@ -164,7 +175,7 @@ const MyStuff = (props) => {
                             />
                         </h2>
                         <div className={styles.projectGrid}>
-                            {projects.map((project) => (
+                            {projects.map(project => (
                                 <div
                                     key={project.id}
                                     className={styles.projectCard}

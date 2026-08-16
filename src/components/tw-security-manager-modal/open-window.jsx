@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {FormattedMessage} from 'react-intl';
 import {APP_NAME} from '../../lib/brand';
 import URL from './url.jsx';
-import { isTrustedUrl } from '../../containers/tw-security-manager.jsx';
+import {isTrustedUrl} from '../../containers/tw-security-manager.jsx';
 
 const OpenWindowModal = props => (
     <div>

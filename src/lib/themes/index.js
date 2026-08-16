@@ -95,7 +95,7 @@ class Theme {
         /** @readonly */
         this.wallpaper = wallpaper || {url: null, opaque: 0.6};
         /** @readonly */
-        this.font = font || {font: null}
+        this.font = font || {font: null};
     }
 
     static light = new Theme(ACCENT_DEFAULT, GUI_LIGHT, BLOCKS_DEFAULT, null, null);
@@ -139,9 +139,10 @@ class Theme {
         );
         if (this.wallpaper.url !== null) {
             blockColors = defaultsDeep(
-                {workspace: blockColors.workspace + Math.round(this.wallpaper.opaque * 255).toString(16).padStart(2, 0)},
+                {workspace: blockColors.workspace + Math.round(this.wallpaper.opaque * 255).toString(16)
+                    .padStart(2, 0)},
                 blockColors
-            )
+            );
         }
         return blockColors;
     }

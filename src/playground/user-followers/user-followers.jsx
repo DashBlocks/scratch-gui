@@ -32,7 +32,7 @@ const messages = defineMessages({
     }
 });
 
-const UserFollowers = (props) => {
+const UserFollowers = props => {
     const id = useHashUserId();
     const [userData, setUserData] = useState(null);
     const [followers, setFollowers] = useState([]);
@@ -45,10 +45,10 @@ const UserFollowers = (props) => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        document.title = props.intl.formatMessage(messages.title, {
+        document.title = `${props.intl.formatMessage(messages.title, {
             username: 'User',
             followersCount: '?'
-        }) + ' - ' + APP_NAME;
+        })} - ${APP_NAME}`;
 
         setLoading(true);
         const fetchData = async () => {
@@ -64,18 +64,18 @@ const UserFollowers = (props) => {
                 setLoading(false);
                 return;
             }
-            document.title = props.intl.formatMessage(messages.title, {
+            document.title = `${props.intl.formatMessage(messages.title, {
                 username: user.user.username,
                 followersCount: user.user.profile.stats.followers
-            }) + ' - ' + APP_NAME;
+            })} - ${APP_NAME}`;
             setUserData(user.user);
             await fetchFollowers(0);
             setLoading(false);
-        }
+        };
         fetchData();
     }, [id]);
 
-    const fetchFollowers = async (currentOffset) => {
+    const fetchFollowers = async currentOffset => {
         setLoadMoreButtonDisabled(true);
         try {
             const followersRes = await fetch(`https://api.dashblocks.org/users/${id}/followers?limit=${limit}&offset=${currentOffset}`, {
@@ -94,29 +94,38 @@ const UserFollowers = (props) => {
         }
     };
 
-    if (loading) return (
-        <>
-            <LazyMenuBar />
-            <div className={styles.spinner}>
-                <Spinner level={'primary'} large />
-            </div>
-            <Footer />
-        </>
-    );
-    if (error) return (
-        <>
-            <LazyMenuBar />
-            <div>Error: {error}</div>
-            <Footer />
-        </>
-    );
-    if (!userData || !followers) return (
-        <>
-            <LazyMenuBar />
-            <div>Failed to load user data</div>
-            <Footer />
-        </>
-    );
+    if (loading) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div className={styles.spinner}>
+                    <Spinner
+                        level={'primary'}
+                        large
+                    />
+                </div>
+                <Footer />
+            </>
+        );
+    }
+    if (error) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div>Error: {error}</div>
+                <Footer />
+            </>
+        );
+    }
+    if (!userData || !followers) {
+        return (
+            <>
+                <LazyMenuBar />
+                <div>Failed to load user data</div>
+                <Footer />
+            </>
+        );
+    }
 
     return (
         <>
@@ -139,7 +148,7 @@ const UserFollowers = (props) => {
                             />
                         </h2>
                         <div className={styles.followList}>
-                            {followers.length > 0 ? followers.map((follower) => (
+                            {followers.length > 0 ? followers.map(follower => (
                                 <div
                                     key={follower.id}
                                     className={styles.followCard}

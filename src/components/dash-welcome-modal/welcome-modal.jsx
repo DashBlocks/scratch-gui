@@ -170,7 +170,11 @@ const WelcomeModalComponent = props => (
                     id="dash.tosAndPrivacy"
                     values={{
                         termsOfService: (
-                            <a href={`${process.env.ROOT}tos`} target="_blank" rel="noopener noreferrer">
+                            <a
+                                href={`${process.env.ROOT}tos`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
                                 <FormattedMessage
                                     defaultMessage="Terms of Service"
                                     description="Link to terms of service page"
@@ -179,7 +183,11 @@ const WelcomeModalComponent = props => (
                             </a>
                         ),
                         privacyPolicy: (
-                            <a href={`${process.env.ROOT}privacy`} target="_blank" rel="noopener noreferrer">
+                            <a
+                                href={`${process.env.ROOT}privacy`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
                                 <FormattedMessage
                                     defaultMessage="Privacy Policy"
                                     description="Link to privacy policy page"

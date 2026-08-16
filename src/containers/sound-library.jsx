@@ -139,7 +139,7 @@ class SoundLibrary extends React.PureComponent {
         // Save the promise so code to stop the sound may queue the stop
         // instruction after the play instruction.
         if (soundItem._src) {
-            this.playingSoundPromise = handleAssetLoad(soundItem._src.library, soundItem._src.path, (buffer) => buffer)
+            this.playingSoundPromise = handleAssetLoad(soundItem._src.library, soundItem._src.path, buffer => buffer)
                 .then(buffer => {
                     if (buffer) {
                         const sound = {

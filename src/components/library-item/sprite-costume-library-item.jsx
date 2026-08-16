@@ -40,7 +40,7 @@ class SpriteCostumeLibraryItem extends React.PureComponent {
                 </Box>
                 <div className={styles.featuredText}>
                     <span>{this.props.name}</span>
-                    {this.props.libraryId === "spriteLibrary" && (
+                    {this.props.libraryId === 'spriteLibrary' && (
                         <>
                             <br />
                             <span className={styles.featuredThinDescription}>

@@ -255,7 +255,7 @@ class MenuBar extends React.Component {
         ]);
         this.state = {
             isSharing: false
-        }
+        };
     }
     componentDidMount () {
         document.addEventListener('keydown', this.handleKeyPress);
@@ -319,8 +319,9 @@ class MenuBar extends React.Component {
             if (this.props.canShare) { // save before transitioning to project page
                 const session = await getSession();
                 if (session && session.id) {
-                    if (!confirm(this.props.intl.formatMessage(dashMessages.shareProjectWarning)))
+                    if (!confirm(this.props.intl.formatMessage(dashMessages.shareProjectWarning))) {
                         return;
+                    }
                     this.setState({
                         isSharing: true
                     });
@@ -382,8 +383,9 @@ class MenuBar extends React.Component {
             if (this.props.canShare) { // save before transitioning to project page
                 const session = await getSession();
                 if (session && session.id) {
-                    if (!confirm(this.props.intl.formatMessage(dashMessages.shareProjectWarning)))
+                    if (!confirm(this.props.intl.formatMessage(dashMessages.shareProjectWarning))) {
                         return;
+                    }
                     this.setState({
                         isSharing: true
                     });
@@ -492,9 +494,9 @@ class MenuBar extends React.Component {
         if (modifier) {
             if (event.key.toLowerCase() === 's') {
                 this.props.handleSaveProject();
-                event.preventDefault();    
+                event.preventDefault();
             } else if (event.key.toLowerCase() === 'o') {
-                event.preventDefault();    
+                event.preventDefault();
                 this.props.onStartSelectingFileUpload();
             }
         }
@@ -691,7 +693,10 @@ class MenuBar extends React.Component {
                     )}
                     {this.props.isPlayerOnly && <Divider className={styles.divider} />}
                     {this.props.isPlayerOnly && (
-                        <form className={styles.menuBarSearch} onSubmit={this.handleSearchSubmit}>
+                        <form
+                            className={styles.menuBarSearch}
+                            onSubmit={this.handleSearchSubmit}
+                        >
                             <input
                                 type="search"
                                 className={styles.menuBarSearchInput}
@@ -946,7 +951,7 @@ class MenuBar extends React.Component {
                                                 />
                                             </MenuItem>
                                             <MenuItem
-                                                onClick={() => window.open("https://dashblocks.org/unpackager/", '_blank')}
+                                                onClick={() => window.open('https://dashblocks.org/unpackager/', '_blank')}
                                             >
                                                 <FormattedMessage
                                                     defaultMessage="Unpackager"
@@ -1219,7 +1224,7 @@ class MenuBar extends React.Component {
                                                 onClick={() => {
                                                     this.props.isShared ?
                                                         this.handleClickUpdate(waitForUpdate) :
-                                                        this.handleClickShare(waitForUpdate)
+                                                        this.handleClickShare(waitForUpdate);
                                                 }}
                                                 /* eslint-enable react/jsx-no-bind */
                                             />
@@ -1355,7 +1360,7 @@ class MenuBar extends React.Component {
                                     styles.hoverable
                                 )}
                                 key="join"
-                                onMouseUp={() => window.open("./register", '_blank')}
+                                onMouseUp={() => window.open('./register', '_blank')}
                             >
                                 <FormattedMessage
                                     defaultMessage="Join Dash"
@@ -1369,7 +1374,7 @@ class MenuBar extends React.Component {
                                     styles.hoverable
                                 )}
                                 key="login"
-                                onMouseUp={() => window.open("./login", '_blank')}
+                                onMouseUp={() => window.open('./login', '_blank')}
                             >
                                 <FormattedMessage
                                     defaultMessage="Sign in"
@@ -1389,9 +1394,15 @@ class MenuBar extends React.Component {
             <React.Fragment>
                 {menuBar}
                 {/* !process.env.OLD_COMPILER && (<TWNews item='dash:news1' id='new-compiler' />) */}
-                {window.location.href.startsWith('https://dashblocks.org/scratch-gui') && (<TWNews item='dash:news2' id='dev-version' />)}
+                {window.location.href.startsWith('https://dashblocks.org/scratch-gui') && (<TWNews
+                    item="dash:news2"
+                    id="dev-version"
+                />)}
                 {/* <TWNews item='dash:news3' id='new-year' /> */}
-                {<TWNews item='dash:news4' id='donate' />}
+                {<TWNews
+                    item="dash:news4"
+                    id="donate"
+                />}
             </React.Fragment>
         );
     }
@@ -1509,7 +1520,7 @@ const mapStateToProps = (state, ownProps) => {
     const loadingState = state.scratchGui.projectState.loadingState;
     const session = state.scratchGui.dash.session;
     const projectId = state.scratchGui.projectState.projectId;
-    const isScratchProject = projectId && projectId.startsWith("s");
+    const isScratchProject = projectId && projectId.startsWith('s');
     const userOwnsProject = (
         !isScratchProject && ((
             state.scratchGui.tw.author &&
@@ -1518,7 +1529,7 @@ const mapStateToProps = (state, ownProps) => {
             state.scratchGui.tw.author.userId === session.id
         ) || (
             session &&
-            session.role === "dashteam"
+            session.role === 'dashteam'
         ))
     );
     return {
@@ -1537,8 +1548,8 @@ const mapStateToProps = (state, ownProps) => {
         isRtl: state.locales.isRtl,
         isUpdating: getIsUpdating(loadingState),
         isShowingProject: getIsShowingProject(loadingState),
-        isShared: projectId !== "0" && userOwnsProject,
-        canEditTitle: projectId === "0" || userOwnsProject,
+        isShared: projectId !== '0' && userOwnsProject,
+        canEditTitle: projectId === '0' || userOwnsProject,
         locale: state.locales.locale,
         loginMenuOpen: loginMenuOpen(state),
         modeMenuOpen: modeMenuOpen(state),

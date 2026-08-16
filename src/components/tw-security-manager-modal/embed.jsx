@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FormattedMessage } from 'react-intl';
+import {FormattedMessage} from 'react-intl';
 import styles from './embed.css';
 import URL from './url.jsx';
 import DataURL from './data-url.jsx';
 import FancyCheckbox from '../tw-fancy-checkbox/checkbox.jsx';
-import { APP_NAME } from '../../lib/brand';
+import {APP_NAME} from '../../lib/brand';
 
 const EmbedModal = props => (
     <div>

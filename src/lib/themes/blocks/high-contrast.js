@@ -70,16 +70,16 @@ const blockColors = {
         quaternary: '#FFDDCC'
     },
     json: {
-        primary: "#B7BEF7",
-        secondary: "#DFE1FC",
-        tertiary: "#777CA1",
-        quaternary: "#777CA1"
+        primary: '#B7BEF7',
+        secondary: '#DFE1FC',
+        tertiary: '#777CA1',
+        quaternary: '#777CA1'
     },
     console: {
-        primary: "#B6CCAE",
-        secondary: "#CCCCCC",
-        tertiary: "#7C9971",
-        quaternary: "#7C9971"
+        primary: '#B6CCAE',
+        secondary: '#CCCCCC',
+        tertiary: '#7C9971',
+        quaternary: '#7C9971'
     },
     more: {
         primary: '#FF99AA',

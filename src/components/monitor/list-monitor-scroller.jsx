@@ -16,7 +16,7 @@ class ListMonitorScroller extends React.Component {
             'rowRenderer',
             'noRowsRenderer'
         ]);
-    }    
+    }
     noRowsRenderer () {
         return (
             <div className={classNames(styles.listRow, styles.listEmpty)}>
@@ -33,11 +33,11 @@ class ListMonitorScroller extends React.Component {
          * The implementation of array monitors was taken from AmpMod
          * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/list-monitor-scroller.jsx
          */
-        let rawValue = this.safeValues[index];
-        let isObjEntry = rawValue && typeof rawValue === 'object' && rawValue.__isObjEntry;
+        const rawValue = this.safeValues[index];
+        const isObjEntry = rawValue && typeof rawValue === 'object' && rawValue.__isObjEntry;
         
-        let valKey = isObjEntry ? rawValue.key : index;
-        let value = isObjEntry ? rawValue.value : rawValue;
+        const valKey = isObjEntry ? rawValue.key : index;
+        const value = isObjEntry ? rawValue.value : rawValue;
 
         const isNestedArray = Cast.isNormalArray(value);
         const isNestedObject = Cast.isNormalObject(value);
@@ -75,9 +75,9 @@ class ListMonitorScroller extends React.Component {
                                 type="text"
                                 value={String(
                                     (isNestedArray || isNestedObject || Cast.isCustomType(value)) &&
-                                        typeof this.props.activeValue?.toListEditor === 'function'
-                                        ? this.props.activeValue.toListEditor()
-                                        : this.props.activeValue
+                                        typeof this.props.activeValue?.toListEditor === 'function' ?
+                                        this.props.activeValue.toListEditor() :
+                                        this.props.activeValue
                                 )}
                                 onBlur={this.props.onDeactivate}
                                 onChange={this.props.onInput}
@@ -95,15 +95,17 @@ class ListMonitorScroller extends React.Component {
 
                     ) : (
                         <div className={styles.valueInner}>
-                            {isNestedArray
-                                ? <i>{`Array(${value.length})`}</i>
-                                : isNestedObject
-                                    ? <i>{`Object(${value.size})`}</i>
-                                    : Cast.isCustomType(value) && (typeof value?.toListItem === 'function' || typeof value?.toMonitorContent === 'function')
-                                        ? (<DOMElementRenderer domElement={typeof value?.toListItem === 'function'
-                                            ? value.toListItem()
-                                            : value.toMonitorContent()} />)
-                                        : String(value)}
+                            {isNestedArray ?
+                                <i>{`Array(${value.length})`}</i> :
+                                isNestedObject ?
+                                    <i>{`Object(${value.size})`}</i> :
+                                    Cast.isCustomType(value) && (typeof value?.toListItem === 'function' || typeof value?.toMonitorContent === 'function') ?
+                                        (<DOMElementRenderer
+                                            domElement={typeof value?.toListItem === 'function' ?
+                                                value.toListItem() :
+                                                value.toMonitorContent()}
+                                        />) :
+                                        String(value)}
                         </div>
                     )}
                 </div>
@@ -120,9 +122,9 @@ class ListMonitorScroller extends React.Component {
         if (activeIndex === null || rowCount === 0) {
             scrollToIndex = undefined;
         } else {
-            scrollToIndex = (Number.isFinite(activeIndex) && activeIndex >= 0 && activeIndex < rowCount)
-                ? Math.floor(activeIndex)
-                : undefined;
+            scrollToIndex = (Number.isFinite(activeIndex) && activeIndex >= 0 && activeIndex < rowCount) ?
+                Math.floor(activeIndex) :
+                undefined;
         }
         this.safeValues = safeValues;
         return (

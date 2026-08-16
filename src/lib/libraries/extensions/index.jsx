@@ -371,6 +371,7 @@ export default [
         iconURL: legacyListsIcon,
         description: (
             <FormattedMessage
+                // eslint-disable-next-line max-len
                 defaultMessage="Enable a vanilla lists system. Note that the JSON blocks are more flexible and should be used instead if possible."
                 description="Description of legacy lists enabler"
                 id="dash.legacyLists.description"

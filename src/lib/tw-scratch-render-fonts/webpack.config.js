@@ -1,5 +1,5 @@
-const defaultsDeep = require('lodash.defaultsdeep');
-const path = require('path');
+import defaultsDeep from 'lodash.defaultsdeep';
+import path from 'path';
 
 const base = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -19,7 +19,7 @@ const base = {
     }
 };
 
-module.exports = [
+export default [
     defaultsDeep({}, base, {
         output: {
             library: 'ScratchRenderFonts',

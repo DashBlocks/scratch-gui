@@ -14,7 +14,7 @@ const getSession = async (userId, password, verificationCode) => {
         if (res.ok) {
             return {
                 ...data.user,
-                ...(!verificationCode ? {requiresVerification: data.requiresVerification} : {})
+                ...(verificationCode ? {} : {requiresVerification: data.requiresVerification})
             };
         }
         return data.error ? {error: data.error} : {};

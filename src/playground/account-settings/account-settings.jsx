@@ -108,6 +108,7 @@ class AccountSettings extends React.Component {
             if (!data.ok) {
                 throw new Error(this.props.intl.formatMessage(messages.failedToChangePassword));
             }
+            // eslint-disable-next-line no-alert
             alert(this.props.intl.formatMessage(messages.passwordChangedSuccessfully));
             window.location.href = './login';
         } catch (error) {

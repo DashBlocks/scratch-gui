@@ -63,13 +63,32 @@ const Messages = props => {
     const [userData, setUserData] = useState(null);
     const [userMessages, setUserMessages] = useState([]);
     const [markAllAsReadButtonDisabled, setMarkAllAsReadButtonDisabled] = useState(false);
-    const [limit, setLimit] = useState(40);
+    const [limit, _] = useState(40);
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [loadMoreButtonDisabled, setLoadMoreButtonDisabled] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const fetchMessages = async currentOffset => {
+        setLoadMoreButtonDisabled(true);
+        try {
+            const messagesRes = await fetch(`https://api.dashblocks.org/session/messages?limit=${limit}&offset=${currentOffset}`, {
+                credentials: 'include'
+            });
+            if (!messagesRes.ok) throw new Error('Failed to fetch messages');
+            const messagesData = await messagesRes.json();
+            if (!messagesData.ok) throw new Error(messagesData.error);
+            setUserMessages(prevUserMessages => [...prevUserMessages, ...messagesData.messages]);
+            setHasMore(messagesData.messages.length === limit);
+        } catch (catchedError) {
+            setError(catchedError.message);
+        } finally {
+            setLoading(false);
+            setLoadMoreButtonDisabled(false);
+        }
+    };
 
     useEffect(() => {
         document.title = `${props.intl.formatMessage(messages.title)} - ${APP_NAME}`;
@@ -88,25 +107,6 @@ const Messages = props => {
         };
         fetchData();
     }, []);
-
-    const fetchMessages = async currentOffset => {
-        setLoadMoreButtonDisabled(true);
-        try {
-            const messagesRes = await fetch(`https://api.dashblocks.org/session/messages?limit=${limit}&offset=${currentOffset}`, {
-                credentials: 'include'
-            });
-            if (!messagesRes.ok) throw new Error('Failed to fetch messages');
-            const messagesData = await messagesRes.json();
-            if (!messagesData.ok) throw new Error(messagesData.error);
-            setUserMessages(prevUserMessages => [...prevUserMessages, ...messagesData.messages]);
-            setHasMore(messagesData.messages.length === limit);
-        } catch (error) {
-            setError(error.message);
-        } finally {
-            setLoading(false);
-            setLoadMoreButtonDisabled(false);
-        }
-    };
 
     const getMessageContent = message => {
         switch (message.type) {
@@ -172,6 +172,7 @@ const Messages = props => {
                             draggable={false}
                         />
                         <FormattedMessage
+                            // eslint-disable-next-line max-len
                             defaultMessage="Thank you for your support, you are now Dash Supporter! Now you have exclusive benefits, read {donationPage} to learn more about this role"
                             description="Displayed when user got demoted to Dasher role"
                             id="dash.messages.promotedDashSupporter"
@@ -190,11 +191,16 @@ const Messages = props => {
                             draggable={false}
                         />
                         <FormattedMessage
+                            // eslint-disable-next-line max-len
                             defaultMessage="Congrats! You are now Dasher+, now you can {setDescription} in your profile and upload projects with custom extensions"
                             description="Displayed when user got promoted to Dasher+ role"
                             id="dash.messages.promotedDasherPlus"
                             values={{
-                                setDescription: <a href={`user#${userData.username}`}>{props.intl.formatMessage(messages.setDescription)}</a>
+                                setDescription: (
+                                    <a href={`user#${userData.username}`}>
+                                        {props.intl.formatMessage(messages.setDescription)}
+                                    </a>
+                                )
                             }}
                         />
                     </>
@@ -215,6 +221,7 @@ const Messages = props => {
                     </>
                 );
             }
+            break;
         }
         case 'new-follower': {
             return (
@@ -246,7 +253,7 @@ const Messages = props => {
         }
     };
 
-    async function handleClickMarkAllAsReadButton () {
+    const handleClickMarkAllAsReadButton = async () => {
         setMarkAllAsReadButtonDisabled(true);
         try {
             const res = await fetch('https://api.dashblocks.org/session/messages/mark-all-as-read', {
@@ -265,12 +272,12 @@ const Messages = props => {
             }));
             const session = await getSession();
             setSession(session);
-        } catch (error) {
-            setError(error.message);
+        } catch (catchedError) {
+            setError(catchedError.message);
         } finally {
             setMarkAllAsReadButtonDisabled(false);
         }
-    }
+    };
 
     if (loading) {
         return (
@@ -325,6 +332,7 @@ const Messages = props => {
                             <Button
                                 className={styles.markAllAsReadButton}
                                 disabled={markAllAsReadButtonDisabled}
+                                // eslint-disable-next-line react/jsx-no-bind
                                 onClick={handleClickMarkAllAsReadButton}
                             >
                                 {markAllAsReadButtonDisabled ? (
@@ -360,7 +368,12 @@ const Messages = props => {
                                                 date: (message.date ? new Date(message.date) : null) ?
                                                     relativeTimeSupported() ?
                                                         (
-                                                            <span title={`${props.intl.formatDate(new Date(message.date))}, ${props.intl.formatTime(new Date(message.date))}`}>
+                                                            <span
+                                                                title={
+                                                                    // eslint-disable-next-line max-len
+                                                                    `${props.intl.formatDate(new Date(message.date))}, ${props.intl.formatTime(new Date(message.date))}`
+                                                                }
+                                                            >
                                                                 <FormattedRelative value={message.date} />
                                                             </span>
                                                         ) :
@@ -375,6 +388,7 @@ const Messages = props => {
                                 <Button
                                     className={styles.loadMoreButton}
                                     disabled={loadMoreButtonDisabled}
+                                    // eslint-disable-next-line react/jsx-no-bind
                                     onClick={() => {
                                         const newOffset = offset + limit;
                                         setOffset(newOffset);

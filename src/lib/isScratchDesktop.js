@@ -8,7 +8,7 @@ const _isScratchDesktop = process.env.DESKTOP; // undefined = not ready yet
  * Tell the `isScratchDesktop()` whether or not the GUI is running under Scratch Desktop.
  * @param {boolean} value - the new value which `isScratchDesktop()` should return in the future.
  */
-const setIsScratchDesktop = function (value) {
+const setIsScratchDesktop = function (/* value */) {
     // _isScratchDesktop = value;
 };
 

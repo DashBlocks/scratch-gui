@@ -51,12 +51,12 @@ const getFonts = function () {
     }
 
     if (!document.getElementById('scratch-font-styles')) {
-    	const documentStyleTag = document.createElement('style');
-    	documentStyleTag.id = 'scratch-font-styles';
-    	for (const fontName in FONTS) {
-    	    documentStyleTag.textContent += FONTS[fontName];
-    	}
-    	document.body.insertBefore(documentStyleTag, document.body.firstChild);
+        const documentStyleTag = document.createElement('style');
+        documentStyleTag.id = 'scratch-font-styles';
+        for (const fontName in FONTS) {
+            documentStyleTag.textContent += FONTS[fontName];
+        }
+        document.body.insertBefore(documentStyleTag, document.body.firstChild);
     }
 
     return FONTS;
@@ -66,5 +66,7 @@ const loadFonts = function () {
     return Promise.resolve(getFonts());
 };
 
-module.exports = getFonts;
-module.exports.loadFonts = loadFonts;
+export {
+    getFonts as default,
+    loadFonts
+};

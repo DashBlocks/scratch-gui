@@ -4,7 +4,6 @@ import bindAll from 'lodash.bindall';
 import {connect} from 'react-redux';
 import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
-import getSession from '../../lib/session.js';
 import render from '../app-target';
 
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
@@ -62,6 +61,10 @@ class Register extends React.Component {
 
     componentDidMount () {
         document.title = `${this.props.intl.formatMessage(messages.title)} - ${APP_NAME}`;
+
+        if (this.props.session && this.props.session.username) {
+            window.location.href = '/';
+        }
     }
 
     handleChange (e) {
@@ -109,9 +112,9 @@ class Register extends React.Component {
         return (
             <>
                 <LazyMenuBar />
-                {this.props.session && this.props.session.username ? window.location.href = '/' : null}
                 <div
                     className={styles.container}
+                    dir={this.props.isRtl ? 'rtl' : 'ltr'}
                 >
                     <div className={styles.registerWrapper}>
                         <div className={styles.section}>
@@ -223,7 +226,9 @@ class Register extends React.Component {
 
                                     <p>
                                         <FormattedMessage
+                                            // eslint-disable-next-line max-len
                                             defaultMessage="By using Dash, you agree to our {termsOfService} and {privacyPolicy}."
+                                            // eslint-disable-next-line max-len
                                             description="Text to inform users about terms of service and privacy policy when registering"
                                             id="dash.tosAndPrivacy"
                                             values={{

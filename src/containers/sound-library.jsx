@@ -80,6 +80,7 @@ class SoundLibrary extends React.PureComponent {
                 data: getSoundLibraryThumbnailData(data, this.props.isRtl)
             }));
         } else {
+            // eslint-disable-next-line react/no-did-mount-set-state
             this.setState({
                 data: getSoundLibraryThumbnailData(soundLibrary, this.props.isRtl)
             });

@@ -12,7 +12,7 @@ const Description = ({
     projectId
 }) => instructions !== 'unshared' && credits !== 'unshared' && (
     <div className={styles.description}>
-        {!isDashProject ? <div className={styles.projectLink}>
+        {isDashProject ? null : <div className={styles.projectLink}>
             <a
                 href={`https://scratch.mit.edu/projects/${projectId}/`}
                 target="_blank"
@@ -24,7 +24,7 @@ const Description = ({
                     id="tw.viewOnScratch"
                 />
             </a>
-        </div> : null}
+        </div>}
         {instructions ? (isDashProject ? (
             <div>
                 <h2 className={styles.header}>

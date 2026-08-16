@@ -172,7 +172,9 @@ class ListMonitor extends React.Component {
         else if (e.key === 'ArrowDown') navigateDirection = 1;
         if (navigateDirection) {
             this.handleDeactivate(); // Submit in-progress edits
-            const newPos = this.wrapListIndex(activePos + navigateDirection, Array.isArray(currentList) ? currentList.length : currentList.size);
+            const newPos = this.wrapListIndex(
+                activePos + navigateDirection, Array.isArray(currentList) ? currentList.length : currentList.size
+            );
             const newIndexOrKey = Array.isArray(currentList) ? newPos : currentList.keys().toArray()[newPos];
             this.setState({
                 activeIndex: newPos,
@@ -257,6 +259,7 @@ class ListMonitor extends React.Component {
 
             if (list.keys().toArray()
                 .includes(key)) {
+                // eslint-disable-next-line no-alert
                 alert(this.props.intl.formatMessage(messages.keyAlreadyExists, {key}));
                 this.setState({prompt: false, draggable: true});
                 return list;
@@ -377,7 +380,8 @@ ListMonitor.propTypes = {
     vm: PropTypes.instanceOf(VM),
     width: PropTypes.number,
     x: PropTypes.number,
-    y: PropTypes.number
+    y: PropTypes.number,
+    draggable: PropTypes.bool
 };
 
 const mapStateToProps = state => ({

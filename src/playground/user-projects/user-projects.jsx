@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, {useState, useEffect} from 'react';
 import useHashUserId from '../user/use-hash-user-id.jsx';
 import {connect} from 'react-redux';
-import {FormattedMessage, FormattedDate, FormattedRelative, defineMessages, injectIntl, intlShape} from 'react-intl';
+import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import render from '../app-target';
 import styles from './user-projects.css';
@@ -14,15 +14,11 @@ import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
-import getSession from '../../lib/session.js';
 
 /* eslint-disable react/jsx-no-literals */
 
 const theme = detectTheme();
 applyGuiColors(theme);
-
-// Browser support is not perfect yet
-const relativeTimeSupported = () => typeof Intl !== 'undefined' && typeof Intl.RelativeTimeFormat !== 'undefined';
 
 const messages = defineMessages({
     title: {
@@ -41,13 +37,32 @@ const UserProjects = props => {
     const id = useHashUserId();
     const [userData, setUserData] = useState(null);
     const [projects, setProjects] = useState([]);
-    const [limit, setLimit] = useState(40);
+    const [limit, _] = useState(40);
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [loadMoreButtonDisabled, setLoadMoreButtonDisabled] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const fetchProjects = async currentOffset => {
+        setLoadMoreButtonDisabled(true);
+        try {
+            const projectsRes = await fetch(`https://api.dashblocks.org/users/${id}/projects?limit=${limit}&offset=${currentOffset}`, {
+                credentials: 'include'
+            });
+            if (!projectsRes.ok) throw new Error('Failed to fetch projects');
+            const projectsData = await projectsRes.json();
+            if (!projectsData.ok) throw new Error(projectsData.error);
+            setProjects(prevProjects => [...prevProjects, ...projectsData.projects]);
+            setHasMore(projectsData.projects.length === limit);
+        } catch (catchedError) {
+            setError(catchedError.message);
+        } finally {
+            setLoading(false);
+            setLoadMoreButtonDisabled(false);
+        }
+    };
 
     useEffect(() => {
         setProjects([]);
@@ -84,25 +99,6 @@ const UserProjects = props => {
         };
         fetchData();
     }, [id]);
-
-    const fetchProjects = async currentOffset => {
-        setLoadMoreButtonDisabled(true);
-        try {
-            const projectsRes = await fetch(`https://api.dashblocks.org/users/${id}/projects?limit=${limit}&offset=${currentOffset}`, {
-                credentials: 'include'
-            });
-            if (!projectsRes.ok) throw new Error('Failed to fetch projects');
-            const projectsData = await projectsRes.json();
-            if (!projectsData.ok) throw new Error(projectsData.error);
-            setProjects(prevProjects => [...prevProjects, ...projectsData.projects]);
-            setHasMore(projectsData.projects.length === limit);
-        } catch (error) {
-            setError(error.message);
-        } finally {
-            setLoading(false);
-            setLoadMoreButtonDisabled(false);
-        }
-    };
 
     if (loading) {
         return (
@@ -166,6 +162,7 @@ const UserProjects = props => {
                                         author: userData.username,
                                         title: project.name
                                     })}
+                                    // eslint-disable-next-line react/jsx-no-bind
                                     onClick={() => window.open(`./#${project.id}`, '_blank')}
                                 >
                                     <div className={styles.thumbWrapper}>
@@ -200,6 +197,7 @@ const UserProjects = props => {
                                 <Button
                                     className={styles.loadMoreButton}
                                     disabled={loadMoreButtonDisabled}
+                                    // eslint-disable-next-line react/jsx-no-bind
                                     onClick={() => {
                                         const newOffset = offset + limit;
                                         setOffset(newOffset);

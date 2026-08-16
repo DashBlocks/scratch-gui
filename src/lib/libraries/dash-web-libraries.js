@@ -15,5 +15,5 @@ const webLibraries = {
 
 export const getAssetURL = (library, path) => webLibraries[library]?.getAssetURL?.(path);
 
-export const handleAssetLoad = async (library, path, handleUpload) =>
-    await webLibraries[library]?.handleAssetLoad?.(path, handleUpload);
+export const handleAssetLoad = (library, path, handleUpload) =>
+    webLibraries[library]?.handleAssetLoad?.(path, handleUpload);

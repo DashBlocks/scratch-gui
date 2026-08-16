@@ -13,7 +13,7 @@ class WelcomeModal extends React.Component {
             'handleChangeDontShow'
         ]);
         this.state = {
-            dontShow: localStorage.getItem('dontShowWelcomeModal') == 'true'
+            dontShow: localStorage.getItem('dontShowWelcomeModal') === 'true'
         };
     }
     handleClose () {

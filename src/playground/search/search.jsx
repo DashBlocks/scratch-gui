@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React, {useState, useEffect} from 'react';
-import useHashUserId from '../user/use-hash-user-id.jsx';
 import {connect} from 'react-redux';
-import {FormattedMessage, FormattedDate, FormattedRelative, defineMessages, injectIntl, intlShape} from 'react-intl';
+import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import render from '../app-target.js';
 import styles from './search.css';
@@ -14,15 +13,11 @@ import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {APP_NAME} from '../../lib/brand.js';
 import {applyGuiColors} from '../../lib/themes/guiHelpers.js';
 import {detectTheme} from '../../lib/themes/themePersistance.js';
-import getSession from '../../lib/session.js';
 
 /* eslint-disable react/jsx-no-literals */
 
 const theme = detectTheme();
 applyGuiColors(theme);
-
-// Browser support is not perfect yet
-const relativeTimeSupported = () => typeof Intl !== 'undefined' && typeof Intl.RelativeTimeFormat !== 'undefined';
 
 const messages = defineMessages({
     title: {
@@ -41,25 +36,13 @@ const Search = props => {
     const query = new URLSearchParams(window.location.search).get('q');
     const [total, setTotal] = useState(0);
     const [projects, setProjects] = useState([]);
-    const [limit, setLimit] = useState(40);
+    const [limit, _] = useState(40);
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [loadMoreButtonDisabled, setLoadMoreButtonDisabled] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    useEffect(() => {
-        setProjects([]);
-        setHasMore(true);
-        setOffset(0);
-        setError(null);
-
-        document.title = `${props.intl.formatMessage(messages.title)} - ${APP_NAME}`;
-
-        setLoading(true);
-        fetchProjects(0);
-    }, [query]);
 
     const fetchProjects = async currentOffset => {
         setLoadMoreButtonDisabled(true);
@@ -73,13 +56,25 @@ const Search = props => {
             setTotal(searchResults.total);
             setProjects(prevProjects => [...prevProjects, ...searchResults.results]);
             setHasMore(searchResults.results.length === limit);
-        } catch (error) {
-            setError(error.message);
+        } catch (catchedError) {
+            setError(catchedError.message);
         } finally {
             setLoading(false);
             setLoadMoreButtonDisabled(false);
         }
     };
+
+    useEffect(() => {
+        setProjects([]);
+        setHasMore(true);
+        setOffset(0);
+        setError(null);
+
+        document.title = `${props.intl.formatMessage(messages.title)} - ${APP_NAME}`;
+
+        setLoading(true);
+        fetchProjects(0);
+    }, [query]);
 
     if (loading) {
         return (
@@ -146,11 +141,13 @@ const Search = props => {
                                             draggable={false}
                                             src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
                                             alt={project.id}
+                                            // eslint-disable-next-line react/jsx-no-bind
                                             onClick={() => window.open(`./#${project.id}`, '_blank')}
                                         />
                                     </div>
                                     <div className={styles.projectInfo}>
                                         <h4
+                                            // eslint-disable-next-line react/jsx-no-bind
                                             onClick={() => window.open(`./#${project.id}`, '_blank')}
                                         >{project.name}</h4>
                                         <p>
@@ -180,6 +177,7 @@ const Search = props => {
                                 <Button
                                     className={styles.loadMoreButton}
                                     disabled={loadMoreButtonDisabled}
+                                    // eslint-disable-next-line react/jsx-no-bind
                                     onClick={() => {
                                         const newOffset = offset + limit;
                                         setOffset(newOffset);

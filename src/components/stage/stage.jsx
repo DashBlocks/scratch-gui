@@ -177,7 +177,8 @@ StageComponent.propTypes = {
     onQuestionAnswered: PropTypes.func,
     question: PropTypes.string,
     stageSize: PropTypes.oneOf(Object.keys(STAGE_DISPLAY_SIZES)).isRequired,
-    useEditorDragStyle: PropTypes.bool
+    useEditorDragStyle: PropTypes.bool,
+    vm: PropTypes.instanceOf(Object).isRequired
 };
 StageComponent.defaultProps = {
     dragRef: () => {}

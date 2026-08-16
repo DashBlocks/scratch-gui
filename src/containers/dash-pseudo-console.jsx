@@ -30,7 +30,9 @@ class PseudoConsole extends React.Component {
         ));
         return {
             row,
-            symbol: Math.max(0, Math.min((this.props.lines[row] || '').length - 1, Math.round(+this.props.cursor.symbol)))
+            symbol: Math.max(
+                0, Math.min((this.props.lines[row] || '').length - 1, Math.round(+this.props.cursor.symbol))
+            )
         };
     }
     clear () {
@@ -73,7 +75,10 @@ class PseudoConsole extends React.Component {
     print (value) {
         if (!String(value)) return;
         const line = this.props.lines[this.realCursor.row] || '';
-        const newLine = line.substring(0, this.realCursor.symbol) + String(value) + line.substring(this.realCursor.symbol, line.length);
+        const newLine =
+            line.substring(0, this.realCursor.symbol) +
+            String(value) +
+            line.substring(this.realCursor.symbol, line.length);
         this.editLine(newLine);
     }
     editSymbol (value) {

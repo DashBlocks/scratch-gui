@@ -5,7 +5,8 @@ const asyncLibrary = (...callbacks) => {
         return Promise.all(callbacks.map(clbk => clbk()))
             .then(modules => {
                 const sortedData = modules.map(mod => mod.default)
-                    .reduce((acc, data) => acc.concat(...data))
+                    .reduce((acc, unsorted) => acc.concat(...unsorted))
+                    // eslint-disable-next-line array-callback-return
                     .sort((item1, item2) => {
                         if (item1.name === item2.name) return 0;
                         if (item1.name > item2.name) return 1;

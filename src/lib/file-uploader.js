@@ -240,6 +240,7 @@ const spriteUpload = function (fileData, fileType, spriteName, vm, handleSprite,
     case '':
     // scratch-vm specifies application/x.scratch.sprite3 for sprite3 files. Real packages in the
     // wild use hyphens instead of periods. We'll just support all of the reasonable variations.
+    // eslint-disable-next-line no-fallthrough
     case 'application/x-scratch2-sprite':
     case 'application/x-scratch3-sprite':
     case 'application/x.scratch2.sprite':

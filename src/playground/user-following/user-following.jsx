@@ -32,13 +32,32 @@ const UserFollowing = props => {
     const id = useHashUserId();
     const [userData, setUserData] = useState(null);
     const [following, setFollowing] = useState([]);
-    const [limit, setLimit] = useState(40);
+    const [limit, _] = useState(40);
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [loadMoreButtonDisabled, setLoadMoreButtonDisabled] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const fetchFollowing = async currentOffset => {
+        setLoadMoreButtonDisabled(true);
+        try {
+            const followingRes = await fetch(`https://api.dashblocks.org/users/${id}/following?limit=${limit}&offset=${currentOffset}`, {
+                credentials: 'include'
+            });
+            if (!followingRes.ok) throw new Error('Failed to fetch following');
+            const followingData = await followingRes.json();
+            if (!followingData.ok) throw new Error(followingData.error);
+            setFollowing(prevFollowing => [...prevFollowing, ...followingData.following]);
+            setHasMore(followingData.following.length === limit);
+        } catch (catchedError) {
+            setError(catchedError.message);
+        } finally {
+            setLoading(false);
+            setLoadMoreButtonDisabled(false);
+        }
+    };
 
     useEffect(() => {
         document.title = `${props.intl.formatMessage(messages.title, {
@@ -76,25 +95,6 @@ const UserFollowing = props => {
 
         fetchData();
     }, [id]);
-
-    const fetchFollowing = async currentOffset => {
-        setLoadMoreButtonDisabled(true);
-        try {
-            const followingRes = await fetch(`https://api.dashblocks.org/users/${id}/following?limit=${limit}&offset=${currentOffset}`, {
-                credentials: 'include'
-            });
-            if (!followingRes.ok) throw new Error('Failed to fetch following');
-            const followingData = await followingRes.json();
-            if (!followingData.ok) throw new Error(followingData.error);
-            setFollowing(prevFollowing => [...prevFollowing, ...followingData.following]);
-            setHasMore(followingData.following.length === limit);
-        } catch (error) {
-            setError(error.message);
-        } finally {
-            setLoading(false);
-            setLoadMoreButtonDisabled(false);
-        }
-    };
 
     if (loading) {
         return (
@@ -154,6 +154,7 @@ const UserFollowing = props => {
                                 <div
                                     key={followed.id}
                                     className={styles.followCard}
+                                    // eslint-disable-next-line react/jsx-no-bind
                                     onClick={() => window.open(`./user#${followed.id}`, '_blank')}
                                 >
                                     <img
@@ -175,6 +176,7 @@ const UserFollowing = props => {
                                 <Button
                                     className={styles.loadMoreButton}
                                     disabled={loadMoreButtonDisabled}
+                                    // eslint-disable-next-line react/jsx-no-bind
                                     onClick={() => {
                                         const newOffset = offset + limit;
                                         setOffset(newOffset);

@@ -19,7 +19,15 @@ import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {compose} from 'redux';
-import {FormattedMessage, FormattedDate, FormattedTime, FormattedRelative, defineMessages, injectIntl, intlShape} from 'react-intl';
+import {
+    FormattedMessage,
+    FormattedDate,
+    FormattedTime,
+    FormattedRelative,
+    defineMessages,
+    injectIntl,
+    intlShape
+} from 'react-intl';
 import {getIsLoading} from '../reducers/project-state.js';
 import AppStateHOC from '../lib/app-state-hoc.jsx';
 import ErrorBoundaryHOC from '../lib/error-boundary-hoc.jsx';
@@ -60,13 +68,10 @@ import descriptionIcon from '!../lib/tw-recolor/build!./icons/icon--description.
 import whatsNewIcon from '!../lib/tw-recolor/build!./icons/icon--whatsnew.svg';
 
 import styles from './interface.css';
-import lazyMessages from '../components/loader/lazy-messages.json';
 import Loader from '../components/loader/loader.jsx';
 import {NewYearMode, isNewYearMode} from '../components/dash-new-year-mode/new-year-mode.jsx';
 
 const isInvalidEmbed = window.parent !== window;
-
-let version;
 
 // Browser support is not perfect yet
 const relativeTimeSupported = () => typeof Intl !== 'undefined' && typeof Intl.RelativeTimeFormat !== 'undefined';
@@ -119,15 +124,15 @@ if (AddonChannels.changeChannel) {
 }
 
 const RenderLoader = () => {
-    const [pageLoaded, setPageLoaded] = useState(false);
+    const [pageNotLoaded, setPageNotLoaded] = useState(true);
 
     useEffect(() => {
         const handleLoad = () => {
-            setPageLoaded(true);
+            setPageNotLoaded(false);
         };
 
         if (document.readyState === 'complete') {
-            setPageLoaded(true);
+            setPageNotLoaded(false);
         } else {
             window.addEventListener('load', handleLoad);
         }
@@ -137,7 +142,7 @@ const RenderLoader = () => {
         };
     }, []);
 
-    return !pageLoaded ? (
+    return pageNotLoaded ? (
         <Loader
             isFullScreen
             messageId="dash.loader.loadingPage"
@@ -148,24 +153,27 @@ const RenderLoader = () => {
 const RenderWelcomeModal = () => {
     const [isOpen, setIsOpen] = React.useState(false);
 
-    function handleOnOpen () {
+    const handleOnOpen = () => {
         setIsOpen(true);
-    }
+    };
 
-    function handleOnClose () {
+    const handleOnClose = () => {
         setIsOpen(false);
-    }
+    };
 
     return (
         <>
-            <a onClick={handleOnOpen}>
-                {/* todo: translate */}
+            <a
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={handleOnOpen}
+            >
                 <FormattedMessage
                     defaultMessage="Welcome Modal"
                     description="Link to open welcome modal"
                     id="dash.home.welcomeModal"
                 />
             </a>
+            {/* eslint-disable-next-line react/jsx-no-bind */}
             {isOpen && <DashWelcomeModal onClose={handleOnClose} />}
         </>
     );
@@ -348,9 +356,10 @@ const Footer = () => (
     </footer>
 );
 
+// eslint-disable-next-line react/prop-types
 const WhatsHappening = ({intl}) => {
     const [actions, setActions] = useState([]);
-    const [limit, setLimit] = useState(10);
+    const [limit, _] = useState(10);
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [loadMoreButtonDisabled, setLoadMoreButtonDisabled] = useState(false);
@@ -358,11 +367,7 @@ const WhatsHappening = ({intl}) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState();
 
-    useEffect(() => {
-        fetchActivity(0);
-    }, []);
-
-    async function fetchActivity (currentOffset) {
+    const fetchActivity = async currentOffset => {
         setLoadMoreButtonDisabled(true);
         try {
             const res = await fetch(`https://api.dashblocks.org/session/activity?limit=${limit}&offset=${currentOffset}`, {
@@ -395,9 +400,13 @@ const WhatsHappening = ({intl}) => {
             setLoadMoreButtonDisabled(false);
             setLoading(false);
         }
-    }
+    };
 
-    function getActionContent (action) {
+    useEffect(() => {
+        fetchActivity(0);
+    }, []);
+
+    const getActionContent = action => {
         switch (action.type) {
         case 'shared-project':
             return (
@@ -444,9 +453,11 @@ const WhatsHappening = ({intl}) => {
                 />
             );
         }
-    }
+    };
 
+    // eslint-disable-next-line react/jsx-no-literals
     if (loading && actions.length === 0) return <div>Loading...</div>;
+    // eslint-disable-next-line react/jsx-no-literals
     if (error && actions.length === 0) return <div>An error occured: {error}</div>;
 
     return (
@@ -471,7 +482,12 @@ const WhatsHappening = ({intl}) => {
                                 date: (action.date ? new Date(action.date) : null) ?
                                     relativeTimeSupported() ?
                                         (
-                                            <span title={`${intl.formatDate(new Date(action.date))}, ${intl.formatTime(new Date(action.date))}`}>
+                                            <span
+                                                title={
+                                                    // eslint-disable-next-line react/prop-types, max-len
+                                                    `${intl.formatDate(new Date(action.date))}, ${intl.formatTime(new Date(action.date))}`
+                                                }
+                                            >
                                                 <FormattedRelative value={action.date} />
                                             </span>
                                         ) :
@@ -486,6 +502,7 @@ const WhatsHappening = ({intl}) => {
                 <Button
                     className={styles.loadMoreButton}
                     disabled={loadMoreButtonDisabled}
+                    // eslint-disable-next-line react/jsx-no-bind
                     onClick={() => {
                         const newOffset = offset + limit;
                         setOffset(newOffset);
@@ -528,7 +545,9 @@ const WhatsNew = () => {
             });
     }, []);
 
+    // eslint-disable-next-line react/jsx-no-literals
     if (loading) return <div>Loading...</div>;
+    // eslint-disable-next-line react/jsx-no-literals
     if (error) return <div>An error occured</div>;
 
     return (
@@ -578,7 +597,6 @@ class Interface extends React.PureComponent {
         this.handleChangeProjectDescription = this.handleChangeProjectDescription.bind(this);
         this.state = {
             activeTabIndex: 0,
-            messageNumber: 0,
             descriptionOverride: null,
             descriptionSaving: false
         };
@@ -586,19 +604,6 @@ class Interface extends React.PureComponent {
     componentDidUpdate (prevProps) {
         if (prevProps.isLoading && !this.props.isLoading) {
             loadServiceWorker();
-        }
-    }
-    componentDidMount () {
-        const sum = lazyMessages.en.reduce(acc => acc + 1, 0);
-        let rand = sum * Math.random();
-        for (let i = 0; i < lazyMessages.en.length; i++) {
-            rand -= 1;
-            if (rand <= 0) {
-                this.setState({
-                    messageNumber: i
-                });
-                break;
-            }
         }
     }
     handleUpdateProjectTitle (title, isDefault) {
@@ -614,7 +619,7 @@ class Interface extends React.PureComponent {
         const {projectId} = this.props;
         if (!projectId || projectId === '0') return;
  
-        const prevText = this.state.descriptionOverride !== null ?
+        const prevText = this.state.descriptionOverride ?
             this.state.descriptionOverride :
             (this.props.description.instructions || '');
  
@@ -648,9 +653,6 @@ class Interface extends React.PureComponent {
             activeTabIndex: tab
         });
     }
-    chooseRandomMessage () {
-        return this.state.messageNumber;
-    }
     render () {
         if (isInvalidEmbed) {
             return <InvalidEmbed />;
@@ -673,7 +675,7 @@ class Interface extends React.PureComponent {
         } = this.props;
         const isHomepage = isPlayerOnly && !isFullScreen;
         const isEditor = !isPlayerOnly;
-        const descriptionText = this.state.descriptionOverride !== null ?
+        const descriptionText = this.state.descriptionOverride ?
             this.state.descriptionOverride :
             (description.instructions || '');
         return (
@@ -728,6 +730,7 @@ class Interface extends React.PureComponent {
                                     selectedIndex={this.state.activeTabIndex}
                                     selectedTabClassName={tabClassNames.tabSelected}
                                     selectedTabPanelClassName={tabClassNames.tabPanelSelected}
+                                    // eslint-disable-next-line react/jsx-no-bind
                                     onSelect={this.onActivateTab.bind(this)}
                                 >
                                     <TabList className={tabClassNames.tabList}>
@@ -773,7 +776,13 @@ class Interface extends React.PureComponent {
                                         </Tab>
                                         <Tab
                                             className={classNames(tabClassNames.tab, {
-                                                [tabClassNames.tabDisabled]: !(!description.isDashProject ? description.instructions === 'unshared' || description.credits === 'unshared' : false)
+                                                [tabClassNames.tabDisabled]: !(
+                                                    description.isDashProject ?
+                                                        false : (
+                                                            description.instructions === 'unshared' ||
+                                                        description.credits === 'unshared'
+                                                        )
+                                                )
                                             })}
                                         >
                                             <TWRenderRecoloredImage
@@ -804,8 +813,20 @@ class Interface extends React.PureComponent {
                                         <Tab
                                             className={classNames(tabClassNames.tab, {
                                                 [tabClassNames.tabDisabled]: !(
-                                                    (description.instructions || description.credits || session?.id === authorId || (session?.role === 'dashteam' && projectId !== '0')) &&
-                                                    (!description.isDashProject ? !(description.instructions === 'unshared' || description.credits === 'unshared') : true)
+                                                    (
+                                                        description.instructions ||
+                                                        description.credits ||
+                                                        session?.id === authorId || (
+                                                            session?.role === 'dashteam' &&
+                                                            projectId !== '0'
+                                                        )
+                                                    ) && (
+                                                        description.isDashProject ?
+                                                            true : !(
+                                                                description.instructions === 'unshared' ||
+                                                                description.credits === 'unshared'
+                                                            )
+                                                    )
                                                 )
                                             })}
                                         >
@@ -868,7 +889,10 @@ class Interface extends React.PureComponent {
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>
                                         {(
-                                            !description.isDashProject ? description.instructions === 'unshared' || description.credits === 'unshared' : false
+                                            !description.isDashProject && (
+                                                description.instructions === 'unshared' ||
+                                                description.credits === 'unshared'
+                                            )
                                         ) && (
                                             <div
                                                 className={styles.section}
@@ -937,35 +961,42 @@ class Interface extends React.PureComponent {
                                         )}
                                     </TabPanel>
                                     <TabPanel className={tabClassNames.tabPanel}>
-                                        {(description.instructions || description.credits || session?.id === authorId || (session?.role === 'dashteam' && projectId !== '0')) ? (
-                                            <div
-                                                className={styles.section}
-                                                style={{
-                                                    overflowY: 'auto',
-                                                    maxHeight: '520px'
-                                                }}
-                                            >
-                                                {session?.id === authorId || session?.role === 'dashteam' ? (
-                                                    <BufferedInput
-                                                        className={styles.descriptionField}
-                                                        maxLength="1000"
-                                                        multiline
-                                                        placeholder={intl.formatMessage(messages.descriptionInputPlaceholder)}
-                                                        tabIndex="0"
-                                                        value={descriptionText}
-                                                        onSubmit={this.handleChangeProjectDescription}
-                                                        disabled={this.state.descriptionSaving}
-                                                    />
-                                                ) : (
-                                                    <Description
-                                                        instructions={description.instructions}
-                                                        credits={description.credits}
-                                                        isDashProject={description.isDashProject}
-                                                        projectId={projectId}
-                                                    />
-                                                )}
-                                            </div>
-                                        ) : null}
+                                        {(
+                                            description.instructions ||
+                                            description.credits ||
+                                            session?.id === authorId || (
+                                                session?.role === 'dashteam' && projectId !== '0'
+                                            )) ? (
+                                                <div
+                                                    className={styles.section}
+                                                    style={{
+                                                        overflowY: 'auto',
+                                                        maxHeight: '520px'
+                                                    }}
+                                                >
+                                                    {session?.id === authorId || session?.role === 'dashteam' ? (
+                                                        <BufferedInput
+                                                            className={styles.descriptionField}
+                                                            maxLength="1000"
+                                                            multiline
+                                                            placeholder={intl.formatMessage(
+                                                                messages.descriptionInputPlaceholder
+                                                            )}
+                                                            tabIndex="0"
+                                                            value={descriptionText}
+                                                            onSubmit={this.handleChangeProjectDescription}
+                                                            disabled={this.state.descriptionSaving}
+                                                        />
+                                                    ) : (
+                                                        <Description
+                                                            instructions={description.instructions}
+                                                            credits={description.credits}
+                                                            isDashProject={description.isDashProject}
+                                                            projectId={projectId}
+                                                        />
+                                                    )}
+                                                </div>
+                                            ) : null}
                                     </TabPanel>
                                 </Tabs>
                             </div>

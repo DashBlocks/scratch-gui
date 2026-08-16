@@ -1,8 +1,7 @@
 import classNames from 'classnames';
 import {FormattedDate, FormattedTime, defineMessages, injectIntl, intlShape} from 'react-intl';
 import PropTypes from 'prop-types';
-import React from 'react';
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 
 import Box from '../box/box.jsx';
@@ -40,8 +39,9 @@ const StageFooter = props => {
     const [isFired, setIsFired] = useState(false);
     const [isDashProject, setIsDashProject] = useState(false);
 
+    /* eslint-disable require-jsdoc, func-style */
     useEffect(() => {
-        async function fetchProjectMetadata () {
+        const fetchProjectMetadata = async function () {
             setIsDashProject(false);
             const res = await fetch(`https://api.dashblocks.org/projects/${props.projectId}`);
             const data = await res.json();
@@ -60,24 +60,24 @@ const StageFooter = props => {
                     }
                 });
             }
-        }
+        };
         fetchProjectMetadata();
     }, [props.projectId]);
 
     useEffect(() => {
-        function fetchFireStatus () {
+        const fetchFireStatus = function () {
             if (!props.session?.firedProjects) return;
             setIsFired(props.session.firedProjects.includes(+props.projectId));
-        }
+        };
         fetchFireStatus();
     }, [props.session?.firedProjects || []]);
 
-    async function updateSession () {
+    const updateSession = async function () {
         const updatedSession = await getSession();
         setSession(updatedSession);
-    }
+    };
 
-    async function handleFireButtonClick () {
+    const handleFireButtonClick = async function () {
         if (!props.session || !props.session?.id) {
             window.open('./login', '_blank');
             return;
@@ -116,7 +116,8 @@ const StageFooter = props => {
             }
         }
         await updateSession();
-    }
+    };
+    /* eslint-enable require-jsdoc, func-style */
 
     if (!isDashProject || !props.projectId) return null;
 
@@ -128,6 +129,7 @@ const StageFooter = props => {
                 [styles.fireReactionOffIcon]: !isFired
             })}
             iconSrc={isFired ? fireReactionOnIcon : fireReactionOffIcon}
+            // eslint-disable-next-line react/jsx-no-bind
             onClick={handleFireButtonClick}
             title={isFired ? props.intl.formatMessage(messages.unfire) : props.intl.formatMessage(messages.fire)}
         >

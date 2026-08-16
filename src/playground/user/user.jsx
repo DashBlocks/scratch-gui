@@ -23,6 +23,7 @@ import BufferedInputHOC from '../../components/forms/buffered-input-hoc.jsx';
 import Input from '../../components/forms/input.jsx';
 const BufferedInput = BufferedInputHOC(Input);
 
+/* eslint-disable no-alert, no-catch-shadow, no-shadow, require-jsdoc, func-style */
 /* eslint-disable react/jsx-no-literals */
 
 const theme = detectTheme();
@@ -104,7 +105,9 @@ const User = props => {
             let user;
             try {
                 const currentSession = await getSession();
-                setIsMyProfile(currentSession?.id?.toString() === id || currentSession?.username?.toLowerCase() === id?.toLowerCase());
+                const isCurrentUser = currentSession?.id?.toString() === id ||
+                    currentSession?.username?.toLowerCase() === id?.toLowerCase();
+                setIsMyProfile(isCurrentUser);
                 setSession(currentSession);
                 const userRes = await fetch(`https://api.dashblocks.org/users/${id}`, {credentials: 'include'});
                 user = await userRes.json();
@@ -129,8 +132,8 @@ const User = props => {
                 const followingRes = await fetch(`https://api.dashblocks.org/users/${id}/following?limit=20&offset=0`);
                 const followingData = await followingRes.json();
                 setFollowing(followingData.following);
-            } catch (error) {
-                setError(error.message);
+            } catch (caughtError) {
+                setError(caughtError.message);
             } finally {
                 setLoading(false);
             }
@@ -158,9 +161,9 @@ const User = props => {
                 const colors = [];
                 for (let x = 0; x < points; x++) {
                     for (let y = 0; y < points * sections; y++) {
-                        const realX = Math.round((section * points + x) * img.width / (sections * points - 1));
-                        const realY = Math.round(y * img.height / (sections * points - 1));
-                        const i = (realY * img.width + realX) * 4;
+                        const realX = Math.round((((section * points) + x) * img.width) / ((sections * points) - 1));
+                        const realY = Math.round((y * img.height) / ((sections * points) - 1));
+                        const i = ((realY * img.width) + realX) * 4;
                         // Check that the color isn't completely transparent
                         if (imgData[i + 3] > 0) {
                             colors.push([
@@ -175,11 +178,17 @@ const User = props => {
                 if (colors.length > 0) {
                     const [r, g, b, a] = colors
                         .reduce(
-                            ([r1, g1, b1, a1], [r2, g2, b2, a2]) => [r1 + r2, g1 + g2, b1 + b2, a1 + a2],
+                            ([r1, g1, b1, a1], [r2, g2, b2, a2]) => [
+                                r1 + r2,
+                                g1 + g2,
+                                b1 + b2,
+                                a1 + a2
+                            ],
                             [0, 0, 0, 0]
                         )
                         .map(v => v / colors.length);
-                    avgCssColors.push(`color-mix(in srgb, rgb(${r}, ${g}, ${b}), var(--ui-white) ${60 + (a - 255) / 2.55 * 0.4}%)`);
+                    const backgroundMix = 60 + (((a - 255) / 2.55) * 0.4);
+                    avgCssColors.push(`color-mix(in srgb, rgb(${r}, ${g}, ${b}), var(--ui-white) ${backgroundMix}%)`);
                 } else {
                     avgCssColors.push('var(--ui-white)');
                 }
@@ -192,7 +201,7 @@ const User = props => {
                     color: color,
                     position: avgCssColors.length === 1 ?
                         '0%' :
-                        `${i / (avgCssColors.length - 1) * 100}%`
+                        `${(i / (avgCssColors.length - 1)) * 100}%`
                 }))
             };
         };
@@ -232,7 +241,9 @@ const User = props => {
                         />
                     </h4>
                     <FormattedMessage
+                        // eslint-disable-next-line max-len
                         defaultMessage='Created the first project "{firstProject}" on Dash.'
+                        // eslint-disable-next-line max-len
                         description="Description for achievement for creating the first project, with a link to the project"
                         id="dash.user.achievements.firstProject.info"
                         values={{
@@ -284,7 +295,7 @@ const User = props => {
         }
     };
 
-    async function handleChangeAvatar (e) {
+    const handleChangeAvatar = async function (e) {
         const file = e.target.files[0];
         if (!file) return;
 
@@ -309,9 +320,15 @@ const User = props => {
         } else {
             alert(data.error);
         }
-    }
+    };
 
-    async function handleClickFollowButton () {
+    const handleAvatarClick = () => {
+        if (isMyProfile && fileInputRef.current) {
+            fileInputRef.current.click();
+        }
+    };
+
+    const handleClickFollowButton = async function () {
         setFollowButtonDisabled(true);
         if (!session || !session.id) {
             window.open('./login', '_blank');
@@ -339,14 +356,14 @@ const User = props => {
             const followersRes = await fetch(`https://api.dashblocks.org/users/${id}/followers?limit=20&offset=0`);
             const followersData = await followersRes.json();
             setFollowers(followersData.followers);
-        } catch (error) {
-            alert(error.message);
+        } catch (caughtError) {
+            alert(caughtError.message);
         } finally {
             setFollowButtonDisabled(false);
         }
-    }
+    };
 
-    async function handleChangeDescription (description) {
+    const handleChangeDescription = async function (description) {
         if (typeof description !== 'string') return;
         const prevDescription = userData.profile.description;
 
@@ -383,7 +400,7 @@ const User = props => {
             if (!data.ok) {
                 throw new Error(data.error);
             }
-        } catch (error) {
+        } catch (caughtError) {
             setUserData(prev => ({
                 ...prev,
                 profile: {
@@ -391,13 +408,13 @@ const User = props => {
                     description: prevDescription
                 }
             }));
-            alert(error.message);
+            alert(caughtError.message);
         } finally {
             setDescriptionDisabled(false);
         }
-    }
+    };
 
-    async function handleSetRecommendedProject () {
+    const handleSetRecommendedProject = async function () {
         // TODO: Project selector instead of prompt
         const projectId = Number(prompt('Project ID:'));
         if (!projectId) return;
@@ -429,7 +446,7 @@ const User = props => {
                     }
                 }
             }));
-        } catch (error) {
+        } catch (caughtError) {
             setUserData(prev => ({
                 ...prev,
                 profile: {
@@ -437,13 +454,13 @@ const User = props => {
                     recommendedProject: prevRecommendedProject
                 }
             }));
-            alert(error.message);
+            alert(caughtError.message);
         } finally {
             setRecommendProjectButtonDisabled(false);
         }
-    }
+    };
 
-    async function handleAddLink () {
+    const handleAddLink = async function () {
         const label = prompt('Label (optional):');
         const link = prompt('Link (must start with http:// or https://):');
         if (!link) return;
@@ -460,14 +477,14 @@ const User = props => {
             if (!data.ok) return alert(data.error || 'Failed to add link');
             setUserData(data.user);
             setLinks(data.user.profile?.links || data.user.links || []);
-        } catch (error) {
-            alert(error.message);
+        } catch (caughtError) {
+            alert(caughtError.message);
         } finally {
             setLinksActionDisabled(false);
         }
-    }
+    };
 
-    async function handleUpdateLink (index) {
+    const handleUpdateLink = async function (index) {
         const prev = links[index] || {};
         const label = prompt('Label (optional):', prev.label);
         const link = prompt('Link (must start with http:// or https://):', prev.link);
@@ -485,14 +502,14 @@ const User = props => {
             if (!data.ok) return alert(data.error || 'Failed to update link');
             setUserData(data.user);
             setLinks(data.user.profile?.links || data.user.links || []);
-        } catch (error) {
-            alert(error.message);
+        } catch (caughtError) {
+            alert(caughtError.message);
         } finally {
             setLinksActionDisabled(false);
         }
-    }
+    };
 
-    async function handleRemoveLink (index) {
+    const handleRemoveLink = async function (index) {
         if (!confirm('Remove this link?')) return;
 
         setLinksActionDisabled(true);
@@ -507,12 +524,16 @@ const User = props => {
             if (!data.ok) return alert(data.error || 'Failed to remove link');
             setUserData(data.user);
             setLinks(data.user.profile?.links || data.user.links || []);
-        } catch (error) {
-            alert(error.message);
+        } catch (caughtError) {
+            alert(caughtError.message);
         } finally {
             setLinksActionDisabled(false);
         }
-    }
+    };
+
+    const handleManageLinksToggle = () => {
+        setIsManagingLinks(prev => !prev);
+    };
 
     if (loading) {
         return (
@@ -549,6 +570,8 @@ const User = props => {
 
     const joinDate = userData.joinedAt ? new Date(userData.joinedAt) : null;
     const lastActiveDate = userData.lastActive ? new Date(userData.lastActive) : null;
+
+    /* eslint-disable max-len, react/jsx-no-bind */
     return (
         <>
             <LazyMenuBar />
@@ -572,9 +595,10 @@ const User = props => {
                         />
                         <img
                             draggable={false}
+                            // eslint-disable-next-line max-len
                             src={`https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}?t=${avatarCacheBuster}`}
                             alt={userData.username}
-                            onClick={() => (isMyProfile ? fileInputRef.current.click() : null)}
+                            onClick={handleAvatarClick}
                             className={styles.avatarImg}
                             style={isMyProfile ? {cursor: 'pointer'} : null}
                         />
@@ -673,6 +697,7 @@ const User = props => {
                                     className={styles.descriptionField}
                                     maxLength="1000"
                                     multiline
+                                    // eslint-disable-next-line max-len
                                     placeholder={props.intl.formatMessage(userData.role === 'dasher' ? messages.descriptionInputPlaceholderForDasher : messages.descriptionInputPlaceholder)}
                                     tabIndex="0"
                                     value={userData.profile.description}
@@ -717,6 +742,7 @@ const User = props => {
                                                         <Button
                                                             className={styles.setRecommendedProjectButton}
                                                             disabled={linksActionDisabled}
+                                                            // eslint-disable-next-line react/jsx-no-bind
                                                             onClick={() => handleUpdateLink(index)}
                                                         >
                                                             {linksActionDisabled ? (
@@ -735,6 +761,7 @@ const User = props => {
                                                         <Button
                                                             className={styles.setRecommendedProjectButton}
                                                             disabled={linksActionDisabled}
+                                                            // eslint-disable-next-line react/jsx-no-bind
                                                             onClick={() => handleRemoveLink(index)}
                                                         >
                                                             {linksActionDisabled ? (
@@ -793,7 +820,7 @@ const User = props => {
                                         <Button
                                             className={styles.setRecommendedProjectButton}
                                             disabled={linksActionDisabled}
-                                            onClick={isManagingLinks ? () => setIsManagingLinks(false) : () => setIsManagingLinks(true)}
+                                            onClick={handleManageLinksToggle}
                                         >
                                             {linksActionDisabled ? (
                                                 <Spinner
@@ -872,6 +899,7 @@ const User = props => {
                                             author: userData.username,
                                             title: userData.profile.recommendedProject.name || 'Unknown'
                                         })}
+                                        // eslint-disable-next-line react/jsx-no-bind, max-len
                                         onClick={() => window.open(`./#${userData.profile.recommendedProject.id}`, '_blank')}
                                     >
                                         <img
@@ -941,6 +969,7 @@ const User = props => {
                                         author: userData.username,
                                         title: project.name
                                     })}
+                                    // eslint-disable-next-line react/jsx-no-bind
                                     onClick={() => window.open(`./#${project.id}`, '_blank')}
                                 >
                                     <div className={styles.thumbWrapper}>
@@ -1005,6 +1034,7 @@ const User = props => {
                                 <div
                                     key={follower.id}
                                     className={styles.followCard}
+                                    // eslint-disable-next-line react/jsx-no-bind
                                     onClick={() => window.open(`./user#${follower.id}`, '_blank')}
                                 >
                                     <img
@@ -1056,6 +1086,7 @@ const User = props => {
                                 <div
                                     key={followed.id}
                                     className={styles.followCard}
+                                    // eslint-disable-next-line react/jsx-no-bind
                                     onClick={() => window.open(`./user#${followed.id}`, '_blank')}
                                 >
                                     <img
@@ -1080,6 +1111,7 @@ const User = props => {
             </div>
         </>
     );
+    /* eslint-enable react/jsx-no-bind, max-len */
 };
 
 User.propTypes = {

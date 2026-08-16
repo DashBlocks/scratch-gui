@@ -46,7 +46,7 @@ const getCategoryColor = (theme, category, extensionRealColor) => {
 const MonitorComponent = props => {
     /**
      * The implementation of array monitors was taken from AmpMod
-     * codeberg.org/ampmod/ampmod/src/commit/f42bfaeef67ac443b1679fb56b9d54f2a97c4d4f/packages/gui/src/components/monitor/monitor.jsx
+     * https://codeberg.org/ampmod/ampmod/src/branch/develop/packages/gui/src/components/monitor/monitor.jsx
      */
     
     const mode = Array.isArray(props.value) ?
@@ -171,7 +171,8 @@ MonitorComponent.propTypes = {
     onSetModeToSlider: PropTypes.func,
     onSliderPromptOpen: PropTypes.func,
     extensionRealColor: PropTypes.string,
-    theme: PropTypes.instanceOf(Theme).isRequired
+    theme: PropTypes.instanceOf(Theme).isRequired,
+    value: PropTypes.any
 };
 
 MonitorComponent.defaultProps = {

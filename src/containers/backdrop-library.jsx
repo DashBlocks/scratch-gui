@@ -39,7 +39,7 @@ class BackdropLibrary extends React.Component {
     handleItemSelect (item) {
         if (item.src) {
             handleAssetLoad(item.src.library, item.src.path, (buffer, fileType) => {
-                costumeUpload(buffer, fileType, vm, vmBackdrops => {
+                costumeUpload(buffer, fileType, this.props.vm, vmBackdrops => {
                     vmBackdrops.forEach((backdrop, i) => {
                         backdrop.name = `${item.name}${i ? i + 1 : ''}`;
                         this.props.vm.addCostume(backdrop.md5, backdrop);

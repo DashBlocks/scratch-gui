@@ -48,6 +48,7 @@ ChangeUsername.propTypes = {
     children: PropTypes.func,
     onOpenUsernameModal: PropTypes.func,
     running: PropTypes.bool,
+    session: PropTypes.object,
     intl: intlShape
 };
 

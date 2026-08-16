@@ -55,6 +55,10 @@ class Login extends React.Component {
 
     componentDidMount () {
         document.title = `${this.props.intl.formatMessage(messages.title)} - ${APP_NAME}`;
+
+        if (this.props.session && this.props.session.username) {
+            window.location.href = '/';
+        }
     }
 
     handleChange (e) {
@@ -65,7 +69,7 @@ class Login extends React.Component {
         e.preventDefault();
 
         this.setState({waiting: true, error: null});
-        const {userId, password, verificationCode, requiresVerification} = this.state;
+        const {userId, password, verificationCode} = this.state;
         try {
             const session = await getSession(userId, password, verificationCode);
             if (session && session.requiresVerification) {
@@ -73,7 +77,11 @@ class Login extends React.Component {
                 return;
             }
             if (!session || !session.username) {
-                throw new Error(session && session.error ? session.error : this.props.intl.formatMessage(messages.failedToLogIn));
+                throw new Error(
+                    session && session.error ?
+                        session.error :
+                        this.props.intl.formatMessage(messages.failedToLogIn)
+                );
             }
             window.location.href = '/';
         } catch (error) {
@@ -87,7 +95,6 @@ class Login extends React.Component {
         return (
             <>
                 <LazyMenuBar />
-                {this.props.session && this.props.session.username ? window.location.href = '/' : null}
                 <div
                     className={styles.container}
                     dir={this.props.isRtl ? 'rtl' : 'ltr'}
@@ -115,6 +122,7 @@ class Login extends React.Component {
                                     </label>
                                     <p>
                                         <FormattedMessage
+                                            // eslint-disable-next-line max-len
                                             defaultMessage="Please enter the verification code sent to your account's email"
                                             description="Instructions for entering verification code"
                                             id="dash.login.verificationCode.instructions"

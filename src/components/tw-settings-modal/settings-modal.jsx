@@ -652,6 +652,8 @@ SettingsModalComponent.propTypes = {
     onHighQualityPenChange: PropTypes.func,
     interpolation: PropTypes.bool,
     onInterpolationChange: PropTypes.func,
+    stageMode: PropTypes.oneOf(['2d', 'console']),
+    onStageModeChange: PropTypes.func,
     infiniteClones: PropTypes.bool,
     onInfiniteClonesChange: PropTypes.func,
     removeFencing: PropTypes.bool,

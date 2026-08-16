@@ -75,7 +75,6 @@ class FeaturedProjects extends React.Component {
 }
 
 FeaturedProjects.propTypes = {
-    setProjectId: PropTypes.func,
     projectId: PropTypes.string
 };
 

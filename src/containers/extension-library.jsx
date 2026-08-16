@@ -113,7 +113,7 @@ const fetchTwLibrary = async () => {
     }));
 };
 
-const fetchOtherExtensions = async () => otherExtensions.map(extension => ({
+const fetchOtherExtensions = () => otherExtensions.map(extension => ({
     name: extension.name,
     nameTranslations: extension.nameTranslations || {},
     description: extension.description,
@@ -126,7 +126,7 @@ const fetchOtherExtensions = async () => otherExtensions.map(extension => ({
         ...(typeof extension.creator === 'object' ? extension.creator : [extension.creator] || []),
         ...(extension.notes ? [extension.notes] : [])
     ].map(credit => {
-        if (extension.notes && credit == extension.notes) return credit;
+        if (extension.notes && credit === extension.notes) return credit;
         return (
             <a
                 href={extension.isGitHub ? `https://github.com/${credit}` : `https://scratch.mit.edu/users/${credit}`}
@@ -144,7 +144,7 @@ const fetchOtherExtensions = async () => otherExtensions.map(extension => ({
     featured: true
 }));
 
-const fetchLibrary = async () => extensions.map(extension => ({
+const fetchLibrary = () => extensions.map(extension => ({
     name: extension.name,
     nameTranslations: extension.nameTranslations || {},
     description: extension.description,
@@ -287,6 +287,7 @@ class ExtensionLibrary extends React.PureComponent {
                     url.startsWith('https://extensions.turbowarp.org/') &&
                     twGalleryMirror
                 ) {
+                    // eslint-disable-next-line no-alert
                     if (!confirm(this.props.intl.formatMessage(messages.twGalleryMirrorConfirm))) return;
                     this.props.vm.extensionManager.loadExtensionURL(
                         url.replace(

@@ -12,10 +12,10 @@ class CustomProcedures extends React.Component {
         bindAll(this, [
             'handleAddLabel',
             'handleAddInput',
-            'handleSetColor',
+            'onSetColor',
             'handleToggleWarp',
-            'handlePropagation',
-            'handleInputMenuChange',
+            'onPropagation',
+            'onInputMenuChange',
             'handleCancel',
             'handleOk',
             'setBlocks'
@@ -114,7 +114,7 @@ class CustomProcedures extends React.Component {
             this.mutationRoot.focusLastEditor_();
         });
     }
-    handleSetColor (color) {
+    onSetColor (color) {
         if (this.mutationRoot) {
             this.mutationRoot.customColour_ = color;
             this.mutationRoot.updateDisplay_();
@@ -158,10 +158,10 @@ class CustomProcedures extends React.Component {
             this.setState({warp: newWarp});
         }
     }
-    handlePropagation (e) {
+    onPropagation (e) {
         e.stopPropagation();
     }
-    handleInputMenuChange (e) {
+    onInputMenuChange (e) {
         this.setState({menuInput: e.target.value});
     }
     render () {
@@ -172,9 +172,9 @@ class CustomProcedures extends React.Component {
                 color={this.state.color}
                 onAddInput={this.handleAddInput}
                 onAddLabel={this.handleAddLabel}
-                setColor={this.handleSetColor}
-                handlePropagation={this.handlePropagation}
-                handleInputMenuChange={this.handleInputMenuChange}
+                setColor={this.onSetColor}
+                handlePropagation={this.onPropagation}
+                handleInputMenuChange={this.onInputMenuChange}
                 menuInput={this.state.menuInput}
                 onCancel={this.handleCancel}
                 onOk={this.handleOk}

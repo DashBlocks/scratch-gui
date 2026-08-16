@@ -170,6 +170,7 @@ const projectData = translateFunction => {
                         width: 315,
                         height: 155,
                         minimized: false,
+                        // eslint-disable-next-line max-len
                         text: "Hello, welcome to the Dash editor!\nDash is a mod of TurboWarp that adds cool stuff and features for editor.\n\nDon't wait, start creating right now!"
                     }
                 },

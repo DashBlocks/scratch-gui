@@ -34,6 +34,11 @@ const messages = defineMessages({
     }
 });
 
+const getExpirationDate = (days, locale) => (
+    new Date(Date.now() + (days * 24 * 60 * 60 * 1000))
+        .toLocaleDateString(locale)
+);
+
 const PLANS = [
     {
         offerId: 'dd24b0e7-febf-494c-a3e7-68467bf77512',
@@ -68,9 +73,7 @@ export class Donate extends React.Component {
             method: 'SBP',
             waiting: false,
             error: '',
-            expirationDate:
-                new Date((Date.now() + PLANS[0].days) * 24 * 60 * 60 * 1000)
-                    .toLocaleDateString(this.props.intl.locale)
+            expirationDate: getExpirationDate(PLANS[0].days, this.props.intl.locale)
         };
     }
 
@@ -82,9 +85,7 @@ export class Donate extends React.Component {
         this.setState({
             selectedPlan: plan,
             error: '',
-            expirationDate:
-                new Date((Date.now() + plan.days) * 24 * 60 * 60 * 1000)
-                    .toLocaleDateString(this.props.intl.locale)
+            expirationDate: getExpirationDate(plan.days, this.props.intl.locale)
         });
     }
 
@@ -94,9 +95,10 @@ export class Donate extends React.Component {
             currency,
             method: currency === 'RUB' ? 'SBP' : '',
             error: '',
-            expirationDate:
-                new Date((Date.now() + PLANS[0].days) * 24 * 60 * 60 * 1000)
-                    .toLocaleDateString(this.props.intl.locale)
+            expirationDate: getExpirationDate(
+                this.state.selectedPlan.days,
+                this.props.intl.locale
+            )
         });
     }
 
@@ -104,16 +106,18 @@ export class Donate extends React.Component {
         this.setState({
             method: event.target.value,
             error: '',
-            expirationDate:
-                new Date((Date.now() + this.state.selectedPlan.days) * 24 * 60 * 60 * 1000)
-                    .toLocaleDateString(this.props.intl.locale)
+            expirationDate: getExpirationDate(
+                this.state.selectedPlan.days,
+                this.props.intl.locale
+            )
         });
     }
 
     async handleSubmit (event) {
         event.preventDefault();
-        if (!this.props.session || !this.props.session?.username) {
+        if (!this.props.session || !this.props.session.username) {
             window.location.href = 'login';
+            return;
         }
         this.setState({waiting: true, error: ''});
 

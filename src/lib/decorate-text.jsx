@@ -25,13 +25,10 @@ const decorate = (text, isDashProject) => {
         >{`@${match}`}</a>
     ));
 
-    if (isDashProject) return text;
-
-    // Make hashtags clickable
-    // TODO: Add projects search for Dash
+    // Make #hashtags clickable
     text = reactStringReplace(text, /#([\w-]+)/g, (match, i) => (
         <a
-            href={`https://scratch.mit.edu/search/projects?q=${match}`}
+            href={isDashProject ? `search?q=${match}` : `https://scratch.mit.edu/search/projects?q=${match}`}
             target="_blank"
             key={match + i}
             rel="noreferrer"

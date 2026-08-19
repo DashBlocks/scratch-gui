@@ -23,8 +23,7 @@ import BufferedInputHOC from '../../components/forms/buffered-input-hoc.jsx';
 import Input from '../../components/forms/input.jsx';
 const BufferedInput = BufferedInputHOC(Input);
 
-/* eslint-disable no-alert, no-catch-shadow, no-shadow, require-jsdoc, func-style */
-/* eslint-disable react/jsx-no-literals */
+/* eslint-disable react/jsx-no-literals, no-alert, no-catch-shadow, no-shadow, require-jsdoc, func-style */
 
 const theme = detectTheme();
 applyGuiColors(theme);
@@ -229,8 +228,9 @@ const User = props => {
 
     const getAchievement = achievement => {
         switch (achievement.type) {
-        case 'first-project':
-            return (
+        case 'reached-projects-count':
+        case 'first-project': {
+            if (!achievement.count || achievement.count === 1) return (
                 <>
                     {/* TODO: Icon */}
                     <h4>
@@ -260,6 +260,31 @@ const User = props => {
                     />
                 </>
             );
+
+            return (
+                <>
+                    {/* TODO: Icon */}
+                    <h4>
+                        <FormattedMessage
+                            defaultMessage="{count} Projects Reached"
+                            description="Title for achievement of reached projects"
+                            id="dash.user.achievements.reachedProjectsCount.title"
+                            values={{
+                                count: achievement.count
+                            }}
+                        />
+                    </h4>
+                    <FormattedMessage
+                        defaultMessage='Reached {count} projects on Dash.'
+                        description="Description for achievement for reached projects"
+                        id="dash.user.achievements.reachedProjectsCount.info"
+                        values={{
+                            count: achievement.count
+                        }}
+                    />
+                </>
+            );
+        }
         case 'reached-followers-count':
             return (
                 <>

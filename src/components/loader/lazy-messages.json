@@ -45,6 +45,7 @@
         "Watching animations...",
         "Investigating projects' algorithms...",
         "Starting loading over again...",
+        "Loading done, just waiting...",
 
         "Banning bad users...",
         "Deleting bad projects...",
@@ -105,6 +106,7 @@
         "Смотрим анимации...",
         "Исследуем алгоритмы проектов...",
         "Начинаем загрузку сначала...",
+        "Загрузка завершена, просто ждём...",
 
         "Баним плохих пользователей...",
         "Удаляем плохие проекты...",

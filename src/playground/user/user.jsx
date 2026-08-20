@@ -101,6 +101,7 @@ const User = props => {
     useEffect(() => {
         const fetchFullProfile = async () => {
             setLoading(true);
+            setError(null);
             let user;
             try {
                 const currentSession = await getSession();

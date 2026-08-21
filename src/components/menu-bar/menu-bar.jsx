@@ -640,7 +640,7 @@ class MenuBar extends React.Component {
                 )}
                 iconClassName={styles.remixButtonIcon}
                 iconSrc={remixIcon}
-                onClick={this.handleClickRemix}
+                onClick={this.handleClickShare}
             >
                 {remixMessage}
             </Button>
@@ -1245,7 +1245,7 @@ class MenuBar extends React.Component {
                             </MenuBarItemTooltip>
                         </div>
                     ) : null}
-                    {this.props.canRemix && !this.props.canEditTitle && (
+                    {this.props.canRemix && (
                         <div className={classNames(styles.menuBarItem)}>
                             {remixButton}
                         </div>

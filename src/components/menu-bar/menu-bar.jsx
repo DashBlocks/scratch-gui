@@ -310,7 +310,6 @@ class MenuBar extends React.Component {
                     this.setState({
                         isSharing: true
                     });
-                    this.props.autoUpdateProject();
                     try {
                         let formData = new FormData();
                         const content = await this.props.vm.saveProjectSb3();
@@ -387,7 +386,6 @@ class MenuBar extends React.Component {
                     this.setState({
                         isSharing: true
                     });
-                    this.props.autoUpdateProject();
                     try {
                         let formData = new FormData();
                         const content = await this.props.vm.saveProjectSb3();
@@ -1250,7 +1248,7 @@ class MenuBar extends React.Component {
                             </MenuBarItemTooltip>
                         </div>
                     ) : null}
-                    {this.props.canRemix && (
+                    {this.props.canRemix && !this.props.isPlayerOnly && (
                         <div className={classNames(styles.menuBarItem)}>
                             {remixButton}
                         </div>

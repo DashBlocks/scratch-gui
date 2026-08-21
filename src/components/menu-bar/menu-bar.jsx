@@ -351,7 +351,11 @@ class MenuBar extends React.Component {
                                 // eslint-disable-next-line no-alert
                                 alert('Project was shared but thumbnail upload failed');
                             }
-                            window.open(`./#${result.projectId}`, '_self');
+                            if (isFork) {
+                                window.open(`./editor#${result.projectId}`, '_self');
+                            } else {
+                                window.open(`./#${result.projectId}`, '_self');
+                            }
                         } else {
                             // eslint-disable-next-line no-alert
                             alert(result.error);

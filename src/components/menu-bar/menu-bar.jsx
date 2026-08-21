@@ -225,7 +225,6 @@ class MenuBar extends React.Component {
             'handleClickSeeInside',
             'handleClickNew',
             'handleClickNewWindow',
-            'handleClickRemix',
             'handleClickSave',
             'handleClickSaveAsCopy',
             'handleClickPackager',

@@ -144,6 +144,32 @@ const Messages = props => {
                     />
                 </>
             );
+        case 'project-forked':
+            return (
+                <>
+                    {/* TODO: Icon */}
+                    <FormattedMessage
+                        defaultMessage="{user} forked your project {project}, {checkItOut}"
+                        description="Displayed when someone forked user's project"
+                        id="dash.messages.projectForked"
+                        values={{
+                            user: <a href={`user#${message.user.username}`}>{message.user.username}</a>,
+                            project: <a href={`/#${message.project.id}`}>{message.project.name}</a>,
+                            checkItOut: (
+                                <>
+                                    <a href={`/#${message.fork.id}`}>
+                                        <FormattedMessage
+                                            defaultMessage="check it out!"
+                                            description="Link to project's fork"
+                                            id="dash.messages.projectForked.checkItOut"
+                                        />
+                                    </a>
+                                </>
+                            )
+                        }}
+                    />
+                </>
+            );
         case 'featured':
             return (
                 <>

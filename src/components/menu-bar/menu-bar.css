@@ -222,6 +222,15 @@
     background-color: $pen-primary
 }
 
+.remix-button-is-disabled {
+    background-color: $ui-black-transparent;
+    cursor: default;
+}
+
+.remix-spinner {
+    vertical-align: middle;
+}
+
 .remix-button-icon {
     height: 1.25rem;
 }

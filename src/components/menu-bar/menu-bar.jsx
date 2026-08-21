@@ -27,6 +27,7 @@ import TurboMode from '../../containers/turbo-mode.jsx';
 import MenuBarHOC from '../../containers/menu-bar-hoc.jsx';
 import SettingsMenu from './settings-menu.jsx';
 import AccountNav from '../../containers/account-nav.jsx';
+import Spinner from '../spinner/spinner.jsx';
 
 import FramerateChanger from '../../containers/tw-framerate-changer.jsx';
 import ChangeUsername from '../../containers/tw-change-username.jsx';
@@ -53,7 +54,6 @@ import {
     getIsShowingProject,
     manualUpdateProject,
     requestNewProject,
-    remixProject,
     saveProjectAsCopy
 } from '../../reducers/project-state';
 import {
@@ -298,8 +298,8 @@ class MenuBar extends React.Component {
             waitForUpdate(false); // immediately transition to project page
         }
     }
-    async handleClickShare () {
-        if (!this.props.isShared && !this.state.isSharing) {
+    async handleClickShare (isFork) {
+        if ((!this.props.isShared || isFork) && !this.state.isSharing) {
             if (this.props.canShare) { // save before transitioning to project page
                 const session = await getSession();
                 if (session && session.id) {
@@ -635,13 +635,20 @@ class MenuBar extends React.Component {
             <Button
                 className={classNames(
                     styles.menuBarButton,
-                    styles.remixButton
+                    styles.remixButton,
+                    {[styles.remixButtonIsDisabled]: this.state.isSharing}
                 )}
                 iconClassName={styles.remixButtonIcon}
                 iconSrc={remixIcon}
-                onClick={this.handleClickShare}
+                // eslint-disable-next-line react/jsx-no-bind
+                onClick={() => this.handleClickShare(true)}
             >
-                {remixMessage}
+                {this.state.isSharing ? (
+                    <Spinner
+                        className={styles.remixSpinner}
+                        small
+                    />
+                ) : remixMessage}
             </Button>
         );
         // Show the About button only if we have a handler for it (like in the desktop app)
@@ -860,7 +867,7 @@ class MenuBar extends React.Component {
                                             />
                                         </MenuItem>
                                     )}
-                                    {(this.props.canSave || this.props.canCreateCopy || this.props.canRemix) && (
+                                    {(this.props.canSave || this.props.canCreateCopy) && (
                                         <MenuSection>
                                             {this.props.canSave && (
                                                 <MenuItem onClick={this.handleClickSave}>
@@ -870,11 +877,6 @@ class MenuBar extends React.Component {
                                             {this.props.canCreateCopy && (
                                                 <MenuItem onClick={this.handleClickSaveAsCopy}>
                                                     {createCopyMessage}
-                                                </MenuItem>
-                                            )}
-                                            {this.props.canRemix && (
-                                                <MenuItem onClick={this.handleClickShare}>
-                                                    {remixMessage}
                                                 </MenuItem>
                                             )}
                                         </MenuSection>
@@ -1591,7 +1593,6 @@ const mapDispatchToProps = dispatch => ({
         dispatch(requestNewProject(needSave));
         dispatch(setFileHandle(null));
     },
-    onClickRemix: () => dispatch(remixProject()),
     onClickSave: () => dispatch(manualUpdateProject()),
     onClickSaveAsCopy: () => dispatch(saveProjectAsCopy()),
     onSeeCommunity: () => dispatch(setPlayer(true)),

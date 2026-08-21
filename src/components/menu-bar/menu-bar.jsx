@@ -316,7 +316,7 @@ class MenuBar extends React.Component {
                         const fileBlob = new Blob([content], {type: 'application/x.dash.dbp'});
                         formData.append('file', fileBlob, `${this.props.projectTitle}.dbp`);
                         formData.append('name', this.props.projectTitle);
-                        if (this.props.projectId) {
+                        if (this.props.projectId && this.props.projectId !== '0') {
                             formData.append('parentId', this.props.projectId);
                         }
 

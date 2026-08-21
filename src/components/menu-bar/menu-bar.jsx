@@ -271,10 +271,6 @@ class MenuBar extends React.Component {
         this.props.onClickNewWindow();
         this.props.onRequestCloseFile();
     }
-    handleClickRemix () {
-        this.props.onClickRemix();
-        this.props.onRequestCloseFile();
-    }
     handleClickSave () {
         this.props.onClickSave();
         this.props.onRequestCloseFile();
@@ -315,12 +311,16 @@ class MenuBar extends React.Component {
                     this.setState({
                         isSharing: true
                     });
+                    this.props.autoUpdateProject();
                     try {
                         let formData = new FormData();
                         const content = await this.props.vm.saveProjectSb3();
                         const fileBlob = new Blob([content], {type: 'application/x.dash.dbp'});
                         formData.append('file', fileBlob, `${this.props.projectTitle}.dbp`);
                         formData.append('name', this.props.projectTitle);
+                        if (this.props.projectId) {
+                            formData.append('parentId', this.props.projectId);
+                        }
 
                         const response = await fetch('https://api.dashblocks.org/save-project', {
                             method: 'POST',
@@ -384,6 +384,7 @@ class MenuBar extends React.Component {
                     this.setState({
                         isSharing: true
                     });
+                    this.props.autoUpdateProject();
                     try {
                         let formData = new FormData();
                         const content = await this.props.vm.saveProjectSb3();
@@ -617,9 +618,9 @@ class MenuBar extends React.Component {
         );
         const remixMessage = (
             <FormattedMessage
-                defaultMessage="Remix"
-                description="Menu bar item for remixing"
-                id="gui.menuBar.remix"
+                defaultMessage="Fork"
+                description="Menu bar item for forking"
+                id="dash.menuBar.fork"
             />
         );
         const newProjectMessage = (
@@ -873,7 +874,7 @@ class MenuBar extends React.Component {
                                                 </MenuItem>
                                             )}
                                             {this.props.canRemix && (
-                                                <MenuItem onClick={this.handleClickRemix}>
+                                                <MenuItem onClick={this.handleClickShare}>
                                                     {remixMessage}
                                                 </MenuItem>
                                             )}
@@ -1478,7 +1479,6 @@ MenuBar.propTypes = {
     onClickMode: PropTypes.func,
     onClickNew: PropTypes.func,
     onClickNewWindow: PropTypes.func,
-    onClickRemix: PropTypes.func,
     onClickSave: PropTypes.func,
     onClickSaveAsCopy: PropTypes.func,
     onClickSettings: PropTypes.func,
@@ -1545,6 +1545,7 @@ const mapStateToProps = state => {
         isShowingProject: getIsShowingProject(loadingState),
         isShared: projectId !== '0' && userOwnsProject,
         canEditTitle: projectId === '0' || userOwnsProject,
+        canRemix: projectId !== '0' && !isScratchProject,
         locale: state.locales.locale,
         loginMenuOpen: loginMenuOpen(state),
         modeMenuOpen: modeMenuOpen(state),

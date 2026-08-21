@@ -231,36 +231,38 @@ const User = props => {
         switch (achievement.type) {
         case 'reached-projects-count':
         case 'first-project': {
-            if (!achievement.count || achievement.count === 1) return (
-                <>
-                    {/* TODO: Icon */}
-                    <h4>
+            if (!achievement.count || achievement.count === 1) {
+                return (
+                    <>
+                        {/* TODO: Icon */}
+                        <h4>
+                            <FormattedMessage
+                                defaultMessage="First Project"
+                                description="Title for achievement for creating the first project"
+                                id="dash.user.achievements.firstProject.title"
+                            />
+                        </h4>
                         <FormattedMessage
-                            defaultMessage="First Project"
-                            description="Title for achievement for creating the first project"
-                            id="dash.user.achievements.firstProject.title"
+                        // eslint-disable-next-line max-len
+                            defaultMessage='Created the first project "{firstProject}" on Dash.'
+                            // eslint-disable-next-line max-len
+                            description="Description for achievement for creating the first project, with a link to the project"
+                            id="dash.user.achievements.firstProject.info"
+                            values={{
+                                firstProject: (
+                                    <a
+                                        href={`./#${achievement.project.id}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        {achievement.project.name}
+                                    </a>
+                                )
+                            }}
                         />
-                    </h4>
-                    <FormattedMessage
-                        // eslint-disable-next-line max-len
-                        defaultMessage='Created the first project "{firstProject}" on Dash.'
-                        // eslint-disable-next-line max-len
-                        description="Description for achievement for creating the first project, with a link to the project"
-                        id="dash.user.achievements.firstProject.info"
-                        values={{
-                            firstProject: (
-                                <a
-                                    href={`./#${achievement.project.id}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {achievement.project.name}
-                                </a>
-                            )
-                        }}
-                    />
-                </>
-            );
+                    </>
+                );
+            }
 
             return (
                 <>
@@ -276,7 +278,7 @@ const User = props => {
                         />
                     </h4>
                     <FormattedMessage
-                        defaultMessage='Reached {count} projects on Dash.'
+                        defaultMessage="Reached {count} projects on Dash."
                         description="Description for achievement for reached projects"
                         id="dash.user.achievements.reachedProjectsCount.info"
                         values={{

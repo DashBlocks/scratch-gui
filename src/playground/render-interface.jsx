@@ -622,7 +622,7 @@ class Interface extends React.PureComponent {
             let response = await fetch(`https://api.dashblocks.org/projects/${this.props.projectId}`);
             let data = await response.json();
             if (!data || !data.ok) {
-                throw new Error(data?.error || "Project metadata fetch failed");
+                throw new Error(data?.error || 'Project metadata fetch failed');
             }
             const parentId = data.project.parentId;
             response = null;
@@ -631,7 +631,7 @@ class Interface extends React.PureComponent {
                 response = await fetch(`https://api.dashblocks.org/projects/${parentId}`);
                 data = await response.json();
                 if (!data || !data.ok) {
-                    throw new Error(data?.error || "Parent project metadata fetch failed");
+                    throw new Error(data?.error || 'Parent project metadata fetch failed');
                 }
             }
             if (data) {

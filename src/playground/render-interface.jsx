@@ -602,12 +602,12 @@ class Interface extends React.PureComponent {
             descriptionSaving: false
         };
     }
-    componentDidMount () {
-        this.fetchProject();
-    }
     componentDidUpdate (prevProps) {
         if (prevProps.isLoading && !this.props.isLoading) {
             loadServiceWorker();
+        }
+        if (prevProps.projectId !== this.props.projectId) {
+            this.fetchProject();
         }
     }
     handleUpdateProjectTitle (title, isDefault) {

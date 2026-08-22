@@ -24,6 +24,8 @@ import Input from '../../components/forms/input.jsx';
 const BufferedInput = BufferedInputHOC(Input);
 
 import linkIcon from './icon--link.svg';
+import editIcon from './icon--edit.svg';
+import deleteIcon from './icon--delete.svg';
 
 /* eslint-disable react/jsx-no-literals, no-alert, no-catch-shadow, no-shadow, require-jsdoc, func-style */
 
@@ -762,44 +764,30 @@ const User = props => {
                                             </a>
                                             {isMyProfile && (
                                                 <>
-                                                    <Button
-                                                        className={styles.setRecommendedProjectButton}
-                                                        disabled={linksActionDisabled}
+                                                    <button
+                                                        className={styles.userLinkButton}
                                                         // eslint-disable-next-line react/jsx-no-bind
                                                         onClick={() => handleUpdateLink(index)}
-                                                    >
-                                                        {linksActionDisabled ? (
-                                                            <Spinner
-                                                                className={styles.spinner}
-                                                                small
-                                                            />
-                                                        ) : (
-                                                            <FormattedMessage
-                                                                defaultMessage="Update link"
-                                                                description="Button text for updating a link on user's profile"
-                                                                id="dash.user.myLinks.update"
-                                                            />
-                                                        )}
-                                                    </Button>
-                                                    <Button
-                                                        className={styles.setRecommendedProjectButton}
                                                         disabled={linksActionDisabled}
+                                                    >
+                                                        <img
+                                                            src={editIcon}
+                                                            alt="Update link"
+                                                            draggable={false}
+                                                        />
+                                                    </button>
+                                                    <button
+                                                        className={styles.userLinkButton}
                                                         // eslint-disable-next-line react/jsx-no-bind
                                                         onClick={() => handleRemoveLink(index)}
+                                                        disabled={linksActionDisabled}
                                                     >
-                                                        {linksActionDisabled ? (
-                                                            <Spinner
-                                                                className={styles.spinner}
-                                                                small
-                                                            />
-                                                        ) : (
-                                                            <FormattedMessage
-                                                                defaultMessage="Remove link"
-                                                                description="Button text for removing a link on user's profile"
-                                                                id="dash.user.myLinks.remove"
-                                                            />
-                                                        )}
-                                                    </Button>
+                                                        <img
+                                                            src={deleteIcon}
+                                                            alt="Remove"
+                                                            draggable={false}
+                                                        />
+                                                    </button>
                                                 </>
                                             )}
                                         </div>
@@ -808,6 +796,7 @@ const User = props => {
                                     {isMyProfile && (
                                         <div className={styles.userLinkItem}>
                                             <img
+                                                className={styles.userLinkIcon}
                                                 draggable={false}
                                                 src={linkIcon}
                                             />

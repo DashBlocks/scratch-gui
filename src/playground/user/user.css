@@ -234,7 +234,7 @@ body {
     border-color: $ui-black-transparent !important; /* dont use hover border from custom input */
 }
 
-.user-link-row {
+.user-link-item {
     display: flex;
     align-items: center;
     gap: $space;
@@ -243,6 +243,7 @@ body {
 .user-link-icon {
     width: 1.25rem;
     height: 1.25rem;
+    filter: $filter-icon-gray;
 }
 
 .section-header {

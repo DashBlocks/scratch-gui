@@ -794,7 +794,7 @@ const User = props => {
                                         </div>
                                     ))}
     
-                                    {isMyProfile && (
+                                    {isMyProfile && links.length < 5 && (
                                         <div className={styles.userLinkItem}>
                                             <img
                                                 className={styles.userLinkIcon}

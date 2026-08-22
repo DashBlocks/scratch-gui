@@ -597,9 +597,13 @@ class Interface extends React.PureComponent {
         this.handleChangeProjectDescription = this.handleChangeProjectDescription.bind(this);
         this.state = {
             activeTabIndex: 0,
+            parentProjectMetadata: null,
             descriptionOverride: null,
             descriptionSaving: false
         };
+    }
+    componentDidMount () {
+        this.fetchProject();
     }
     componentDidUpdate (prevProps) {
         if (prevProps.isLoading && !this.props.isLoading) {
@@ -611,6 +615,32 @@ class Interface extends React.PureComponent {
             document.title = `${APP_NAME} - ${this.props.intl.formatMessage(messages.defaultTitle)}`;
         } else {
             document.title = `${title} - ${APP_NAME}`;
+        }
+    }
+    async fetchProject () {
+        try {
+            let response = await fetch(`https://api.dashblocks.org/projects/${this.props.projectId}`);
+            let data = await response.json();
+            if (!data || !data.ok) {
+                throw new Error(data?.error || "Project metadata fetch failed");
+            }
+            const parentId = data.project.parentId;
+            response = null;
+            data = null;
+            if (parentId) {
+                response = await fetch(`https://api.dashblocks.org/projects/${parentId}`);
+                data = await response.json();
+                if (!data || !data.ok) {
+                    throw new Error(data?.error || "Parent project metadata fetch failed");
+                }
+            }
+            if (data) {
+                this.setState({
+                    parentProjectMetadata: data.project
+                });
+            }
+        } catch (error) {
+            console.error(error);
         }
     }
     async handleChangeProjectDescription (text) {
@@ -721,6 +751,32 @@ class Interface extends React.PureComponent {
                                 <BrowserModal isRtl={isRtl} />
                             )}
                             <div className={styles.mainSection}>
+                                {this.state.parentProjectMetadata ? (
+                                    <div className={styles.section}>
+                                        <img
+                                            src={`https://api.dashblocks.org/users/avatars/${this.state.parentProjectMetadata.author.profile.avatarId}`}
+                                            alt={this.state.parentProjectMetadata.author.username}
+                                            className={styles.actionAvatar}
+                                        />
+                                        <FormattedMessage
+                                            defaultMessage="Thanks to {user} for the original project {project}."
+                                            description="Label for crediting original project creator"
+                                            id="dash.home.project.credits"
+                                            values={{
+                                                user: (
+                                                    <a href={`user#${this.state.parentProjectMetadata.author.id}`}>
+                                                        {this.state.parentProjectMetadata.author.username}
+                                                    </a>
+                                                ),
+                                                project: (
+                                                    <a href={`/#${this.state.parentProjectMetadata.id}`}>
+                                                        {this.state.parentProjectMetadata.name}
+                                                    </a>
+                                                )
+                                            }}
+                                        />
+                                    </div>
+                                ) : null}
                                 <div className={styles.section}>
                                     <ProjectInput />
                                 </div>

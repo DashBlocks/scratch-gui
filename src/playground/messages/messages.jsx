@@ -149,7 +149,7 @@ const Messages = props => {
                 <>
                     {/* TODO: Icon */}
                     <FormattedMessage
-                        defaultMessage="{user} forked your project {project}, {checkItOut}"
+                        defaultMessage="{user} forked your project {project}, {checkItOut}!"
                         description="Displayed when someone forked user's project"
                         id="dash.messages.projectForked"
                         values={{
@@ -159,7 +159,7 @@ const Messages = props => {
                                 <>
                                     <a href={`/#${message.fork.id}`}>
                                         <FormattedMessage
-                                            defaultMessage="check it out!"
+                                            defaultMessage="check it out"
                                             description="Link to project's fork"
                                             id="dash.messages.projectForked.checkItOut"
                                         />

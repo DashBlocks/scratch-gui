@@ -36,7 +36,7 @@ const messages = defineMessages({
     forks: {
         defaultMessage: 'Forks',
         description: 'Button to open project\'s forks page',
-        id: 'dash.project.viewsCount'
+        id: 'dash.project.forks'
     }
 });
 

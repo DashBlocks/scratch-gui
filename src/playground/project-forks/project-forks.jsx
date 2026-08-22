@@ -188,9 +188,9 @@ const ProjectForks = props => {
                                 </div>
                             )) : (
                                 <FormattedMessage
-                                    defaultMessage="This user has no projects"
-                                    description="Placeholder text when the user has no projects"
-                                    id="dash.user.projects.placeholder"
+                                    defaultMessage="This project has no forks"
+                                    description="Placeholder text when the project has no forks"
+                                    id="dash.projectForks.placeholder"
                                 />
                             )}
                             {hasMore && (

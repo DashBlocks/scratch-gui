@@ -23,6 +23,8 @@ import BufferedInputHOC from '../../components/forms/buffered-input-hoc.jsx';
 import Input from '../../components/forms/input.jsx';
 const BufferedInput = BufferedInputHOC(Input);
 
+import linkIcon from './icon-link.svg';
+
 /* eslint-disable react/jsx-no-literals, no-alert, no-catch-shadow, no-shadow, require-jsdoc, func-style */
 
 const theme = detectTheme();
@@ -85,7 +87,6 @@ const User = props => {
     const [projects, setProjects] = useState([]);
     const [links, setLinks] = useState([]);
     const [linksActionDisabled, setLinksActionDisabled] = useState(false);
-    const [isManagingLinks, setIsManagingLinks] = useState(false);
     const [achievements, setAchievements] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
@@ -559,10 +560,6 @@ const User = props => {
         }
     };
 
-    const handleManageLinksToggle = () => {
-        setIsManagingLinks(prev => !prev);
-    };
-
     if (loading) {
         return (
             <>
@@ -712,203 +709,169 @@ const User = props => {
                         </div>
                     </div>
                     <div className={styles.userAbout}>
-                        <div className={styles.section}>
-                            <h2>
-                                <FormattedMessage
-                                    defaultMessage="Description"
-                                    description="User's description section title on user's profile"
-                                    id="dash.home.tab.description"
-                                />
-                            </h2>
-                            {isMyProfile || session?.role === 'dashteam' ? (
-                                <BufferedInput
-                                    className={styles.descriptionField}
-                                    maxLength="1000"
-                                    multiline
-                                    // eslint-disable-next-line max-len
-                                    placeholder={props.intl.formatMessage(userData.role === 'dasher' ? messages.descriptionInputPlaceholderForDasher : messages.descriptionInputPlaceholder)}
-                                    tabIndex="0"
-                                    value={userData.profile.description}
-                                    onSubmit={handleChangeDescription}
-                                    disabled={descriptionDisabled}
-                                />
-                            ) : (
-                                <div className={styles.description}>
-                                    <p>
-                                        {userData.profile.description ?
-                                            decorate(userData.profile.description, true) : (
-                                                <i>{props.intl.formatMessage(messages.descriptionPlaceholder)}</i>
-                                            )
-                                        }
-                                    </p>
-                                </div>
-                            )}
-                            <h2>
-                                <FormattedMessage
-                                    defaultMessage="My links"
-                                    description="User's links section title on user's profile"
-                                    id="dash.user.myLinks"
-                                />
-                            </h2>
-                            <div className={styles.links}>
-                                {links.length > 0 ? (
-                                    <ul className={styles.linkList}>
-                                        {links.map((link, index) => (
-                                            <li
-                                                key={index}
-                                                className={styles.linkItem}
-                                            >
-                                                <a
-                                                    href={link.link}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                >
-                                                    {link.label || 'Link'}
-                                                </a>
-                                                {isMyProfile && isManagingLinks && (
-                                                    <div className={styles.linkActions}>
-                                                        <Button
-                                                            className={styles.setRecommendedProjectButton}
-                                                            disabled={linksActionDisabled}
-                                                            // eslint-disable-next-line react/jsx-no-bind
-                                                            onClick={() => handleUpdateLink(index)}
-                                                        >
-                                                            {linksActionDisabled ? (
-                                                                <Spinner
-                                                                    className={styles.spinner}
-                                                                    small
-                                                                />
-                                                            ) : (
-                                                                <FormattedMessage
-                                                                    defaultMessage="Update link"
-                                                                    description="Button text for updating a link on user's profile"
-                                                                    id="dash.user.myLinks.update"
-                                                                />
-                                                            )}
-                                                        </Button>
-                                                        <Button
-                                                            className={styles.setRecommendedProjectButton}
-                                                            disabled={linksActionDisabled}
-                                                            // eslint-disable-next-line react/jsx-no-bind
-                                                            onClick={() => handleRemoveLink(index)}
-                                                        >
-                                                            {linksActionDisabled ? (
-                                                                <Spinner
-                                                                    className={styles.spinner}
-                                                                    small
-                                                                />
-                                                            ) : (
-                                                                <FormattedMessage
-                                                                    defaultMessage="Remove link"
-                                                                    description="Button text for removing a link on user's profile"
-                                                                    id="dash.user.myLinks.remove"
-                                                                />
-                                                            )}
-                                                        </Button>
-                                                    </div>
-                                                )}
-                                            </li>
-                                        ))}
-                                    </ul>
+                        <div>
+                            <div className={styles.section}>
+                                <h4>
+                                    <FormattedMessage
+                                        defaultMessage="Description"
+                                        description="User's description section title on user's profile"
+                                        id="dash.home.tab.description"
+                                    />
+                                </h4>
+                                {isMyProfile || session?.role === 'dashteam' ? (
+                                    <BufferedInput
+                                        className={styles.descriptionField}
+                                        maxLength="1000"
+                                        multiline
+                                        // eslint-disable-next-line max-len
+                                        placeholder={props.intl.formatMessage(userData.role === 'dasher' ? messages.descriptionInputPlaceholderForDasher : messages.descriptionInputPlaceholder)}
+                                        tabIndex="0"
+                                        value={userData.profile.description}
+                                        onSubmit={handleChangeDescription}
+                                        disabled={descriptionDisabled}
+                                    />
                                 ) : (
-                                    <div className={styles.noLinksRow}>
-                                        <FormattedMessage
-                                            defaultMessage="The user has no links"
-                                            description="Placeholder text when the user has no links"
-                                            id="dash.user.myLinks.placeholder"
-                                        />
-                                    </div>
-                                )}
-
-                                {isMyProfile && isManagingLinks && (
-                                    <div className={styles.addLinkRow}>
-                                        <Button
-                                            className={styles.setRecommendedProjectButton}
-                                            disabled={linksActionDisabled}
-                                            onClick={handleAddLink}
-                                        >
-                                            {linksActionDisabled ? (
-                                                <Spinner
-                                                    className={styles.spinner}
-                                                    small
-                                                />
-                                            ) : (
-                                                <FormattedMessage
-                                                    defaultMessage="Add link"
-                                                    description="Button text for adding a new link on user's profile"
-                                                    id="dash.user.myLinks.add"
-                                                />
-                                            )}
-                                        </Button>
-                                    </div>
-                                )}
-
-                                {isMyProfile && (
-                                    <div className={styles.addLinkRow}>
-                                        <Button
-                                            className={styles.setRecommendedProjectButton}
-                                            disabled={linksActionDisabled}
-                                            onClick={handleManageLinksToggle}
-                                        >
-                                            {linksActionDisabled ? (
-                                                <Spinner
-                                                    className={styles.spinner}
-                                                    small
-                                                />
-                                            ) : isManagingLinks ? (
-                                                <FormattedMessage
-                                                    defaultMessage="Done"
-                                                    description="Button text for hiding managing links buttons on user's profile"
-                                                    id="dash.user.myLinks.done"
-                                                />
-                                            ) : (
-                                                <FormattedMessage
-                                                    defaultMessage="Manage links"
-                                                    description="Button text for showing managing links buttons on user's profile"
-                                                    id="dash.user.myLinks.manage"
-                                                />
-                                            )}
-                                        </Button>
+                                    <div className={styles.description}>
+                                        <p>
+                                            {userData.profile.description ?
+                                                decorate(userData.profile.description, true) : (
+                                                    <i>{props.intl.formatMessage(messages.descriptionPlaceholder)}</i>
+                                                )
+                                            }
+                                        </p>
                                     </div>
                                 )}
                             </div>
-                            <h2>
-                                <FormattedMessage
-                                    defaultMessage="Achievements"
-                                    description="User's achievements section title on user's profile"
-                                    id="dash.user.achievements"
-                                />
-                            </h2>
-                            <div className={styles.achievements}>
-                                {achievements.length > 0 ? (
-                                    <div className={styles.achievementList}>
-                                        {achievements.map((achievement, index) => (
-                                            <div
-                                                className={styles.achievement}
-                                                key={index}
+                            {links.length > 0 && (
+                                <div className={styles.section}>
+                                    {links.map((link, index) => (
+                                        <div
+                                            key={index}
+                                            className={styles.userLinkItem}
+                                        >
+                                            <img
+                                                draggable={false}
+                                                src={linkIcon}
+                                            />
+                                            <a
+                                                href={link.link}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
                                             >
-                                                {getAchievement(achievement)}
-                                                <div className={styles.achievementDate}>
-                                                    {achievement.date ?
-                                                        relativeTimeSupported() ?
-                                                            (
-                                                                <span title={`${props.intl.formatDate(new Date(achievement.date))}, ${props.intl.formatTime(new Date(achievement.date))}`}>
-                                                                    <FormattedRelative value={new Date(achievement.date)} />
-                                                                </span>
-                                                            ) :
-                                                            (<FormattedDate value={new Date(achievement.date)} />) :
-                                                        '?'}
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                ) : (
+                                                {link.label || 'Link'}
+                                            </a>
+                                            {isMyProfile && (
+                                                <>
+                                                    <Button
+                                                        className={styles.setRecommendedProjectButton}
+                                                        disabled={linksActionDisabled}
+                                                        // eslint-disable-next-line react/jsx-no-bind
+                                                        onClick={() => handleUpdateLink(index)}
+                                                    >
+                                                        {linksActionDisabled ? (
+                                                            <Spinner
+                                                                className={styles.spinner}
+                                                                small
+                                                            />
+                                                        ) : (
+                                                            <FormattedMessage
+                                                                defaultMessage="Update link"
+                                                                description="Button text for updating a link on user's profile"
+                                                                id="dash.user.myLinks.update"
+                                                            />
+                                                        )}
+                                                    </Button>
+                                                    <Button
+                                                        className={styles.setRecommendedProjectButton}
+                                                        disabled={linksActionDisabled}
+                                                        // eslint-disable-next-line react/jsx-no-bind
+                                                        onClick={() => handleRemoveLink(index)}
+                                                    >
+                                                        {linksActionDisabled ? (
+                                                            <Spinner
+                                                                className={styles.spinner}
+                                                                small
+                                                            />
+                                                        ) : (
+                                                            <FormattedMessage
+                                                                defaultMessage="Remove link"
+                                                                description="Button text for removing a link on user's profile"
+                                                                id="dash.user.myLinks.remove"
+                                                            />
+                                                        )}
+                                                    </Button>
+                                                </>
+                                            )}
+                                        </div>
+                                    ))}
+    
+                                    {isMyProfile && (
+                                        <div className={styles.userLinkItem}>
+                                            <img
+                                                draggable={false}
+                                                src={linkIcon}
+                                            />
+                                            <Button
+                                                className={styles.setRecommendedProjectButton}
+                                                disabled={linksActionDisabled}
+                                                onClick={handleAddLink}
+                                            >
+                                                {linksActionDisabled ? (
+                                                    <Spinner
+                                                        className={styles.spinner}
+                                                        small
+                                                    />
+                                                ) : (
+                                                    <FormattedMessage
+                                                        defaultMessage="Add link"
+                                                        description="Button text for adding a new link on user's profile"
+                                                        id="dash.user.myLinks.add"
+                                                    />
+                                                )}
+                                            </Button>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+                            <div className={styles.section}>
+                                <h4>
                                     <FormattedMessage
-                                        defaultMessage="The user has no achievements"
-                                        description="Placeholder text when the user has no achievements"
-                                        id="dash.user.achievements.placeholder"
+                                        defaultMessage="Achievements"
+                                        description="User's achievements section title on user's profile"
+                                        id="dash.user.achievements"
                                     />
-                                )}
+                                </h4>
+                                <div className={styles.achievements}>
+                                    {achievements.length > 0 ? (
+                                        <div className={styles.achievementList}>
+                                            {achievements.map((achievement, index) => (
+                                                <div
+                                                    className={styles.achievement}
+                                                    key={index}
+                                                >
+                                                    {getAchievement(achievement)}
+                                                    <div className={styles.achievementDate}>
+                                                        {achievement.date ?
+                                                            relativeTimeSupported() ?
+                                                                (
+                                                                    <span title={`${props.intl.formatDate(new Date(achievement.date))}, ${props.intl.formatTime(new Date(achievement.date))}`}>
+                                                                        <FormattedRelative value={new Date(achievement.date)} />
+                                                                    </span>
+                                                                ) :
+                                                                (<FormattedDate value={new Date(achievement.date)} />) :
+                                                            '?'}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <FormattedMessage
+                                            defaultMessage="The user has no achievements"
+                                            description="Placeholder text when the user has no achievements"
+                                            id="dash.user.achievements.placeholder"
+                                        />
+                                    )}
+                                </div>
                             </div>
                         </div>
                         {(userData.profile.recommendedProject?.id || isMyProfile) && (

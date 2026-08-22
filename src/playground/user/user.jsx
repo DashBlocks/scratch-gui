@@ -752,6 +752,7 @@ const User = props => {
                                             className={styles.userLinkItem}
                                         >
                                             <img
+                                                className={styles.userLinkIcon}
                                                 draggable={false}
                                                 src={linkIcon}
                                             />

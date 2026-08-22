@@ -162,25 +162,32 @@ const ProjectForks = props => {
                                         author: project.author.username,
                                         title: project.name
                                     })}
-                                    // eslint-disable-next-line react/jsx-no-bind
-                                    onClick={() => window.open(`./#${project.id}`, '_blank')}
                                 >
                                     <div className={styles.thumbWrapper}>
                                         <img
                                             draggable={false}
                                             src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
                                             alt={project.id}
+                                            // eslint-disable-next-line react/jsx-no-bind
+                                            onClick={() => window.open(`./#${project.id}`, '_blank')}
                                         />
                                     </div>
                                     <div className={styles.projectInfo}>
-                                        <h4>{project.name}</h4>
+                                        <h4
+                                            // eslint-disable-next-line react/jsx-no-bind
+                                            onClick={() => window.open(`./#${project.id}`, '_blank')}
+                                        >{project.name}</h4>
                                         <p>
                                             <FormattedMessage
                                                 defaultMessage="by {author}"
                                                 description="Displayed under project title to credit creator"
                                                 id="tw.studioview.authorAttribution"
                                                 values={{
-                                                    author: project.author.username
+                                                    author: <a
+                                                        href={`user#${project.author.id}`}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                    >{project.author.username}</a>
                                                 }}
                                             />
                                         </p>

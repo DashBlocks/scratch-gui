@@ -4,16 +4,16 @@ import useHashId from '../user/use-hash-id.jsx';
 import {connect} from 'react-redux';
 import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
-import render from '../app-target';
-import styles from './user-followers.css';
+import render from '../app-target.js';
+import styles from './project-forks.css';
 
 import Spinner from '../../components/spinner/spinner.jsx';
 import {Footer} from '../render-interface.jsx';
 import Button from '../../components/button/button.jsx';
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
-import {APP_NAME} from '../../lib/brand';
-import {applyGuiColors} from '../../lib/themes/guiHelpers';
-import {detectTheme} from '../../lib/themes/themePersistance';
+import {APP_NAME} from '../../lib/brand.js';
+import {applyGuiColors} from '../../lib/themes/guiHelpers.js';
+import {detectTheme} from '../../lib/themes/themePersistance.js';
 
 /* eslint-disable react/jsx-no-literals */
 
@@ -22,16 +22,21 @@ applyGuiColors(theme);
 
 const messages = defineMessages({
     title: {
-        defaultMessage: '{username}\'s Followers ({followersCount})',
-        description: 'Title of /user-followers page',
-        id: 'dash.userFollowers.title'
+        defaultMessage: '{project}\'s Forks ({forksCount})',
+        description: 'Title of /project-forks page',
+        id: 'dash.projectForks.title'
+    },
+    hoverText: {
+        defaultMessage: '{title} by {author}',
+        description: 'Displayed when hovering on a project',
+        id: 'tw.studioview.hoverText'
     }
 });
 
-const UserFollowers = props => {
+const ProjectForks = props => {
     const id = useHashId();
-    const [userData, setUserData] = useState(null);
-    const [followers, setFollowers] = useState([]);
+    const [projectData, setProjectData] = useState(null);
+    const [projects, setProjects] = useState([]);
     const [limit, _] = useState(40);
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
@@ -40,17 +45,17 @@ const UserFollowers = props => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchFollowers = async currentOffset => {
+    const fetchProjects = async currentOffset => {
         setLoadMoreButtonDisabled(true);
         try {
-            const followersRes = await fetch(`https://api.dashblocks.org/users/${id}/followers?limit=${limit}&offset=${currentOffset}`, {
+            const projectsRes = await fetch(`https://api.dashblocks.org/projects/${id}/forks?limit=${limit}&offset=${currentOffset}`, {
                 credentials: 'include'
             });
-            if (!followersRes.ok) throw new Error('Failed to fetch followers');
-            const followersData = await followersRes.json();
-            if (!followersData.ok) throw new Error(followersData.error);
-            setFollowers(prevFollowers => [...prevFollowers, ...followersData.followers]);
-            setHasMore(followersData.followers.length === limit);
+            if (!projectsRes.ok) throw new Error('Failed to fetch projects');
+            const projectsData = await projectsRes.json();
+            if (!projectsData.ok) throw new Error(projectsData.error);
+            setProjects(prevProjects => [...prevProjects, ...projectsData.forks]);
+            setHasMore(projectsData.forks.length === limit);
         } catch (catchedError) {
             setError(catchedError.message);
         } finally {
@@ -60,31 +65,36 @@ const UserFollowers = props => {
     };
 
     useEffect(() => {
+        setProjects([]);
+        setHasMore(true);
+        setOffset(0);
+        setError(null);
+
         document.title = `${props.intl.formatMessage(messages.title, {
-            username: 'User',
-            followersCount: '?'
+            project: 'Project',
+            forksCount: '?'
         })} - ${APP_NAME}`;
 
         setLoading(true);
         const fetchData = async () => {
-            const userReq = await fetch(`https://api.dashblocks.org/users/${id}`);
-            if (!userReq.ok) {
-                setError('Failed to fetch user data');
+            const projectReq = await fetch(`https://api.dashblocks.org/projects/${id}`);
+            if (!projectReq.ok) {
+                setError('Failed to fetch project data');
                 setLoading(false);
                 return;
             }
-            const user = await userReq.json();
-            if (!user.ok) {
-                setError(user.error);
+            const project = await projectReq.json();
+            if (!project.ok) {
+                setError(project.error);
                 setLoading(false);
                 return;
             }
             document.title = `${props.intl.formatMessage(messages.title, {
-                username: user.user.username,
-                followersCount: user.user.profile.stats.followers
+                project: project.project.name,
+                forksCount: project.project.stats?.forks || 0
             })} - ${APP_NAME}`;
-            setUserData(user.user);
-            await fetchFollowers(0);
+            setProjectData(project.project);
+            await fetchProjects(0);
             setLoading(false);
         };
         fetchData();
@@ -113,11 +123,11 @@ const UserFollowers = props => {
             </>
         );
     }
-    if (!userData || !followers) {
+    if (!projectData || !projects) {
         return (
             <>
                 <LazyMenuBar />
-                <div>Failed to load user data</div>
+                <div>Failed to load project data</div>
                 <Footer />
             </>
         );
@@ -130,40 +140,57 @@ const UserFollowers = props => {
                 className={styles.container}
                 dir={props.isRtl ? 'rtl' : 'ltr'}
             >
-                <div className={styles.userFollowersWrapper}>
+                <div className={styles.projectForksWrapper}>
                     <div className={styles.section}>
                         <h2>
                             <FormattedMessage
-                                defaultMessage="{username}'s Followers ({followersCount})"
-                                description="Title of /user-followers page"
-                                id="dash.userFollowers.title"
+                                defaultMessage="{project}'s Forks ({forksCount})"
+                                description="Title of /project-forks page"
+                                id="dash.projectForks.title"
                                 values={{
-                                    username: <a href={`user#${userData.id}`}>{userData.username}</a>,
-                                    followersCount: userData.profile.stats.followers
+                                    project: <a href={`/#${projectData.id}`}>{projectData.name}</a>,
+                                    forksCount: projectData.stats?.forks || 0
                                 }}
                             />
                         </h2>
-                        <div className={styles.followList}>
-                            {followers.length > 0 ? followers.map(follower => (
+                        <div className={styles.projectGrid}>
+                            {projects.length > 0 ? projects.map(project => (
                                 <div
-                                    key={follower.id}
-                                    className={styles.followCard}
+                                    key={project.id}
+                                    className={styles.projectCard}
+                                    title={props.intl.formatMessage(messages.hoverText, {
+                                        author: project.author.username,
+                                        title: project.name
+                                    })}
                                     // eslint-disable-next-line react/jsx-no-bind
-                                    onClick={() => window.open(`./user#${follower.id}`, '_blank')}
+                                    onClick={() => window.open(`./#${project.id}`, '_blank')}
                                 >
-                                    <img
-                                        draggable={false}
-                                        src={`https://api.dashblocks.org/users/avatars/${follower.profile.avatarId}`}
-                                        alt={follower.username}
-                                        className={styles.followAvatar}
-                                    />
-                                    <span className={styles.followUsername}>{follower.username}</span>
+                                    <div className={styles.thumbWrapper}>
+                                        <img
+                                            draggable={false}
+                                            src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
+                                            alt={project.id}
+                                        />
+                                    </div>
+                                    <div className={styles.projectInfo}>
+                                        <h4>{project.name}</h4>
+                                        <p>
+                                            <FormattedMessage
+                                                defaultMessage="by {author}"
+                                                description="Displayed under project title to credit creator"
+                                                id="tw.studioview.authorAttribution"
+                                                values={{
+                                                    author: project.author.username
+                                                }}
+                                            />
+                                        </p>
+                                    </div>
                                 </div>
                             )) : (
                                 <FormattedMessage
-                                    defaultMessage="This user has no followers"
-                                    description="Placeholder text when the user has no followers"
-                                    id="dash.user.followers.placeholder"
+                                    defaultMessage="This user has no projects"
+                                    description="Placeholder text when the user has no projects"
+                                    id="dash.user.projects.placeholder"
                                 />
                             )}
                             {hasMore && (
@@ -174,7 +201,7 @@ const UserFollowers = props => {
                                     onClick={() => {
                                         const newOffset = offset + limit;
                                         setOffset(newOffset);
-                                        fetchFollowers(newOffset);
+                                        fetchProjects(newOffset);
                                     }}
                                 >
                                     {loadMoreButtonDisabled ? (
@@ -200,7 +227,7 @@ const UserFollowers = props => {
     );
 };
 
-UserFollowers.propTypes = {
+ProjectForks.propTypes = {
     intl: intlShape,
     isRtl: PropTypes.bool
 };
@@ -211,11 +238,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = () => ({});
 
-const ConnectedUserFollowers = injectIntl(connect(
+const ConnectedProjectForks = injectIntl(connect(
     mapStateToProps,
     mapDispatchToProps
-)(UserFollowers));
+)(ProjectForks));
 
-const WrappedUserFollowers = AppStateHOC(ConnectedUserFollowers);
+const WrappedProjectForks = AppStateHOC(ConnectedProjectForks);
 
-render(<WrappedUserFollowers />);
+render(<WrappedProjectForks />);

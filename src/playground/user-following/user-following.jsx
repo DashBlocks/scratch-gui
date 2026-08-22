@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React, {useState, useEffect} from 'react';
-import useHashUserId from '../user/use-hash-user-id.jsx';
+import useHashId from '../user/use-hash-id.jsx';
 import {connect} from 'react-redux';
 import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
@@ -29,7 +29,7 @@ const messages = defineMessages({
 });
 
 const UserFollowing = props => {
-    const id = useHashUserId();
+    const id = useHashId();
     const [userData, setUserData] = useState(null);
     const [following, setFollowing] = useState([]);
     const [limit, _] = useState(40);

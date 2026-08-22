@@ -153,6 +153,7 @@ module.exports = [
             'user-projects': './src/playground/user-projects/user-projects.jsx',
             'user-followers': './src/playground/user-followers/user-followers.jsx',
             'user-following': './src/playground/user-following/user-following.jsx',
+            'project-forks': './src/playground/project-forks/project-forks.jsx',
             'login': './src/playground/login/login.jsx',
             'register': './src/playground/register/register.jsx',
             'account-settings': './src/playground/account-settings/account-settings.jsx',
@@ -272,6 +273,13 @@ module.exports = [
                 template: 'src/playground/simple.ejs',
                 filename: 'user-following.html',
                 title: `User's Following (?) - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['project-forks'],
+                template: 'src/playground/simple.ejs',
+                filename: 'project-forks.html',
+                title: `Project's Forks (?) - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

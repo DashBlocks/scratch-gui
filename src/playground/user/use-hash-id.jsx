@@ -1,13 +1,13 @@
 import {useEffect, useState} from 'react';
 
-const getHashUserId = () => window.location.hash.replace(/^#/, '');
+const getHashId = () => window.location.hash.replace(/^#/, '');
 
-const useHashUserId = () => {
-    const [id, setId] = useState(getHashUserId());
+const useHashId = () => {
+    const [id, setId] = useState(getHashId());
 
     useEffect(() => {
         const handleHashChange = () => {
-            setId(getHashUserId());
+            setId(getHashId());
         };
 
         window.addEventListener('hashchange', handleHashChange);
@@ -17,4 +17,4 @@ const useHashUserId = () => {
     return id;
 };
 
-export default useHashUserId;
+export default useHashId;

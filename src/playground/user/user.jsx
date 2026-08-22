@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React, {useState, useRef, useEffect} from 'react';
-import useHashUserId from './use-hash-user-id.jsx';
+import useHashId from './use-hash-id.jsx';
 import {connect} from 'react-redux';
 import {FormattedMessage, FormattedDate, FormattedRelative, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
@@ -75,7 +75,7 @@ const messages = defineMessages({
 });
 
 const User = props => {
-    const id = useHashUserId();
+    const id = useHashId();
     const [userData, setUserData] = useState(null);
     const [avatarCacheBuster, setAvatarCacheBuster] = useState(Date.now());
     const [isFollowing, setIsFollowing] = useState(false);

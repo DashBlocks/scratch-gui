@@ -23,7 +23,7 @@ import BufferedInputHOC from '../../components/forms/buffered-input-hoc.jsx';
 import Input from '../../components/forms/input.jsx';
 const BufferedInput = BufferedInputHOC(Input);
 
-import linkIcon from './icon-link.svg';
+import linkIcon from './icon--link.svg';
 
 /* eslint-disable react/jsx-no-literals, no-alert, no-catch-shadow, no-shadow, require-jsdoc, func-style */
 

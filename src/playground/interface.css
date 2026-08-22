@@ -83,6 +83,14 @@ a {
     border-radius: 0.5rem;
     border: 0.0625rem solid $ui-black-transparent;
 }
+.project-credit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: $space;
+    text-align: center;
+}
 
 .footer {
     padding: 10px 0;

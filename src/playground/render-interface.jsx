@@ -752,7 +752,7 @@ class Interface extends React.PureComponent {
                             )}
                             <div className={styles.mainSection}>
                                 {this.state.parentProjectMetadata ? (
-                                    <div className={styles.section}>
+                                    <div className={classNames(styles.section, styles.projectCredit)}>
                                         <img
                                             src={`https://api.dashblocks.org/users/avatars/${this.state.parentProjectMetadata.author.profile.avatarId}`}
                                             alt={this.state.parentProjectMetadata.author.username}

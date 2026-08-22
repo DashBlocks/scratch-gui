@@ -47,6 +47,23 @@
     height: 2rem;
 }
 
+.forks-button {
+    border: 1px solid $ui-black-transparent;
+    border-radius: $form-radius;
+    background: $ui-white;
+    padding: 0.375rem;
+    user-select: none;
+    cursor: pointer;
+}
+
+.forks-button:active {
+    background-color: $looks-transparent;
+}
+
+.fork-icon {
+    height: 2rem;
+}
+
 .footer-buttons-row {
     display: flex;
     gap: $space;

@@ -92,6 +92,12 @@ const User = props => {
     const [achievements, setAchievements] = useState([]);
     const [followers, setFollowers] = useState([]);
     const [following, setFollowing] = useState([]);
+
+    const [actions, setActions] = useState([]);
+    const [hasMoreActions, setHasMoreActions] = useState(false);
+    const [actionsOffset, setActionsOffset] = useState(0);
+    const [actionsLoading, setActionsLoading] = useState(false);
+
     const [gradient, setGradient] = useState({});
     const [isMyProfile, setIsMyProfile] = useState(false);
     const [session, setSession] = useState(null);
@@ -135,6 +141,12 @@ const User = props => {
                 const followingRes = await fetch(`https://api.dashblocks.org/users/${id}/following?limit=20&offset=0`);
                 const followingData = await followingRes.json();
                 setFollowing(followingData.following);
+
+                const actionsRes = await fetch(`https://api.dashblocks.org/users/${id}/actions?limit=20&offset=0`);
+                const actionsData = await actionsRes.json();
+                setActions(actionsData.actions);
+                setHasMoreActions(actionsData.actions.length === 20);
+                setActionsOffset(actionsData.actions.length);
             } catch (caughtError) {
                 setError(caughtError.message);
             } finally {
@@ -562,6 +574,71 @@ const User = props => {
         }
     };
 
+    const getActionContent = action => {
+        switch (action.type) {
+        case 'shared-project':
+            return (
+                <FormattedMessage
+                    defaultMessage="{user} shared project {project}"
+                    description="Displayed when someone shared project"
+                    id="dash.home.whatsHappening.sharedProject"
+                    values={{
+                        user: <b>{userData.username}</b>,
+                        project: <a href={`/#${action.project.id}`}>{action.project.name}</a>
+                    }}
+                />
+            );
+        case 'fired-project':
+            return (
+                <FormattedMessage
+                    defaultMessage="{user} fired project {project}"
+                    description="Displayed when someone fired project"
+                    id="dash.home.whatsHappening.firedProject"
+                    values={{
+                        user: <b>{userData.username}</b>,
+                        project: <a href={`/#${action.project.id}`}>{action.project.name}</a>
+                    }}
+                />
+            );
+        case 'followed-user':
+            return (
+                <FormattedMessage
+                    defaultMessage="{user} followed {target}"
+                    description="Displayed when someone followed someone"
+                    id="dash.home.whatsHappening.followedUser"
+                    values={{
+                        user: <b>{userData.username}</b>,
+                        target: <a href={`user#${action.user.id}`}>{action.user.username}</a>
+                    }}
+                />
+            );
+        default:
+            return (
+                <FormattedMessage
+                    defaultMessage="Unknown action type"
+                    description="Displayed when there is an unknown action"
+                    id="dash.home.whatsHappening.unknown"
+                />
+            );
+        }
+    };
+
+    const handleLoadMoreActions = async () => {
+        setActionsLoading(true);
+        try {
+            const response = await fetch(`https://api.dashblocks.org/users/${id}/actions?limit=20&offset=${actionsOffset}`);
+            const data = await response.json();
+            if (!data.ok) throw new Error(data.error);
+            setActions(prev => [...prev, ...data.actions]);
+            setHasMoreActions(data.actions.length === 20);
+            setActionsOffset(prev => prev + data.actions.length);
+        } catch (caughtError) {
+            alert(caughtError.message);
+        } finally {
+            setActionsLoading(false);
+        }
+    };
+
     if (loading) {
         return (
             <>
@@ -864,55 +941,115 @@ const User = props => {
                                 </div>
                             </div>
                         </div>
-                        {(userData.profile.recommendedProject?.id || isMyProfile) && (
+                        <div>
+                            {(userData.profile.recommendedProject?.id || isMyProfile) && (
+                                <div className={styles.section}>
+                                    <h2>
+                                        <FormattedMessage
+                                            defaultMessage="Recommended Project"
+                                            description="User's recommended project section title on user's profile"
+                                            id="dash.user.recommendedProject"
+                                        />
+                                    </h2>
+                                    {userData.profile.recommendedProject?.id && (
+                                        <div
+                                            className={styles.recommendedProject}
+                                            title={props.intl.formatMessage(messages.hoverText, {
+                                                author: userData.username,
+                                                title: userData.profile.recommendedProject.name || 'Unknown'
+                                            })}
+                                            // eslint-disable-next-line react/jsx-no-bind, max-len
+                                            onClick={() => window.open(`./#${userData.profile.recommendedProject.id}`, '_blank')}
+                                        >
+                                            <img
+                                                draggable={false}
+                                                src={`https://api.dashblocks.org/projects/thumbnails/${userData.profile.recommendedProject.thumbnailId || 1}`}
+                                                alt={userData.profile.recommendedProject.id}
+                                            />
+                                            <h4>{userData.profile.recommendedProject.name || 'Unknown'}</h4>
+                                        </div>
+                                    )}
+                                    {isMyProfile && (
+                                        <Button
+                                            className={styles.setRecommendedProjectButton}
+                                            disabled={recommendProjectButtonDisabled}
+                                            onClick={handleSetRecommendedProject}
+                                        >
+                                            {recommendProjectButtonDisabled ? (
+                                                <Spinner
+                                                    className={styles.spinner}
+                                                    small
+                                                />
+                                            ) : (
+                                                <FormattedMessage
+                                                    defaultMessage="Set recommended project"
+                                                    description="Button text for setting recommended project on user's profile"
+                                                    id="dash.user.recommendedProject.set"
+                                                />
+                                            )}
+                                        </Button>
+                                    )}
+                                </div>
+                            )}
                             <div className={styles.section}>
                                 <h2>
                                     <FormattedMessage
-                                        defaultMessage="Recommended Project"
-                                        description="User's recommended project section title on user's profile"
-                                        id="dash.user.recommendedProject"
+                                        defaultMessage="What I've Been Doing"
+                                        description="User's recent actions section title on user's profile"
+                                        id="dash.user.recentActions"
                                     />
                                 </h2>
-                                {userData.profile.recommendedProject?.id && (
-                                    <div
-                                        className={styles.recommendedProject}
-                                        title={props.intl.formatMessage(messages.hoverText, {
-                                            author: userData.username,
-                                            title: userData.profile.recommendedProject.name || 'Unknown'
-                                        })}
-                                        // eslint-disable-next-line react/jsx-no-bind, max-len
-                                        onClick={() => window.open(`./#${userData.profile.recommendedProject.id}`, '_blank')}
-                                    >
-                                        <img
-                                            draggable={false}
-                                            src={`https://api.dashblocks.org/projects/thumbnails/${userData.profile.recommendedProject.thumbnailId || 1}`}
-                                            alt={userData.profile.recommendedProject.id}
-                                        />
-                                        <h4>{userData.profile.recommendedProject.name || 'Unknown'}</h4>
+                                {actions.length > 0 ? (
+                                    <div className={styles.actionsGrid}>
+                                        {actions.map((action, index) => (
+                                            <div
+                                                key={index}
+                                                className={styles.actionContent}
+                                            >
+                                                {getActionContent(action)}
+                                                <div className={styles.actionDate}>
+                                                    {action.date ?
+                                                        relativeTimeSupported() ?
+                                                            (
+                                                                <span title={`${props.intl.formatDate(new Date(action.date))}, ${props.intl.formatTime(new Date(action.date))}`}>
+                                                                    <FormattedRelative value={new Date(action.date)} />
+                                                                </span>
+                                                            ) :
+                                                            (<FormattedDate value={new Date(action.date)} />) :
+                                                        '?'}
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
+                                ) : (
+                                    <FormattedMessage
+                                        defaultMessage="This user has no recent actions"
+                                        description="Placeholder text when the user has no recent actions"
+                                        id="dash.user.recentActions.placeholder"
+                                    />
                                 )}
-                                {isMyProfile && (
+                                {hasMoreActions && (
                                     <Button
-                                        className={styles.setRecommendedProjectButton}
-                                        disabled={recommendProjectButtonDisabled}
-                                        onClick={handleSetRecommendedProject}
+                                        className={styles.loadMoreButton}
+                                        onClick={handleLoadMoreActions}
+                                        disabled={actionsLoading}
                                     >
-                                        {recommendProjectButtonDisabled ? (
+                                        {actionsLoading ? (
                                             <Spinner
                                                 className={styles.spinner}
                                                 small
                                             />
                                         ) : (
                                             <FormattedMessage
-                                                defaultMessage="Set recommended project"
-                                                description="Button text for setting recommended project on user's profile"
-                                                id="dash.user.recommendedProject.set"
+                                                defaultMessage="Load more"
+                                                description="Button text for loading more items on user's profile"
+                                                id="dash.messages.loadMore"
                                             />
                                         )}
                                     </Button>
                                 )}
                             </div>
-                        )}
+                        </div>
                     </div>
                     <div className={styles.section}>
                         <div className={styles.sectionHeader}>

@@ -462,7 +462,7 @@ const WhatsHappening = ({intl}) => {
 
     return (
         <div className={styles.actionsGrid}>
-            {actions.map((action, index) => (
+            {actions.length > 0 ? actions.map((action, index) => (
                 <div
                     key={index}
                     className={styles.actionContent}
@@ -497,7 +497,13 @@ const WhatsHappening = ({intl}) => {
                         />
                     </div>
                 </div>
-            ))}
+            )) : (
+                <FormattedMessage
+                    defaultMessage="Follow someone to see their recent actions here"
+                    description="Message displayed when there are no actions to show"
+                    id="dash.home.whatsHappening.noActions"
+                />
+            )}
             {hasMore && (
                 <Button
                     className={styles.loadMoreButton}

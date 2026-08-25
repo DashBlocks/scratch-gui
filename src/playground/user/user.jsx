@@ -1020,6 +1020,26 @@ const User = props => {
                                                 </div>
                                             </div>
                                         ))}
+                                        {hasMoreActions && (
+                                            <Button
+                                                className={styles.loadMoreButton}
+                                                onClick={handleLoadMoreActions}
+                                                disabled={actionsLoading}
+                                            >
+                                                {actionsLoading ? (
+                                                    <Spinner
+                                                        className={styles.spinner}
+                                                        small
+                                                    />
+                                                ) : (
+                                                    <FormattedMessage
+                                                        defaultMessage="Load more"
+                                                        description="Button text for loading more items on user's profile"
+                                                        id="dash.messages.loadMore"
+                                                    />
+                                                )}
+                                            </Button>
+                                        )}
                                     </div>
                                 ) : (
                                     <FormattedMessage
@@ -1027,26 +1047,6 @@ const User = props => {
                                         description="Placeholder text when the user has no recent actions"
                                         id="dash.user.recentActions.placeholder"
                                     />
-                                )}
-                                {hasMoreActions && (
-                                    <Button
-                                        className={styles.loadMoreButton}
-                                        onClick={handleLoadMoreActions}
-                                        disabled={actionsLoading}
-                                    >
-                                        {actionsLoading ? (
-                                            <Spinner
-                                                className={styles.spinner}
-                                                small
-                                            />
-                                        ) : (
-                                            <FormattedMessage
-                                                defaultMessage="Load more"
-                                                description="Button text for loading more items on user's profile"
-                                                id="dash.messages.loadMore"
-                                            />
-                                        )}
-                                    </Button>
                                 )}
                             </div>
                         </div>

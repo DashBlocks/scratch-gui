@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
 import {FormattedMessage} from 'react-intl';
 import cloudIcon from './clouddata.svg';
 import CloudServerButton from './cloud-server-button.jsx';
@@ -44,13 +45,20 @@ const CloudVariableBadge = props => {
     
             <FormattedMessage
                 // eslint-disable-next-line max-len
-                defaultMessage="{APP_NAME}'s cloud variables are not connected to Scratch's. Anyone can {changeTheirUsername} to anything, so beware of impersonation."
+                defaultMessage="{APP_NAME}'s cloud variables are not connected to Scratch's. Anyone can {changeTheirUsername} to anything if not logged in, so beware of impersonation."
                 // eslint-disable-next-line max-len
                 description="Cloud variable information shown under projects with cloud variables. {changeTheirUsername} will be replaced with a link with text 'change their username' (translated)"
                 id="tw.usesCloudVariables2"
                 values={{
                     APP_NAME,
-                    changeTheirUsername: (
+                    changeTheirUsername: props.session?.id ? (
+                        <FormattedMessage
+                            defaultMessage="change their username"
+                            // eslint-disable-next-line max-len
+                            description="Link that opens modal to change one's username. Used in the context 'Anyone can change their username'"
+                            id="tw.usesCloudVariables2.change"
+                        />
+                    ) : (
                         <a onClick={props.onOpenChangeUsername}>
                             <FormattedMessage
                                 defaultMessage="change their username"
@@ -129,7 +137,17 @@ const CloudVariableBadge = props => {
 CloudVariableBadge.propTypes = {
     cloudHost: PropTypes.string,
     onSetCloudHost: PropTypes.func,
-    onOpenChangeUsername: PropTypes.func
+    onOpenChangeUsername: PropTypes.func,
+    session: PropTypes.object
 };
 
-export default CloudVariableBadge;
+const mapStateToProps = state => ({
+    session: state.scratchGui.dash.session
+});
+
+const mapDispatchToProps = () => ({});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CloudVariableBadge);

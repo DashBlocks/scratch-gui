@@ -72,8 +72,6 @@ body {
 }
 
 .section {
-    display: flex;
-    flex-direction: column;
     width: 100%;
     max-width: 900px;
     background: $ui-white;
@@ -192,47 +190,34 @@ body {
 }
 
 .description {
-    display: block;
-    width: 100%;
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
-    min-height: 7.5rem;
-    max-height: 12rem;
+    height: 90%;
     overflow-y: auto;
     padding: $space;
+
     white-space: pre-wrap;
     word-wrap: break-word;
-    overflow-wrap: anywhere;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 0.800rem;
     color: $text-primary;
     background-color: $input-background;
 }
 
-.description p {
-    margin: 0;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-wrap: anywhere;
-}
-
 .description-field {
-    box-sizing: border-box !important;
-    display: block !important;
     width: 100% !important;
-    min-height: 7.5rem !important;
-    height: 7.5rem !important;
-    max-height: 12rem !important;
+    height: 90% !important;
     resize: none !important;
-    overflow-y: auto !important;
     white-space: pre-wrap !important;
     word-wrap: break-word !important;
-    overflow-wrap: anywhere !important;
     border: 0.0625rem dashed $ui-black-transparent !important;
     border-radius: $space !important;
     background-color: $project-title-inactive !important;
     background-clip: padding-box;
     padding: $space !important;
+}
+
+.description-field {
     color: $text-primary !important;
     font-weight: bold !important;
     font-size: .8rem !important;
@@ -381,30 +366,21 @@ body {
     border-radius: $space;
     padding: $space;
     gap: $space;
-    max-height: 18rem;
-    min-height: 0;
+    height: 12rem;
     overflow-y: auto;
 }
 
 .action-content {
     display: flex;
     align-items: flex-start;
-    flex-wrap: wrap;
-    width: 100%;
-    min-width: 0;
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
     padding: $space;
     gap: $space;
 }
 
-.action-content > * {
-    min-width: 0;
-}
-
 .action-date {
     margin-left: auto;
-    flex-shrink: 0;
     font-size: 0.875rem;
 }
 

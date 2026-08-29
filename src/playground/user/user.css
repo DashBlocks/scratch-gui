@@ -72,6 +72,8 @@ body {
 }
 
 .section {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     max-width: 900px;
     background: $ui-white;
@@ -190,11 +192,13 @@ body {
 }
 
 .description {
+    display: block;
+    width: 100%;
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
     min-height: 7.5rem;
-    height: auto;
-    overflow: visible;
+    max-height: 12rem;
+    overflow-y: auto;
     padding: $space;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -214,11 +218,13 @@ body {
 
 .description-field {
     box-sizing: border-box !important;
+    display: block !important;
     width: 100% !important;
     min-height: 7.5rem !important;
-    height: auto !important;
-    max-height: none !important;
+    height: 7.5rem !important;
+    max-height: 12rem !important;
     resize: none !important;
+    overflow-y: auto !important;
     white-space: pre-wrap !important;
     word-wrap: break-word !important;
     overflow-wrap: anywhere !important;
@@ -375,9 +381,9 @@ body {
     border-radius: $space;
     padding: $space;
     gap: $space;
-    max-height: none;
+    max-height: 18rem;
     min-height: 0;
-    overflow: visible;
+    overflow-y: auto;
 }
 
 .action-content {

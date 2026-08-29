@@ -44,7 +44,8 @@ const getSession = async (userId, password, verificationCode) => {
                 userId,
                 password,
                 ...(verificationCode ? {verificationCode} : {})
-            })
+            }),
+            credentials: 'include'
         });
         const data = await res.json();
 
@@ -63,7 +64,8 @@ const getSession = async (userId, password, verificationCode) => {
     }
 
     try {
-        const data = await requestDashApi('/session');
+        const res = await requestDashApi('/session', {credentials: 'include'});
+        const data = await res.json();
         return data?.user ?? {};
     } catch (error) {
         console.warn(error?.message || error);

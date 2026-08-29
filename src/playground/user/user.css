@@ -193,8 +193,8 @@ body {
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
     min-height: 7.5rem;
-    max-height: 12rem;
-    overflow-y: auto;
+    height: auto;
+    overflow: visible;
     padding: $space;
     white-space: pre-wrap;
     word-wrap: break-word;
@@ -217,8 +217,8 @@ body {
     width: 100% !important;
     min-height: 7.5rem !important;
     height: auto !important;
-    max-height: 12rem !important;
-    resize: vertical !important;
+    max-height: none !important;
+    resize: none !important;
     white-space: pre-wrap !important;
     word-wrap: break-word !important;
     overflow-wrap: anywhere !important;
@@ -375,9 +375,9 @@ body {
     border-radius: $space;
     padding: $space;
     gap: $space;
-    max-height: 18rem;
+    max-height: none;
     min-height: 0;
-    overflow-y: auto;
+    overflow: visible;
 }
 
 .action-content {

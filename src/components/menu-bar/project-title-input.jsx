@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {defineMessages, intlShape, injectIntl} from 'react-intl';
 import {setProjectTitle} from '../../reducers/project-title';
+import {requestDashApi} from '../../lib/dash-api';
 
 import BufferedInputHOC from '../forms/buffered-input-hoc.jsx';
 import Input from '../forms/input.jsx';
@@ -76,7 +77,7 @@ const mapDispatchToProps = dispatch => ({
             return;
         }
 
-        const res = await fetch(`https://api.dashblocks.org/projects/${projectId}`, {
+        const res = await requestDashApi(`/projects/${projectId}`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json'

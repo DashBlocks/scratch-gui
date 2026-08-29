@@ -12,6 +12,7 @@ import {Footer} from '../render-interface.jsx';
 import Button from '../../components/button/button.jsx';
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {APP_NAME} from '../../lib/brand';
+import {requestDashApi} from '../../lib/dash-api.js';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 
@@ -43,7 +44,7 @@ const UserFollowers = props => {
     const fetchFollowers = async currentOffset => {
         setLoadMoreButtonDisabled(true);
         try {
-            const followersRes = await fetch(`https://api.dashblocks.org/users/${id}/followers?limit=${limit}&offset=${currentOffset}`, {
+            const followersRes = await requestDashApi(`/users/${id}/followers?limit=${limit}&offset=${currentOffset}`, {
                 credentials: 'include'
             });
             if (!followersRes.ok) throw new Error('Failed to fetch followers');
@@ -67,7 +68,7 @@ const UserFollowers = props => {
 
         setLoading(true);
         const fetchData = async () => {
-            const userReq = await fetch(`https://api.dashblocks.org/users/${id}`);
+            const userReq = await requestDashApi(`/users/${id}`);
             if (!userReq.ok) {
                 setError('Failed to fetch user data');
                 setLoading(false);

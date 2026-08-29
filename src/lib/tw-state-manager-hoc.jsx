@@ -20,7 +20,7 @@ import {
 import {generateRandomUsername} from './tw-username';
 import {setSearchParams} from './tw-navigation-utils';
 import {defaultStageSize} from '../reducers/custom-stage-size';
-import getSession from './session';
+import getSession from './dash-api';
 
 /* eslint-disable no-alert */
 

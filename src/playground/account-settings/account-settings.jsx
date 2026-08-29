@@ -4,7 +4,7 @@ import bindAll from 'lodash.bindall';
 import {connect} from 'react-redux';
 import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
-import getSession from '../../lib/session.js';
+import getSession, {requestDashApi} from '../../lib/dash-api.js';
 import render from '../app-target.js';
 
 import Input from '../../components/forms/input.jsx';
@@ -95,7 +95,7 @@ class AccountSettings extends React.Component {
             if (this.state.newPassword !== this.state.confirmPassword) {
                 throw new Error(this.props.intl.formatMessage(messages.passwordsDontMatch));
             }
-            const response = await fetch('https://api.dashblocks.org/auth/change-password', {
+            const response = await requestDashApi('/auth/change-password', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({

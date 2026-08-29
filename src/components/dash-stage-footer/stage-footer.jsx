@@ -7,7 +7,7 @@ import {connect} from 'react-redux';
 import Box from '../box/box.jsx';
 import Button from '../button/button.jsx';
 
-import getSession from '../../lib/session';
+import getSession, {requestDashApi} from '../../lib/dash-api.js';
 import {setSession} from '../../reducers/dash';
 
 import fireReactionOnIcon from './fire-reaction-on.svg';
@@ -49,11 +49,11 @@ const StageFooter = props => {
     useEffect(() => {
         const fetchProjectMetadata = async function () {
             setIsDashProject(false);
-            const res = await fetch(`https://api.dashblocks.org/projects/${props.projectId}`);
+            const res = await requestDashApi(`/projects/${props.projectId}`);
             const data = await res.json();
             if (data.ok) {
                 setIsDashProject(true);
-                const viewRes = await fetch(`https://api.dashblocks.org/projects/${props.projectId}/view`, {
+                const viewRes = await requestDashApi(`/projects/${props.projectId}/view`, {
                     method: 'POST',
                     credentials: 'include'
                 });
@@ -89,7 +89,7 @@ const StageFooter = props => {
             return;
         }
         if (isFired) {
-            const res = await fetch(`https://api.dashblocks.org/projects/${props.projectId}/fire`, {
+            const res = await requestDashApi(`/projects/${props.projectId}/fire`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -105,7 +105,7 @@ const StageFooter = props => {
                 }));
             }
         } else {
-            const res = await fetch(`https://api.dashblocks.org/projects/${props.projectId}/fire`, {
+            const res = await requestDashApi(`/projects/${props.projectId}/fire`, {
                 method: 'POST',
                 credentials: 'include'
             });

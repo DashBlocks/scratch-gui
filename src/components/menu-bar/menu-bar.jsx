@@ -35,7 +35,7 @@ import CloudVariablesToggler from '../../containers/tw-cloud-toggler.jsx';
 import TWSaveStatus from './tw-save-status.jsx';
 import TWNews from './tw-news.jsx';
 import {isNewYearMode} from '../../components/dash-new-year-mode/new-year-mode.jsx';
-import getSession from '../../lib/session';
+import getSession, {requestDashApi} from '../../lib/dash-api.js';
 
 import {openTipsLibrary, openSettingsModal, openRestorePointModal} from '../../reducers/modals';
 import {setPlayer} from '../../reducers/mode';
@@ -320,7 +320,7 @@ class MenuBar extends React.Component {
                             formData.append('parentId', this.props.projectId);
                         }
 
-                        const response = await fetch('https://api.dashblocks.org/save-project', {
+                        const response = await requestDashApi('/save-project', {
                             method: 'POST',
                             body: formData,
                             credentials: 'include'
@@ -338,11 +338,14 @@ class MenuBar extends React.Component {
                                 });
                             });
                             formData.append('thumbnail', thumbnailBlob, 'thumbnail.png');
-                            const thumbnailResponse = await fetch(`https://api.dashblocks.org/projects/${result.projectId}/upload-thumbnail`, {
-                                method: 'POST',
-                                body: formData,
-                                credentials: 'include'
-                            });
+                            const thumbnailResponse = await requestDashApi(
+                                `/projects/${result.projectId}/upload-thumbnail`,
+                                {
+                                    method: 'POST',
+                                    body: formData,
+                                    credentials: 'include'
+                                }
+                            );
                             if (thumbnailResponse.ok) {
                                 // eslint-disable-next-line no-alert
                                 alert('Project shared successfully!');
@@ -389,7 +392,7 @@ class MenuBar extends React.Component {
                         formData.append('file', fileBlob, `${this.props.projectTitle}.dbp`);
                         formData.append('name', this.props.projectTitle);
 
-                        const response = await fetch(`https://api.dashblocks.org/projects/${this.props.projectId}`, {
+                        const response = await requestDashApi(`/projects/${this.props.projectId}`, {
                             method: 'PUT',
                             body: formData,
                             credentials: 'include'
@@ -407,11 +410,14 @@ class MenuBar extends React.Component {
                                 });
                             });
                             formData.append('thumbnail', thumbnailBlob, 'thumbnail.png');
-                            const thumbnailResponse = await fetch(`https://api.dashblocks.org/projects/${this.props.projectId}/upload-thumbnail`, {
-                                method: 'POST',
-                                body: formData,
-                                credentials: 'include'
-                            });
+                            const thumbnailResponse = await requestDashApi(
+                                `/projects/${this.props.projectId}/upload-thumbnail`,
+                                {
+                                    method: 'POST',
+                                    body: formData,
+                                    credentials: 'include'
+                                }
+                            );
                             if (thumbnailResponse.ok) {
                                 // eslint-disable-next-line no-alert
                                 alert('Project updated successfully!');
@@ -440,7 +446,7 @@ class MenuBar extends React.Component {
     }
     async handleClickLogOut () {
         try {
-            const response = await fetch('https://api.dashblocks.org/auth/logout', {credentials: 'include'});
+            const response = await requestDashApi('/auth/logout', {credentials: 'include'});
             const data = await response.json();
             // eslint-disable-next-line no-alert
             if (!data.ok) return alert('Sign out failed');

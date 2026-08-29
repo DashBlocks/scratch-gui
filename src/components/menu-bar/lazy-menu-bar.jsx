@@ -20,6 +20,7 @@ import TWNews from './tw-news.jsx';
 import {isNewYearMode} from '../../components/dash-new-year-mode/new-year-mode.jsx';
 
 import {setSession} from '../../reducers/dash';
+import {requestDashApi} from '../../lib/dash-api.js';
 import {
     openAccountMenu,
     closeAccountMenu,
@@ -128,7 +129,7 @@ class LazyMenuBar extends React.Component {
     }
     async handleClickLogOut () {
         try {
-            const response = await fetch('https://api.dashblocks.org/auth/logout', {credentials: 'include'});
+            const response = await requestDashApi('/auth/logout', {credentials: 'include'});
             const data = await response.json();
             // eslint-disable-next-line no-alert
             if (!data.ok) return alert('Sign out failed');

@@ -11,6 +11,7 @@ import {Footer} from '../render-interface.jsx';
 import Button from '../../components/button/button.jsx';
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {APP_NAME} from '../../lib/brand.js';
+import {requestDashApi} from '../../lib/dash-api.js';
 import {applyGuiColors} from '../../lib/themes/guiHelpers.js';
 import {detectTheme} from '../../lib/themes/themePersistance.js';
 
@@ -47,9 +48,10 @@ const Search = props => {
     const fetchProjects = async currentOffset => {
         setLoadMoreButtonDisabled(true);
         try {
-            const searchReq = await fetch(`https://api.dashblocks.org/search/projects?q=${encodeURIComponent(query)}&limit=${limit}&offset=${currentOffset}`, {
-                credentials: 'include'
-            });
+            const searchReq = await requestDashApi(
+                `/search/projects?q=${encodeURIComponent(query)}&limit=${limit}&offset=${currentOffset}`,
+                {credentials: 'include'}
+            );
             if (!searchReq.ok) throw new Error('Failed to fetch search results');
             const searchResults = await searchReq.json();
             if (!searchResults.ok) throw new Error(searchResults.error);

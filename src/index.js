@@ -6,7 +6,7 @@ import {ScratchPaintReducer} from 'scratch-paint';
 import {setFullScreen, setPlayer} from './reducers/mode';
 import {remixProject} from './reducers/project-state';
 import {setAppElement} from 'react-modal';
-import checkForTests from './test.js';
+import checkForTests from './test';
 
 checkForTests();
 

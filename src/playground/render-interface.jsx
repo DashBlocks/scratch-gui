@@ -55,6 +55,7 @@ import {APP_NAME} from '../lib/brand.js';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import tabStyles from 'react-tabs/style/react-tabs.css';
 import TWRenderRecoloredImage from '../lib/tw-recolor/render.jsx';
+import {requestDashApi} from '../lib/dash-api.js';
 import Spinner from '../components/spinner/spinner.jsx';
 import Button from '../components/button/button.jsx';
 import BufferedInputHOC from '../components/forms/buffered-input-hoc.jsx';
@@ -370,7 +371,7 @@ const WhatsHappening = ({intl}) => {
     const fetchActivity = async currentOffset => {
         setLoadMoreButtonDisabled(true);
         try {
-            const res = await fetch(`https://api.dashblocks.org/session/activity?limit=${limit}&offset=${currentOffset}`, {
+            const res = await requestDashApi(`/session/activity?limit=${limit}&offset=${currentOffset}`, {
                 credentials: 'include'
             });
             
@@ -625,7 +626,7 @@ class Interface extends React.PureComponent {
     }
     async fetchProject () {
         try {
-            let response = await fetch(`https://api.dashblocks.org/projects/${this.props.projectId}`);
+            let response = await requestDashApi(`/projects/${this.props.projectId}`);
             let data = await response.json();
             if (!data || !data.ok) {
                 throw new Error(data?.error || 'Project metadata fetch failed');
@@ -634,7 +635,7 @@ class Interface extends React.PureComponent {
             response = null;
             data = null;
             if (parentId) {
-                response = await fetch(`https://api.dashblocks.org/projects/${parentId}`);
+                response = await requestDashApi(`/projects/${parentId}`);
                 data = await response.json();
                 if (!data || !data.ok) {
                     throw new Error(data?.error || 'Parent project metadata fetch failed');
@@ -665,7 +666,7 @@ class Interface extends React.PureComponent {
         });
  
         try {
-            const res = await fetch(`https://api.dashblocks.org/projects/${projectId}`, {
+            const res = await requestDashApi(`/projects/${projectId}`, {
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json'

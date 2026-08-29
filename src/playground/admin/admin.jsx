@@ -15,7 +15,7 @@ import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
-import getSession from '../../lib/session.js';
+import getSession, {requestDashApi} from '../../lib/dash-api';
 
 /* eslint-disable react/jsx-no-literals */
 
@@ -116,7 +116,7 @@ const Admin = props => {
         setFeatureProjectButtonLoading(true);
 
         try {
-            const res = await fetch(`https://api.dashblocks.org/featured-projects/${Number(projectId)}`, {
+            const res = await requestDashApi(`/featured-projects/${Number(projectId)}`, {
                 method: 'POST',
                 credentials: 'include'
             });
@@ -137,7 +137,7 @@ const Admin = props => {
         setUnfeatureProjectButtonLoading(true);
 
         try {
-            const res = await fetch(`https://api.dashblocks.org/featured-projects/${Number(projectId)}`, {
+            const res = await requestDashApi(`/featured-projects/${Number(projectId)}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -158,7 +158,7 @@ const Admin = props => {
         setDeleteProjectButtonLoading(true);
 
         try {
-            const res = await fetch(`https://api.dashblocks.org/projects/${Number(projectId)}`, {
+            const res = await requestDashApi(`/projects/${Number(projectId)}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -182,7 +182,7 @@ const Admin = props => {
             const body = {targetUsername, action: manageAction};
             if (manageAction === 'promote') body.role = manageRole;
 
-            const res = await fetch('https://api.dashblocks.org/admin/manage-user', {
+            const res = await requestDashApi('/admin/manage-user', {
                 method: 'POST',
                 credentials: 'include',
                 headers: {'Content-Type': 'application/json'},

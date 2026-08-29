@@ -4,7 +4,7 @@ import bindAll from 'lodash.bindall';
 import {connect} from 'react-redux';
 import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
-import getSession from '../../lib/session.js';
+import getSession from '../../lib/dash-api.js';
 import render from '../app-target';
 
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';

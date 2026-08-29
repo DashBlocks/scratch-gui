@@ -5,6 +5,7 @@ import log from './log';
 
 import {setProjectTitle} from '../reducers/project-title';
 import {setAuthor, setDescription} from '../reducers/tw';
+import {requestDashApi} from './dash-api';
 
 export const fetchProjectMeta = async (projectId, reduxProjectId = projectId) => {
     let firstError;
@@ -33,7 +34,7 @@ export const fetchProjectMeta = async (projectId, reduxProjectId = projectId) =>
         throw firstError;
     } else {
         try {
-            const res = await fetch(`https://api.dashblocks.org/projects/${projectId}`);
+            const res = await requestDashApi(`/projects/${projectId}`);
             const data = await res.json();
             if (res.ok) {
                 return data.project;

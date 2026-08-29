@@ -13,6 +13,7 @@ import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {Footer} from '../render-interface.jsx';
 
 import {APP_NAME} from '../../lib/brand';
+import {requestDashApi} from '../../lib/dash-api.js';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 
@@ -130,7 +131,7 @@ export class Donate extends React.Component {
                 body.method = this.state.method;
             }
 
-            const response = await fetch('https://api.dashblocks.org/payments/create', {
+            const response = await requestDashApi('/payments/create', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 credentials: 'include',

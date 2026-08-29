@@ -13,7 +13,7 @@ import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
-import getSession from '../../lib/session.js';
+import getSession, {requestDashApi} from '../../lib/dash-api.js';
 
 /* eslint-disable react/jsx-no-literals */
 
@@ -57,9 +57,10 @@ const MyStuff = props => {
     const fetchProjects = async (userId, currentOffset) => {
         setLoadMoreButtonDisabled(true);
         try {
-            const projectsRes = await fetch(`https://api.dashblocks.org/users/${userId}/projects?limit=${limit}&offset=${currentOffset}`, {
-                credentials: 'include'
-            });
+            const projectsRes = await requestDashApi(
+                `/users/${userId}/projects?limit=${limit}&offset=${currentOffset}`,
+                {credentials: 'include'}
+            );
             const projectsData = await projectsRes.json();
             if (!projectsData.ok) throw new Error(projectsData.error);
             setProjects(prevProjects => (currentOffset === 0 ?
@@ -86,7 +87,7 @@ const MyStuff = props => {
                 return;
             }
             try {
-                const userRes = await fetch(`https://api.dashblocks.org/users/${session.id}`);
+                const userRes = await requestDashApi(`/users/${session.id}`);
                 const userDataResult = await userRes.json();
                 if (!userDataResult.ok) throw new Error(userDataResult.error);
 
@@ -117,7 +118,7 @@ const MyStuff = props => {
         }
 
         try {
-            const res = await fetch(`https://api.dashblocks.org/projects/${projectId}`, {
+            const res = await requestDashApi(`/projects/${projectId}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });

@@ -9,7 +9,7 @@ import localesReducer, {initLocale, localesInitialState} from '../reducers/local
 
 import {setPlayer, setFullScreen} from '../reducers/mode.js';
 import {setSession} from '../reducers/dash.js';
-import getSession from './session';
+import getSession from './dash-api.js';
 
 import locales from '@turbowarp/scratch-l10n';
 import {detectLocale} from './detect-locale';

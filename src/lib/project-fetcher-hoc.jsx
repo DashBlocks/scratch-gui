@@ -19,6 +19,7 @@ import {
     activateTab,
     BLOCKS_TAB_INDEX
 } from '../reducers/editor-tab';
+import {requestDashApi} from './dash-api';
 
 import log from './log';
 import storage from './storage';
@@ -138,7 +139,7 @@ const ProjectFetcherHOC = function (WrappedComponent) {
                         return storage.load(storage.AssetType.Project, projectId, storage.DataFormat.JSON);
                     });
             } else {
-                assetPromise = fetch(`https://api.dashblocks.org/get-project/${projectId}`)
+                assetPromise = requestDashApi(`/get-project/${projectId}`)
                     .then(r => {
                         if (!r.ok) {
                             throw new Error(`Request returned status ${r.status} (${r.statusText})`);

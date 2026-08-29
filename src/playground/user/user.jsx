@@ -15,7 +15,7 @@ import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 
-import getSession from '../../lib/session';
+import getSession, {requestDashApi} from '../../lib/dash-api';
 
 import Button from '../../components/button/button.jsx';
 import Spinner from '../../components/spinner/spinner.jsx';
@@ -118,7 +118,7 @@ const User = props => {
                     currentSession?.username?.toLowerCase() === id?.toLowerCase();
                 setIsMyProfile(isCurrentUser);
                 setSession(currentSession);
-                const userRes = await fetch(`https://api.dashblocks.org/users/${id}`, {credentials: 'include'});
+                const userRes = await requestDashApi(`/users/${id}`, {credentials: 'include'});
                 user = await userRes.json();
 
                 if (!user.ok) throw new Error(user.error);
@@ -130,19 +130,19 @@ const User = props => {
                 setAchievements(user.user.profile.achievements);
                 setLinks(user.user.profile.links);
 
-                const projectsRes = await fetch(`https://api.dashblocks.org/users/${id}/projects?limit=20&offset=0`);
+                const projectsRes = await requestDashApi(`/users/${id}/projects?limit=20&offset=0`);
                 const projectsData = await projectsRes.json();
                 setProjects(projectsData.projects);
 
-                const followersRes = await fetch(`https://api.dashblocks.org/users/${id}/followers?limit=20&offset=0`);
+                const followersRes = await requestDashApi(`/users/${id}/followers?limit=20&offset=0`);
                 const followersData = await followersRes.json();
                 setFollowers(followersData.followers);
 
-                const followingRes = await fetch(`https://api.dashblocks.org/users/${id}/following?limit=20&offset=0`);
+                const followingRes = await requestDashApi(`/users/${id}/following?limit=20&offset=0`);
                 const followingData = await followingRes.json();
                 setFollowing(followingData.following);
 
-                const actionsRes = await fetch(`https://api.dashblocks.org/users/${id}/actions?limit=20&offset=0`);
+                const actionsRes = await requestDashApi(`/users/${id}/actions?limit=20&offset=0`);
                 const actionsData = await actionsRes.json();
                 setActions(actionsData.actions);
                 setHasMoreActions(actionsData.actions.length === 20);
@@ -345,7 +345,7 @@ const User = props => {
         const formData = new FormData();
         formData.append('avatar', file);
 
-        const response = await fetch('https://api.dashblocks.org/users/upload-avatar', {
+        const response = await requestDashApi('/users/upload-avatar', {
             method: 'POST',
             body: formData,
             credentials: 'include'
@@ -381,7 +381,7 @@ const User = props => {
 
         const endpoint = isFollowing ? 'unfollow' : 'follow';
         try {
-            const response = await fetch(`https://api.dashblocks.org/users/${id}/${endpoint}`, {
+            const response = await requestDashApi(`/users/${id}/${endpoint}`, {
                 method: 'POST',
                 credentials: 'include'
             });
@@ -390,13 +390,13 @@ const User = props => {
                 throw new Error(data.error);
             }
             setIsFollowing(prev => !prev);
-            const userRes = await fetch(`https://api.dashblocks.org/users/${id}`, {credentials: 'include'});
+            const userRes = await requestDashApi(`/users/${id}`, {credentials: 'include'});
             const user = await userRes.json();
             if (!user.ok) throw new Error(user.error);
             // Only Dasher+ or higher can do this
             if (user.user.role === 'dasher') setDescriptionDisabled(true);
             setUserData(user.user);
-            const followersRes = await fetch(`https://api.dashblocks.org/users/${id}/followers?limit=20&offset=0`);
+            const followersRes = await requestDashApi(`/users/${id}/followers?limit=20&offset=0`);
             const followersData = await followersRes.json();
             setFollowers(followersData.followers);
         } catch (caughtError) {
@@ -421,7 +421,7 @@ const User = props => {
         try {
             let response;
             if (session?.role === 'dashteam' && !isMyProfile) {
-                response = await fetch(`https://api.dashblocks.org/users/set-description?target=${userData.username}`, {
+                response = await requestDashApi(`/users/set-description?target=${userData.username}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -430,7 +430,7 @@ const User = props => {
                     credentials: 'include'
                 });
             } else {
-                response = await fetch('https://api.dashblocks.org/users/set-description', {
+                response = await requestDashApi('/users/set-description', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -465,7 +465,7 @@ const User = props => {
 
         setRecommendProjectButtonDisabled(true);
         try {
-            const response = await fetch('https://api.dashblocks.org/users/set-recommended-project', {
+            const response = await requestDashApi('/users/set-recommended-project', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -477,7 +477,7 @@ const User = props => {
             if (!data.ok) {
                 throw new Error(data.error);
             }
-            const projectData = (await (await fetch(`https://api.dashblocks.org/projects/${projectId}`)).json())?.project;
+            const projectData = (await (await requestDashApi(`/projects/${projectId}`)).json())?.project;
             setUserData(prev => ({
                 ...prev,
                 profile: {
@@ -510,7 +510,7 @@ const User = props => {
 
         setLinksActionDisabled(true);
         try {
-            const response = await fetch('https://api.dashblocks.org/users/add-link', {
+            const response = await requestDashApi('/users/add-link', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({label, link}),
@@ -535,7 +535,7 @@ const User = props => {
 
         setLinksActionDisabled(true);
         try {
-            const response = await fetch('https://api.dashblocks.org/users/update-link', {
+            const response = await requestDashApi('/users/update-link', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({linkIndex: index, label, link}),
@@ -557,7 +557,7 @@ const User = props => {
 
         setLinksActionDisabled(true);
         try {
-            const response = await fetch('https://api.dashblocks.org/users/remove-link', {
+            const response = await requestDashApi('/users/remove-link', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({linkIndex: index}),
@@ -626,7 +626,7 @@ const User = props => {
     const handleLoadMoreActions = async () => {
         setActionsLoading(true);
         try {
-            const response = await fetch(`https://api.dashblocks.org/users/${id}/actions?limit=20&offset=${actionsOffset}`);
+            const response = await requestDashApi(`/users/${id}/actions?limit=20&offset=${actionsOffset}`);
             const data = await response.json();
             if (!data.ok) throw new Error(data.error);
             setActions(prev => [...prev, ...data.actions]);

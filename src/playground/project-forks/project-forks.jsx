@@ -12,6 +12,7 @@ import {Footer} from '../render-interface.jsx';
 import Button from '../../components/button/button.jsx';
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {APP_NAME} from '../../lib/brand.js';
+import {requestDashApi} from '../../lib/dash-api.js';
 import {applyGuiColors} from '../../lib/themes/guiHelpers.js';
 import {detectTheme} from '../../lib/themes/themePersistance.js';
 
@@ -48,7 +49,7 @@ const ProjectForks = props => {
     const fetchProjects = async currentOffset => {
         setLoadMoreButtonDisabled(true);
         try {
-            const projectsRes = await fetch(`https://api.dashblocks.org/projects/${id}/forks?limit=${limit}&offset=${currentOffset}`, {
+            const projectsRes = await requestDashApi(`/projects/${id}/forks?limit=${limit}&offset=${currentOffset}`, {
                 credentials: 'include'
             });
             if (!projectsRes.ok) throw new Error('Failed to fetch projects');
@@ -77,7 +78,7 @@ const ProjectForks = props => {
 
         setLoading(true);
         const fetchData = async () => {
-            const projectReq = await fetch(`https://api.dashblocks.org/projects/${id}`);
+            const projectReq = await requestDashApi(`/projects/${id}`);
             if (!projectReq.ok) {
                 setError('Failed to fetch project data');
                 setLoading(false);

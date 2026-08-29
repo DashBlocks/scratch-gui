@@ -14,8 +14,8 @@ import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
-import getSession from '../../lib/session.js';
-import {setSession} from '../../reducers/dash.js';
+import getSession, {requestDashApi} from '../../lib/dash-api';
+import {setSession} from '../../reducers/dash';
 
 import firedIcon from './icon--fired.svg';
 import featuredIcon from './icon--featured.svg';
@@ -74,7 +74,7 @@ const Messages = props => {
     const fetchMessages = async currentOffset => {
         setLoadMoreButtonDisabled(true);
         try {
-            const messagesRes = await fetch(`https://api.dashblocks.org/session/messages?limit=${limit}&offset=${currentOffset}`, {
+            const messagesRes = await requestDashApi(`/session/messages?limit=${limit}&offset=${currentOffset}`, {
                 credentials: 'include'
             });
             if (!messagesRes.ok) throw new Error('Failed to fetch messages');
@@ -282,7 +282,7 @@ const Messages = props => {
     const handleClickMarkAllAsReadButton = async () => {
         setMarkAllAsReadButtonDisabled(true);
         try {
-            const res = await fetch('https://api.dashblocks.org/session/messages/mark-all-as-read', {
+            const res = await requestDashApi('/session/messages/mark-all-as-read', {
                 method: 'POST',
                 credentials: 'include'
             });

@@ -16,6 +16,7 @@ import {Footer} from '../render-interface.jsx';
 import styles from './register.css';
 
 import {APP_NAME} from '../../lib/brand';
+import {requestDashApi} from '../../lib/dash-api.js';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 
@@ -81,7 +82,7 @@ class Register extends React.Component {
             if (password !== confirmPassword) {
                 throw new Error(this.props.intl.formatMessage(messages.passwordsDontMatch));
             }
-            const response = await fetch('https://api.dashblocks.org/auth/register', {
+            const response = await requestDashApi('/auth/register', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import bindAll from 'lodash.bindall';
 import {connect} from 'react-redux';
 import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import getSession from '../../lib/dash-api.js';
 import render from '../app-target';
@@ -48,7 +49,7 @@ class Login extends React.Component {
             password: '',
             verificationCode: '',
             requiresVerification: false,
-            waiting: false,
+            waiting: true,
             error: null
         };
     }
@@ -169,6 +170,12 @@ class Login extends React.Component {
                                         type="password"
                                         value={this.state.password}
                                         onChange={this.handleChange}
+                                    />
+
+                                    <HCaptcha
+                                        sitekey="71b6ee4a-c34c-4340-9a52-9e5a648e1348"
+                                        // eslint-disable-next-line react/jsx-no-bind
+                                        onVerify={() => this.setState({waiting: false})}
                                     />
                                 </form>
                             )}

@@ -35,7 +35,7 @@ const requestDashApi = async (endpoint, options = {}, retryCount = 0) => {
     return res;
 };
 
-const getSession = async (userId, password, verificationCode) => {
+const getSession = async (userId, password, verificationCode, captchaToken) => {
     if (userId && password) {
         const res = await requestDashApi('/auth/login', {
             method: 'POST',
@@ -43,7 +43,8 @@ const getSession = async (userId, password, verificationCode) => {
             body: JSON.stringify({
                 userId,
                 password,
-                ...(verificationCode ? {verificationCode} : {})
+                ...(verificationCode ? {verificationCode} : {}),
+                ...(captchaToken ? {captchaToken} : {})
             }),
             credentials: 'include'
         });

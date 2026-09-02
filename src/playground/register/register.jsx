@@ -55,6 +55,7 @@ class Register extends React.Component {
             password: '',
             confirmPassword: '',
             verificationCode: '',
+            captchaToken: '',
             requiresVerification: false,
             waiting: true,
             error: null
@@ -77,7 +78,7 @@ class Register extends React.Component {
         e.preventDefault();
 
         this.setState({waiting: true, error: null});
-        const {email, username, password, confirmPassword, verificationCode} = this.state;
+        const {email, username, password, confirmPassword, verificationCode, captchaToken} = this.state;
         try {
             // Maybe better to do this on backend ¯\_(ツ)_/¯
             if (password !== confirmPassword) {
@@ -90,7 +91,8 @@ class Register extends React.Component {
                     email,
                     username,
                     password,
-                    ...(verificationCode ? {verificationCode} : {})
+                    ...(verificationCode ? {verificationCode} : {}),
+                    ...(captchaToken ? {captchaToken} : {})
                 }),
                 credentials: 'include'
             });
@@ -229,7 +231,7 @@ class Register extends React.Component {
                                     <HCaptcha
                                         sitekey="71b6ee4a-c34c-4340-9a52-9e5a648e1348"
                                         // eslint-disable-next-line react/jsx-no-bind
-                                        onVerify={() => this.setState({waiting: false})}
+                                        onVerify={token => this.setState({waiting: false, captchaToken: token})}
                                     />
 
                                     <p>

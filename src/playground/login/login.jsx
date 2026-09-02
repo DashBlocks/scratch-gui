@@ -48,6 +48,7 @@ class Login extends React.Component {
             userId: '',
             password: '',
             verificationCode: '',
+            captchaToken: '',
             requiresVerification: false,
             waiting: true,
             error: null
@@ -70,9 +71,9 @@ class Login extends React.Component {
         e.preventDefault();
 
         this.setState({waiting: true, error: null});
-        const {userId, password, verificationCode} = this.state;
+        const {userId, password, verificationCode, captchaToken} = this.state;
         try {
-            const session = await getSession(userId, password, verificationCode);
+            const session = await getSession(userId, password, verificationCode, captchaToken);
             if (session && session.requiresVerification) {
                 this.setState({requiresVerification: true});
                 return;
@@ -175,7 +176,7 @@ class Login extends React.Component {
                                     <HCaptcha
                                         sitekey="71b6ee4a-c34c-4340-9a52-9e5a648e1348"
                                         // eslint-disable-next-line react/jsx-no-bind
-                                        onVerify={() => this.setState({waiting: false})}
+                                        onVerify={token => this.setState({waiting: false, captchaToken: token})}
                                     />
                                 </form>
                             )}

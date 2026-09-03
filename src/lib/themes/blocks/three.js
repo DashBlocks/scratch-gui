@@ -116,6 +116,7 @@ const blockColors = {
     numPadText: 'white', // Do not use hex here, it cannot be inlined with data-uri SVG
     valueReportBackground: '#FFFFFF',
     valueReportBorder: '#AAAAAA',
+    valueReportUncaughtBorder: '#FF0000',
     valueReportForeground: '#000000',
     menuHover: 'rgba(0, 0, 0, 0.2)',
     contextMenuBackground: '#ffffff',

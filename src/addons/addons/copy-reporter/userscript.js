@@ -23,7 +23,7 @@ export default async function ({ addon, console, msg }) {
   const ScratchBlocks = await addon.tab.traps.getBlockly();
 
   // https://github.com/scratchfoundation/scratch-blocks/blob/893c7e7ad5bfb416eaed75d9a1c93bdce84e36ab/core/workspace_svg.js#L979
-  ScratchBlocks.WorkspaceSvg.prototype.reportValue = function (id, value) {
+  ScratchBlocks.WorkspaceSvg.prototype.reportValue = function (id, value, options) {
     let block = this.getBlockById(id);
     if (!block) {
       throw "Tried to report value on block that does not exist.";
@@ -32,7 +32,8 @@ export default async function ({ addon, console, msg }) {
     const valueIsComplicated = (
       Cast.isCustomType(value) ||
       Cast.isNormalArray(value) ||
-      Cast.isNormalObject(value)
+      Cast.isNormalObject(value) ||
+      value instanceof Error
     );
       
     ScratchBlocks.DropDownDiv.hideWithoutAnimation();
@@ -45,6 +46,8 @@ export default async function ({ addon, console, msg }) {
     if (valueIsComplicated) {
       if (typeof value.toReporterContent === 'function') {
         valueReportBox.appendChild(value.toReporterContent());
+      } else if (value instanceof Error) {
+        valueReportBox.textContent = value.stack;
       } else {
         const placeholder = document.createElement('i');
         placeholder.textContent = '*custom type*';
@@ -83,7 +86,7 @@ export default async function ({ addon, console, msg }) {
 
     ScratchBlocks.DropDownDiv.setColour(
       ScratchBlocks.Colours.valueReportBackground,
-      ScratchBlocks.Colours.valueReportBorder
+      options?.isUncaught ? ScratchBlocks.Colours.valueReportUncaughtBorder : ScratchBlocks.Colours.valueReportBorder
     );
     ScratchBlocks.DropDownDiv.showPositionedByBlock(this, block);
   };

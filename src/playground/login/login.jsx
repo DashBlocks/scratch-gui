@@ -53,6 +53,7 @@ class Login extends React.Component {
             waiting: true,
             error: null
         };
+        this.captchaRef = React.createRef();
     }
 
     componentDidMount () {
@@ -88,6 +89,7 @@ class Login extends React.Component {
             window.location.href = '/';
         } catch (error) {
             this.setState({error: error.message});
+            this.captchaRef.current.resetCaptcha();
         } finally {
             this.setState({waiting: false});
         }
@@ -174,6 +176,7 @@ class Login extends React.Component {
                                     />
 
                                     <HCaptcha
+                                        ref={this.captchaRef}
                                         sitekey="71b6ee4a-c34c-4340-9a52-9e5a648e1348"
                                         // eslint-disable-next-line react/jsx-no-bind
                                         onVerify={token => this.setState({waiting: false, captchaToken: token})}

@@ -36,7 +36,7 @@ const SpinnerComponent = function (props) {
         return () => clearInterval(interval);
     }, []);
     return (
-        <>
+        <div className={styles.spinnerContainer}>
             <div
                 className={classNames(
                     className,
@@ -48,11 +48,11 @@ const SpinnerComponent = function (props) {
                     }
                 )}
             />
-            <br />
+
             <div className={styles.messageContainerOuter}>
                 <div
                     className={styles.messageContainerInner}
-                    style={{transform: `translate(0, -${messageNumber * 25}px)`}}
+                    style={{transform: `translate(0, -${messageNumber * 30}px)`}}
                 >
                     {intl?.locale === 'ru' ? lazyMessages.ru.map((m, i) => (
                         <div
@@ -71,7 +71,7 @@ const SpinnerComponent = function (props) {
                     ))}
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 SpinnerComponent.propTypes = {

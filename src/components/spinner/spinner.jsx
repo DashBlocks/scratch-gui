@@ -31,7 +31,7 @@ const SpinnerComponent = function (props) {
     useEffect(() => {
         const interval = setInterval(() => {
             setMessageNumber(chooseRandomMessage());
-        }, 5000);
+        }, 3000);
 
         return () => clearInterval(interval);
     }, []);
@@ -48,6 +48,7 @@ const SpinnerComponent = function (props) {
                     }
                 )}
             />
+            <br />
             <div className={styles.messageContainerOuter}>
                 <div
                     className={styles.messageContainerInner}

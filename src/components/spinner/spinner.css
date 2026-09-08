@@ -89,3 +89,15 @@
 .spinner.primary::after {
     border-top-color: $looks-secondary;
 }
+
+.message {
+    height: 20px;
+    margin: 5px 0;
+}
+.message-container-outer {
+    height: 30px;
+    overflow: hidden;
+}
+.message-container-inner {
+    transition: transform 0.5s;
+}

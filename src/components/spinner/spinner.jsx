@@ -52,7 +52,7 @@ const SpinnerComponent = function (props) {
             <div className={styles.messageContainerOuter}>
                 <div
                     className={styles.messageContainerInner}
-                    style={{transform: `translate(0, -${messageNumber * 30}px)`}}
+                    style={{transform: `translate(0, -${messageNumber * 25}px)`}}
                 >
                     {intl?.locale === 'ru' ? lazyMessages.ru.map((m, i) => (
                         <div

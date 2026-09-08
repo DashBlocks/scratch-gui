@@ -99,10 +99,12 @@
 .message {
     height: 20px;
     margin: 5px 0;
+    text-align: center;
 }
 .message-container-outer {
     height: 30px;
     overflow: hidden;
+    text-align: center;
 }
 .message-container-inner {
     transition: transform 0.5s;

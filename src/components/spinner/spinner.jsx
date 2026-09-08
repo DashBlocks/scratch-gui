@@ -29,6 +29,8 @@ const SpinnerComponent = function (props) {
     }
     const [messageNumber, setMessageNumber] = useState(chooseRandomMessage());
     useEffect(() => {
+        if (!props.showLazyMessages) return;
+        
         const interval = setInterval(() => {
             setMessageNumber(chooseRandomMessage());
         }, 3000);
@@ -49,28 +51,30 @@ const SpinnerComponent = function (props) {
                 )}
             />
 
-            <div className={styles.messageContainerOuter}>
-                <div
-                    className={styles.messageContainerInner}
-                    style={{transform: `translate(0, -${messageNumber * 25}px)`}}
-                >
-                    {intl?.locale === 'ru' ? lazyMessages.ru.map((m, i) => (
-                        <div
-                            className={styles.message}
-                            key={i}
-                        >
-                            {m}
-                        </div>
-                    )) : lazyMessages.en.map((m, i) => (
-                        <div
-                            className={styles.message}
-                            key={i}
-                        >
-                            {m}
-                        </div>
-                    ))}
+            {props.showLazyMessages && (
+                <div className={styles.messageContainerOuter}>
+                    <div
+                        className={styles.messageContainerInner}
+                        style={{transform: `translate(0, -${messageNumber * 25}px)`}}
+                    >
+                        {intl?.locale === 'ru' ? lazyMessages.ru.map((m, i) => (
+                            <div
+                                className={styles.message}
+                                key={i}
+                            >
+                                {m}
+                            </div>
+                        )) : lazyMessages.en.map((m, i) => (
+                            <div
+                                className={styles.message}
+                                key={i}
+                            >
+                                {m}
+                            </div>
+                        ))}
+                    </div>
                 </div>
-            </div>
+            )}
         </div>
     );
 };
@@ -79,6 +83,7 @@ SpinnerComponent.propTypes = {
     className: PropTypes.string,
     large: PropTypes.bool,
     level: PropTypes.string,
+    showLazyMessages: PropTypes.bool,
     small: PropTypes.bool
 };
 SpinnerComponent.defaultProps = {

@@ -1,6 +1,12 @@
 @import "../../css/colors.css";
 @import "../../css/default-colors.css";
 
+.spinner-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .spinner {
     width: 1.25rem;
     height: 1.25rem;

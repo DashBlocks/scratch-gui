@@ -3,7 +3,9 @@ import React from 'react';
 import classNames from 'classnames';
 import styles from './framed-avatar.css';
 
-const FRAMES = Object.assign(Object.create(null), {});
+const FRAMES = Object.assign(Object.create(null), {
+    'thorned-core': require('./frames/thorned-core.svg')
+});
 
 const FramedAvatar = ({
     avatarClassName,

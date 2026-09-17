@@ -704,6 +704,7 @@ const User = props => {
                             avatarSrc={`https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}?t=${avatarCacheBuster}`}
                             avatarClassName={styles.avatar}
                             className={styles.avatarContainer}
+                            frameId={userData.profile.avatarFrame}
                             onClick={handleAvatarClick}
                             style={isMyProfile ? {cursor: 'pointer'} : null}
                         />
@@ -1160,6 +1161,7 @@ const User = props => {
                                         avatarSrc={`https://api.dashblocks.org/users/avatars/${follower.profile.avatarId}`}
                                         avatarClassName={styles.followAvatar}
                                         className={styles.followAvatarContainer}
+                                        frameId={follower.profile.avatarFrame}
                                     />
                                     <span className={styles.followUsername}>{follower.username}</span>
                                 </div>
@@ -1211,6 +1213,7 @@ const User = props => {
                                         avatarSrc={`https://api.dashblocks.org/users/avatars/${followed.profile.avatarId}`}
                                         avatarClassName={styles.followAvatar}
                                         className={styles.followAvatarContainer}
+                                        frameId={followed.profile.avatarFrame}
                                     />
                                     <span className={styles.followUsername}>{followed.username}</span>
                                 </div>

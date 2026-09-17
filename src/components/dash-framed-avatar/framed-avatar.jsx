@@ -21,7 +21,7 @@ const FramedAvatar = ({
         <img
             className={classNames(styles.avatar, avatarClassName)}
             draggable={false}
-            src={avatar}
+            src={avatarSrc}
         />
         {typeof frameId === 'string' && frameId in FRAMES && (
             <img

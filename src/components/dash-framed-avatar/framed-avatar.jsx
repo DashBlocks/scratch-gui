@@ -3,27 +3,33 @@ import React from 'react';
 import classNames from 'classnames';
 import styles from './framed-avatar.css';
 
-const frames = Object.assign(Object.create(null), {});
+const FRAMES = Object.assign(Object.create(null), {});
 
-const FramedAvatar = ({avatar, className, frameId}) => (
+const FramedAvatar = ({
+    avatarClassName,
+    avatarSrc,
+    className,
+    frameId
+}) => (
     <div className={classNames(styles.container, className)}>
         <img
-            className={styles.avatar}
+            className={classNames(styles.avatar, avatarClassName)}
             draggable={false}
             src={avatar}
         />
-        {typeof frameId === 'string' && frameId in frames && (
+        {typeof frameId === 'string' && frameId in FRAMES && (
             <img
                 className={styles.frame}
                 draggable={false}
-                src={frames[frameId]}
+                src={FRAMES[frameId]}
             />
         )}
     </div>
 );
 
 FramedAvatar.propTypes = {
-    avatar: PropTypes.string,
+    avatarClassName: PropTypes.string,
+    avatarSrc: PropTypes.string,
     className: PropTypes.string,
     frameId: PropTypes.string
 };

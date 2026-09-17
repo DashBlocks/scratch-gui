@@ -9,9 +9,13 @@ const FramedAvatar = ({
     avatarClassName,
     avatarSrc,
     className,
-    frameId
+    frameId,
+    ...props
 }) => (
-    <div className={classNames(styles.container, className)}>
+    <div
+        className={classNames(styles.container, className)}
+        {...props}
+    >
         <img
             className={classNames(styles.avatar, avatarClassName)}
             draggable={false}

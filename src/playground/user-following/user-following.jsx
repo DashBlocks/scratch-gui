@@ -16,6 +16,8 @@ import {requestDashApi} from '../../lib/dash-api.js';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';
 import {detectTheme} from '../../lib/themes/themePersistance';
 
+import FramedAvatar from '../../components/dash-framed-avatar/framed-avatar.jsx';
+
 /* eslint-disable react/jsx-no-literals */
 
 const theme = detectTheme();
@@ -158,11 +160,11 @@ const UserFollowing = props => {
                                     // eslint-disable-next-line react/jsx-no-bind
                                     onClick={() => window.open(`./user#${followed.id}`, '_blank')}
                                 >
-                                    <img
-                                        draggable={false}
-                                        src={`https://api.dashblocks.org/users/avatars/${followed.profile.avatarId}`}
-                                        alt={followed.username}
-                                        className={styles.followAvatar}
+                                    <FramedAvatar
+                                        avatarSrc={`https://api.dashblocks.org/users/avatars/${followed.profile.avatarId}`}
+                                        avatarClassName={styles.followAvatar}
+                                        className={styles.followAvatarContainer}
+                                        frameId={followed.profile.avatarFrame}
                                     />
                                     <span className={styles.followUsername}>{followed.username}</span>
                                 </div>

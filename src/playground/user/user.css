@@ -116,9 +116,11 @@ body {
     flex: 1 1 10rem;
 }
 
-.avatar-img {
+.avatar-container {
     width: 5rem;
     height: 5rem;
+}
+.avatar {
     border-radius: $space;
 }
 
@@ -419,9 +421,11 @@ body {
     cursor: pointer;
 }
 
-.follow-avatar {
+.follow-avatar-container {
     width: 5rem;
     height: 5rem;
+}
+.follow-avatar {
     border-radius: $space;
 }
 

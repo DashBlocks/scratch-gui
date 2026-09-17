@@ -5,8 +5,8 @@ import styles from './framed-avatar.css';
 
 const frames = Object.assign(Object.create(null), {});
 
-const FramedAvatar = ({avatar, frameId}) => (
-    <div className={styles.container}>
+const FramedAvatar = ({avatar, className, frameId}) => (
+    <div className={classNames(styles.container, className)}>
         <img
             className={styles.avatar}
             draggable={false}
@@ -24,6 +24,7 @@ const FramedAvatar = ({avatar, frameId}) => (
 
 FramedAvatar.propTypes = {
     avatar: PropTypes.string,
+    className: PropTypes.string,
     frameId: PropTypes.string
 };
 

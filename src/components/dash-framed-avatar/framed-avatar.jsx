@@ -19,7 +19,9 @@ const FramedAvatar = ({
         {...props}
     >
         <img
-            className={classNames(styles.avatar, avatarClassName)}
+            className={classNames(styles.avatar, {
+                [styles.framedAvatar]: typeof frameId === 'string' && frameId in FRAMES
+            }, avatarClassName)}
             draggable={false}
             src={avatarSrc}
         />

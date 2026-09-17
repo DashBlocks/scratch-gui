@@ -23,6 +23,8 @@ import BufferedInputHOC from '../../components/forms/buffered-input-hoc.jsx';
 import Input from '../../components/forms/input.jsx';
 const BufferedInput = BufferedInputHOC(Input);
 
+import FramedAvatar from '../../components/dash-framed-avatar/framed-avatar.jsx';
+
 import linkIcon from './icon--link.svg';
 import editIcon from './icon--edit.svg';
 import deleteIcon from './icon--delete.svg';
@@ -697,13 +699,12 @@ const User = props => {
                             onChange={handleChangeAvatar}
                             style={{display: 'none'}}
                         />
-                        <img
-                            draggable={false}
+                        <FramedAvatar
                             // eslint-disable-next-line max-len
-                            src={`https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}?t=${avatarCacheBuster}`}
-                            alt={userData.username}
+                            avatarSrc={`https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}?t=${avatarCacheBuster}`}
+                            avatarClassName={styles.avatar}
+                            className={styles.avatarContainer}
                             onClick={handleAvatarClick}
-                            className={styles.avatarImg}
                             style={isMyProfile ? {cursor: 'pointer'} : null}
                         />
                         <div className={styles.userInfo}>
@@ -1155,11 +1156,10 @@ const User = props => {
                                     // eslint-disable-next-line react/jsx-no-bind
                                     onClick={() => window.open(`./user#${follower.id}`, '_blank')}
                                 >
-                                    <img
-                                        draggable={false}
-                                        src={`https://api.dashblocks.org/users/avatars/${follower.profile.avatarId}`}
-                                        alt={follower.username}
-                                        className={styles.followAvatar}
+                                    <FramedAvatar
+                                        avatarSrc={`https://api.dashblocks.org/users/avatars/${follower.profile.avatarId}`}
+                                        avatarClassName={styles.followAvatar}
+                                        className={styles.followAvatarContainer}
                                     />
                                     <span className={styles.followUsername}>{follower.username}</span>
                                 </div>
@@ -1207,11 +1207,10 @@ const User = props => {
                                     // eslint-disable-next-line react/jsx-no-bind
                                     onClick={() => window.open(`./user#${followed.id}`, '_blank')}
                                 >
-                                    <img
-                                        draggable={false}
-                                        src={`https://api.dashblocks.org/users/avatars/${followed.profile.avatarId}`}
-                                        alt={followed.username}
-                                        className={styles.followAvatar}
+                                    <FramedAvatar
+                                        avatarSrc={`https://api.dashblocks.org/users/avatars/${followed.profile.avatarId}`}
+                                        avatarClassName={styles.followAvatar}
+                                        className={styles.followAvatarContainer}
                                     />
                                     <span className={styles.followUsername}>{followed.username}</span>
                                 </div>

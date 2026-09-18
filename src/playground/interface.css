@@ -310,9 +310,12 @@ a {
     gap: $space;
 }
 
-.action-avatar {
+.action-avatar-container {
     width: 2rem;
     height: 2rem;
+}
+.action-avatar {
+    border-radius: calc($space / 2);
 }
 
 .action-date {

@@ -45,6 +45,7 @@ import Description from '../components/tw-description/description.jsx';
 import BrowserModal from '../components/browser-modal/browser-modal.jsx';
 import DashWelcomeModal from '../containers/dash-welcome-modal.jsx';
 import StageFooter from '../components/dash-stage-footer/stage-footer.jsx';
+import FramedAvatar from '../components/dash-framed-avatar/framed-avatar.jsx';
 import CloudVariableBadge from '../containers/tw-cloud-variable-badge.jsx';
 import {isBrowserSupported} from '../lib/tw-environment-support-prober';
 import AddonChannels from '../addons/channels';
@@ -468,10 +469,12 @@ const WhatsHappening = ({intl}) => {
                     key={index}
                     className={styles.actionContent}
                 >
-                    <img
-                        src={`https://api.dashblocks.org/users/avatars/${action.author.profile.avatarId}`}
-                        alt={action.author.username}
-                        className={styles.actionAvatar}
+                    <FramedAvatar
+                        // eslint-disable-next-line max-len
+                        avatarSrc={`https://api.dashblocks.org/users/avatars/${action.author.profile.avatarId}`}
+                        avatarClassName={styles.actionAvatar}
+                        className={styles.actionAvatarContainer}
+                        frameId={action.author.profile.avatarFrame}
                     />
                     {getActionContent(action)}
                     <div className={styles.actionDate}>

@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import styles from './framed-avatar.css';
 
 const FRAMES = Object.assign(Object.create(null), {
+    'dashy': require('./frames/dashy.svg'),
     'thorny-core': require('./frames/thorny-core.svg')
 });
 

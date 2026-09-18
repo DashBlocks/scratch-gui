@@ -763,10 +763,12 @@ class Interface extends React.PureComponent {
                             <div className={styles.mainSection}>
                                 {this.state.parentProjectMetadata ? (
                                     <div className={classNames(styles.section, styles.projectCredit)}>
-                                        <img
-                                            src={`https://api.dashblocks.org/users/avatars/${this.state.parentProjectMetadata.author.profile.avatarId}`}
-                                            alt={this.state.parentProjectMetadata.author.username}
-                                            className={styles.actionAvatar}
+                                        <FramedAvatar
+                                            // eslint-disable-next-line max-len
+                                            avatarSrc={`https://api.dashblocks.org/users/avatars/${this.state.parentProjectMetadata.author.profile.avatarId}`}
+                                            avatarClassName={styles.actionAvatar}
+                                            className={styles.actionAvatarContainer}
+                                            frameId={this.state.parentProjectMetadata.author.profile.avatarFrame}
                                         />
                                         <FormattedMessage
                                             defaultMessage="Thanks to {user} for the original project {project}."

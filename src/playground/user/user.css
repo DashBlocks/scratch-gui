@@ -119,6 +119,8 @@ body {
 .avatar-container {
     width: 5rem;
     height: 5rem;
+    min-width: 5rem;
+    min-height: 5rem;
 }
 .avatar {
     border-radius: $space;

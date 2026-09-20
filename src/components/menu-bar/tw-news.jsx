@@ -7,6 +7,8 @@ import CloseButton from '../close-button/close-button.jsx';
 import styles from './tw-news.css';
 import {isNewYearMode} from '../dash-new-year-mode/new-year-mode.jsx';
 
+import zipprIcon from './zippr.png';
+
 const getIsClosedInLocalStorage = (key, id) => {
     try {
         return localStorage.getItem(key) === id;
@@ -107,7 +109,7 @@ class TWNews extends React.Component {
                 {this.props.id === 'donate' && (<div className={styles.news}>
                     <div className={styles.text}>
                         {/* eslint-disable-next-line max-len */}
-                        {`Support development, help us host community, and get exclusive benefits by `}
+                        {'Support development, help us host community, and get exclusive benefits by '}
                         <a
                             href="donate"
                             rel="noreferrer"
@@ -115,6 +117,27 @@ class TWNews extends React.Component {
                             {'donating us'}
                         </a>
                         {'!'}
+                    </div>
+                    <CloseButton
+                        className={styles.close}
+                        onClick={this.handleClose}
+                    />
+                </div>)}
+                {this.props.id === 'collab-zippr' && (<div className={styles.news}>
+                    <img
+                        src={zipprIcon}
+                        draggable={false}
+                        className={styles.icon}
+                    />
+                    <div className={styles.text}>
+                        <b>{'Dash x zippr '}</b>
+                        {`collaboration! Enjoy the festive theme while it lasts. Also you can `}
+                        <a
+                            href="https://www.zipprpj.website/#/"
+                            rel="noreferrer"
+                        >
+                            {'check zippr out.'}
+                        </a>
                     </div>
                     <CloseButton
                         className={styles.close}

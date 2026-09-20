@@ -94,7 +94,7 @@ class TWNews extends React.Component {
                         onClick={this.handleClose}
                     />
                 </div>)}
-                {this.props.id === 'new-year' && (<div className={styles.news}>x
+                {this.props.id === 'new-year' && (<div className={styles.news}>
                     <div className={styles.content}>
                         <div className={styles.text}>
                             {/* eslint-disable-next-line max-len */}

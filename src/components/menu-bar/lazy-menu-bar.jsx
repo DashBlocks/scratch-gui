@@ -360,6 +360,10 @@ class LazyMenuBar extends React.Component {
                         item="dash:news4"
                         id="donate"
                     />}
+                    {<TWNews
+                        item="dash:news5"
+                        id="collab-zippr"
+                    />}
                 </React.Fragment>
             </div>
         );

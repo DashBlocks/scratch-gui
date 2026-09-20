@@ -124,22 +124,24 @@ class TWNews extends React.Component {
                     />
                 </div>)}
                 {this.props.id === 'collab-zippr' && (<div className={styles.news}>
-                    <img
-                        src={zipprIcon}
-                        draggable={false}
-                        className={styles.icon}
-                        width={20}
-                        height={20}
-                    />
-                    <div className={styles.text}>
-                        <b>{'Dash x zippr '}</b>
-                        {`collaboration! Enjoy the festive theme while it lasts. Also you can `}
-                        <a
-                            href="https://www.zipprpj.website/#/"
-                            rel="noreferrer"
-                        >
-                            {'check zippr out.'}
-                        </a>
+                    <div className={styles.content}>
+                        <img
+                            src={zipprIcon}
+                            draggable={false}
+                            className={styles.icon}
+                            width={20}
+                            height={20}
+                        />
+                        <div className={styles.text}>
+                            <b>{'Dash x zippr '}</b>
+                            {`collaboration! Enjoy the festive theme while it lasts. Also you can `}
+                            <a
+                                href="https://www.zipprpj.website/#/"
+                                rel="noreferrer"
+                            >
+                                {'check zippr out.'}
+                            </a>
+                        </div>
                     </div>
                     <CloseButton
                         className={styles.close}

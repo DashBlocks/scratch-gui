@@ -50,24 +50,26 @@ class TWNews extends React.Component {
         return (
             <>
                 {this.props.id === 'new-compiler' && (<div className={styles.news}>
-                    <div className={styles.text}>
-                        {/* eslint-disable-next-line max-len */}
-                        {`We rewrote the ${APP_NAME} compiler to make projects run even faster. Bugs are possible. `}
-                        <a
-                            href="https://dashblocks.org/docs/new-compiler"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            {'Learn more.'}
-                        </a>
-                        {' '}
-                        <a
-                            href="https://dashblocks.org/old-compiler"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            {'Old compiler.'}
-                        </a>
+                    <div className={styles.content}>
+                        <div className={styles.text}>
+                            {/* eslint-disable-next-line max-len */}
+                            {`We rewrote the ${APP_NAME} compiler to make projects run even faster. Bugs are possible. `}
+                            <a
+                                href="https://dashblocks.org/docs/new-compiler"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {'Learn more.'}
+                            </a>
+                            {' '}
+                            <a
+                                href="https://dashblocks.org/old-compiler"
+                                target="_blank"
+                                rel="noreferrer"
+                            >
+                                {'Old compiler.'}
+                            </a>
+                        </div>
                     </div>
                     <CloseButton
                         className={styles.close}
@@ -75,31 +77,35 @@ class TWNews extends React.Component {
                     />
                 </div>)}
                 {this.props.id === 'dev-version' && (<div className={styles.news}>
-                    <div className={styles.text}>
-                        {/* eslint-disable-next-line max-len */}
-                        {`This is a "Dev" version of ${APP_NAME}. Please do not use this version for real projects, as it may break your projects! `}
-                        <a
-                            href="https://dashblocks.org"
-                            rel="noreferrer"
-                        >
-                            {'Main version.'}
-                        </a>
+                    <div className={styles.content}>
+                        <div className={styles.text}>
+                            {/* eslint-disable-next-line max-len */}
+                            {`This is a "Dev" version of ${APP_NAME}. Please do not use this version for real projects, as it may break your projects! `}
+                            <a
+                                href="https://dashblocks.org"
+                                rel="noreferrer"
+                            >
+                                {'Main version.'}
+                            </a>
+                        </div>
                     </div>
                     <CloseButton
                         className={styles.close}
                         onClick={this.handleClose}
                     />
                 </div>)}
-                {this.props.id === 'new-year' && (<div className={styles.news}>
-                    <div className={styles.text}>
-                        {/* eslint-disable-next-line max-len */}
-                        {`Happy New Year! Enjoy the festive theme while it lasts. `}
-                        <a
-                            href={isNewYearMode() ? 'https://dashblocks.org' : 'https://dashblocks.org/?newYearMode'}
-                            rel="noreferrer"
-                        >
-                            {isNewYearMode() ? 'Switch to normal mode.' : 'Switch to new year mode.'}
-                        </a>
+                {this.props.id === 'new-year' && (<div className={styles.news}>x
+                    <div className={styles.content}>
+                        <div className={styles.text}>
+                            {/* eslint-disable-next-line max-len */}
+                            {'Happy New Year! Enjoy the festive theme while it lasts. '}
+                            <a
+                                href={isNewYearMode() ? 'https://dashblocks.org' : 'https://dashblocks.org/?newYearMode'}
+                                rel="noreferrer"
+                            >
+                                {isNewYearMode() ? 'Switch to normal mode.' : 'Switch to new year mode.'}
+                            </a>
+                        </div>
                     </div>
                     <CloseButton
                         className={styles.close}
@@ -107,16 +113,18 @@ class TWNews extends React.Component {
                     />
                 </div>)}
                 {this.props.id === 'donate' && (<div className={styles.news}>
-                    <div className={styles.text}>
-                        {/* eslint-disable-next-line max-len */}
-                        {'Support development, help us host community, and get exclusive benefits by '}
-                        <a
-                            href="donate"
-                            rel="noreferrer"
-                        >
-                            {'donating us'}
-                        </a>
-                        {'!'}
+                    <div className={styles.content}>
+                        <div className={styles.text}>
+                            {/* eslint-disable-next-line max-len */}
+                            {'Support development, help us host community, and get exclusive benefits by '}
+                            <a
+                                href="donate"
+                                rel="noreferrer"
+                            >
+                                {'donating us'}
+                            </a>
+                            {'!'}
+                        </div>
                     </div>
                     <CloseButton
                         className={styles.close}
@@ -137,6 +145,7 @@ class TWNews extends React.Component {
                             {`collaboration! Enjoy the festive theme while it lasts. Also you can `}
                             <a
                                 href="https://www.zipprpj.website/#/"
+                                target="_blank"
                                 rel="noreferrer"
                             >
                                 {'check zippr out.'}

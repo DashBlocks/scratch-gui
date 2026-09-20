@@ -128,6 +128,8 @@ class TWNews extends React.Component {
                         src={zipprIcon}
                         draggable={false}
                         className={styles.icon}
+                        width={20}
+                        height={20}
                     />
                     <div className={styles.text}>
                         <b>{'Dash x zippr '}</b>

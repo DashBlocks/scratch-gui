@@ -100,6 +100,7 @@ import errorIcon from './tw-error.svg';
 import advancedIcon from './tw-advanced.svg';
 import dashLogo from './dash.png';
 import dashNewYearLogo from './dash-new-year.png';
+import dashZipprCollabLogo from './dash-zippr-collab-logo.svg';
 import searchIcon from './icon--search.png';
 
 import ninetiesLogo from './nineties_logo.svg';
@@ -698,7 +699,7 @@ class MenuBar extends React.Component {
                         >
                             <img
                                 className={styles.dashLogo}
-                                src={isNewYearMode() ? dashNewYearLogo : dashLogo}
+                                src={isNewYearMode() ? dashNewYearLogo : dashZipprCollabLogo /* dashLogo */}
                                 draggable={false}
                             />
                         </a>

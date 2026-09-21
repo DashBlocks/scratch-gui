@@ -51,7 +51,6 @@ body {
 
 .container {
     position: absolute;
-    top: $menu-bar-height;
     left: 0;
     width: 100%;
     max-width: 100%;

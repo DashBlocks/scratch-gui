@@ -36,6 +36,7 @@ import messagesIcon from './icon--messages.png';
 import mystuffIcon from './icon--mystuff.png';
 import dashLogo from './dash.png';
 import dashNewYearLogo from './dash-new-year.png';
+import dashZipprCollabLogo from './dash-zippr-collab-logo.svg';
 import searchIcon from './icon--search.png';
 
 import isScratchDesktop from '../../lib/isScratchDesktop.js';
@@ -189,7 +190,7 @@ class LazyMenuBar extends React.Component {
                     >
                         <img
                             className={styles.dashLogo}
-                            src={isNewYearMode() ? dashNewYearLogo : dashLogo}
+                            src={isNewYearMode() ? dashNewYearLogo : dashZipprCollabLogo /* dashLogo */}
                             draggable={false}
                         />
                     </a>

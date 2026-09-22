@@ -284,6 +284,15 @@ const TWStateManager = function (WrappedComponent) {
             ]);
         }
         async componentDidMount () {
+            const routerCallbacks = {
+                onSetProjectId: this.onSetProjectId,
+                onSetIsPlayerOnly: this.onSetIsPlayerOnly,
+                onSetIsFullScreen: this.onSetIsFullScreen
+            };
+            this.router = createRouter(this.props.routingStyle, routerCallbacks);
+            this.router.onhashchange();
+            window.addEventListener('hashchange', this.handleHashChange);
+            window.addEventListener('popstate', this.handlePopState);
             const urlParams = new URLSearchParams(location.search);
 
             if (urlParams.has('fps')) {
@@ -370,16 +379,6 @@ const TWStateManager = function (WrappedComponent) {
             for (const extension of urlParams.getAll('extension')) {
                 this.props.vm.extensionManager.loadExtensionURL(extension);
             }
-
-            const routerCallbacks = {
-                onSetProjectId: this.onSetProjectId,
-                onSetIsPlayerOnly: this.onSetIsPlayerOnly,
-                onSetIsFullScreen: this.onSetIsFullScreen
-            };
-            this.router = createRouter(this.props.routingStyle, routerCallbacks);
-            this.router.onhashchange();
-            window.addEventListener('hashchange', this.handleHashChange);
-            window.addEventListener('popstate', this.handlePopState);
         }
         componentDidUpdate (prevProps) {
             if (this.props.username !== prevProps.username && this.props.username !== this.doNotPersistUsername) {

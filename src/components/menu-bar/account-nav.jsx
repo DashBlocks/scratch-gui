@@ -12,13 +12,15 @@ import React from 'react';
 import MenuBarMenu from './menu-bar-menu.jsx';
 import {MenuSection} from '../menu/menu.jsx';
 import MenuItemContainer from '../../containers/menu-item.jsx';
-import UserAvatar from './user-avatar.jsx';
+import FramedAvatar from '../../components/dash-framed-avatar/framed-avatar.jsx';
 import dropdownCaret from './dropdown-caret.svg';
 
 import styles from './account-nav.css';
 
 const AccountNavComponent = ({
+    avatarSrc,
     className,
+    frameId,
     isOpen,
     isRtl,
     menuBarMenuClassName,
@@ -26,9 +28,8 @@ const AccountNavComponent = ({
     onClose,
     onLogOut,
     profileUrl,
-    thumbnailUrl,
-    username,
-    role
+    role,
+    username
 }) => (
     <React.Fragment>
         <div
@@ -38,10 +39,13 @@ const AccountNavComponent = ({
             )}
             onMouseUp={isOpen ? onClose : onClick}
         >
-            {thumbnailUrl ? (
-                <UserAvatar
+            {avatarSrc ? (
+                <FramedAvatar
+                    // eslint-disable-next-line max-len
+                    avatarSrc={avatarSrc}
+                    avatarClassName={styles.thumbnail}
                     className={styles.avatar}
-                    imageUrl={thumbnailUrl}
+                    frameId={frameId}
                 />
             ) : null}
             <span className={styles.profileName}>
@@ -114,7 +118,9 @@ const AccountNavComponent = ({
 );
 
 AccountNavComponent.propTypes = {
+    avatarSrc: PropTypes.string,
     className: PropTypes.string,
+    frameId: PropTypes.string,
     isOpen: PropTypes.bool,
     isRtl: PropTypes.bool,
     menuBarMenuClassName: PropTypes.string,
@@ -122,9 +128,8 @@ AccountNavComponent.propTypes = {
     onClose: PropTypes.func,
     onLogOut: PropTypes.func,
     profileUrl: PropTypes.string,
-    thumbnailUrl: PropTypes.string,
-    username: PropTypes.string,
-    role: PropTypes.string
+    role: PropTypes.string,
+    username: PropTypes.string
 };
 
 export default AccountNavComponent;

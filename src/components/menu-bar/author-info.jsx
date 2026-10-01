@@ -8,7 +8,8 @@ import styles from './author-info.css';
 
 const ActualAuthorInfo = ({
     className,
-    imageUrl,
+    frameId,
+    avatarSrc,
     projectTitle,
     userId,
     projectId,
@@ -21,9 +22,11 @@ const ActualAuthorInfo = ({
             styles.authorInfo
         )}
     >
-        <UserAvatar
+        <FramedAvatar
+            avatarSrc={avatarSrc}
+            avatarClassName={styles.thumbnail}
             className={styles.avatar}
-            imageUrl={imageUrl}
+            frameId={frameId}
         />
         <div className={styles.titleAuthor}>
             {isDashProject ? <h1 className={styles.projectTitle}>
@@ -65,7 +68,8 @@ const ActualAuthorInfo = ({
 
 ActualAuthorInfo.propTypes = {
     className: PropTypes.string,
-    imageUrl: PropTypes.string,
+    frameId: PropTypes.string,
+    avatarSrc: PropTypes.string,
     projectTitle: PropTypes.string,
     userId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     projectId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),

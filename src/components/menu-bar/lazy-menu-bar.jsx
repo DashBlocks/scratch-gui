@@ -34,6 +34,7 @@ import styles from './menu-bar.css';
 
 import messagesIcon from './icon--messages.png';
 import mystuffIcon from './icon--mystuff.png';
+// eslint-disable-next-line no-unused-vars
 import dashLogo from './dash.png';
 import dashNewYearLogo from './dash-new-year.png';
 import dashZipprCollabLogo from './dash-zippr-collab-logo.svg';

@@ -3,9 +3,11 @@ import React from 'react';
 import classNames from 'classnames';
 import styles from './framed-avatar.css';
 
+import dashyFrame from './frames/dashy.svg';
+import thornyCoreFrame from './frames/thorny-core.svg';
 const FRAMES = Object.assign(Object.create(null), {
-    'dashy': require('./frames/dashy.svg'),
-    'thorny-core': require('./frames/thorny-core.svg')
+    'dashy': dashyFrame,
+    'thorny-core': thornyCoreFrame
 });
 
 const FramedAvatar = ({

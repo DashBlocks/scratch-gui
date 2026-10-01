@@ -14,7 +14,7 @@ const SpinnerComponent = function (props) {
         small,
         large
     } = props;
-    function chooseRandomMessage () {
+    const chooseRandomMessage = () => {
         let messageNumber;
         const sum = lazyMessages.en.reduce(acc => acc + 1, 0);
         let rand = sum * Math.random();
@@ -26,7 +26,7 @@ const SpinnerComponent = function (props) {
             }
         }
         return messageNumber;
-    }
+    };
     const [messageNumber, setMessageNumber] = useState(chooseRandomMessage());
     useEffect(() => {
         if (!props.showLazyMessages) return;

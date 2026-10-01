@@ -194,7 +194,10 @@ const GUIComponent = props => {
                 {fontsModalVisible && <TWFontsModal />}
                 {unknownPlatformModalVisible && <TWUnknownPlatformModal />}
                 {invalidProjectModalVisible && <TWInvalidProjectModal />}
-                {welcomeModalVisible && localStorage.getItem('dontShowWelcomeModal') !== 'true' && !isEmbedded && <DashWelcomeModal />}
+                {
+                    welcomeModalVisible && localStorage.getItem('dontShowWelcomeModal') !== 'true' &&
+                    !isEmbedded && <DashWelcomeModal />
+                }
             </React.Fragment>
         );
 

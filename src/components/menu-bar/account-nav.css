@@ -31,6 +31,11 @@
     height: 2rem;
 }
 
+.user-info .thumbnail {
+    border-radius: $form-radius;
+    box-shadow: 0 0 0 1px $ui-black-transparent;
+}
+
 [dir="ltr"] .user-info .dropdown-caret-position {
   margin-left: calc($space * .8125);
 }

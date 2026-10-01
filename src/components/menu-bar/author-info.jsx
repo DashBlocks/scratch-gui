@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import {FormattedMessage} from 'react-intl';
-import UserAvatar from './user-avatar.jsx';
+import FramedAvatar from '../../components/dash-framed-avatar/framed-avatar.jsx';
 
 import styles from './author-info.css';
 

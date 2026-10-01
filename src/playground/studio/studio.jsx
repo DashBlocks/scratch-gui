@@ -145,9 +145,9 @@ const Studio = props => {
                     <div className={styles.section}>
                         <h2>
                             <FormattedMessage
-                                defaultMessage="{studio}'s Projects ({projectsCount})"
+                                defaultMessage="{studio} ({projectsCount})"
                                 description="Title of /studio page"
-                                id="dash.studioProjects.title"
+                                id="dash.studio.title"
                                 values={{
                                     studio: studioData.name,
                                     projectsCount: studioData.projectsCount

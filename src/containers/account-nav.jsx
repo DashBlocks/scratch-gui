@@ -12,34 +12,35 @@ import {connect} from 'react-redux';
 import AccountNavComponent from '../components/menu-bar/account-nav.jsx';
 
 const AccountNav = function (props) {
-    const {
-        ...componentProps
-    } = props;
     return (
         <AccountNavComponent
-            {...componentProps}
+            {...props}
         />
     );
 };
 
 AccountNav.propTypes = {
     isRtl: PropTypes.bool,
+    avatarSrc: PropTypes.string,
+    frameId: PropTypes.string,
     profileUrl: PropTypes.string,
-    thumbnailUrl: PropTypes.string,
-    username: PropTypes.string,
-    role: PropTypes.string
+    role: PropTypes.string,
+    username: PropTypes.string
 };
 
 const mapStateToProps = state => ({
-    profileUrl: state.scratchGui.dash.session && state.scratchGui.dash.session.id ?
-        `user#${state.scratchGui.dash.session.id}` : '',
-    thumbnailUrl: state.scratchGui.dash.session &&
+    avatarSrc: state.scratchGui.dash.session &&
                     state.scratchGui.dash.session.profile && state.scratchGui.dash.session.profile.avatarId ?
         `https://api.dashblocks.org/users/avatars/${state.scratchGui.dash.session.profile.avatarId}` : '',
-    username: state.scratchGui.dash.session && state.scratchGui.dash.session.username ?
-        state.scratchGui.dash.session.username : '',
+    frameId: state.scratchGui.dash.session &&
+                    state.scratchGui.dash.session.profile && state.scratchGui.dash.session.profile.avatarFrame ?
+        state.scratchGui.dash.session.profile.avatarFrame : '',
+    profileUrl: state.scratchGui.dash.session && state.scratchGui.dash.session.id ?
+        `user#${state.scratchGui.dash.session.id}` : '',
     role: state.scratchGui.dash.session && state.scratchGui.dash.session.role ?
-        state.scratchGui.dash.session.role : ''
+        state.scratchGui.dash.session.role : '',
+    username: state.scratchGui.dash.session && state.scratchGui.dash.session.username ?
+        state.scratchGui.dash.session.username : ''
 });
 
 const mapDispatchToProps = () => ({});

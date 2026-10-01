@@ -1214,7 +1214,8 @@ class MenuBar extends React.Component {
                     ) : (this.props.authorUsername ? (
                         <AuthorInfo
                             className={styles.authorInfo}
-                            imageUrl={this.props.authorThumbnailUrl}
+                            avatarSrc={this.props.authorAvatarSrc}
+                            frameId={this.props.authorAvatarFrame}
                             projectId={this.props.projectId}
                             projectTitle={this.props.projectTitle}
                             userId={this.props.authorId}
@@ -1433,7 +1434,8 @@ MenuBar.propTypes = {
     aboutMenuOpen: PropTypes.bool,
     accountMenuOpen: PropTypes.bool,
     authorId: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
-    authorThumbnailUrl: PropTypes.string,
+    authorAvatarSrc: PropTypes.string,
+    authorAvatarFrame: PropTypes.string,
     authorUsername: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
     autoUpdateProject: PropTypes.func,
     canChangeLanguage: PropTypes.bool,
@@ -1540,7 +1542,8 @@ const mapStateToProps = state => {
     return {
         authorUsername: state.scratchGui.tw.author.username,
         authorId: state.scratchGui.tw.author.userId,
-        authorThumbnailUrl: state.scratchGui.tw.author.thumbnail,
+        authorAvatarSrc: state.scratchGui.tw.author.thumbnail,
+        authorAvatarFrame: state.scratchGui.tw.author.frameId,
         projectId,
         aboutMenuOpen: aboutMenuOpen(state),
         accountMenuOpen: accountMenuOpen(state),

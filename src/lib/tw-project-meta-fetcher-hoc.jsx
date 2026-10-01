@@ -93,7 +93,7 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
                         }
                         const authorName = data.author.username;
                         const authorThumbnail = `https://trampoline.turbowarp.org/avatars/${data.author.id}`;
-                        this.props.onSetAuthor(authorName, '', authorThumbnail);
+                        this.props.onSetAuthor(authorName, '', authorThumbnail, null);
                         const instructions = data.instructions || '';
                         const credits = data.description || '';
                         if (instructions || credits) {
@@ -122,7 +122,8 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
                         const authorName = data.author.username;
                         const authorId = data.author.id;
                         const authorThumbnail = `https://api.dashblocks.org/users/avatars/${data.author.profile.avatarId}`;
-                        this.props.onSetAuthor(authorName, authorId, authorThumbnail);
+                        const authorFrameId = data.author.profile.avatarFrame;
+                        this.props.onSetAuthor(authorName, authorId, authorThumbnail, authorFrameId);
                         const description = data.description || '';
                         if (description) {
                             this.props.onSetDescription(description, '', true);
@@ -163,10 +164,11 @@ const TWProjectMetaFetcherHOC = function (WrappedComponent) {
         reduxProjectId: state.scratchGui.projectState.projectId
     });
     const mapDispatchToProps = dispatch => ({
-        onSetAuthor: (username, userId, thumbnail) => dispatch(setAuthor({
+        onSetAuthor: (username, userId, thumbnail, frameId) => dispatch(setAuthor({
             username,
             userId,
-            thumbnail
+            thumbnail,
+            frameId
         })),
         onSetDescription: (instructions, credits, isDashProject) => dispatch(setDescription({
             instructions,

@@ -613,7 +613,7 @@ class Interface extends React.PureComponent {
         this.state = {
             activeTabIndex: 0,
             parentProjectMetadata: null,
-            projectforks: [],
+            projectForks: [],
             projectStudios: [],
             descriptionOverride: null,
             descriptionSaving: false
@@ -668,13 +668,13 @@ class Interface extends React.PureComponent {
         const projectId = this.props.projectId;
         if (!this.props.isPlayerOnly || !projectId || projectId === '0' || projectId.startsWith('s')) {
             this.setState({
-                projectforks: [],
+                projectForks: [],
                 projectStudios: []
             });
             return;
         }
         this.setState({
-            projectforks: [],
+            projectForks: [],
             projectStudios: []
         });
 
@@ -689,7 +689,7 @@ class Interface extends React.PureComponent {
             ]);
             if (this.props.projectId !== projectId) return;
             this.setState({
-                projectforks: forksData?.ok && Array.isArray(forksData.forks) ?
+                projectForks: forksData?.ok && Array.isArray(forksData.forks) ?
                     forksData.forks : [],
                 projectStudios: studiosData?.ok && Array.isArray(studiosData.studios) ?
                     studiosData.studios : []
@@ -697,7 +697,7 @@ class Interface extends React.PureComponent {
         } catch (error) {
             if (this.props.projectId === projectId) {
                 this.setState({
-                    projectforks: [],
+                    projectForks: [],
                     projectStudios: []
                 });
             }

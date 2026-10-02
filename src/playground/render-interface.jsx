@@ -613,6 +613,7 @@ class Interface extends React.PureComponent {
         this.state = {
             activeTabIndex: 0,
             parentProjectMetadata: null,
+            projectStats: null,
             projectForks: [],
             projectStudios: [],
             descriptionOverride: null,
@@ -620,6 +621,7 @@ class Interface extends React.PureComponent {
         };
     }
     componentDidMount () {
+        this.fetchProject();
         this.fetchProjectRelatedContent();
     }
     componentDidUpdate (prevProps) {
@@ -639,27 +641,35 @@ class Interface extends React.PureComponent {
         }
     }
     async fetchProject () {
+        const projectId = this.props.projectId;
+        this.setState({
+            parentProjectMetadata: null,
+            projectStats: null
+        });
+        if (!projectId || projectId === '0' || projectId.startsWith('s')) return;
+
         try {
-            let response = await requestDashApi(`/projects/${this.props.projectId}`);
+            let response = await requestDashApi(`/projects/${projectId}`);
+            // eslint-disable-next-line prefer-const
             let data = await response.json();
             if (!data || !data.ok) {
                 throw new Error(data?.error || 'Project metadata fetch failed');
             }
-            const parentId = data.project.parentId;
-            response = null;
-            data = null;
-            if (parentId) {
-                response = await requestDashApi(`/projects/${parentId}`);
-                data = await response.json();
-                if (!data || !data.ok) {
+            const project = data.project;
+            let parentProjectMetadata = null;
+            if (project.parentId) {
+                response = await requestDashApi(`/projects/${project.parentId}`);
+                const parentData = await response.json();
+                if (!parentData || !parentData.ok) {
                     throw new Error(data?.error || 'Parent project metadata fetch failed');
                 }
+                parentProjectMetadata = parentData.project;
             }
-            if (data) {
-                this.setState({
-                    parentProjectMetadata: data.project
-                });
-            }
+            if (this.props.projectId !== projectId) return;
+            this.setState({
+                parentProjectMetadata,
+                projectStats: project.stats
+            });
         } catch (error) {
             console.error(error);
         }
@@ -765,6 +775,7 @@ class Interface extends React.PureComponent {
         } = this.props;
         const isHomepage = isPlayerOnly && !isFullScreen;
         const isEditor = !isPlayerOnly;
+        const homepageStageWidth = Math.max(480, props.customStageSize.width) + 2;
         const descriptionText = this.state.descriptionOverride ?
             this.state.descriptionOverride :
             (description.instructions || '');
@@ -790,7 +801,7 @@ class Interface extends React.PureComponent {
                     <div
                         className={styles.wrapperRegulator}
                         style={isHomepage ? ({
-                            width: `${Math.max(480, props.customStageSize.width) + 2}px`
+                            width: `${homepageStageWidth}px`
                         }) : null}
                     >
                         <GUI
@@ -805,14 +816,21 @@ class Interface extends React.PureComponent {
                         )}
                     </div>
                     {isHomepage && projectId && projectId !== '0' && !projectId.startsWith('s') && (
-                        <>
+                        <div
+                            className={styles.projectRelatedContainer}
+                            style={{
+                                width: `calc(${homepageStageWidth}px + 480px + 1rem + 0.125rem + 0.5rem)`
+                            }}
+                        >
                             <div className={classNames(styles.section, styles.projectRelatedSection)}>
                                 <div className={styles.projectRelatedHeader}>
                                     <h2>
                                         <FormattedMessage
-                                            defaultMessage="Forks"
-                                            description="Title for the current project's fork list on the homepage"
+                                            defaultMessage="Forks ({count})"
+                                            // eslint-disable-next-line max-len
+                                            description="Title for the current project's fork list and count on the homepage"
                                             id="dash.home.project.forks"
+                                            values={{count: this.state.projectStats?.forks || 0}}
                                         />
                                     </h2>
                                     <a
@@ -876,10 +894,11 @@ class Interface extends React.PureComponent {
                                 <div className={styles.projectRelatedHeader}>
                                     <h2>
                                         <FormattedMessage
-                                            defaultMessage="Studios"
+                                            defaultMessage="Studios ({count})"
                                             // eslint-disable-next-line max-len
-                                            description="Title for the current project's studio list on the homepage"
+                                            description="Title for the current project's studio list and count on the homepage"
                                             id="dash.home.project.studios"
+                                            values={{count: this.state.projectStats?.studios || 0}}
                                         />
                                     </h2>
                                     <a
@@ -941,7 +960,7 @@ class Interface extends React.PureComponent {
                                     )}
                                 </div>
                             </div>
-                        </>
+                        </div>
                     )}
                     {isHomepage ? (
                         <React.Fragment>

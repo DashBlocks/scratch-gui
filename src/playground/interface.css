@@ -83,14 +83,20 @@ a {
     border-radius: 0.5rem;
     border: 0.0625rem solid $ui-black-transparent;
 }
+.project-related-container {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 0 0 auto;
+    order: 1;
+}
 .project-related-section {
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
     width: 100%;
-    flex: 0 0 100%;
-    order: 1;
 }
 .project-related-header {
     display: flex;

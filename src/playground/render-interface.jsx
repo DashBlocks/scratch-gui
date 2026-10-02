@@ -804,7 +804,7 @@ class Interface extends React.PureComponent {
                             <StageFooter projectId={projectId} />
                         )}
                     </div>
-                    {isHomepage && projectId !== '0' && !projectId.startsWith('s') && (
+                    {isHomepage && projectId && projectId !== '0' && !projectId.startsWith('s') && (
                         <>
                             <div className={classNames(styles.section, styles.projectRelatedSection)}>
                                 <div className={styles.projectRelatedHeader}>
@@ -1056,6 +1056,7 @@ class Interface extends React.PureComponent {
                                             className={classNames(tabClassNames.tab, {
                                                 [tabClassNames.tabDisabled]: !(
                                                     hasCloudVariables &&
+                                                    projectId &&
                                                     projectId !== '0' &&
                                                     !projectId.startsWith('s')
                                                 )

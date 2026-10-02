@@ -691,111 +691,112 @@ const User = props => {
                 dir={props.isRtl ? 'rtl' : 'ltr'}
             >
                 <div className={styles.userWrapper}>
-                    <div
-                        className={classNames(styles.section, styles.userHeader)}
-                        style={gradient.stops?.length ? {
-                            backgroundImage: `linear-gradient(${gradient.angle}deg, ${gradient.stops.map(stop => `${stop.color} ${stop.position}`).join(', ')})`
-                        } : {}}
-                    >
-                        <input
-                            type="file"
-                            accept=".png,.jpg,.jpeg,.img,.gif"
-                            ref={fileInputRef}
-                            onChange={handleChangeAvatar}
-                            style={{display: 'none'}}
-                        />
-                        <FramedAvatar
-                            // eslint-disable-next-line max-len
-                            avatarSrc={`https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}?t=${avatarCacheBuster}`}
-                            avatarClassName={styles.avatar}
-                            className={styles.avatarContainer}
-                            frameId={userData.profile.avatarFrame}
-                            onClick={handleAvatarClick}
-                            style={isMyProfile ? {cursor: 'pointer'} : null}
-                        />
-                        <div className={styles.userInfo}>
-                            <div className={styles.userInfoRow}>
-                                <h2>{userData.username}</h2>
-                                <span className={styles.userId}>
-                                    #{userData.id}
-                                </span>
-                                <span
-                                    className={classNames(styles.roleBadge, {
-                                        [styles.dashSupporterRoleBadge]: userData.role === 'dash-supporter'
-                                    })}
-                                >
-                                    {userData.role === 'dashteam' ?
-                                        props.intl.formatMessage(messages.dashTeamRole) :
-                                        userData.role === 'dasher+' ?
-                                            props.intl.formatMessage(messages.dasherPlusRole) :
-                                            userData.role === 'dash-supporter' ?
-                                                props.intl.formatMessage(messages.dashSupporterRole) :
-                                                props.intl.formatMessage(messages.dasherRole)}
-                                </span>
-                            </div>
-                            <div className={styles.userInfoRow}>
-                                <FormattedMessage
-                                    defaultMessage="Joined: {date}"
-                                    description="User's account registration date"
-                                    id="dash.user.joinedAt"
-                                    values={{
-                                        date: joinDate ?
-                                            relativeTimeSupported() ?
-                                                (
-                                                    <span title={`${props.intl.formatDate(joinDate)}, ${props.intl.formatTime(joinDate)}`}>
-                                                        <FormattedRelative value={joinDate} />
-                                                    </span>
-                                                ) :
-                                                (<FormattedDate value={joinDate} />) :
-                                            '?'
-                                    }}
+                    <div className={styles.userAboutWrapper}>
+                        <div className={styles.userAbout}>
+                            <div
+                                className={classNames(styles.section, styles.userHeader)}
+                                style={gradient.stops?.length ? {
+                                    backgroundImage: `linear-gradient(${gradient.angle}deg, ${gradient.stops.map(stop => `${stop.color} ${stop.position}`).join(', ')})`
+                                } : {}}
+                            >
+                                <input
+                                    type="file"
+                                    accept=".png,.jpg,.jpeg,.img,.gif"
+                                    ref={fileInputRef}
+                                    onChange={handleChangeAvatar}
+                                    style={{display: 'none'}}
                                 />
-                                <div className={styles.userInfoDivider} />
-                                <FormattedMessage
-                                    defaultMessage="Last Active: {date}"
-                                    description="User's last active date"
-                                    id="dash.user.lastActive"
-                                    values={{
-                                        date: lastActiveDate ?
-                                            relativeTimeSupported() ?
-                                                (
-                                                    <span title={`${props.intl.formatDate(lastActiveDate)}, ${props.intl.formatTime(lastActiveDate)}`}>
-                                                        <FormattedRelative value={lastActiveDate} />
-                                                    </span>
-                                                ) :
-                                                (<FormattedDate value={lastActiveDate} />) :
-                                            '?'
-                                    }}
+                                <FramedAvatar
+                                    // eslint-disable-next-line max-len
+                                    avatarSrc={`https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}?t=${avatarCacheBuster}`}
+                                    avatarClassName={styles.avatar}
+                                    className={styles.avatarContainer}
+                                    frameId={userData.profile.avatarFrame}
+                                    onClick={handleAvatarClick}
+                                    style={isMyProfile ? {cursor: 'pointer'} : null}
                                 />
-                                {!isMyProfile && <Button
-                                    className={styles.followButton}
-                                    disabled={followButtonDisabled}
-                                    onClick={handleClickFollowButton}
-                                >
-                                    {followButtonDisabled ? (
-                                        <Spinner
-                                            className={styles.spinner}
-                                            small
-                                        />
-                                    ) : (isFollowing ? (
+                                <div className={styles.userInfo}>
+                                    <div className={styles.userInfoRow}>
+                                        <h2>{userData.username}</h2>
+                                        <span className={styles.userId}>
+                                            #{userData.id}
+                                        </span>
+                                        <span
+                                            className={classNames(styles.roleBadge, {
+                                                [styles.dashSupporterRoleBadge]: userData.role === 'dash-supporter'
+                                            })}
+                                        >
+                                            {userData.role === 'dashteam' ?
+                                                props.intl.formatMessage(messages.dashTeamRole) :
+                                                userData.role === 'dasher+' ?
+                                                    props.intl.formatMessage(messages.dasherPlusRole) :
+                                                    userData.role === 'dash-supporter' ?
+                                                        props.intl.formatMessage(messages.dashSupporterRole) :
+                                                        props.intl.formatMessage(messages.dasherRole)}
+                                        </span>
+                                    </div>
+                                    <div className={styles.userInfoRow}>
                                         <FormattedMessage
-                                            defaultMessage="Unfollow"
-                                            description="Unfollow button on user's profile"
-                                            id="dash.user.unfollow"
+                                            defaultMessage="Joined: {date}"
+                                            description="User's account registration date"
+                                            id="dash.user.joinedAt"
+                                            values={{
+                                                date: joinDate ?
+                                                    relativeTimeSupported() ?
+                                                        (
+                                                            <span title={`${props.intl.formatDate(joinDate)}, ${props.intl.formatTime(joinDate)}`}>
+                                                                <FormattedRelative value={joinDate} />
+                                                            </span>
+                                                        ) :
+                                                        (<FormattedDate value={joinDate} />) :
+                                                    '?'
+                                            }}
                                         />
-                                    ) : (
+                                        <div className={styles.userInfoDivider} />
                                         <FormattedMessage
-                                            defaultMessage="Follow"
-                                            description="Follow button on user's profile"
-                                            id="dash.user.follow"
+                                            defaultMessage="Last Active: {date}"
+                                            description="User's last active date"
+                                            id="dash.user.lastActive"
+                                            values={{
+                                                date: lastActiveDate ?
+                                                    relativeTimeSupported() ?
+                                                        (
+                                                            <span title={`${props.intl.formatDate(lastActiveDate)}, ${props.intl.formatTime(lastActiveDate)}`}>
+                                                                <FormattedRelative value={lastActiveDate} />
+                                                            </span>
+                                                        ) :
+                                                        (<FormattedDate value={lastActiveDate} />) :
+                                                    '?'
+                                            }}
                                         />
-                                    ))}
-                                </Button>}
+                                        {!isMyProfile && <Button
+                                            className={styles.followButton}
+                                            disabled={followButtonDisabled}
+                                            onClick={handleClickFollowButton}
+                                        >
+                                            {followButtonDisabled ? (
+                                                <Spinner
+                                                    className={styles.spinner}
+                                                    small
+                                                />
+                                            ) : (isFollowing ? (
+                                                <FormattedMessage
+                                                    defaultMessage="Unfollow"
+                                                    description="Unfollow button on user's profile"
+                                                    id="dash.user.unfollow"
+                                                />
+                                            ) : (
+                                                <FormattedMessage
+                                                    defaultMessage="Follow"
+                                                    description="Follow button on user's profile"
+                                                    id="dash.user.follow"
+                                                />
+                                            ))}
+                                        </Button>}
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div className={styles.userAbout}>
-                        <div>
+
                             <div className={styles.section}>
                                 <h4>
                                     <FormattedMessage
@@ -828,6 +829,7 @@ const User = props => {
                                     </div>
                                 )}
                             </div>
+
                             {links.length > 0 && (
                                 <div className={styles.section}>
                                     {links.map((link, index) => (
@@ -907,6 +909,7 @@ const User = props => {
                                     )}
                                 </div>
                             )}
+
                             <div className={styles.section}>
                                 <h4>
                                     <FormattedMessage
@@ -948,7 +951,10 @@ const User = props => {
                                 </div>
                             </div>
                         </div>
-                        <div>
+                    </div>
+                    
+                    <div className={styles.userMain}>
+                        <div className={styles.userRecommendedAndActions}>
                             {(userData.profile.recommendedProject?.id || isMyProfile) && (
                                 <div className={styles.section}>
                                     <h2>
@@ -1057,247 +1063,251 @@ const User = props => {
                                 )}
                             </div>
                         </div>
-                    </div>
-                    <div className={styles.section}>
-                        <div className={styles.sectionHeader}>
-                            <h2>
-                                <FormattedMessage
-                                    defaultMessage="Projects ({projectsCount})"
-                                    description="Projects section title on user's profile"
-                                    id="dash.user.projects"
-                                    values={{
-                                        projectsCount: userData.profile.stats.projects
-                                    }}
-                                />
-                            </h2>
-                            {projects.length > 0 && (
-                                <a
-                                    onClick={() => window.open(`./user-projects#${userData.username}`, '_blank')}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.viewAllLink}
-                                >
+
+                        <div className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <h2>
                                     <FormattedMessage
-                                        defaultMessage="View all"
-                                        description="Link text for viewing all items on user's profile"
-                                        id="dash.user.viewAll"
+                                        defaultMessage="Projects ({projectsCount})"
+                                        description="Projects section title on user's profile"
+                                        id="dash.user.projects"
+                                        values={{
+                                            projectsCount: userData.profile.stats.projects
+                                        }}
                                     />
-                                </a>
-                            )}
-                        </div>
-                        <div className={styles.projectGrid}>
-                            {projects.length > 0 ? projects.map(project => (
-                                <div
-                                    key={project.id}
-                                    className={styles.projectCard}
-                                    title={props.intl.formatMessage(messages.hoverText, {
-                                        author: userData.username,
-                                        title: project.name
-                                    })}
-                                    // eslint-disable-next-line react/jsx-no-bind
-                                    onClick={() => window.open(`./#${project.id}`, '_blank')}
-                                >
-                                    <div className={styles.thumbWrapper}>
-                                        <img
-                                            draggable={false}
-                                            src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
-                                            alt={project.id}
+                                </h2>
+                                {projects.length > 0 && (
+                                    <a
+                                        onClick={() => window.open(`./user-projects#${userData.username}`, '_blank')}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.viewAllLink}
+                                    >
+                                        <FormattedMessage
+                                            defaultMessage="View all"
+                                            description="Link text for viewing all items on user's profile"
+                                            id="dash.user.viewAll"
                                         />
-                                    </div>
-                                    <div className={styles.projectInfo}>
-                                        <h4>{project.name}</h4>
-                                        <p>
-                                            <FormattedMessage
-                                                defaultMessage="by {author}"
-                                                description="Displayed under project title to credit creator"
-                                                id="tw.studioview.authorAttribution"
-                                                values={{
-                                                    author: userData.username
-                                                }}
+                                    </a>
+                                )}
+                            </div>
+                            <div className={styles.projectGrid}>
+                                {projects.length > 0 ? projects.map(project => (
+                                    <div
+                                        key={project.id}
+                                        className={styles.projectCard}
+                                        title={props.intl.formatMessage(messages.hoverText, {
+                                            author: userData.username,
+                                            title: project.name
+                                        })}
+                                        // eslint-disable-next-line react/jsx-no-bind
+                                        onClick={() => window.open(`./#${project.id}`, '_blank')}
+                                    >
+                                        <div className={styles.thumbWrapper}>
+                                            <img
+                                                draggable={false}
+                                                src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
+                                                alt={project.id}
                                             />
-                                        </p>
+                                        </div>
+                                        <div className={styles.projectInfo}>
+                                            <h4>{project.name}</h4>
+                                            <p>
+                                                <FormattedMessage
+                                                    defaultMessage="by {author}"
+                                                    description="Displayed under project title to credit creator"
+                                                    id="tw.studioview.authorAttribution"
+                                                    values={{
+                                                        author: userData.username
+                                                    }}
+                                                />
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            )) : (
-                                <FormattedMessage
-                                    defaultMessage="This user has no projects"
-                                    description="Placeholder text when the user has no projects"
-                                    id="dash.user.projects.placeholder"
-                                />
-                            )}
-                        </div>
-                    </div>
-                    <div className={styles.section}>
-                        <div className={styles.sectionHeader}>
-                            <h2>
-                                <FormattedMessage
-                                    defaultMessage="Studios ({studiosCount})"
-                                    description="Studios section title on user's profile"
-                                    id="dash.user.studios"
-                                    values={{
-                                        studiosCount: userData.profile.stats.studios
-                                    }}
-                                />
-                            </h2>
-                            {studios.length > 0 && (
-                                <a
-                                    onClick={() => window.open(`./user-studios#${userData.username}`, '_blank')}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.viewAllLink}
-                                >
+                                )) : (
                                     <FormattedMessage
-                                        defaultMessage="View all"
-                                        description="Link text for viewing all items on user's profile"
-                                        id="dash.user.viewAll"
+                                        defaultMessage="This user has no projects"
+                                        description="Placeholder text when the user has no projects"
+                                        id="dash.user.projects.placeholder"
                                     />
-                                </a>
-                            )}
+                                )}
+                            </div>
                         </div>
-                        <div className={styles.studioGrid}>
-                            {studios.length > 0 ? studios.map(studio => (
-                                <div
-                                    key={studio.id}
-                                    className={styles.studioCard}
-                                    title={props.intl.formatMessage(messages.hoverText, {
-                                        author: studio.owner.username,
-                                        title: studio.name
-                                    })}
-                                    // eslint-disable-next-line react/jsx-no-bind
-                                    onClick={() => window.open(`./studio#${studio.id}`, '_blank')}
-                                >
-                                    <div className={styles.studioThumbWrapper}>
-                                        <img
-                                            draggable={false}
-                                            src={`https://api.dashblocks.org/studios/thumbnails/${studio.thumbnailId || 1}`}
-                                            alt={studio.id}
+
+                        <div className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <h2>
+                                    <FormattedMessage
+                                        defaultMessage="Studios ({studiosCount})"
+                                        description="Studios section title on user's profile"
+                                        id="dash.user.studios"
+                                        values={{
+                                            studiosCount: userData.profile.stats.studios
+                                        }}
+                                    />
+                                </h2>
+                                {studios.length > 0 && (
+                                    <a
+                                        onClick={() => window.open(`./user-studios#${userData.username}`, '_blank')}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.viewAllLink}
+                                    >
+                                        <FormattedMessage
+                                            defaultMessage="View all"
+                                            description="Link text for viewing all items on user's profile"
+                                            id="dash.user.viewAll"
                                         />
-                                    </div>
-                                    <div className={styles.studioInfo}>
-                                        <h4>{studio.name}</h4>
-                                        <p>
-                                            <FormattedMessage
-                                                defaultMessage="by {author}"
-                                                description="Displayed under project title to credit creator"
-                                                id="tw.studioview.authorAttribution"
-                                                values={{
-                                                    author: studio.owner.username
-                                                }}
+                                    </a>
+                                )}
+                            </div>
+                            <div className={styles.studioGrid}>
+                                {studios.length > 0 ? studios.map(studio => (
+                                    <div
+                                        key={studio.id}
+                                        className={styles.studioCard}
+                                        title={props.intl.formatMessage(messages.hoverText, {
+                                            author: studio.owner.username,
+                                            title: studio.name
+                                        })}
+                                        // eslint-disable-next-line react/jsx-no-bind
+                                        onClick={() => window.open(`./studio#${studio.id}`, '_blank')}
+                                    >
+                                        <div className={styles.studioThumbWrapper}>
+                                            <img
+                                                draggable={false}
+                                                src={`https://api.dashblocks.org/studios/thumbnails/${studio.thumbnailId || 1}`}
+                                                alt={studio.id}
                                             />
-                                        </p>
+                                        </div>
+                                        <div className={styles.studioInfo}>
+                                            <h4>{studio.name}</h4>
+                                            <p>
+                                                <FormattedMessage
+                                                    defaultMessage="by {author}"
+                                                    description="Displayed under project title to credit creator"
+                                                    id="tw.studioview.authorAttribution"
+                                                    values={{
+                                                        author: studio.owner.username
+                                                    }}
+                                                />
+                                            </p>
+                                        </div>
                                     </div>
-                                </div>
-                            )) : (
-                                <FormattedMessage
-                                    defaultMessage="This user has no studios"
-                                    description="Placeholder text when the user has no studios"
-                                    id="dash.user.studios.placeholder"
-                                />
-                            )}
-                        </div>
-                    </div>
-                    <div className={styles.section}>
-                        <div className={styles.sectionHeader}>
-                            <h2>
-                                <FormattedMessage
-                                    defaultMessage="Followers ({followersCount})"
-                                    description="Followers section title on user's profile"
-                                    id="dash.user.followers"
-                                    values={{
-                                        followersCount: userData.profile.stats.followers
-                                    }}
-                                />
-                            </h2>
-                            {followers.length > 0 && (
-                                <a
-                                    onClick={() => window.open(`./user-followers#${userData.username}`, '_blank')}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.viewAllLink}
-                                >
+                                )) : (
                                     <FormattedMessage
-                                        defaultMessage="View all"
-                                        description="Link text for viewing all items on user's profile"
-                                        id="dash.user.viewAll"
+                                        defaultMessage="This user has no studios"
+                                        description="Placeholder text when the user has no studios"
+                                        id="dash.user.studios.placeholder"
                                     />
-                                </a>
-                            )}
+                                )}
+                            </div>
                         </div>
-                        <div className={styles.followList}>
-                            {followers.length > 0 ? followers.map(follower => (
-                                <div
-                                    key={follower.id}
-                                    className={styles.followCard}
-                                    // eslint-disable-next-line react/jsx-no-bind
-                                    onClick={() => window.open(`./user#${follower.id}`, '_blank')}
-                                >
-                                    <FramedAvatar
-                                        avatarSrc={`https://api.dashblocks.org/users/avatars/${follower.profile.avatarId}`}
-                                        avatarClassName={styles.followAvatar}
-                                        className={styles.followAvatarContainer}
-                                        frameId={follower.profile.avatarFrame}
-                                    />
-                                    <span className={styles.followUsername}>{follower.username}</span>
-                                </div>
-                            )) : (
-                                <FormattedMessage
-                                    defaultMessage="This user has no followers"
-                                    description="Placeholder text when the user has no followers"
-                                    id="dash.user.followers.placeholder"
-                                />
-                            )}
-                        </div>
-                    </div>
-                    <div className={styles.section}>
-                        <div className={styles.sectionHeader}>
-                            <h2>
-                                <FormattedMessage
-                                    defaultMessage="Following ({followingCount})"
-                                    description="Following section title on user's profile"
-                                    id="dash.user.following"
-                                    values={{
-                                        followingCount: userData.profile.stats.following
-                                    }}
-                                />
-                            </h2>
-                            {following.length > 0 && (
-                                <a
-                                    onClick={() => window.open(`./user-following#${userData.username}`, '_blank')}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className={styles.viewAllLink}
-                                >
+
+                        <div className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <h2>
                                     <FormattedMessage
-                                        defaultMessage="View all"
-                                        description="Link text for viewing all items on user's profile"
-                                        id="dash.user.viewAll"
+                                        defaultMessage="Followers ({followersCount})"
+                                        description="Followers section title on user's profile"
+                                        id="dash.user.followers"
+                                        values={{
+                                            followersCount: userData.profile.stats.followers
+                                        }}
                                     />
-                                </a>
-                            )}
+                                </h2>
+                                {followers.length > 0 && (
+                                    <a
+                                        onClick={() => window.open(`./user-followers#${userData.username}`, '_blank')}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.viewAllLink}
+                                    >
+                                        <FormattedMessage
+                                            defaultMessage="View all"
+                                            description="Link text for viewing all items on user's profile"
+                                            id="dash.user.viewAll"
+                                        />
+                                    </a>
+                                )}
+                            </div>
+                            <div className={styles.followList}>
+                                {followers.length > 0 ? followers.map(follower => (
+                                    <div
+                                        key={follower.id}
+                                        className={styles.followCard}
+                                        // eslint-disable-next-line react/jsx-no-bind
+                                        onClick={() => window.open(`./user#${follower.id}`, '_blank')}
+                                    >
+                                        <FramedAvatar
+                                            avatarSrc={`https://api.dashblocks.org/users/avatars/${follower.profile.avatarId}`}
+                                            avatarClassName={styles.followAvatar}
+                                            className={styles.followAvatarContainer}
+                                            frameId={follower.profile.avatarFrame}
+                                        />
+                                        <span className={styles.followUsername}>{follower.username}</span>
+                                    </div>
+                                )) : (
+                                    <FormattedMessage
+                                        defaultMessage="This user has no followers"
+                                        description="Placeholder text when the user has no followers"
+                                        id="dash.user.followers.placeholder"
+                                    />
+                                )}
+                            </div>
                         </div>
-                        <div className={styles.followList}>
-                            {following.length > 0 ? following.map(followed => (
-                                <div
-                                    key={followed.id}
-                                    className={styles.followCard}
-                                    // eslint-disable-next-line react/jsx-no-bind
-                                    onClick={() => window.open(`./user#${followed.id}`, '_blank')}
-                                >
-                                    <FramedAvatar
-                                        avatarSrc={`https://api.dashblocks.org/users/avatars/${followed.profile.avatarId}`}
-                                        avatarClassName={styles.followAvatar}
-                                        className={styles.followAvatarContainer}
-                                        frameId={followed.profile.avatarFrame}
+
+                        <div className={styles.section}>
+                            <div className={styles.sectionHeader}>
+                                <h2>
+                                    <FormattedMessage
+                                        defaultMessage="Following ({followingCount})"
+                                        description="Following section title on user's profile"
+                                        id="dash.user.following"
+                                        values={{
+                                            followingCount: userData.profile.stats.following
+                                        }}
                                     />
-                                    <span className={styles.followUsername}>{followed.username}</span>
-                                </div>
-                            )) : (
-                                <FormattedMessage
-                                    defaultMessage="This user is not following anyone"
-                                    description="Placeholder text when the user is not following anyone"
-                                    id="dash.user.following.placeholder"
-                                />
-                            )}
+                                </h2>
+                                {following.length > 0 && (
+                                    <a
+                                        onClick={() => window.open(`./user-following#${userData.username}`, '_blank')}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.viewAllLink}
+                                    >
+                                        <FormattedMessage
+                                            defaultMessage="View all"
+                                            description="Link text for viewing all items on user's profile"
+                                            id="dash.user.viewAll"
+                                        />
+                                    </a>
+                                )}
+                            </div>
+                            <div className={styles.followList}>
+                                {following.length > 0 ? following.map(followed => (
+                                    <div
+                                        key={followed.id}
+                                        className={styles.followCard}
+                                        // eslint-disable-next-line react/jsx-no-bind
+                                        onClick={() => window.open(`./user#${followed.id}`, '_blank')}
+                                    >
+                                        <FramedAvatar
+                                            avatarSrc={`https://api.dashblocks.org/users/avatars/${followed.profile.avatarId}`}
+                                            avatarClassName={styles.followAvatar}
+                                            className={styles.followAvatarContainer}
+                                            frameId={followed.profile.avatarFrame}
+                                        />
+                                        <span className={styles.followUsername}>{followed.username}</span>
+                                    </div>
+                                )) : (
+                                    <FormattedMessage
+                                        defaultMessage="This user is not following anyone"
+                                        description="Placeholder text when the user is not following anyone"
+                                        id="dash.user.following.placeholder"
+                                    />
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

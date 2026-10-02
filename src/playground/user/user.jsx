@@ -1160,7 +1160,7 @@ const User = props => {
                                     key={studio.id}
                                     className={styles.studioCard}
                                     title={props.intl.formatMessage(messages.hoverText, {
-                                        author: userData.owner.username,
+                                        author: studio.owner.username,
                                         title: studio.name
                                     })}
                                     // eslint-disable-next-line react/jsx-no-bind
@@ -1181,7 +1181,7 @@ const User = props => {
                                                 description="Displayed under project title to credit creator"
                                                 id="tw.studioview.authorAttribution"
                                                 values={{
-                                                    author: userData.owner.username
+                                                    author: studio.owner.username
                                                 }}
                                             />
                                         </p>

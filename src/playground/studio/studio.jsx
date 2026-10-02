@@ -192,6 +192,10 @@ const Studio = props => {
         setAddingProject(true);
         setActionError(null);
         try {
+            if (!session) {
+                window.open('./login', '_self');
+                return;
+            }
             const projectId = Number(projectUrl.split('#')[1]);
             if (!projectId) throw new Error('Invalid project URL');
             const response = await requestDashApi(`/studios/${id}/projects`, {
@@ -528,7 +532,7 @@ const Studio = props => {
                                 >
                                     <Input
                                         className={styles.addProjectInput}
-                                        type="url"
+                                        type="text"
                                         required
                                         value={projectUrl}
                                         // Do not translate

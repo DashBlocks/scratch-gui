@@ -79,6 +79,17 @@ body {
     border: 0.0625rem solid $ui-black-transparent;
 }
 
+.create-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space;
+    margin-bottom: $space;
+}
+
+.section h3 {
+    margin: $space 0;
+}
+
 .spinner {
     display: flex;
     justify-content: center;
@@ -92,6 +103,42 @@ body {
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
     padding: $space;
+    gap: $space;
+}
+
+.studio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    border: 0.0625rem solid $ui-black-transparent;
+    border-radius: $space;
+    padding: $space;
+    gap: $space;
+}
+
+.studio-card {
+    border: 0.0625rem solid $ui-black-transparent;
+    border-radius: $space;
+    overflow: hidden;
+    background-color: $ui-secondary;
+    cursor: pointer;
+}
+
+.studio-thumb-wrapper {
+    height: auto;
+}
+
+.studio-thumb-wrapper img {
+    aspect-ratio: 3 / 2;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.studio-info {
+    padding: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: $space;
 }
 

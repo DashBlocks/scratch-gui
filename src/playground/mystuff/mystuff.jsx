@@ -36,6 +36,11 @@ const messages = defineMessages({
         description: 'Confirmation message when deleting a project',
         id: 'dash.mystuff.confirmDeleteProject'
     },
+    confirmDeleteStudio: {
+        defaultMessage: 'Are you sure you want to delete {studioName}? This action CANNOT be undone!',
+        description: 'Confirmation message when deleting a studio',
+        id: 'dash.mystuff.confirmDeleteStudio'
+    },
     deletedOnlyFromProfile: {
         defaultMessage: 'Project deleted from your profile, but it still accessable via ID - full deletion requested',
         description: 'Message displayed when a project is only deleted from the user\'s profile',
@@ -50,6 +55,11 @@ const MyStuff = props => {
     const [offset, setOffset] = useState(0);
     const [hasMore, setHasMore] = useState(true);
     const [loadMoreButtonDisabled, setLoadMoreButtonDisabled] = useState(false);
+    const [studios, setStudios] = useState([]);
+    const [studiosOffset, setStudiosOffset] = useState(0);
+    const [studiosHaveMore, setStudiosHaveMore] = useState(true);
+    const [loadMoreStudiosDisabled, setLoadMoreStudiosDisabled] = useState(false);
+    const [creatingStudio, setCreatingStudio] = useState(false);
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -75,6 +85,27 @@ const MyStuff = props => {
         }
     };
 
+    const fetchStudios = async (userId, currentOffset) => {
+        setLoadMoreStudiosDisabled(true);
+        try {
+            const studiosRes = await requestDashApi(
+                `/users/${userId}/studios?limit=${limit}&offset=${currentOffset}`,
+                {credentials: 'include'}
+            );
+            const studiosData = await studiosRes.json();
+            if (!studiosData.ok) throw new Error(studiosData.error);
+            setStudios(prevStudios => (currentOffset === 0 ?
+                (studiosData.studios || []) :
+                [...prevStudios, ...(studiosData.studios || [])]));
+            setStudiosHaveMore((studiosData.studios || []).length === limit);
+            setStudiosOffset(currentOffset);
+        } catch (catchedError) {
+            setError(catchedError.message);
+        } finally {
+            setLoadMoreStudiosDisabled(false);
+        }
+    };
+
     useEffect(() => {
         document.title = `${props.intl.formatMessage(messages.title)} - ${APP_NAME}`;
 
@@ -92,7 +123,10 @@ const MyStuff = props => {
                 if (!userDataResult.ok) throw new Error(userDataResult.error);
 
                 setUserData(userDataResult.user);
-                await fetchProjects(session.id, 0);
+                await Promise.all([
+                    fetchProjects(session.id, 0),
+                    fetchStudios(session.id, 0)
+                ]);
             } catch (catchedError) {
                 setError(catchedError.message);
             } finally {
@@ -102,6 +136,29 @@ const MyStuff = props => {
 
         fetchFullProfile();
     }, []);
+
+    const handleCreateStudio = async () => {
+        setCreatingStudio(true);
+        try {
+            const response = await requestDashApi('/studios', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    name: 'Untitled Studio',
+                    description: ''
+                }),
+                credentials: 'include'
+            });
+            const data = await response.json();
+            if (!data.ok) throw new Error(data.error || 'Failed to create studio');
+            window.location.href = `./studio#${data.studio.id}`;
+        } catch (catchedError) {
+            // eslint-disable-next-line no-alert
+            alert(`Error creating studio: ${catchedError.message}`);
+        } finally {
+            setCreatingStudio(false);
+        }
+    };
 
     const handleDeleteProject = async projectId => {
         const project = projects.find(p => p.id === projectId);
@@ -133,6 +190,34 @@ const MyStuff = props => {
         } catch (catchedError) {
             // eslint-disable-next-line no-alert
             alert(`Error deleting ${project.name} project: ${catchedError.message}`);
+        }
+    };
+
+    const handleDeleteStudio = async studioId => {
+        const studio = studios.find(item => item.id === studioId);
+        if (
+            !studio ||
+                // eslint-disable-next-line no-alert
+                !window.confirm(
+                    props.intl.formatMessage(messages.confirmDeleteStudio, {
+                        studioName: studio.name
+                    })
+                )
+        ) {
+            return;
+        }
+
+        try {
+            const res = await requestDashApi(`/studios/${studioId}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            setStudios(prevStudios => prevStudios.filter(item => item.id !== studioId));
+        } catch (catchedError) {
+            // eslint-disable-next-line no-alert
+            alert(`Error deleting ${studio.name} studio: ${catchedError.message}`);
         }
     };
 
@@ -185,6 +270,38 @@ const MyStuff = props => {
                                 id="dash.mystuff.title"
                             />
                         </h2>
+                        <div className={styles.createButtons}>
+                            <Button
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onClick={() => {
+                                    window.location.href = './editor';
+                                }}
+                            >
+                                <FormattedMessage
+                                    defaultMessage="Create project"
+                                    description="Button label to create a project"
+                                    id="dash.mystuff.createProject"
+                                />
+                            </Button>
+                            <Button
+                                disabled={creatingStudio}
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onClick={handleCreateStudio}
+                            >
+                                <FormattedMessage
+                                    defaultMessage="Create studio"
+                                    description="Button label to create a studio"
+                                    id="dash.mystuff.createStudio"
+                                />
+                            </Button>
+                        </div>
+                        <h3>
+                            <FormattedMessage
+                                defaultMessage="Projects"
+                                description="Heading for the projects subsection on My Stuff"
+                                id="dash.mystuff.projects"
+                            />
+                        </h3>
                         <div className={styles.projectGrid}>
                             {projects.map(project => (
                                 <div
@@ -265,6 +382,69 @@ const MyStuff = props => {
                                             defaultMessage="Load more"
                                             description="Button text for loading more messages"
                                             id="dash.messages.loadMore"
+                                        />
+                                    )}
+                                </Button>
+                            )}
+                        </div>
+                        <h3>
+                            <FormattedMessage
+                                defaultMessage="Studios"
+                                description="Heading for the studios subsection on My Stuff"
+                                id="dash.mystuff.studios"
+                            />
+                        </h3>
+                        <div className={styles.studioGrid}>
+                            {studios.map(studio => (
+                                <div
+                                    key={studio.id}
+                                    className={styles.studioCard}
+                                    // eslint-disable-next-line react/jsx-no-bind
+                                    onClick={() => window.open(`./studio#${studio.id}`, '_blank')}
+                                >
+                                    <div className={styles.studioThumbWrapper}>
+                                        <img
+                                            draggable={false}
+                                            src={`https://api.dashblocks.org/studios/thumbnails/${studio.thumbnailId || 1}`}
+                                            alt={studio.id}
+                                        />
+                                    </div>
+                                    <div className={styles.studioInfo}>
+                                        <h4>{studio.name}</h4>
+                                        <Button
+                                            className={styles.deleteProjectButton}
+                                            // eslint-disable-next-line react/jsx-no-bind
+                                            onClick={event => {
+                                                event.stopPropagation();
+                                                handleDeleteStudio(studio.id);
+                                            }}
+                                        >
+                                            <FormattedMessage
+                                                defaultMessage="Delete"
+                                                description="Label for delete project button"
+                                                id="dash.mystuff.delete"
+                                            />
+                                        </Button>
+                                    </div>
+                                </div>
+                            ))}
+                            {studiosHaveMore && (
+                                <Button
+                                    className={styles.loadMoreButton}
+                                    disabled={loadMoreStudiosDisabled}
+                                    // eslint-disable-next-line react/jsx-no-bind
+                                    onClick={() => fetchStudios(userData.id, studiosOffset + limit)}
+                                >
+                                    {loadMoreStudiosDisabled ? (
+                                        <Spinner
+                                            className={styles.spinner}
+                                            small
+                                        />
+                                    ) : (
+                                        <FormattedMessage
+                                            defaultMessage="Load more"
+                                            description="Button text for loading more studios"
+                                            id="dash.mystuff.loadMoreStudios"
                                         />
                                     )}
                                 </Button>

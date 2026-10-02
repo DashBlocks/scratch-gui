@@ -543,6 +543,7 @@ const Studio = props => {
                                     />
                                     <Button
                                         className={styles.button}
+                                        // eslint-disable-next-line react/jsx-no-bind
                                         onClick={handleAddProject}
                                         disabled={addingProject}
                                     >

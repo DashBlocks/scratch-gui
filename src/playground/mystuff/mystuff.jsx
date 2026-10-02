@@ -279,7 +279,7 @@ const MyStuff = props => {
                                 }}
                             >
                                 <FormattedMessage
-                                    defaultMessage="Create project"
+                                    defaultMessage="New project"
                                     description="Button label to create a project"
                                     id="dash.mystuff.createProject"
                                 />
@@ -291,7 +291,7 @@ const MyStuff = props => {
                                 onClick={handleCreateStudio}
                             >
                                 <FormattedMessage
-                                    defaultMessage="Create studio"
+                                    defaultMessage="New studio"
                                     description="Button label to create a studio"
                                     id="dash.mystuff.createStudio"
                                 />

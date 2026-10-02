@@ -272,6 +272,7 @@ const MyStuff = props => {
                         </h2>
                         <div className={styles.createButtons}>
                             <Button
+                                className={styles.createButton}
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onClick={() => {
                                     window.location.href = './editor';
@@ -284,6 +285,7 @@ const MyStuff = props => {
                                 />
                             </Button>
                             <Button
+                                className={styles.createButton}
                                 disabled={creatingStudio}
                                 // eslint-disable-next-line react/jsx-no-bind
                                 onClick={handleCreateStudio}

@@ -86,6 +86,18 @@ body {
     margin-bottom: $space;
 }
 
+.create-button {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 0.75rem 1rem;
+    background: $looks-secondary;
+    color: white;
+    border: 1px solid $looks-secondary;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: inline-block;
+    width: fit-content;
+}
+
 .section h3 {
     margin: $space 0;
 }
@@ -107,8 +119,8 @@ body {
 }
 
 .studio-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    display: flex;
+    flex-direction: column;
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
     padding: $space;
@@ -121,13 +133,17 @@ body {
     overflow: hidden;
     background-color: $ui-secondary;
     cursor: pointer;
+    display: flex;
+    align-items: center;
 }
 
 .studio-thumb-wrapper {
-    height: auto;
+    flex: 0 1 13.5rem;
+    max-width: 45%;
 }
 
 .studio-thumb-wrapper img {
+    display: block;
     aspect-ratio: 3 / 2;
     width: 100%;
     height: auto;
@@ -137,9 +153,11 @@ body {
 .studio-info {
     padding: 0.75rem;
     display: flex;
+    flex: 1;
     align-items: center;
     justify-content: space-between;
     gap: $space;
+    min-width: 0;
 }
 
 .project-card {
@@ -180,6 +198,18 @@ body {
 }
 
 .see-inside-button {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 0.75rem 1rem;
+    background: $looks-secondary;
+    color: white;
+    border: 1px solid $looks-secondary;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: inline-block;
+    width: fit-content;
+}
+
+.load-more-button {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     padding: 0.75rem 1rem;
     background: $looks-secondary;

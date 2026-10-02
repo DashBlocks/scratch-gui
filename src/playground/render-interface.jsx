@@ -608,9 +608,14 @@ class Interface extends React.PureComponent {
         this.state = {
             activeTabIndex: 0,
             parentProjectMetadata: null,
+            projectRemixes: [],
+            projectStudios: [],
             descriptionOverride: null,
             descriptionSaving: false
         };
+    }
+    componentDidMount () {
+        this.fetchProjectRelatedContent();
     }
     componentDidUpdate (prevProps) {
         if (prevProps.isLoading && !this.props.isLoading) {
@@ -618,6 +623,7 @@ class Interface extends React.PureComponent {
         }
         if (prevProps.projectId !== this.props.projectId) {
             this.fetchProject();
+            this.fetchProjectRelatedContent();
         }
     }
     handleUpdateProjectTitle (title, isDefault) {
@@ -651,6 +657,45 @@ class Interface extends React.PureComponent {
             }
         } catch (error) {
             console.error(error);
+        }
+    }
+    async fetchProjectRelatedContent () {
+        const projectId = this.props.projectId;
+        if (!this.props.isPlayerOnly || !projectId || projectId === '0') {
+            this.setState({
+                projectRemixes: [],
+                projectStudios: []
+            });
+            return;
+        }
+        this.setState({
+            projectRemixes: [],
+            projectStudios: []
+        });
+
+        try {
+            const [remixesResponse, studiosResponse] = await Promise.all([
+                requestDashApi(`/projects/${projectId}/forks?limit=20&offset=0`),
+                requestDashApi(`/projects/${projectId}/studios?limit=20&offset=0`)
+            ]);
+            const [remixesData, studiosData] = await Promise.all([
+                remixesResponse.json(),
+                studiosResponse.json()
+            ]);
+            if (this.props.projectId !== projectId) return;
+            this.setState({
+                projectRemixes: remixesData?.ok && Array.isArray(remixesData.forks) ?
+                    remixesData.forks : [],
+                projectStudios: studiosData?.ok && Array.isArray(studiosData.studios) ?
+                    studiosData.studios : []
+            });
+        } catch (error) {
+            if (this.props.projectId === projectId) {
+                this.setState({
+                    projectRemixes: [],
+                    projectStudios: []
+                });
+            }
         }
     }
     async handleChangeProjectDescription (text) {
@@ -752,6 +797,145 @@ class Interface extends React.PureComponent {
                         />
                         {isHomepage && (
                             <StageFooter projectId={projectId} />
+                        )}
+                        {isHomepage && projectId !== '0' && (
+                            <>
+                                <div className={classNames(styles.section, styles.projectRelatedSection)}>
+                                    <div className={styles.projectRelatedHeader}>
+                                        <h2>
+                                            <FormattedMessage
+                                                defaultMessage="Remixes"
+                                                description="Title for the current project's remix list on the homepage"
+                                                id="dash.home.project.remixes"
+                                            />
+                                        </h2>
+                                        <a
+                                            href={`./project-forks#${projectId}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.projectRelatedViewAll}
+                                        >
+                                            <FormattedMessage
+                                                defaultMessage="View all"
+                                                description="Link to all remixes of a project"
+                                                id="dash.user.viewAll"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div className={styles.projectRelatedGrid}>
+                                        {/* eslint-disable-next-line max-len */}
+                                        {this.state.projectRemixes.length > 0 ? this.state.projectRemixes.map(project => (
+                                            <div
+                                                key={project.id}
+                                                className={styles.projectRelatedCard}
+                                                title={intl.formatMessage(
+                                                    messages.hoverText,
+                                                    {author: project.author.username, title: project.name}
+                                                )}
+                                                // eslint-disable-next-line react/jsx-no-bind
+                                                onClick={() => window.open(`./#${project.id}`, '_blank')}
+                                            >
+                                                <div className={styles.projectRelatedThumbWrapper}>
+                                                    <img
+                                                        draggable={false}
+                                                        src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
+                                                        alt={project.id}
+                                                    />
+                                                </div>
+                                                <div className={styles.projectRelatedInfo}>
+                                                    <h4>{project.name}</h4>
+                                                    <p>
+                                                        <FormattedMessage
+                                                            defaultMessage="by {author}"
+                                                            // eslint-disable-next-line max-len
+                                                            description="Displayed under a remix title to credit its creator"
+                                                            id="tw.studioview.authorAttribution"
+                                                            values={{
+                                                                author: project.author.username
+                                                            }}
+                                                        />
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )) : (
+                                            <FormattedMessage
+                                                defaultMessage="This project has no remixes"
+                                                description="Placeholder when a project has no remixes on the homepage"
+                                                id="dash.home.project.remixes.placeholder"
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                                <div className={classNames(styles.section, styles.projectRelatedSection)}>
+                                    <div className={styles.projectRelatedHeader}>
+                                        <h2>
+                                            <FormattedMessage
+                                                defaultMessage="Studios"
+                                                // eslint-disable-next-line max-len
+                                                description="Title for the current project's studio list on the homepage"
+                                                id="dash.home.project.studios"
+                                            />
+                                        </h2>
+                                        <a
+                                            href={`./project-studios#${projectId}`}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.projectRelatedViewAll}
+                                        >
+                                            <FormattedMessage
+                                                defaultMessage="View all"
+                                                description="Link to all studios containing a project"
+                                                id="dash.user.viewAll"
+                                            />
+                                        </a>
+                                    </div>
+                                    <div className={styles.projectRelatedGrid}>
+                                        {/* eslint-disable-next-line max-len */}
+                                        {this.state.projectStudios.length > 0 ? this.state.projectStudios.map(studio => (
+                                            <div
+                                                key={studio.id}
+                                                className={styles.projectRelatedCard}
+                                                title={intl.formatMessage(
+                                                    messages.hoverText,
+                                                    {author: studio.owner.username, title: studio.name}
+                                                )}
+                                                // eslint-disable-next-line react/jsx-no-bind
+                                                onClick={() => window.open(`./studio#${studio.id}`, '_blank')}
+                                            >
+                                                <div className={styles.projectRelatedStudioThumbWrapper}>
+                                                    <img
+                                                        draggable={false}
+                                                        // eslint-disable-next-line max-len
+                                                        src={`https://api.dashblocks.org/studios/thumbnails/${studio.thumbnailId || 1}`}
+                                                        alt={studio.id}
+                                                    />
+                                                </div>
+                                                <div className={styles.projectRelatedInfo}>
+                                                    <h4>{studio.name}</h4>
+                                                    <p>
+                                                        <FormattedMessage
+                                                            defaultMessage="by {author}"
+                                                            // eslint-disable-next-line max-len
+                                                            description="Displayed under a studio title to credit its creator"
+                                                            id="tw.studioview.authorAttribution"
+                                                            values={{
+                                                                author: studio.owner.username
+                                                            }}
+                                                        />
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )) : (
+                                            <FormattedMessage
+                                                defaultMessage="This project is not in any studios"
+                                                // eslint-disable-next-line max-len
+                                                description="Placeholder when a project is not in any studios on the homepage"
+                                                id="dash.home.project.studios.placeholder"
+                                            />
+                                        )}
+                                    </div>
+                                </div>
+                            </>
                         )}
                     </div>
                     {isHomepage ? (

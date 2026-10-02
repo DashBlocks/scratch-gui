@@ -58,13 +58,13 @@ body {
     color: $page-foreground;
 }
 
-.user-projects-wrapper {
+.project-studios-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: $space;
     background: $ui-primary;
-    margin: 0px;
+    margin: 0;
     padding: $space;
     width: 100%;
 }
@@ -73,10 +73,50 @@ body {
     width: 100%;
     max-width: 900px;
     background: $ui-white;
-    margin: 0px;
+    margin: 0;
     padding: $space;
     border-radius: $space;
     border: 0.0625rem solid $ui-black-transparent;
+}
+
+.studio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: $space;
+    width: 100%;
+    border: 0.0625rem solid $ui-black-transparent;
+    border-radius: $space;
+    padding: $space;
+}
+
+.studio-card {
+    border: 0.0625rem solid $ui-black-transparent;
+    border-radius: $space;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: $ui-secondary;
+    width: 100%;
+    min-height: 12rem;
+}
+
+.thumb-wrapper img {
+    aspect-ratio: 3 / 2;
+    width: 100%;
+    background: #f3f4f6;
+}
+
+.studio-info {
+    padding: 0.75rem;
+}
+
+.studio-info h4 {
+    margin: 0 0 0.5rem;
+}
+
+.studio-info p {
+    font-size: 0.85rem;
+    color: #4b5563;
+    margin: 0;
 }
 
 .spinner {
@@ -84,46 +124,6 @@ body {
     justify-content: center;
     align-items: center;
     height: 10vh;
-}
-
-.project-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-    gap: $space;
-    width: 100%; 
-    border: 0.0625rem solid $ui-black-transparent;
-    border-radius: $space;
-    padding: $space;
-}
-
-.project-card {
-    border: 0.0625rem solid $ui-black-transparent;
-    border-radius: $space;
-    overflow: hidden;
-    cursor: pointer;
-    background-color: $ui-secondary;
-    width: 100%; 
-    min-height: 12rem;
-}
-
-.thumb-wrapper img {
-    aspect-ratio: 4 / 3;
-    width: 100%;
-    background: #f3f4f6;
-}
-
-.project-info {
-    padding: 0.75rem;
-}
-
-.project-info h4 {
-    margin: 0 0 0.5rem 0;
-}
-
-.project-info p {
-    font-size: 0.85rem;
-    color: #4b5563;
-    margin: 0;
 }
 
 .load-more-button {

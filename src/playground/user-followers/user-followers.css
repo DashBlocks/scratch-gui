@@ -127,7 +127,7 @@ body {
     display: block;
 }
 
-.loadMoreButton {
+.load-more-button {
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     padding: 0.75rem 1rem;
     background: $looks-secondary;

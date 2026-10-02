@@ -543,7 +543,7 @@ const Studio = props => {
                                     />
                                     <Button
                                         className={styles.button}
-                                        type="submit"
+                                        onClick={handleAddProject}
                                         disabled={addingProject}
                                     >
                                         {addingProject ? (

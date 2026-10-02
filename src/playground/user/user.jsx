@@ -735,6 +735,30 @@ const User = props => {
                                                         props.intl.formatMessage(messages.dasherRole)}
                                         </span>
                                     </div>
+                                    {!isMyProfile && <Button
+                                        className={styles.followButton}
+                                        disabled={followButtonDisabled}
+                                        onClick={handleClickFollowButton}
+                                    >
+                                        {followButtonDisabled ? (
+                                            <Spinner
+                                                className={styles.spinner}
+                                                small
+                                            />
+                                        ) : (isFollowing ? (
+                                            <FormattedMessage
+                                                defaultMessage="Unfollow"
+                                                description="Unfollow button on user's profile"
+                                                id="dash.user.unfollow"
+                                            />
+                                        ) : (
+                                            <FormattedMessage
+                                                defaultMessage="Follow"
+                                                description="Follow button on user's profile"
+                                                id="dash.user.follow"
+                                            />
+                                        ))}
+                                    </Button>}
                                     <div className={styles.userInfoRow}>
                                         <FormattedMessage
                                             defaultMessage="Joined: {date}"
@@ -752,7 +776,6 @@ const User = props => {
                                                     '?'
                                             }}
                                         />
-                                        <div className={styles.userInfoDivider} />
                                         <FormattedMessage
                                             defaultMessage="Last Active: {date}"
                                             description="User's last active date"
@@ -769,30 +792,6 @@ const User = props => {
                                                     '?'
                                             }}
                                         />
-                                        {!isMyProfile && <Button
-                                            className={styles.followButton}
-                                            disabled={followButtonDisabled}
-                                            onClick={handleClickFollowButton}
-                                        >
-                                            {followButtonDisabled ? (
-                                                <Spinner
-                                                    className={styles.spinner}
-                                                    small
-                                                />
-                                            ) : (isFollowing ? (
-                                                <FormattedMessage
-                                                    defaultMessage="Unfollow"
-                                                    description="Unfollow button on user's profile"
-                                                    id="dash.user.unfollow"
-                                                />
-                                            ) : (
-                                                <FormattedMessage
-                                                    defaultMessage="Follow"
-                                                    description="Follow button on user's profile"
-                                                    id="dash.user.follow"
-                                                />
-                                            ))}
-                                        </Button>}
                                     </div>
                                 </div>
                             </div>

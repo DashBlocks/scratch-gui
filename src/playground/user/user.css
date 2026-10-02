@@ -178,21 +178,21 @@ body {
 .description {
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
-    height: 90%;
+    height: 10rem;
     overflow-y: auto;
     padding: $space;
 
     white-space: pre-wrap;
     word-wrap: break-word;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 0.800rem;
+    font-size: 0.8rem;
     color: $text-primary;
     background-color: $input-background;
 }
 
 .description-field {
     width: 100% !important;
-    height: 90% !important;
+    height: 10rem !important;
     resize: none !important;
     white-space: pre-wrap !important;
     word-wrap: break-word !important;

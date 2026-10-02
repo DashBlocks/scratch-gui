@@ -10,7 +10,7 @@ import styles from './featured-projects.css';
 const messages = defineMessages({
     authorAttribution: {
         defaultMessage: 'by {author}',
-        description: 'Displayed in StudioView under project title to credit creator',
+        description: 'Displayed under project title to credit creator',
         id: 'tw.studioview.authorAttribution'
     },
     hoverText: {

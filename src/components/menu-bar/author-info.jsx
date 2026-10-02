@@ -45,7 +45,7 @@ const ActualAuthorInfo = ({
                 <span className={styles.usernameLine}>
                     <FormattedMessage
                         defaultMessage="by {author}"
-                        description="Shows that a project was created by this user"
+                        description="Displayed under project title to credit creator"
                         id="tw.studioview.authorAttribution"
                         values={{
                             author: (

@@ -848,7 +848,7 @@ class Interface extends React.PureComponent {
                                                         <FormattedMessage
                                                             defaultMessage="by {author}"
                                                             // eslint-disable-next-line max-len
-                                                            description="Displayed under a remix title to credit its creator"
+                                                            description="Displayed under project title to credit creator"
                                                             id="tw.studioview.authorAttribution"
                                                             values={{
                                                                 author: project.author.username
@@ -916,7 +916,7 @@ class Interface extends React.PureComponent {
                                                         <FormattedMessage
                                                             defaultMessage="by {author}"
                                                             // eslint-disable-next-line max-len
-                                                            description="Displayed under a studio title to credit its creator"
+                                                            description="Displayed under project title to credit creator"
                                                             id="tw.studioview.authorAttribution"
                                                             values={{
                                                                 author: studio.owner.username

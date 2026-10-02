@@ -300,8 +300,7 @@ body {
     gap: $space;
 }
 
-.studio-card,
-.project-card {
+.studio-card {
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
     overflow: hidden;
@@ -309,6 +308,17 @@ body {
     background-color: $ui-secondary;
     width: 15rem;
     min-width: 15rem;
+    min-height: 12rem;
+}
+
+.project-card {
+    border: 0.0625rem solid $ui-black-transparent;
+    border-radius: $space;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: $ui-secondary;
+    width: 12rem;
+    min-width: 12rem;
     min-height: 12rem;
 }
 

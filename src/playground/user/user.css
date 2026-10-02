@@ -290,6 +290,7 @@ body {
     margin: 0;
 }
 
+.studio-grid,
 .project-grid {
     display: flex;
     overflow-x: auto;
@@ -299,14 +300,15 @@ body {
     gap: $space;
 }
 
+.studio-card,
 .project-card {
     border: 0.0625rem solid $ui-black-transparent;
     border-radius: $space;
     overflow: hidden;
     cursor: pointer;
     background-color: $ui-secondary;
-    width: 12rem;
-    min-width: 12rem;
+    width: 15rem;
+    min-width: 15rem;
     min-height: 12rem;
 }
 
@@ -316,14 +318,23 @@ body {
     background: #f3f4f6;
 }
 
+.studio-thumb-wrapper img {
+    aspect-ratio: 3 / 2;
+    width: 100%;
+    background: #f3f4f6;
+}
+
+.studio-info,
 .project-info {
     padding: 0.75rem;
 }
 
+.studio-info h4,
 .project-info h4 {
     margin: 0 0 0.5rem 0;
 }
 
+.studio-info p,
 .project-info p {
     font-size: 0.85rem;
     color: #4b5563;

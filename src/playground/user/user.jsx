@@ -89,6 +89,7 @@ const User = props => {
     const [descriptionDisabled, setDescriptionDisabled] = useState(false);
     const [recommendProjectButtonDisabled, setRecommendProjectButtonDisabled] = useState(false);
     const [projects, setProjects] = useState([]);
+    const [studios, setStudios] = useState([]);
     const [links, setLinks] = useState([]);
     const [linksActionDisabled, setLinksActionDisabled] = useState(false);
     const [achievements, setAchievements] = useState([]);
@@ -135,6 +136,10 @@ const User = props => {
                 const projectsRes = await requestDashApi(`/users/${id}/projects?limit=20&offset=0`);
                 const projectsData = await projectsRes.json();
                 setProjects(projectsData.projects);
+
+                const studiosRes = await requestDashApi(`/users/${id}/studios?limit=20&offset=0`);
+                const studiosData = await studiosRes.json();
+                setStudios(studiosData.studios);
 
                 const followersRes = await requestDashApi(`/users/${id}/followers?limit=20&offset=0`);
                 const followersData = await followersRes.json();
@@ -1118,6 +1123,75 @@ const User = props => {
                                     defaultMessage="This user has no projects"
                                     description="Placeholder text when the user has no projects"
                                     id="dash.user.projects.placeholder"
+                                />
+                            )}
+                        </div>
+                    </div>
+                    <div className={styles.section}>
+                        <div className={styles.sectionHeader}>
+                            <h2>
+                                <FormattedMessage
+                                    defaultMessage="Studios ({studiosCount})"
+                                    description="Studios section title on user's profile"
+                                    id="dash.user.studios"
+                                    values={{
+                                        studiosCount: userData.profile.stats.studios
+                                    }}
+                                />
+                            </h2>
+                            {studios.length > 0 && (
+                                <a
+                                    onClick={() => window.open(`./user-studios#${userData.username}`, '_blank')}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className={styles.viewAllLink}
+                                >
+                                    <FormattedMessage
+                                        defaultMessage="View all"
+                                        description="Link text for viewing all items on user's profile"
+                                        id="dash.user.viewAll"
+                                    />
+                                </a>
+                            )}
+                        </div>
+                        <div className={styles.studioGrid}>
+                            {studios.length > 0 ? studios.map(studio => (
+                                <div
+                                    key={studio.id}
+                                    className={styles.studioCard}
+                                    title={props.intl.formatMessage(messages.hoverText, {
+                                        author: userData.owner.username,
+                                        title: studio.name
+                                    })}
+                                    // eslint-disable-next-line react/jsx-no-bind
+                                    onClick={() => window.open(`./studio#${studio.id}`, '_blank')}
+                                >
+                                    <div className={styles.studioThumbWrapper}>
+                                        <img
+                                            draggable={false}
+                                            src={`https://api.dashblocks.org/studios/thumbnails/${studio.thumbnailId || 1}`}
+                                            alt={studio.id}
+                                        />
+                                    </div>
+                                    <div className={styles.studioInfo}>
+                                        <h4>{studio.name}</h4>
+                                        <p>
+                                            <FormattedMessage
+                                                defaultMessage="by {author}"
+                                                description="Displayed under project title to credit creator"
+                                                id="tw.studioview.authorAttribution"
+                                                values={{
+                                                    author: userData.owner.username
+                                                }}
+                                            />
+                                        </p>
+                                    </div>
+                                </div>
+                            )) : (
+                                <FormattedMessage
+                                    defaultMessage="This user has no studios"
+                                    description="Placeholder text when the user has no studios"
+                                    id="dash.user.studios.placeholder"
                                 />
                             )}
                         </div>

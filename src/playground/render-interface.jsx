@@ -91,6 +91,11 @@ const messages = defineMessages({
         description: 'Title of homepage',
         id: 'dash.guiDefaultTitle'
     },
+    hoverText: {
+        defaultMessage: '{title} by {author}',
+        description: 'Displayed when hovering on a project',
+        id: 'tw.studioview.hoverText'
+    },
     descriptionInputPlaceholder: {
         id: 'dash.project.description.inputPlaceholder',
         description: 'Placeholder for the project description input when blank',

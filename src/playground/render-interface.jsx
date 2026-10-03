@@ -1019,7 +1019,7 @@ class Interface extends React.PureComponent {
                                     >
                                         <FormattedMessage
                                             defaultMessage="View all"
-                                            description="Link text for viewing all featured projects"
+                                            description="Link text for viewing all items on user's profile"
                                             id="dash.user.viewAll"
                                         />
                                     </a>
@@ -1082,7 +1082,7 @@ class Interface extends React.PureComponent {
                                     >
                                         <FormattedMessage
                                             defaultMessage="View all"
-                                            description="Link text for viewing all featured studios"
+                                            description="Link text for viewing all items on user's profile"
                                             id="dash.user.viewAll"
                                         />
                                     </a>

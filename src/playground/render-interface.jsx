@@ -616,6 +616,9 @@ class Interface extends React.PureComponent {
             projectStats: null,
             projectForks: [],
             projectStudios: [],
+            featuredStudios: [],
+            featuredProjects: [],
+            latestProjects: [],
             descriptionOverride: null,
             descriptionSaving: false
         };
@@ -679,36 +682,69 @@ class Interface extends React.PureComponent {
         if (!this.props.isPlayerOnly || !projectId || projectId === '0' || projectId.startsWith('s')) {
             this.setState({
                 projectForks: [],
-                projectStudios: []
+                projectStudios: [],
+                featuredStudios: [],
+                featuredProjects: [],
+                latestProjects: []
             });
             return;
         }
         this.setState({
             projectForks: [],
-            projectStudios: []
+            projectStudios: [],
+            featuredStudios: [],
+            featuredProjects: [],
+            latestProjects: []
         });
 
         try {
-            const [forksResponse, studiosResponse] = await Promise.all([
+            const [
+                forksResponse,
+                studiosResponse,
+                featuredStudiosResponse,
+                featuredProjectsResponse,
+                latestProjectsResponse
+            ] = await Promise.all([
                 requestDashApi(`/projects/${projectId}/forks?limit=20&offset=0`),
-                requestDashApi(`/projects/${projectId}/studios?limit=20&offset=0`)
+                requestDashApi(`/projects/${projectId}/studios?limit=20&offset=0`),
+                requestDashApi('/featured/studios?limit=20&offset=0'),
+                requestDashApi('/featured/projects?limit=20&offset=0'),
+                requestDashApi('/projects/latest')
             ]);
-            const [forksData, studiosData] = await Promise.all([
+            const [
+                forksData,
+                studiosData,
+                featuredStudiosData,
+                featuredProjectsData,
+                latestProjectsData
+            ] = await Promise.all([
                 forksResponse.json(),
-                studiosResponse.json()
+                studiosResponse.json(),
+                featuredStudiosResponse.json(),
+                featuredProjectsResponse.json(),
+                latestProjectsResponse.json()
             ]);
             if (this.props.projectId !== projectId) return;
             this.setState({
                 projectForks: forksData?.ok && Array.isArray(forksData.forks) ?
                     forksData.forks : [],
                 projectStudios: studiosData?.ok && Array.isArray(studiosData.studios) ?
-                    studiosData.studios : []
+                    studiosData.studios : [],
+                featuredStudios: featuredStudiosData?.ok && Array.isArray(featuredStudiosData.studios) ?
+                    featuredStudiosData.studios : [],
+                featuredProjects: featuredProjectsData?.ok && Array.isArray(featuredProjectsData.projects) ?
+                    featuredProjectsData.projects : [],
+                latestProjects: latestProjectsData?.ok && Array.isArray(latestProjectsData.projects) ?
+                    latestProjectsData.projects : []
             });
         } catch (error) {
             if (this.props.projectId === projectId) {
                 this.setState({
                     projectForks: [],
-                    projectStudios: []
+                    projectStudios: [],
+                    featuredStudios: [],
+                    featuredProjects: [],
+                    latestProjects: []
                 });
             }
         }
@@ -822,7 +858,10 @@ class Interface extends React.PureComponent {
                                 width: `calc(${homepageStageWidth}px + 480px + 1rem + 0.125rem + 0.5rem)`
                             }}
                         >
-                            <div className={classNames(styles.section, styles.projectRelatedSection)}>
+                            <div
+                                className={classNames(styles.section, styles.projectRelatedSection)}
+                                hidden={this.state.projectForks.length === 0}
+                            >
                                 <div className={styles.projectRelatedHeader}>
                                     <h2>
                                         <FormattedMessage
@@ -890,7 +929,10 @@ class Interface extends React.PureComponent {
                                     )}
                                 </div>
                             </div>
-                            <div className={classNames(styles.section, styles.projectRelatedSection)}>
+                            <div
+                                className={classNames(styles.section, styles.projectRelatedSection)}
+                                hidden={this.state.projectStudios.length === 0}
+                            >
                                 <div className={styles.projectRelatedHeader}>
                                     <h2>
                                         <FormattedMessage
@@ -956,6 +998,181 @@ class Interface extends React.PureComponent {
                                             // eslint-disable-next-line max-len
                                             description="Placeholder when a project is not in any studios on the homepage"
                                             id="dash.home.project.studios.placeholder"
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                            <div className={classNames(styles.section, styles.projectRelatedSection)}>
+                                <div className={styles.projectRelatedHeader}>
+                                    <h2>
+                                        <FormattedMessage
+                                            defaultMessage="Featured Projects"
+                                            description="Title of featured projects on the homepage"
+                                            id="dash.home.featuredProjects"
+                                        />
+                                    </h2>
+                                    <a
+                                        href="./featured-projects"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.projectRelatedViewAll}
+                                    >
+                                        <FormattedMessage
+                                            defaultMessage="View all"
+                                            description="Link text for viewing all featured projects"
+                                            id="dash.user.viewAll"
+                                        />
+                                    </a>
+                                </div>
+                                <div className={styles.projectRelatedGrid}>
+                                    {/* eslint-disable-next-line max-len */}
+                                    {this.state.featuredProjects.length > 0 ? this.state.featuredProjects.map(project => (
+                                        <div
+                                            key={project.id}
+                                            className={styles.projectRelatedCard}
+                                            title={intl.formatMessage(
+                                                messages.hoverText,
+                                                {author: project.author.username, title: project.name}
+                                            )}
+                                            // eslint-disable-next-line react/jsx-no-bind
+                                            onClick={() => window.open(`./#${project.id}`, '_blank')}
+                                        >
+                                            <div className={styles.projectRelatedThumbWrapper}>
+                                                <img
+                                                    draggable={false}
+                                                    src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
+                                                    alt={project.id}
+                                                />
+                                            </div>
+                                            <div className={styles.projectRelatedInfo}>
+                                                <h4>{project.name}</h4>
+                                                <p>
+                                                    <FormattedMessage
+                                                        defaultMessage="by {author}"
+                                                        description="Displayed under project title to credit creator"
+                                                        id="tw.studioview.authorAttribution"
+                                                        values={{author: project.author.username}}
+                                                    />
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )) : (
+                                        <FormattedMessage
+                                            defaultMessage="There are no featured projects"
+                                            description="Placeholder when there are no featured projects"
+                                            id="dash.featuredProjects.placeholder"
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                            <div className={classNames(styles.section, styles.projectRelatedSection)}>
+                                <div className={styles.projectRelatedHeader}>
+                                    <h2>
+                                        <FormattedMessage
+                                            defaultMessage="Featured Studios"
+                                            description="Title of featured studios on the homepage"
+                                            id="dash.home.featuredStudios"
+                                        />
+                                    </h2>
+                                    <a
+                                        href="./featured-studios"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.projectRelatedViewAll}
+                                    >
+                                        <FormattedMessage
+                                            defaultMessage="View all"
+                                            description="Link text for viewing all featured studios"
+                                            id="dash.user.viewAll"
+                                        />
+                                    </a>
+                                </div>
+                                <div className={styles.projectRelatedGrid}>
+                                    {this.state.featuredStudios.length > 0 ? this.state.featuredStudios.map(studio => (
+                                        <div
+                                            key={studio.id}
+                                            className={styles.projectRelatedCard}
+                                            title={intl.formatMessage(
+                                                messages.hoverText,
+                                                {author: studio.owner.username, title: studio.name}
+                                            )}
+                                            // eslint-disable-next-line react/jsx-no-bind
+                                            onClick={() => window.open(`./studio#${studio.id}`, '_blank')}
+                                        >
+                                            <div className={styles.projectRelatedStudioThumbWrapper}>
+                                                <img
+                                                    draggable={false}
+                                                    src={`https://api.dashblocks.org/studios/thumbnails/${studio.thumbnailId || 1}`}
+                                                    alt={studio.id}
+                                                />
+                                            </div>
+                                            <div className={styles.projectRelatedInfo}>
+                                                <h4>{studio.name}</h4>
+                                                <p>
+                                                    <FormattedMessage
+                                                        defaultMessage="by {author}"
+                                                        description="Displayed under studio title to credit creator"
+                                                        id="tw.studioview.authorAttribution"
+                                                        values={{author: studio.owner.username}}
+                                                    />
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )) : (
+                                        <FormattedMessage
+                                            defaultMessage="There are no featured studios"
+                                            description="Placeholder when there are no featured studios"
+                                            id="dash.featuredStudios.placeholder"
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                            <div className={classNames(styles.section, styles.projectRelatedSection)}>
+                                <div className={styles.projectRelatedHeader}>
+                                    <h2>
+                                        <FormattedMessage
+                                            defaultMessage="Latest Projects"
+                                            description="Title of latest projects on the homepage"
+                                            id="dash.home.latestProjects"
+                                        />
+                                    </h2>
+                                </div>
+                                <div className={styles.projectRelatedGrid}>
+                                    {this.state.latestProjects.length > 0 ? this.state.latestProjects.map(project => (
+                                        <div
+                                            key={project.id}
+                                            className={styles.projectRelatedCard}
+                                            title={intl.formatMessage(
+                                                messages.hoverText,
+                                                {author: project.author.username, title: project.name}
+                                            )}
+                                            // eslint-disable-next-line react/jsx-no-bind
+                                            onClick={() => window.open(`./#${project.id}`, '_blank')}
+                                        >
+                                            <div className={styles.projectRelatedThumbWrapper}>
+                                                <img
+                                                    draggable={false}
+                                                    src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
+                                                    alt={project.id}
+                                                />
+                                            </div>
+                                            <div className={styles.projectRelatedInfo}>
+                                                <h4>{project.name}</h4>
+                                                <p>
+                                                    <FormattedMessage
+                                                        defaultMessage="by {author}"
+                                                        description="Displayed under project title to credit creator"
+                                                        id="tw.studioview.authorAttribution"
+                                                        values={{author: project.author.username}}
+                                                    />
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )) : (
+                                        <FormattedMessage
+                                            defaultMessage="There are no latest projects"
+                                            description="Placeholder when there are no latest projects"
+                                            id="dash.latestProjects.placeholder"
                                         />
                                     )}
                                 </div>

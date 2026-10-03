@@ -156,6 +156,8 @@ module.exports = [
             'user-following': './src/playground/user-following/user-following.jsx',
             'project-forks': './src/playground/project-forks/project-forks.jsx',
             'project-studios': './src/playground/project-studios/project-studios.jsx',
+            'featured-studios': './src/playground/featured-studios/featured-studios.jsx',
+            'featured-projects': './src/playground/featured-projects/featured-projects.jsx',
             'studio': './src/playground/studio/studio.jsx',
             'login': './src/playground/login/login.jsx',
             'register': './src/playground/register/register.jsx',
@@ -297,6 +299,20 @@ module.exports = [
                 template: 'src/playground/simple.ejs',
                 filename: 'project-studios.html',
                 title: `Project's Studios (?) - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['featured-studios'],
+                template: 'src/playground/simple.ejs',
+                filename: 'featured-studios.html',
+                title: `Featured Studios - ${APP_NAME}`,
+                ...htmlWebpackPluginCommon
+            }),
+            new HtmlWebpackPlugin({
+                chunks: ['featured-projects'],
+                template: 'src/playground/simple.ejs',
+                filename: 'featured-projects.html',
+                title: `Featured Projects - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

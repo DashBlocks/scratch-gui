@@ -65,11 +65,11 @@ const messages = defineMessages({
 
 const SPECIFIC_QUERIES = {
     projects: new Map([
-        [/featured:/i, {
+        [/^featured:$/i, {
             entrypoint: (limit, currentOffset) => `/featured/projects?limit=${limit}&offset=${currentOffset}`,
             title: (formatMessage, total) => formatMessage(messages.featuredProjectsTitle, {projectsCount: total})
         }],
-        [/forksof:([0-9]+)/i, {
+        [/^forksof:([0-9]+)$/i, {
             entrypoint: (limit, currentOffset, [_, id]) => `/projects/${id}/forks?limit=${limit}&offset=${currentOffset}`,
             title: (formatMessage, total, pre) => formatMessage(messages.projectForksTitle, {
                 project: pre,
@@ -87,7 +87,7 @@ const SPECIFIC_QUERIES = {
                 return project.project.name;
             }
         }],
-        [/author:(\S+)/i, {
+        [/^author:(\S+)$/i, {
             entrypoint: (limit, currentOffset, [_, author]) => `/users/${author}/projects?limit=${limit}&offset=${currentOffset}`,
             title: (formatMessage, total, pre) => formatMessage(messages.userProjectsTitle, {
                 username: pre,
@@ -107,11 +107,11 @@ const SPECIFIC_QUERIES = {
         }]
     ]),
     studios: new Map([
-        [/featured:/i, {
+        [/^featured:$/i, {
             entrypoint: (limit, currentOffset) => `/featured/studios?limit=${limit}&offset=${currentOffset}`,
             title: (formatMessage, total) => formatMessage(messages.featuredStudiosTitle, {studiosCount: total})
         }],
-        [/studiosof:([0-9]+)/i, {
+        [/^studiosof:([0-9]+)$/i, {
             entrypoint: (limit, currentOffset, [_, id]) => `/projects/${id}/studios?limit=${limit}&offset=${currentOffset}`,
             title: (formatMessage, total, pre) => formatMessage(messages.projectStudiosTitle, {
                 project: pre,
@@ -129,7 +129,7 @@ const SPECIFIC_QUERIES = {
                 return project.project.name;
             }
         }],
-        [/owner:(\S+)/i, {
+        [/^owner:(\S+)$/i, {
             entrypoint: (limit, currentOffset, [_, owner]) => `/users/${owner}/studios?limit=${limit}&offset=${currentOffset}`,
             title: (formatMessage, total, pre) => formatMessage(messages.userStudiosTitle, {
                 username: pre,
@@ -210,7 +210,7 @@ const Search = props => {
         const fetchData = async () => {
             const matches = specificQueryEntry ? query.match(specificQueryEntry[0]) : null;
             let currentPre = null;
-            if (specificQueryEntry?.pre) {
+            if (specificQueryEntry?.[1]?.pre) {
                 try {
                     currentPre = await specificQueryEntry[1].pre(matches);
                     setPre(currentPre);
@@ -220,7 +220,9 @@ const Search = props => {
                     return;
                 }
             }
-            document.title = `${specificQueryEntry[1].title(props.intl.formatMessage, '?', currentPre)} - ${APP_NAME}`;
+            if (specificQueryEntry) {
+                document.title = `${specificQueryEntry[1].title(props.intl.formatMessage, '?', currentPre)} - ${APP_NAME}`;
+            }
             await fetchItems(0, matches, currentPre);
             setLoading(false);
         };
@@ -250,7 +252,7 @@ const Search = props => {
             </>
         );
     }
-    if (!projects) {
+    if (!items) {
         return (
             <>
                 <LazyMenuBar />

@@ -976,7 +976,7 @@ class Interface extends React.PureComponent {
                                     {this.state.projectStudios.length > 0 ? this.state.projectStudios.map(studio => (
                                         <div
                                             key={studio.id}
-                                            className={styles.projectRelatedCard}
+                                            className={styles.projectRelatedStudioCard}
                                             title={intl.formatMessage(
                                                 messages.hoverText,
                                                 {author: studio.owner.username, title: studio.name}
@@ -1106,7 +1106,7 @@ class Interface extends React.PureComponent {
                                     {this.state.featuredStudios.length > 0 ? this.state.featuredStudios.map(studio => (
                                         <div
                                             key={studio.id}
-                                            className={styles.projectRelatedCard}
+                                            className={styles.projectRelatedStudioCard}
                                             title={intl.formatMessage(
                                                 messages.hoverText,
                                                 {author: studio.owner.username, title: studio.name}

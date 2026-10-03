@@ -38,12 +38,12 @@ const messages = defineMessages({
     },
     projectForksTitle: {
         defaultMessage: '{project}\'s Forks ({forksCount})',
-        description: 'Title of /search page when searching for project's forks',
+        description: 'Title of /search page when searching for project\'s forks',
         id: 'dash.projectForks.title'
     },
     projectsStudiosTitle: {
         defaultMessage: '{project}\'s Studios ({studiosCount})',
-        description: 'Title of /search page when searching for project's studios',
+        description: 'Title of /search page when searching for project\'s studios',
         id: 'dash.projectStudios.title'
     },
     searchTitle: {
@@ -53,12 +53,12 @@ const messages = defineMessages({
     },
     userProjectsTitle: {
         defaultMessage: '{username}\'s Projects ({projectsCount})',
-        description: 'Title of /search page when searching for user's projects',
+        description: 'Title of /search page when searching for user\'s projects',
         id: 'dash.userProjects.title'
     },
     userStudiosTitle: {
         defaultMessage: '{username}\'s Studios ({studiosCount})',
-        description: 'Title of /search page when searching for user's studios',
+        description: 'Title of /search page when searching for user\'s studios',
         id: 'dash.userStudios.title'
     },
 });
@@ -210,7 +210,7 @@ const Search = props => {
         const fetchData = async () => {
             const matches = specificQueryEntry ? query.match(specificQueryEntry[0]) : null;
             let currentPre = null;
-            if (specificQueryEntry) {
+            if (specificQueryEntry?.pre) {
                 try {
                     currentPre = await specificQueryEntry[1].pre(matches);
                     setPre(currentPre);
@@ -219,8 +219,8 @@ const Search = props => {
                     setLoading(false);
                     return;
                 }
-                document.title = `${specificQueryEntry[1].title(props.intl.formatMessage, '?', currentPre)} - ${APP_NAME}`;
             }
+            document.title = `${specificQueryEntry[1].title(props.intl.formatMessage, '?', currentPre)} - ${APP_NAME}`;
             await fetchItems(0, matches, currentPre);
             setLoading(false);
         };

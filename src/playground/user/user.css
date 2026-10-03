@@ -310,8 +310,8 @@ body {
     overflow: hidden;
     cursor: pointer;
     background-color: $ui-secondary;
-    width: 15rem;
-    min-width: 15rem;
+    width: 14rem;
+    min-width: 14rem;
     min-height: 12rem;
 }
 

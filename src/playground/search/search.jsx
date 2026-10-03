@@ -154,7 +154,7 @@ const Search = props => {
     const query = new URLSearchParams(window.location.search).get('q');
     const type = new URLSearchParams(window.location.search).get('type') || 'projects';
     const specificQueryEntry = SPECIFIC_QUERIES[type]
-        ? SPECIFIC_QUERIES[type].entries().find([regex] => query.match(regex))
+        ? SPECIFIC_QUERIES[type].entries().find(([regex]) => query.match(regex))
         : null
     const [pre, setPre] = useState(null);
     const [total, setTotal] = useState(0);

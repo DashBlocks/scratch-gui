@@ -679,7 +679,7 @@ class Interface extends React.PureComponent {
     }
     async fetchProjectRelatedContent () {
         const projectId = this.props.projectId;
-        if (!this.props.isPlayerOnly || !projectId || projectId === '0' || projectId.startsWith('s')) {
+        if (!this.props.isPlayerOnly) {
             this.setState({
                 projectForks: [],
                 projectStudios: [],
@@ -689,6 +689,7 @@ class Interface extends React.PureComponent {
             });
             return;
         }
+        const hasProject = projectId && projectId !== '0' && !projectId.startsWith('s');
         this.setState({
             projectForks: [],
             projectStudios: [],
@@ -699,37 +700,25 @@ class Interface extends React.PureComponent {
 
         try {
             const [
-                forksResponse,
-                studiosResponse,
                 featuredStudiosResponse,
                 featuredProjectsResponse,
                 latestProjectsResponse
             ] = await Promise.all([
-                requestDashApi(`/projects/${projectId}/forks?limit=20&offset=0`),
-                requestDashApi(`/projects/${projectId}/studios?limit=20&offset=0`),
                 requestDashApi('/featured/studios?limit=20&offset=0'),
                 requestDashApi('/featured/projects?limit=20&offset=0'),
                 requestDashApi('/projects/latest')
             ]);
             const [
-                forksData,
-                studiosData,
                 featuredStudiosData,
                 featuredProjectsData,
                 latestProjectsData
             ] = await Promise.all([
-                forksResponse.json(),
-                studiosResponse.json(),
                 featuredStudiosResponse.json(),
                 featuredProjectsResponse.json(),
                 latestProjectsResponse.json()
             ]);
-            if (this.props.projectId !== projectId) return;
+            if (this.props.projectId !== projectId || !this.props.isPlayerOnly) return;
             this.setState({
-                projectForks: forksData?.ok && Array.isArray(forksData.forks) ?
-                    forksData.forks : [],
-                projectStudios: studiosData?.ok && Array.isArray(studiosData.studios) ?
-                    studiosData.studios : [],
                 featuredStudios: featuredStudiosData?.ok && Array.isArray(featuredStudiosData.studios) ?
                     featuredStudiosData.studios : [],
                 featuredProjects: featuredProjectsData?.ok && Array.isArray(featuredProjectsData.projects) ?
@@ -738,13 +727,38 @@ class Interface extends React.PureComponent {
                     latestProjectsData.projects : []
             });
         } catch (error) {
-            if (this.props.projectId === projectId) {
+            if (this.props.projectId === projectId && this.props.isPlayerOnly) {
                 this.setState({
-                    projectForks: [],
-                    projectStudios: [],
                     featuredStudios: [],
                     featuredProjects: [],
                     latestProjects: []
+                });
+            }
+        }
+
+        if (!hasProject || this.props.projectId !== projectId || !this.props.isPlayerOnly) return;
+
+        try {
+            const [forksResponse, studiosResponse] = await Promise.all([
+                requestDashApi(`/projects/${projectId}/forks?limit=20&offset=0`),
+                requestDashApi(`/projects/${projectId}/studios?limit=20&offset=0`)
+            ]);
+            const [forksData, studiosData] = await Promise.all([
+                forksResponse.json(),
+                studiosResponse.json()
+            ]);
+            if (this.props.projectId !== projectId || !this.props.isPlayerOnly) return;
+            this.setState({
+                projectForks: forksData?.ok && Array.isArray(forksData.forks) ?
+                    forksData.forks : [],
+                projectStudios: studiosData?.ok && Array.isArray(studiosData.studios) ?
+                    studiosData.studios : []
+            });
+        } catch (error) {
+            if (this.props.projectId === projectId) {
+                this.setState({
+                    projectForks: [],
+                    projectStudios: []
                 });
             }
         }
@@ -811,6 +825,7 @@ class Interface extends React.PureComponent {
         } = this.props;
         const isHomepage = isPlayerOnly && !isFullScreen;
         const isEditor = !isPlayerOnly;
+        const hasProject = projectId && projectId !== '0' && !projectId.startsWith('s');
         const homepageStageWidth = Math.max(480, props.customStageSize.width) + 2;
         const descriptionText = this.state.descriptionOverride ?
             this.state.descriptionOverride :
@@ -851,7 +866,7 @@ class Interface extends React.PureComponent {
                             <StageFooter projectId={projectId} />
                         )}
                     </div>
-                    {isHomepage && projectId && projectId !== '0' && !projectId.startsWith('s') && (
+                    {isHomepage && (
                         <div
                             className={styles.projectRelatedContainer}
                             style={{
@@ -860,7 +875,7 @@ class Interface extends React.PureComponent {
                         >
                             <div
                                 className={classNames(styles.section, styles.projectRelatedSection)}
-                                hidden={this.state.projectForks.length === 0}
+                                hidden={!hasProject || this.state.projectForks.length === 0}
                             >
                                 <div className={styles.projectRelatedHeader}>
                                     <h2>
@@ -931,7 +946,7 @@ class Interface extends React.PureComponent {
                             </div>
                             <div
                                 className={classNames(styles.section, styles.projectRelatedSection)}
-                                hidden={this.state.projectStudios.length === 0}
+                                hidden={!hasProject || this.state.projectStudios.length === 0}
                             >
                                 <div className={styles.projectRelatedHeader}>
                                     <h2>

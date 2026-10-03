@@ -1111,7 +1111,7 @@ class Interface extends React.PureComponent {
                                                 <p>
                                                     <FormattedMessage
                                                         defaultMessage="by {author}"
-                                                        description="Displayed under studio title to credit creator"
+                                                        description="Displayed under project title to credit creator"
                                                         id="tw.studioview.authorAttribution"
                                                         values={{author: studio.owner.username}}
                                                     />

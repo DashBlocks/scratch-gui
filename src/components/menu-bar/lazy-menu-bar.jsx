@@ -34,9 +34,9 @@ import styles from './menu-bar.css';
 
 import messagesIcon from './icon--messages.png';
 import mystuffIcon from './icon--mystuff.png';
-// eslint-disable-next-line no-unused-vars
 import dashLogo from './dash.png';
 import dashNewYearLogo from './dash-new-year.png';
+// eslint-disable-next-line no-unused-vars
 import dashZipprCollabLogo from './dash-zippr-collab-logo.svg';
 import searchIcon from './icon--search.png';
 
@@ -191,7 +191,7 @@ class LazyMenuBar extends React.Component {
                     >
                         <img
                             className={styles.dashLogo}
-                            src={isNewYearMode() ? dashNewYearLogo : dashZipprCollabLogo /* dashLogo */}
+                            src={isNewYearMode() ? dashNewYearLogo : dashLogo}
                             draggable={false}
                         />
                     </a>
@@ -362,10 +362,10 @@ class LazyMenuBar extends React.Component {
                         item="dash:news4"
                         id="donate"
                     />}
-                    {<TWNews
+                    {/* <TWNews
                         item="dash:news5"
                         id="collab-zippr"
-                    />}
+                    /> */}
                 </React.Fragment>
             </div>
         );

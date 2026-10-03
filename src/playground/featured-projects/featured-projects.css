@@ -100,7 +100,7 @@ body {
 }
 
 .thumb-wrapper img {
-    aspect-ratio: 3 / 2;
+    aspect-ratio: 4 / 3;
     width: 100%;
     background: #f3f4f6;
 }

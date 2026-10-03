@@ -133,6 +133,17 @@ a {
     min-width: 12rem;
     min-height: 12rem;
 }
+.project-related-studio-card {
+    box-sizing: border-box;
+    border: 0.0625rem solid $ui-black-transparent;
+    border-radius: $space;
+    overflow: hidden;
+    cursor: pointer;
+    background-color: $ui-secondary;
+    width: 14rem;
+    min-width: 14rem;
+    min-height: 12rem;
+}
 .project-related-thumb-wrapper img {
     aspect-ratio: 4 / 3;
     width: 100%;

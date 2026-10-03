@@ -98,9 +98,9 @@ import editIcon from './icon--edit.svg';
 import addonsIcon from './addons.svg';
 import errorIcon from './tw-error.svg';
 import advancedIcon from './tw-advanced.svg';
-// eslint-disable-next-line no-unused-vars
 import dashLogo from './dash.png';
 import dashNewYearLogo from './dash-new-year.png';
+// eslint-disable-next-line no-unused-vars
 import dashZipprCollabLogo from './dash-zippr-collab-logo.svg';
 import searchIcon from './icon--search.png';
 
@@ -700,7 +700,7 @@ class MenuBar extends React.Component {
                         >
                             <img
                                 className={styles.dashLogo}
-                                src={isNewYearMode() ? dashNewYearLogo : dashZipprCollabLogo /* dashLogo */}
+                                src={isNewYearMode() ? dashNewYearLogo : dashLogo}
                                 draggable={false}
                             />
                         </a>
@@ -1420,10 +1420,10 @@ class MenuBar extends React.Component {
                     item="dash:news4"
                     id="donate"
                 />}
-                {<TWNews
+                {/* <TWNews
                     item="dash:news5"
                     id="collab-zippr"
-                />}
+                /> */}
             </React.Fragment>
         );
     }

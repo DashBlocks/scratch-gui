@@ -633,6 +633,11 @@ class Interface extends React.PureComponent {
         }
         if (prevProps.projectId !== this.props.projectId) {
             this.fetchProject();
+        }
+        if (
+            prevProps.projectId !== this.props.projectId ||
+            prevProps.isPlayerOnly !== this.props.isPlayerOnly
+        ) {
             this.fetchProjectRelatedContent();
         }
     }

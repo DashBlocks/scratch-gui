@@ -60,7 +60,7 @@ const messages = defineMessages({
         defaultMessage: '{username}\'s Studios ({studiosCount})',
         description: 'Title of /search page when searching for user\'s studios',
         id: 'dash.userStudios.title'
-    },
+    }
 });
 
 const SPECIFIC_QUERIES = {
@@ -71,12 +71,15 @@ const SPECIFIC_QUERIES = {
             title: (formatMessage, total) => formatMessage(messages.featuredProjectsTitle, {projectsCount: total})
         }],
         [/^forksof:([0-9]+)$/i, {
-            entrypoint: (limit, currentOffset, [_, id]) => `/projects/${id}/forks?limit=${limit}&offset=${currentOffset}`,
+            // eslint-disable-next-line no-unused-vars
+            entrypoint: (limit, currentOffset, [_, id]) =>
+                `/projects/${id}/forks?limit=${limit}&offset=${currentOffset}`,
             resultsKey: 'forks',
             title: (formatMessage, total, pre) => formatMessage(messages.projectForksTitle, {
                 project: pre,
                 forksCount: total
             }),
+            // eslint-disable-next-line no-unused-vars
             pre: async ([_, id]) => {
                 const projectReq = await requestDashApi(`/projects/${id}`);
                 if (!projectReq.ok) {
@@ -90,12 +93,15 @@ const SPECIFIC_QUERIES = {
             }
         }],
         [/^author:(\S+)$/i, {
-            entrypoint: (limit, currentOffset, [_, author]) => `/users/${author}/projects?limit=${limit}&offset=${currentOffset}`,
+            // eslint-disable-next-line no-unused-vars
+            entrypoint: (limit, currentOffset, [_, author]) =>
+                `/users/${author}/projects?limit=${limit}&offset=${currentOffset}`,
             resultsKey: 'projects',
             title: (formatMessage, total, pre) => formatMessage(messages.userProjectsTitle, {
                 username: pre,
                 projectsCount: total
             }),
+            // eslint-disable-next-line no-unused-vars
             pre: async ([_, author]) => {
                 const userReq = await requestDashApi(`/users/${author}`);
                 if (!userReq.ok) {
@@ -116,12 +122,15 @@ const SPECIFIC_QUERIES = {
             title: (formatMessage, total) => formatMessage(messages.featuredStudiosTitle, {studiosCount: total})
         }],
         [/^studiosof:([0-9]+)$/i, {
-            entrypoint: (limit, currentOffset, [_, id]) => `/projects/${id}/studios?limit=${limit}&offset=${currentOffset}`,
+            // eslint-disable-next-line no-unused-vars
+            entrypoint: (limit, currentOffset, [_, id]) =>
+                `/projects/${id}/studios?limit=${limit}&offset=${currentOffset}`,
             resultsKey: 'studios',
             title: (formatMessage, total, pre) => formatMessage(messages.projectStudiosTitle, {
                 project: pre,
                 studiosCount: total
             }),
+            // eslint-disable-next-line no-unused-vars
             pre: async ([_, id]) => {
                 const projectReq = await requestDashApi(`/projects/${id}`);
                 if (!projectReq.ok) {
@@ -135,12 +144,15 @@ const SPECIFIC_QUERIES = {
             }
         }],
         [/^owner:(\S+)$/i, {
-            entrypoint: (limit, currentOffset, [_, owner]) => `/users/${owner}/studios?limit=${limit}&offset=${currentOffset}`,
+            // eslint-disable-next-line no-unused-vars
+            entrypoint: (limit, currentOffset, [_, owner]) =>
+                `/users/${owner}/studios?limit=${limit}&offset=${currentOffset}`,
             resultsKey: 'studios',
             title: (formatMessage, total, pre) => formatMessage(messages.userStudiosTitle, {
                 username: pre,
                 studiosCount: total
             }),
+            // eslint-disable-next-line no-unused-vars
             pre: async ([_, author]) => {
                 const userReq = await requestDashApi(`/users/${author}`);
                 if (!userReq.ok) {
@@ -159,9 +171,9 @@ const SPECIFIC_QUERIES = {
 const Search = props => {
     const query = new URLSearchParams(window.location.search).get('q');
     const type = new URLSearchParams(window.location.search).get('type') || 'projects';
-    const specificQueryEntry = SPECIFIC_QUERIES[type]
-        ? SPECIFIC_QUERIES[type].entries().find(([regex]) => query.match(regex))
-        : null
+    const specificQueryEntry = SPECIFIC_QUERIES[type] ?
+        SPECIFIC_QUERIES[type].entries().find(([regex]) => query.match(regex)) :
+        null;
     const [pre, setPre] = useState(null);
     const [total, setTotal] = useState(0);
     const [items, setItems] = useState([]);
@@ -177,19 +189,25 @@ const Search = props => {
         setLoadMoreButtonDisabled(true);
         try {
             const searchReq = await requestDashApi(
-                specificQueryEntry
-                    ? specificQueryEntry[1].entrypoint(limit, currentOffset, matches)
-                    : `/search/${type}?q=${encodeURIComponent(query)}&limit=${limit}&offset=${currentOffset}`,
+                specificQueryEntry ?
+                    specificQueryEntry[1].entrypoint(limit, currentOffset, matches) :
+                    `/search/${type}?q=${encodeURIComponent(query)}&limit=${limit}&offset=${currentOffset}`,
                 {credentials: 'include'}
             );
             if (!searchReq.ok) throw new Error('Failed to fetch search results');
             const searchResults = await searchReq.json();
             if (!searchResults.ok) throw new Error(searchResults.error);
             setTotal(searchResults.total);
-            setItems(prevItems => [...prevItems, ...searchResults[specificQueryEntry ? specificQueryEntry[1].resultsKey : 'results']]);
-            setHasMore(searchResults[specificQueryEntry ? specificQueryEntry[1].resultsKey : 'results'].length === limit);
+            setItems(prevItems => [...prevItems, ...searchResults[specificQueryEntry ?
+                specificQueryEntry[1].resultsKey : 'results']]);
+            setHasMore(searchResults[specificQueryEntry ?
+                specificQueryEntry[1].resultsKey : 'results'].length === limit);
             if (specificQueryEntry) {
-                document.title = `${specificQueryEntry[1].title(props.intl.formatMessage, searchResults.total, currentPre)} - ${APP_NAME}`;
+                document.title = `${specificQueryEntry[1].title(
+                    props.intl.formatMessage,
+                    searchResults.total,
+                    currentPre
+                )} - ${APP_NAME}`;
             }
         } catch (catchedError) {
             setError(catchedError.message);
@@ -227,7 +245,11 @@ const Search = props => {
                 }
             }
             if (specificQueryEntry) {
-                document.title = `${specificQueryEntry[1].title(props.intl.formatMessage, '?', currentPre)} - ${APP_NAME}`;
+                document.title = `${specificQueryEntry[1].title(
+                    props.intl.formatMessage,
+                    '?',
+                    currentPre
+                )} - ${APP_NAME}`;
             }
             await fetchItems(0, matches, currentPre);
             setLoading(false);
@@ -290,7 +312,7 @@ const Search = props => {
                             )}
                         </h2>
                         <div className={styles.projectGrid}>
-                            {items.length > 0 ? items.map(item => type === 'projects' ? (
+                            {items.length > 0 ? items.map(item => (type === 'projects' ? (
                                 <div
                                     key={item.id}
                                     className={styles.projectCard}
@@ -368,7 +390,7 @@ const Search = props => {
                                         </p>
                                     </div>
                                 </div>
-                            ) : null) : (
+                            ) : null)) : (
                                 <FormattedMessage
                                     defaultMessage="Nothing found"
                                     description="Message displayed when no results found for a search query"
@@ -383,7 +405,11 @@ const Search = props => {
                                     onClick={() => {
                                         const newOffset = offset + limit;
                                         setOffset(newOffset);
-                                        fetchItems(newOffset, specificQueryEntry ? query.match(specificQueryEntry[0]) : null, pre);
+                                        fetchItems(
+                                            newOffset,
+                                            specificQueryEntry ? query.match(specificQueryEntry[0]) : null,
+                                            pre
+                                        );
                                     }}
                                 >
                                     {loadMoreButtonDisabled ? (

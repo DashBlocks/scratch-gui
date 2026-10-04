@@ -150,14 +150,8 @@ module.exports = [
             'credits': './src/playground/credits/credits.jsx',
             'desktop': './src/playground/desktop/desktop.jsx',
             'user': './src/playground/user/user.jsx',
-            'user-projects': './src/playground/user-projects/user-projects.jsx',
-            'user-studios': './src/playground/user-studios/user-studios.jsx',
             'user-followers': './src/playground/user-followers/user-followers.jsx',
             'user-following': './src/playground/user-following/user-following.jsx',
-            'project-forks': './src/playground/project-forks/project-forks.jsx',
-            'project-studios': './src/playground/project-studios/project-studios.jsx',
-            'featured-studios': './src/playground/featured-studios/featured-studios.jsx',
-            'featured-projects': './src/playground/featured-projects/featured-projects.jsx',
             'studio': './src/playground/studio/studio.jsx',
             'login': './src/playground/login/login.jsx',
             'register': './src/playground/register/register.jsx',
@@ -260,20 +254,6 @@ module.exports = [
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({
-                chunks: ['user-projects'],
-                template: 'src/playground/simple.ejs',
-                filename: 'user-projects.html',
-                title: `User's Projects (?) - ${APP_NAME}`,
-                ...htmlWebpackPluginCommon
-            }),
-            new HtmlWebpackPlugin({
-                chunks: ['user-studios'],
-                template: 'src/playground/simple.ejs',
-                filename: 'user-studios.html',
-                title: `User's Studios (?) - ${APP_NAME}`,
-                ...htmlWebpackPluginCommon
-            }),
-            new HtmlWebpackPlugin({
                 chunks: ['user-followers'],
                 template: 'src/playground/simple.ejs',
                 filename: 'user-followers.html',
@@ -285,34 +265,6 @@ module.exports = [
                 template: 'src/playground/simple.ejs',
                 filename: 'user-following.html',
                 title: `User's Following (?) - ${APP_NAME}`,
-                ...htmlWebpackPluginCommon
-            }),
-            new HtmlWebpackPlugin({
-                chunks: ['project-forks'],
-                template: 'src/playground/simple.ejs',
-                filename: 'project-forks.html',
-                title: `Project's Forks (?) - ${APP_NAME}`,
-                ...htmlWebpackPluginCommon
-            }),
-            new HtmlWebpackPlugin({
-                chunks: ['project-studios'],
-                template: 'src/playground/simple.ejs',
-                filename: 'project-studios.html',
-                title: `Project's Studios (?) - ${APP_NAME}`,
-                ...htmlWebpackPluginCommon
-            }),
-            new HtmlWebpackPlugin({
-                chunks: ['featured-studios'],
-                template: 'src/playground/simple.ejs',
-                filename: 'featured-studios.html',
-                title: `Featured Studios - ${APP_NAME}`,
-                ...htmlWebpackPluginCommon
-            }),
-            new HtmlWebpackPlugin({
-                chunks: ['featured-projects'],
-                template: 'src/playground/simple.ejs',
-                filename: 'featured-projects.html',
-                title: `Featured Projects - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

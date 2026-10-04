@@ -298,18 +298,21 @@ const Search = props => {
                                         author: item.author.username,
                                         title: item.name
                                     })}
-                                    // eslint-disable-next-line react/jsx-no-bind
-                                    onClick={() => window.open(`./#${item.id}`, '_blank')}
                                 >
                                     <div className={styles.thumbWrapper}>
                                         <img
                                             draggable={false}
                                             src={`https://api.dashblocks.org/projects/thumbnails/${item.thumbnailId || 1}`}
                                             alt={item.id}
+                                            // eslint-disable-next-line react/jsx-no-bind
+                                            onClick={() => window.open(`./#${item.id}`, '_blank')}
                                         />
                                     </div>
                                     <div className={styles.projectInfo}>
-                                        <h4>{item.name}</h4>
+                                        <h4
+                                            // eslint-disable-next-line react/jsx-no-bind
+                                            onClick={() => window.open(`./#${item.id}`, '_blank')}
+                                        >{item.name}</h4>
                                         <p>
                                             <FormattedMessage
                                                 defaultMessage="by {author}"
@@ -334,18 +337,21 @@ const Search = props => {
                                         author: item.owner.username,
                                         title: item.name
                                     })}
-                                    // eslint-disable-next-line react/jsx-no-bind
-                                    onClick={() => window.open(`./studio#${item.id}`, '_blank')}
                                 >
                                     <div className={styles.studioThumbWrapper}>
                                         <img
                                             draggable={false}
                                             src={`https://api.dashblocks.org/studios/thumbnails/${item.thumbnailId || 1}`}
                                             alt={item.id}
+                                            // eslint-disable-next-line react/jsx-no-bind
+                                            onClick={() => window.open(`./studio#${item.id}`, '_blank')}
                                         />
                                     </div>
                                     <div className={styles.studioInfo}>
-                                        <h4>{item.name}</h4>
+                                        <h4
+                                            // eslint-disable-next-line react/jsx-no-bind
+                                            onClick={() => window.open(`./studio#${item.id}`, '_blank')}
+                                        >{item.name}</h4>
                                         <p>
                                             <FormattedMessage
                                                 defaultMessage="by {author}"

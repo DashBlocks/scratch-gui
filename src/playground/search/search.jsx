@@ -290,81 +290,79 @@ const Search = props => {
                             )}
                         </h2>
                         <div className={styles.projectGrid}>
-                            {items.length > 0 ? items.map(item => (
-                                {type === 'projects' ? (
-                                    <div
-                                        key={item.id}
-                                        className={styles.projectCard}
-                                        title={props.intl.formatMessage(messages.hoverText, {
-                                            author: item.author.username,
-                                            title: item.name
-                                        })}
-                                        // eslint-disable-next-line react/jsx-no-bind
-                                        onClick={() => window.open(`./#${item.id}`, '_blank')}
-                                    >
-                                        <div className={styles.thumbWrapper}>
-                                            <img
-                                                draggable={false}
-                                                src={`https://api.dashblocks.org/projects/thumbnails/${item.thumbnailId || 1}`}
-                                                alt={item.id}
-                                            />
-                                        </div>
-                                        <div className={styles.projectInfo}>
-                                            <h4>{item.name}</h4>
-                                            <p>
-                                                <FormattedMessage
-                                                    defaultMessage="by {author}"
-                                                    description="Displayed under project title to credit creator"
-                                                    id="tw.studioview.authorAttribution"
-                                                    values={{
-                                                        author: <a
-                                                            href={`user#${item.author.id}`}
-                                                            target="_blank"
-                                                            rel="noreferrer"
-                                                        >{item.author.username}</a>
-                                                    }}
-                                                />
-                                            </p>
-                                        </div>
+                            {items.length > 0 ? items.map(item => type === 'projects' ? (
+                                <div
+                                    key={item.id}
+                                    className={styles.projectCard}
+                                    title={props.intl.formatMessage(messages.hoverText, {
+                                        author: item.author.username,
+                                        title: item.name
+                                    })}
+                                    // eslint-disable-next-line react/jsx-no-bind
+                                    onClick={() => window.open(`./#${item.id}`, '_blank')}
+                                >
+                                    <div className={styles.thumbWrapper}>
+                                        <img
+                                            draggable={false}
+                                            src={`https://api.dashblocks.org/projects/thumbnails/${item.thumbnailId || 1}`}
+                                            alt={item.id}
+                                        />
                                     </div>
-                                ) : type === 'studios' ? (
-                                    <div
-                                        key={item.id}
-                                        className={styles.studioCard}
-                                        title={props.intl.formatMessage(messages.hoverText, {
-                                            author: item.owner.username,
-                                            title: item.name
-                                        })}
-                                        // eslint-disable-next-line react/jsx-no-bind
-                                        onClick={() => window.open(`./studio#${item.id}`, '_blank')}
-                                    >
-                                        <div className={styles.studioThumbWrapper}>
-                                            <img
-                                                draggable={false}
-                                                src={`https://api.dashblocks.org/studios/thumbnails/${item.thumbnailId || 1}`}
-                                                alt={item.id}
+                                    <div className={styles.projectInfo}>
+                                        <h4>{item.name}</h4>
+                                        <p>
+                                            <FormattedMessage
+                                                defaultMessage="by {author}"
+                                                description="Displayed under project title to credit creator"
+                                                id="tw.studioview.authorAttribution"
+                                                values={{
+                                                    author: <a
+                                                        href={`user#${item.author.id}`}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                    >{item.author.username}</a>
+                                                }}
                                             />
-                                        </div>
-                                        <div className={styles.studioInfo}>
-                                            <h4>{item.name}</h4>
-                                            <p>
-                                                <FormattedMessage
-                                                    defaultMessage="by {author}"
-                                                    description="Displayed under project title to credit creator"
-                                                    id="tw.studioview.authorAttribution"
-                                                    values={{
-                                                        author: <a
-                                                            href={`user#${item.owner.id}`}
-                                                            target="_blank"
-                                                            rel="noreferrer"
-                                                        >{item.owner.username}</a>
-                                                    }}
-                                                />
-                                            </p>
-                                        </div>
+                                        </p>
                                     </div>
-                                ) : null}
-                            )) : (
+                                </div>
+                            ) : type === 'studios' ? (
+                                <div
+                                    key={item.id}
+                                    className={styles.studioCard}
+                                    title={props.intl.formatMessage(messages.hoverText, {
+                                        author: item.owner.username,
+                                        title: item.name
+                                    })}
+                                    // eslint-disable-next-line react/jsx-no-bind
+                                    onClick={() => window.open(`./studio#${item.id}`, '_blank')}
+                                >
+                                    <div className={styles.studioThumbWrapper}>
+                                        <img
+                                            draggable={false}
+                                            src={`https://api.dashblocks.org/studios/thumbnails/${item.thumbnailId || 1}`}
+                                            alt={item.id}
+                                        />
+                                    </div>
+                                    <div className={styles.studioInfo}>
+                                        <h4>{item.name}</h4>
+                                        <p>
+                                            <FormattedMessage
+                                                defaultMessage="by {author}"
+                                                description="Displayed under project title to credit creator"
+                                                id="tw.studioview.authorAttribution"
+                                                values={{
+                                                    author: <a
+                                                        href={`user#${item.owner.id}`}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                    >{item.owner.username}</a>
+                                                }}
+                                            />
+                                        </p>
+                                    </div>
+                                </div>
+                            ) : null) : (
                                 <FormattedMessage
                                     defaultMessage="Nothing found"
                                     description="Message displayed when no results found for a search query"

@@ -75,6 +75,7 @@ const getSession = async (userId, password, verificationCode, captchaToken) => {
 };
 
 export {
+    API_ORIGIN,
     requestDashApi,
     getSession as default
 };

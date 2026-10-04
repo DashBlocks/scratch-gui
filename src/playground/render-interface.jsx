@@ -888,7 +888,7 @@ class Interface extends React.PureComponent {
                                         />
                                     </h2>
                                     <a
-                                        href={`./project-forks#${projectId}`}
+                                        href={`./search?q=forksof%3A${projectId}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={styles.projectRelatedViewAll}
@@ -959,7 +959,7 @@ class Interface extends React.PureComponent {
                                         />
                                     </h2>
                                     <a
-                                        href={`./project-studios#${projectId}`}
+                                        href={`./search?q=studiosof%3A${projectId}&type=studios`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={styles.projectRelatedViewAll}
@@ -1027,7 +1027,7 @@ class Interface extends React.PureComponent {
                                         />
                                     </h2>
                                     <a
-                                        href="./featured-projects"
+                                        href="./search?q=featured%3A"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={styles.projectRelatedViewAll}
@@ -1090,7 +1090,7 @@ class Interface extends React.PureComponent {
                                         />
                                     </h2>
                                     <a
-                                        href="./featured-studios"
+                                        href="./search?q=featured%3A&type=studios"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={styles.projectRelatedViewAll}

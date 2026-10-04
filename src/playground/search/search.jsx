@@ -67,10 +67,12 @@ const SPECIFIC_QUERIES = {
     projects: new Map([
         [/^featured:$/i, {
             entrypoint: (limit, currentOffset) => `/featured/projects?limit=${limit}&offset=${currentOffset}`,
+            resultsKey: 'projects',
             title: (formatMessage, total) => formatMessage(messages.featuredProjectsTitle, {projectsCount: total})
         }],
         [/^forksof:([0-9]+)$/i, {
             entrypoint: (limit, currentOffset, [_, id]) => `/projects/${id}/forks?limit=${limit}&offset=${currentOffset}`,
+            resultsKey: 'forks',
             title: (formatMessage, total, pre) => formatMessage(messages.projectForksTitle, {
                 project: pre,
                 forksCount: total
@@ -89,6 +91,7 @@ const SPECIFIC_QUERIES = {
         }],
         [/^author:(\S+)$/i, {
             entrypoint: (limit, currentOffset, [_, author]) => `/users/${author}/projects?limit=${limit}&offset=${currentOffset}`,
+            resultsKey: 'projects',
             title: (formatMessage, total, pre) => formatMessage(messages.userProjectsTitle, {
                 username: pre,
                 projectsCount: total
@@ -109,10 +112,12 @@ const SPECIFIC_QUERIES = {
     studios: new Map([
         [/^featured:$/i, {
             entrypoint: (limit, currentOffset) => `/featured/studios?limit=${limit}&offset=${currentOffset}`,
+            resultsKey: 'studios',
             title: (formatMessage, total) => formatMessage(messages.featuredStudiosTitle, {studiosCount: total})
         }],
         [/^studiosof:([0-9]+)$/i, {
             entrypoint: (limit, currentOffset, [_, id]) => `/projects/${id}/studios?limit=${limit}&offset=${currentOffset}`,
+            resultsKey: 'studios',
             title: (formatMessage, total, pre) => formatMessage(messages.projectStudiosTitle, {
                 project: pre,
                 studiosCount: total
@@ -131,6 +136,7 @@ const SPECIFIC_QUERIES = {
         }],
         [/^owner:(\S+)$/i, {
             entrypoint: (limit, currentOffset, [_, owner]) => `/users/${owner}/studios?limit=${limit}&offset=${currentOffset}`,
+            resultsKey: 'studios',
             title: (formatMessage, total, pre) => formatMessage(messages.userStudiosTitle, {
                 username: pre,
                 studiosCount: total
@@ -180,8 +186,8 @@ const Search = props => {
             const searchResults = await searchReq.json();
             if (!searchResults.ok) throw new Error(searchResults.error);
             setTotal(searchResults.total);
-            setItems(prevItems => [...prevItems, ...searchResults.results]);
-            setHasMore(searchResults.results.length === limit);
+            setItems(prevItems => [...prevItems, ...searchResults[specificQueryEntry ? specificQueryEntry[1].resultsKey : 'results']]);
+            setHasMore(searchResults[specificQueryEntry ? specificQueryEntry[1].resultsKey : 'results'].length === limit);
             if (specificQueryEntry) {
                 document.title = `${specificQueryEntry[1].title(props.intl.formatMessage, searchResults.total, currentPre)} - ${APP_NAME}`;
             }

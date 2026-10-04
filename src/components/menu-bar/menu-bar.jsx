@@ -28,6 +28,7 @@ import MenuBarHOC from '../../containers/menu-bar-hoc.jsx';
 import SettingsMenu from './settings-menu.jsx';
 import AccountNav from '../../containers/account-nav.jsx';
 import Spinner from '../spinner/spinner.jsx';
+import CollaboratorsModal from '../dash-collaborators/collaborators-modal.jsx';
 
 import FramerateChanger from '../../containers/tw-framerate-changer.jsx';
 import ChangeUsername from '../../containers/tw-change-username.jsx';
@@ -232,6 +233,8 @@ class MenuBar extends React.Component {
             'handleClickPackager',
             'handleClickDesktopSettings',
             'handleClickRestorePoints',
+            'handleOpenCollaborators',
+            'handleCloseCollaborators',
             'handleClickSeeCommunity',
             'handleClickShare',
             'handleClickUpdate',
@@ -244,7 +247,8 @@ class MenuBar extends React.Component {
             'restoreOptionMessage'
         ]);
         this.state = {
-            isSharing: false
+            isSharing: false,
+            collaboratorsProjectId: null
         };
     }
     componentDidMount () {
@@ -279,6 +283,13 @@ class MenuBar extends React.Component {
     handleClickSaveAsCopy () {
         this.props.onClickSaveAsCopy();
         this.props.onRequestCloseFile();
+    }
+    handleOpenCollaborators () {
+        this.props.onRequestCloseFile();
+        this.setState({collaboratorsProjectId: this.props.projectId});
+    }
+    handleCloseCollaborators () {
+        this.setState({collaboratorsProjectId: null});
     }
     handleClickPackager () {
         this.props.onClickPackager();
@@ -1101,6 +1112,15 @@ class MenuBar extends React.Component {
                                             )}
                                         </MenuItem>
                                     )}</CloudVariablesToggler>
+                                    {this.props.canManageCollaborators && (
+                                        <MenuItem onClick={this.handleOpenCollaborators}>
+                                            <FormattedMessage
+                                                id="dash.menuBar.liveCollaboration"
+                                                defaultMessage="Live-collaboration"
+                                                description="Open the project collaborators management dialog"
+                                            />
+                                        </MenuItem>
+                                    )}
                                 </MenuSection>
                                 <MenuSection>
                                     <MenuItem onClick={this.props.onClickSettingsModal}>
@@ -1410,6 +1430,15 @@ class MenuBar extends React.Component {
         return (
             <React.Fragment>
                 {menuBar}
+                {this.props.canManageCollaborators &&
+                    this.state.collaboratorsProjectId === this.props.projectId && (
+                    <CollaboratorsModal
+                        key={this.props.projectId}
+                        projectId={this.props.projectId}
+                        isRtl={this.props.isRtl}
+                        onClose={this.handleCloseCollaborators}
+                    />
+                )}
                 {/* !process.env.OLD_COMPILER && (<TWNews item='dash:news1' id='new-compiler' />) */}
                 {window.location.href.startsWith('https://dashblocks.org/scratch-gui') && (<TWNews
                     item="dash:news2"
@@ -1444,6 +1473,7 @@ MenuBar.propTypes = {
     canCreateCopy: PropTypes.bool,
     canCreateNew: PropTypes.bool,
     canEditTitle: PropTypes.bool,
+    canManageCollaborators: PropTypes.bool,
     canManageFiles: PropTypes.bool,
     canRemix: PropTypes.bool,
     canSave: PropTypes.bool,
@@ -1546,6 +1576,10 @@ const mapStateToProps = state => {
         authorAvatarSrc: state.scratchGui.tw.author.thumbnail,
         authorAvatarFrame: state.scratchGui.tw.author.frameId,
         projectId,
+        canManageCollaborators: /^[1-9]\d{0,19}$/.test(projectId) && Boolean(
+            session && state.scratchGui.tw.author && state.scratchGui.tw.author.userId &&
+            String(state.scratchGui.tw.author.userId) === String(session.id)
+        ),
         aboutMenuOpen: aboutMenuOpen(state),
         accountMenuOpen: accountMenuOpen(state),
         currentLocale: state.locales.locale,

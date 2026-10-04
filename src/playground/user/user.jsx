@@ -1077,7 +1077,7 @@ const User = props => {
                                 </h2>
                                 {projects.length > 0 && (
                                     <a
-                                        onClick={() => window.open(`./user-projects#${userData.username}`, '_blank')}
+                                        onClick={() => window.open(`./search?q=author%3A${encodeURIComponent(userData.username)}`, '_blank')}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={styles.viewAllLink}
@@ -1147,7 +1147,7 @@ const User = props => {
                                 </h2>
                                 {studios.length > 0 && (
                                     <a
-                                        onClick={() => window.open(`./user-studios#${userData.username}`, '_blank')}
+                                        onClick={() => window.open(`./search?q=owner%3A${encodeURIComponent(userData.username)}&type=studios`, '_blank')}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={styles.viewAllLink}

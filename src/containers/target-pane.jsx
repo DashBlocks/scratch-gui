@@ -58,27 +58,35 @@ class TargetPane extends React.Component {
         this.props.vm.removeListener('BLOCK_DRAG_END', this.handleBlockDragEnd);
     }
     handleChangeSpriteDirection (direction) {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.postSpriteInfo({direction});
     }
     handleChangeSpriteRotationStyle (rotationStyle) {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.postSpriteInfo({rotationStyle});
     }
     handleChangeSpriteName (name) {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.renameSprite(this.props.editingTarget, name);
     }
     handleChangeSpriteSize (size) {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.postSpriteInfo({size});
     }
     handleChangeSpriteVisibility (visible) {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.postSpriteInfo({visible});
     }
     handleChangeSpriteX (x) {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.postSpriteInfo({x});
     }
     handleChangeSpriteY (y) {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.postSpriteInfo({y});
     }
     handleDeleteSprite (id) {
+        if (!this.props.vm.canEditCollaboration()) return;
         const restoreSprite = this.props.vm.deleteSprite(id);
         const restoreFun = () => restoreSprite().then(this.handleActivateBlocksTab);
 
@@ -89,6 +97,7 @@ class TargetPane extends React.Component {
 
     }
     handleDuplicateSprite (id) {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.duplicateSprite(id);
     }
     handleExportSprite (id) {
@@ -107,7 +116,9 @@ class TargetPane extends React.Component {
         }
     }
     async handleSurpriseSpriteClick () {
+        if (!this.props.vm.canEditCollaboration()) return;
         const spriteLibraryContent = await getSpriteLibrary();
+        if (!this.props.vm.canEditCollaboration()) return;
         const surpriseSprites = spriteLibraryContent.filter(sprite =>
             (sprite.tags.indexOf('letters') === -1) && (sprite.tags.indexOf('numbers') === -1)
         );
@@ -117,6 +128,7 @@ class TargetPane extends React.Component {
             .then(this.handleActivateBlocksTab);
     }
     handlePaintSpriteClick () {
+        if (!this.props.vm.canEditCollaboration()) return;
         const formatMessage = this.props.intl.formatMessage;
         const emptyItem = emptySprite(
             formatMessage(sharedMessages.sprite, {index: 1}),
@@ -133,6 +145,7 @@ class TargetPane extends React.Component {
         this.props.onActivateTab(BLOCKS_TAB_INDEX);
     }
     handleNewSprite (spriteJSONString) {
+        if (!this.props.vm.canEditCollaboration()) return Promise.resolve();
         return this.props.vm.addSprite(spriteJSONString)
             .then(this.handleActivateBlocksTab)
             .catch(err => {
@@ -140,9 +153,11 @@ class TargetPane extends React.Component {
             });
     }
     handleFileUploadClick () {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.fileInput.click();
     }
     handleSpriteUpload (e) {
+        if (!this.props.vm.canEditCollaboration()) return;
         const vm = this.props.vm;
         this.props.onShowImporting();
         handleFileUpload(e.target, (buffer, fileType, fileName, fileIndex, fileCount) => {
@@ -161,17 +176,20 @@ class TargetPane extends React.Component {
         this.fileInput = input;
     }
     handleBlockDragEnd (blocks) {
+        if (!this.props.vm.canEditCollaboration()) return;
         if (this.props.hoveredTarget.sprite && this.props.hoveredTarget.sprite !== this.props.editingTarget) {
             this.shareBlocks(blocks, this.props.hoveredTarget.sprite, this.props.editingTarget);
             this.props.onReceivedBlocks(true);
         }
     }
     shareBlocks (payload, targetId, optFromTargetId) {
+        if (!this.props.vm.canEditCollaboration()) return;
         // Position the top-level block based on the scroll position.
         const centered = placeInViewport(payload, this.props.workspaceMetrics.targets[targetId], this.props.isRtl);
         return this.props.vm.shareBlocksToTarget(centered, targetId, optFromTargetId);
     }
     handleDrop (dragInfo) {
+        if (!this.props.vm.canEditCollaboration()) return;
         const {sprite: targetId} = this.props.hoveredTarget;
         if (dragInfo.dragType === DragConstants.SPRITE) {
             // Add one to both new and target index because we are not counting/moving the stage
@@ -180,7 +198,10 @@ class TargetPane extends React.Component {
             // TODO storage does not have a way of loading zips right now, and may never need it.
             // So for now just grab the zip manually.
             fetchSprite(dragInfo.payload.bodyUrl)
-                .then(sprite3Zip => this.props.vm.addSprite(sprite3Zip));
+                .then(sprite3Zip => {
+                    if (!this.props.vm.canEditCollaboration()) return;
+                    return this.props.vm.addSprite(sprite3Zip);
+                });
         } else if (targetId) {
             // Something is being dragged over one of the sprite tiles or the backdrop.
             // Dropping assets like sounds and costumes duplicate the asset on the
@@ -188,6 +209,9 @@ class TargetPane extends React.Component {
             // However, dropping does not switch the editing target or activate that editor tab.
             // This is based on 2.0 behavior, but seems like it keeps confusing switching to a minimum.
             // it allows the user to share multiple things without switching back and forth.
+            if (this.props.vm.dashCollaboration &&
+                [DragConstants.COSTUME, DragConstants.SOUND, DragConstants.BACKPACK_COSTUME,
+                    DragConstants.BACKPACK_SOUND].includes(dragInfo.dragType)) return;
             if (dragInfo.dragType === DragConstants.COSTUME) {
                 this.props.vm.shareCostumeToTarget(dragInfo.index, targetId);
             } else if (targetId && dragInfo.dragType === DragConstants.SOUND) {
@@ -206,7 +230,10 @@ class TargetPane extends React.Component {
                 }, targetId);
             } else if (dragInfo.dragType === DragConstants.BACKPACK_CODE) {
                 fetchCode(dragInfo.payload.bodyUrl)
-                    .then(blocks => this.shareBlocks(blocks, targetId))
+                    .then(blocks => {
+                        if (!this.props.vm.canEditCollaboration()) return;
+                        return this.shareBlocks(blocks, targetId);
+                    })
                     .then(() => this.props.vm.refreshWorkspace());
             }
         }

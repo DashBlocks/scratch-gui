@@ -138,6 +138,10 @@ const ProjectSaverHOC = function (WrappedComponent) {
             }
         }
         scheduleAutoSave () {
+            if (this.props.vm.dashCollaboration) {
+                this.clearAutoSaveTimeout();
+                return;
+            }
             if (this.props.isShowingSaveable && this.props.autoSaveTimeoutId === null) {
                 const timeoutId = setTimeout(this.tryToAutoSave,
                     this.props.autoSaveIntervalSecs * 1000);
@@ -145,6 +149,10 @@ const ProjectSaverHOC = function (WrappedComponent) {
             }
         }
         tryToAutoSave () {
+            if (this.props.vm.dashCollaboration) {
+                this.clearAutoSaveTimeout();
+                return;
+            }
             if (this.props.projectChanged && this.props.isShowingSaveable) {
                 this.props.onAutoUpdateProject();
             }
@@ -153,6 +161,7 @@ const ProjectSaverHOC = function (WrappedComponent) {
             return props.canCreateNew && props.isShowingWithoutId;
         }
         updateProjectToStorage () {
+            if (this.props.vm.dashCollaboration) return;
             this.props.onShowSavingAlert();
             return this.storeProject(this.props.reduxProjectId)
                 .then(() => {
@@ -217,6 +226,9 @@ const ProjectSaverHOC = function (WrappedComponent) {
          * @param {?object} requestParams - object of params to add to request body
          */
         storeProject (projectId, requestParams) {
+            if (this.props.vm.dashCollaboration) {
+                return Promise.reject(new Error('Project saving is disabled during collaboration.'));
+            }
             requestParams = requestParams || {};
             this.clearAutoSaveTimeout();
             // Serialize VM state now before embarking on
@@ -244,7 +256,12 @@ const ProjectSaverHOC = function (WrappedComponent) {
                     })
                 )
             )
-                .then(() => this.props.onUpdateProjectData(projectId, savedVMState, requestParams))
+                .then(() => {
+                    if (this.props.vm.dashCollaboration) {
+                        throw new Error('Project saving is disabled during collaboration.');
+                    }
+                    return this.props.onUpdateProjectData(projectId, savedVMState, requestParams);
+                })
                 .then(response => {
                     this.props.onSetProjectUnchanged();
                     const id = response.id.toString();

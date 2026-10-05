@@ -205,9 +205,11 @@ export default class DashCollaborationSession {
         const hasLocalOrderChange = baseOrder.length !== wantedOrder.length ||
             baseOrder.some((id, index) => id !== wantedOrder[index]);
         if (hasLocalOrderChange) {
-            const nextOrder = order.toArray().filter(id => wantedOrder.includes(id));
-            for (const id of wantedOrder) {
-                if (!nextOrder.includes(id)) nextOrder.push(id);
+            const nextOrder = wantedOrder.slice();
+            for (const id of order.toArray()) {
+                if (!newTargets.has(id) && targets.has(id) && !nextOrder.includes(id)) {
+                    nextOrder.push(id);
+                }
             }
             if (JSON.stringify(order.toArray()) !== JSON.stringify(nextOrder)) {
                 operations.push(() => {

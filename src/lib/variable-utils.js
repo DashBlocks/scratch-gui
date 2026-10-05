@@ -15,6 +15,7 @@ const getVariableValue = (vm, targetId, variableId) => {
 };
 
 const setVariableValue = (vm, targetId, variableId, value) => {
+    if (!vm.canEditCollaboration()) return;
     const target = targetId ?
         vm.runtime.getTargetById(targetId) :
         vm.runtime.getTargetForStage();

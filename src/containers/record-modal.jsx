@@ -66,7 +66,9 @@ class RecordModal extends React.Component {
         this.setState({playhead});
     }
     handleSubmit () {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         this.setState({encoding: true}, () => {
+            if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
             const sampleCount = this.state.samples.length;
             const startIndex = Math.floor(this.state.trimStart * sampleCount);
             const endIndex = Math.floor(this.state.trimEnd * sampleCount);

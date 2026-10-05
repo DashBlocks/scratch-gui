@@ -87,12 +87,14 @@ class SoundTab extends React.Component {
     }
 
     handleDeleteSound (soundIndex) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const restoreFun = this.props.vm.deleteSound(soundIndex);
         if (soundIndex >= this.state.selectedSoundIndex) {
             this.setState({selectedSoundIndex: Math.max(0, soundIndex - 1)});
         }
         this.props.dispatchUpdateRestore({
             restoreFun: restoreFun && (() => {
+                if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
                 this.props.vm.assertCollaborationWritable();
                 return restoreFun();
             }),
@@ -107,6 +109,7 @@ class SoundTab extends React.Component {
     }
 
     handleDuplicateSound (soundIndex) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         this.props.vm.duplicateSound(soundIndex).then(() => {
             this.setState({selectedSoundIndex: soundIndex + 1});
         });
@@ -120,9 +123,10 @@ class SoundTab extends React.Component {
         const sounds = sprite.sounds ? sprite.sounds : [];
         this.setState({selectedSoundIndex: Math.max(sounds.length - 1, 0)});
     }
-
     async handleSurpriseSound () {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const soundLibraryContent = await getSoundLibrary();
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const soundItem = soundLibraryContent[Math.floor(Math.random() * soundLibraryContent.length)];
         if (soundItem.src) {
             this.handleSoundFromWebLibrary(soundItem);
@@ -141,14 +145,17 @@ class SoundTab extends React.Component {
     }
 
     handleFileUploadClick () {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         this.fileInput.click();
     }
 
     handleSoundFromWebLibrary (item) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const storage = this.props.vm.runtime.storage;
         const targetId = this.props.vm.editingTarget.id;
         handleAssetLoad(item.src.library, item.src.path, (buffer, fileType) => {
             soundUpload(buffer, fileType, storage, newSound => {
+                if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
                 newSound.name = item.name;
                 this.props.vm.addSound(newSound, targetId).then(() => {
                     this.handleNewSound();
@@ -158,11 +165,13 @@ class SoundTab extends React.Component {
     }
 
     handleSoundUpload (e) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const storage = this.props.vm.runtime.storage;
         const targetId = this.props.vm.editingTarget.id;
         this.props.onShowImporting();
         handleFileUpload(e.target, (buffer, fileType, fileName, fileIndex, fileCount) => {
             soundUpload(buffer, fileType, storage, newSound => {
+                if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
                 newSound.name = fileName;
                 this.props.vm.addSound(newSound, targetId).then(() => {
                     this.handleNewSound();
@@ -175,6 +184,7 @@ class SoundTab extends React.Component {
     }
 
     handleDrop (dropInfo) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         if (dropInfo.dragType === DragConstants.SOUND) {
             const sprite = this.props.vm.editingTarget.sprite;
             const activeSound = sprite.sounds[this.state.selectedSoundIndex];
@@ -271,7 +281,10 @@ class SoundTab extends React.Component {
                 }, {
                     title: intl.formatMessage(messages.recordSound),
                     img: addSoundFromRecordingIcon,
-                    onClick: onNewSoundFromRecordingClick
+                    onClick: () => {
+                        if (!vm.canEditCollaboration() || vm.dashCollaboration) return;
+                        onNewSoundFromRecordingClick();
+                    }
                 }, {
                     title: intl.formatMessage(messages.addSound),
                     img: searchIcon,

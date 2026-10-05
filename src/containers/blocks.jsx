@@ -97,6 +97,29 @@ const addFunctionListener = (object, property, callback) => {
     };
 };
 
+const patchReadOnlyFlyout = ScratchBlocks => {
+    const prototype = ScratchBlocks.Gesture && ScratchBlocks.Gesture.prototype;
+    if (!prototype || prototype.dashReadOnlyFlyoutPatched) return;
+
+    const isReadOnlyFlyout = gesture => {
+        const workspace = gesture.flyout_ && gesture.flyout_.targetWorkspace_;
+        return Boolean(workspace && workspace.options.readOnly);
+    };
+    const updateIsDraggingFromFlyout = prototype.updateIsDraggingFromFlyout_;
+    prototype.updateIsDraggingFromFlyout_ = function (...args) {
+        if (isReadOnlyFlyout(this)) return false;
+        return updateIsDraggingFromFlyout.apply(this, args);
+    };
+
+    const doBlockClick = prototype.doBlockClick_;
+    prototype.doBlockClick_ = function (...args) {
+        if (isReadOnlyFlyout(this) && this.flyout_.autoClose) return;
+        return doBlockClick.apply(this, args);
+    };
+
+    prototype.dashReadOnlyFlyoutPatched = true;
+};
+
 const DroppableBlocks = DropAreaHOC([
     DragConstants.BACKPACK_CODE
 ])(BlocksComponent);
@@ -180,6 +203,7 @@ class Blocks extends React.Component {
     }
     componentDidMount () {
         this.ScratchBlocks = VMScratchBlocks(this.props.vm, this.props.useCatBlocks);
+        patchReadOnlyFlyout(this.ScratchBlocks);
         this.ScratchBlocks.prompt = this.handlePromptStart;
         this.ScratchBlocks.statusButtonCallback = this.handleConnectionModalStart;
         this.ScratchBlocks.recordSoundCallback = this.handleOpenSoundRecorder;

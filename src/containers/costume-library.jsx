@@ -37,9 +37,11 @@ class CostumeLibrary extends React.PureComponent {
         }
     }
     handleItemSelected (item) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         if (item.src) {
             handleAssetLoad(item.src.library, item.src.path, (buffer, fileType) => {
                 costumeUpload(buffer, fileType, this.props.vm, vmCostumes => {
+                    if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
                     vmCostumes.forEach((costume, i) => {
                         costume.name = `${item.name}${i ? i + 1 : ''}`;
                         this.props.vm.addCostume(costume.md5, costume);

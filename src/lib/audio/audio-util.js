@@ -33,6 +33,7 @@ const encodeAndAddSoundToVM = function (vm, samples, sampleRate, name, callback)
         sampleRate: sampleRate,
         channelData: [samples]
     }).then(wavBuffer => {
+        if (!vm.canEditCollaboration() || vm.dashCollaboration) return;
         const vmSound = {
             format: '',
             dataFormat: 'wav',

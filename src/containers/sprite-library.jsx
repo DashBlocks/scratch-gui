@@ -36,6 +36,7 @@ class SpriteLibrary extends React.PureComponent {
         }
     }
     handleItemSelect (item) {
+        if (!this.props.vm.canEditCollaboration()) return;
         // Randomize position of library sprite
         randomizeSpritePosition(item);
         this.props.vm.addSprite(JSON.stringify(item)).then(() => {

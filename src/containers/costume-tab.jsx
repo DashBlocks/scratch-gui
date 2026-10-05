@@ -136,9 +136,11 @@ class CostumeTab extends React.Component {
         this.setState({selectedCostumeIndex: costumeIndex});
     }
     handleDeleteCostume (costumeIndex) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const restoreCostumeFun = this.props.vm.deleteCostume(costumeIndex);
         this.props.dispatchUpdateRestore({
             restoreFun: restoreCostumeFun && (() => {
+                if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
                 this.props.vm.assertCollaborationWritable();
                 return restoreCostumeFun();
             }),
@@ -146,6 +148,7 @@ class CostumeTab extends React.Component {
         });
     }
     handleDuplicateCostume (costumeIndex) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         this.props.vm.duplicateCostume(costumeIndex);
     }
     handleExportCostume (costumeIndex) {
@@ -156,6 +159,9 @@ class CostumeTab extends React.Component {
         downloadBlob(`${item.name}.${item.asset.dataFormat}`, blob);
     }
     handleNewCostume (costume, fromCostumeLibrary, targetId) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) {
+            return Promise.resolve();
+        }
         const costumes = Array.isArray(costume) ? costume : [costume];
 
         return Promise.all(costumes.map(c => {
@@ -169,13 +175,16 @@ class CostumeTab extends React.Component {
         }));
     }
     handleNewBlankCostume () {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const name = this.props.vm.editingTarget.isStage ?
             this.props.intl.formatMessage(messages.backdrop, {index: 1}) :
             this.props.intl.formatMessage(messages.costume, {index: 1});
         this.handleNewCostume(emptyCostume(name));
     }
     async handleSurpriseCostume () {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const costumeLibraryContent = await getCostumeLibrary();
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const item = costumeLibraryContent[Math.floor(Math.random() * costumeLibraryContent.length)];
         if (item.src) {
             this.handleCostumeFromWebLibrary(item);
@@ -192,7 +201,9 @@ class CostumeTab extends React.Component {
         this.handleNewCostume(vmCostume, true /* fromCostumeLibrary */);
     }
     async handleSurpriseBackdrop () {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const backdropLibraryContent = await getBackdropLibrary();
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const item = backdropLibraryContent[Math.floor(Math.random() * backdropLibraryContent.length)];
         if (item.src) {
             this.handleCostumeFromWebLibrary(item);
@@ -209,10 +220,12 @@ class CostumeTab extends React.Component {
         this.handleNewCostume(vmCostume);
     }
     handleCostumeFromWebLibrary (item) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const vm = this.props.vm;
         const targetId = this.props.vm.editingTarget.id;
         handleAssetLoad(item.src.library, item.src.path, (buffer, fileType) => {
             costumeUpload(buffer, fileType, vm, vmCostumes => {
+                if (!vm.canEditCollaboration() || vm.dashCollaboration) return;
                 vmCostumes.forEach((costume, i) => {
                     costume.name = `${item.name}${i ? i + 1 : ''}`;
                 });
@@ -221,11 +234,13 @@ class CostumeTab extends React.Component {
         });
     }
     handleCostumeUpload (e) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const vm = this.props.vm;
         const targetId = this.props.vm.editingTarget.id;
         this.props.onShowImporting();
         handleFileUpload(e.target, (buffer, fileType, fileName, fileIndex, fileCount) => {
             costumeUpload(buffer, fileType, vm, vmCostumes => {
+                if (!vm.canEditCollaboration() || vm.dashCollaboration) return;
                 vmCostumes.forEach((costume, i) => {
                     costume.name = `${fileName}${i ? i + 1 : ''}`;
                 });
@@ -238,9 +253,11 @@ class CostumeTab extends React.Component {
         }, this.props.onCloseImporting);
     }
     handleFileUploadClick () {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         this.fileInput.click();
     }
     handleDrop (dropInfo) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         if (dropInfo.dragType === DragConstants.COSTUME) {
             const sprite = this.props.vm.editingTarget.sprite;
             const activeCostume = sprite.costumes[this.state.selectedCostumeIndex];

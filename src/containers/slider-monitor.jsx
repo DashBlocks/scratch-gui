@@ -24,6 +24,7 @@ class SliderMonitor extends React.Component {
         }
     }
     handleSliderUpdate (e) {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.setState({value: Number(e.target.value)});
         const {vm, targetId, id: variableId} = this.props;
         setVariableValue(vm, targetId, variableId, Number(e.target.value));

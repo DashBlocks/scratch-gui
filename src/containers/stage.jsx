@@ -229,7 +229,7 @@ class Stage extends React.Component {
             // Non-editor drag style just updates the sprite continuously.
             if (this.props.useEditorDragStyle) {
                 this.positionDragCanvas(mousePosition[0], mousePosition[1]);
-            } else {
+            } else if (this.props.vm.canEditCollaboration()) {
                 const spritePosition = this.getScratchCoords(mousePosition[0], mousePosition[1]);
                 this.props.vm.postSpriteInfo({
                     x: spritePosition[0] + this.state.dragOffset[0],
@@ -380,6 +380,7 @@ class Stage extends React.Component {
         this.dragCanvas.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
     }
     onStartDrag (x, y) {
+        if (!this.props.vm.canEditCollaboration()) return;
         if (this.state.dragId) return;
         const drawableId = this.renderer.pick(x, y);
         if (drawableId === -1) return;
@@ -409,7 +410,7 @@ class Stage extends React.Component {
             const drawableData = this.renderer.extractDrawableScreenSpace(drawableId);
             this.drawDragCanvas(drawableData, x, y);
             this.positionDragCanvas(x, y);
-            this.props.vm.postSpriteInfo({visible: false});
+            if (this.props.vm.canEditCollaboration()) this.props.vm.postSpriteInfo({visible: false});
             this.props.vm.renderer.draw();
         }
     }
@@ -434,7 +435,7 @@ class Stage extends React.Component {
                 spriteInfo.y = -(spritePosition[1] + this.state.dragOffset[1]);
                 spriteInfo.force = true;
             }
-            this.props.vm.postSpriteInfo(spriteInfo);
+            if (this.props.vm.canEditCollaboration()) this.props.vm.postSpriteInfo(spriteInfo);
             // Then clear the dragging canvas and stop drag (potentially slow if selecting sprite)
             this.clearDragCanvas();
             commonStopDragActions();

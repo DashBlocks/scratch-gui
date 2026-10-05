@@ -81,6 +81,7 @@ class ListMonitor extends React.Component {
     }
 
     applyDeepUpdate (callback) {
+        if (!this.props.vm.canEditCollaboration()) return;
         const {vm, targetId, id: variableId} = this.props;
         const rootValue = getVariableValue(vm, targetId, variableId);
 
@@ -107,6 +108,7 @@ class ListMonitor extends React.Component {
     }
 
     handleNavigateDown (key) {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.handleDeactivate();
         this.setState({
             path: this.state.path.concat([key]),
@@ -116,6 +118,7 @@ class ListMonitor extends React.Component {
     }
 
     handleNavigateTo (depth) {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.handleDeactivate();
         this.setState({
             path: this.state.path.slice(0, depth),
@@ -125,6 +128,7 @@ class ListMonitor extends React.Component {
     }
 
     handleActivate (index) {
+        if (!this.props.vm.canEditCollaboration()) return;
         // Do nothing if activating the currently active item
         if (this.state.activeIndex === index) {
             return;
@@ -138,6 +142,7 @@ class ListMonitor extends React.Component {
     }
 
     handleDeactivate () {
+        if (!this.props.vm.canEditCollaboration()) return;
         // Submit any in-progress value edits on blur
         if (this.state.activeIndex !== null) {
             this.applyDeepUpdate(list => {
@@ -159,6 +164,7 @@ class ListMonitor extends React.Component {
     }
 
     handleKeyPress (e) {
+        if (!this.props.vm.canEditCollaboration()) return;
         // Special case for tab, arrow keys and enter.
         // Tab / shift+tab navigate down / up the list.
         // Arrow down / arrow up navigate down / up the list.
@@ -203,10 +209,12 @@ class ListMonitor extends React.Component {
     }
 
     handleInput (e) {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.setState({activeValue: e.target.value});
     }
 
     handleRemove (e) {
+        if (!this.props.vm.canEditCollaboration()) return;
         e.preventDefault(); // Default would blur input, prevent that.
         e.stopPropagation(); // Bubbling would activate, which will be handled here
         this.applyDeepUpdate(list => {
@@ -230,6 +238,7 @@ class ListMonitor extends React.Component {
     }
 
     handleAdd () {
+        if (!this.props.vm.canEditCollaboration()) return;
         const currentList = this.getCurrentList();
         if (Array.isArray(currentList)) {
             this.applyDeepUpdate(list => {
@@ -247,6 +256,7 @@ class ListMonitor extends React.Component {
     }
 
     handleOk (key) {
+        if (!this.props.vm.canEditCollaboration()) return;
         if (!key) {
             this.setState({prompt: false, draggable: true});
             return;

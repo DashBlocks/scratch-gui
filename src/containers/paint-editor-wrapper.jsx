@@ -43,9 +43,11 @@ class PaintEditorWrapper extends React.Component {
         });
     }
     handleUpdateName (name) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         this.props.vm.renameCostume(this.props.selectedCostumeIndex, name);
     }
     handleUpdateImage (isVector, image, rotationCenterX, rotationCenterY) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         if (isVector) {
             this.props.vm.updateSvg(
                 this.props.selectedCostumeIndex,

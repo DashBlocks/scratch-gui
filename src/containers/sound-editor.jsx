@@ -142,12 +142,18 @@ class SoundEditor extends React.Component {
         });
     }
     submitNewSamples (samples, sampleRate, skipUndo) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) {
+            return Promise.resolve(false);
+        }
         return downsampleIfNeeded({samples, sampleRate}, this.resampleBufferToRate)
             .then(({samples: newSamples, sampleRate: newSampleRate}) =>
                 WavEncoder.encode({
                     sampleRate: newSampleRate,
                     channelData: [newSamples]
                 }).then(wavBuffer => {
+                    if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) {
+                        return false;
+                    }
                     if (!skipUndo) {
                         this.redoStack = [];
                         if (this.undoStack.length >= UNDO_STACK_SIZE) {
@@ -188,6 +194,7 @@ class SoundEditor extends React.Component {
         this.setState({playhead});
     }
     handleChangeName (name) {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         this.props.vm.renameSound(this.props.soundIndex, name);
     }
     handleDelete () {
@@ -331,6 +338,7 @@ class SoundEditor extends React.Component {
         }, callback);
     }
     handleCopyToNew () {
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         this.copy(() => {
             encodeAndAddSoundToVM(this.props.vm, this.state.copyBuffer.samples,
                 this.state.copyBuffer.sampleRate, this.props.name);

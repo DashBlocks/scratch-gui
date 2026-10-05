@@ -126,6 +126,7 @@ class Monitor extends React.Component {
         return themeObj.primary(extColor);
     }
     handleDragEnd (e, {x, y}) {
+        if (!this.props.vm.canEditCollaboration()) return;
         const newX = parseInt(this.element.style.left, 10) + x;
         const newY = parseInt(this.element.style.top, 10) + y;
         this.props.onDragEnd(
@@ -140,12 +141,14 @@ class Monitor extends React.Component {
         }));
     }
     handleHide () {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.runtime.requestUpdateMonitor(Map({
             id: this.props.id,
             visible: false
         }));
     }
     handleNextMode () {
+        if (!this.props.vm.canEditCollaboration()) return;
         const modes = availableModes(this.props.opcode);
         const modeIndex = modes.indexOf(this.props.mode);
         const newMode = modes[(modeIndex + 1) % modes.length];
@@ -155,18 +158,21 @@ class Monitor extends React.Component {
         }));
     }
     handleSetModeToDefault () {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.runtime.requestUpdateMonitor(Map({
             id: this.props.id,
             mode: 'default'
         }));
     }
     handleSetModeToLarge () {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.runtime.requestUpdateMonitor(Map({
             id: this.props.id,
             mode: 'large'
         }));
     }
     handleSetModeToSlider () {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.runtime.requestUpdateMonitor(Map({
             id: this.props.id,
             mode: 'slider'
@@ -176,9 +182,11 @@ class Monitor extends React.Component {
         this.setState({sliderPrompt: false});
     }
     handleSliderPromptOpen () {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.setState({sliderPrompt: true});
     }
     handleSliderPromptOk (min, max, isDiscrete) {
+        if (!this.props.vm.canEditCollaboration()) return;
         const realMin = Math.min(min, max);
         const realMax = Math.max(min, max);
         this.props.vm.runtime.requestUpdateMonitor(Map({
@@ -193,7 +201,9 @@ class Monitor extends React.Component {
         this.element = monitorElt;
     }
     handleImport () {
+        if (!this.props.vm.canEditCollaboration()) return;
         importCSV().then(async ({rows, text}) => {
+            if (!this.props.vm.canEditCollaboration()) return;
             const numberOfColumns = rows[0].length;
             let columnNumber = 1;
             if (numberOfColumns > 1) {

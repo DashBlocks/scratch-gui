@@ -89,14 +89,19 @@ const base = {
         {
             test: /\.css$/,
             use: [{
-                loader: 'style-loader'
+                loader: 'style-loader',
+                options: {
+                    modules: {
+                        exportType: 'default'
+                    }
+                }
             }, {
                 loader: 'css-loader',
                 options: {
                     modules: {
                         mode: "local",
                         localIdentName: '[name]_[local]_[hash:base64:5]',
-                        exportLocalsConvention: 'camel-case-only'
+                        exportLocalsConvention: 'camel-case'
                     },
                     importLoaders: 1
                 }

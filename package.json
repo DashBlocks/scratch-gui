@@ -11,7 +11,7 @@
   },
   "main": "./dist/scratch-gui.js",
   "scripts": {
-    "build": "npm run clean && webpack --colors --bail",
+    "build": "npm run clean && webpack --bail",
     "build:prepublish": "rm -rf ../dashblocks.github.io/* && cp -r ./build/* ../dashblocks.github.io",
     "render-fonts": "rm -rf ../penguinmod-render-fonts/* && cp -r ./src/lib/tw-scratch-render-fonts/* ../penguinmod-render-fonts",
     "pull-assets": "cd ./node_modules/dash-assets && npm run pull",

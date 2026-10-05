@@ -87,6 +87,15 @@ const base = {
             }
         },
         {
+            test: /\.mjs$/,
+            type: 'javascript/auto',
+            loader: 'babel-loader',
+            include: /node_modules/,
+            options: {
+                presets: ['@babel/preset-env']
+            }
+        },
+        {
             test: /\.css$/,
             use: [{
                 loader: 'style-loader'

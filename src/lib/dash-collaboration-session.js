@@ -200,12 +200,21 @@ export default class DashCollaborationSession {
                 operations.push(() => target.set(key, clone(record[key])));
             }
         }
+        const baseOrder = this.base.targets.map(target => target.collaborationId);
         const wantedOrder = current.targets.map(target => target.collaborationId);
-        if (JSON.stringify(order.toArray()) !== JSON.stringify(wantedOrder)) {
-            operations.push(() => {
-                if (order.length) order.delete(0, order.length);
-                if (wantedOrder.length) order.insert(0, wantedOrder);
-            });
+        const hasLocalOrderChange = baseOrder.length !== wantedOrder.length ||
+            baseOrder.some((id, index) => id !== wantedOrder[index]);
+        if (hasLocalOrderChange) {
+            const nextOrder = order.toArray().filter(id => wantedOrder.includes(id));
+            for (const id of wantedOrder) {
+                if (!nextOrder.includes(id)) nextOrder.push(id);
+            }
+            if (JSON.stringify(order.toArray()) !== JSON.stringify(nextOrder)) {
+                operations.push(() => {
+                    if (order.length) order.delete(0, order.length);
+                    if (nextOrder.length) order.insert(0, nextOrder);
+                });
+            }
         }
         if (operations.length) this.client.change(() => operations.forEach(operation => operation()));
         this.base = current;

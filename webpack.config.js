@@ -87,15 +87,6 @@ const base = {
             }
         },
         {
-            test: /\.mjs$/,
-            type: 'javascript/auto',
-            loader: 'babel-loader',
-            include: /node_modules/,
-            options: {
-                presets: ['@babel/preset-env']
-            }
-        },
-        {
             test: /\.css$/,
             use: [{
                 loader: 'style-loader'
@@ -103,21 +94,23 @@ const base = {
                 loader: 'css-loader',
                 options: {
                     modules: {
+                        mode: "local",
                         localIdentName: '[name]_[local]_[hash:base64:5]',
-                        exportLocalsConvention: 'camel-case'
+                        exportLocalsConvention: 'camel-case-only'
                     },
                     importLoaders: 1
                 }
             }, {
                 loader: 'postcss-loader',
                 options: {
-                    ident: 'postcss',
-                    plugins: function () {
-                        return [
-                            postcssImport,
-                            postcssVars,
-                            autoprefixer
-                        ];
+                    postcssOptions: {
+                        plugins: function () {
+                            return [
+                                postcssImport,
+                                postcssVars,
+                                autoprefixer
+                            ];
+                        }
                     }
                 }
             }]

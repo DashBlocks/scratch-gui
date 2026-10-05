@@ -1,4 +1,5 @@
 @import "../../css/colors.css";
+@import "../../css/units.css";
 
 .modal {
     width: min(38rem, calc(100vw - 2rem));

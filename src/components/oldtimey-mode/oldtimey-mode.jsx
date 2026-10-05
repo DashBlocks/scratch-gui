@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import styles from './oldtimey-mode.css';
+import * as styles from './oldtimey-mode.css';
 import oldtimeySound from './projector2.mp3';
 import {connect} from 'react-redux';
 import {isTimeTravel1920} from '../../reducers/time-travel';

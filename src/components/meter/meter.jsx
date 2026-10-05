@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './meter.css';
+import * as styles from './meter.css';
 
 const Meter = props => {
     const {

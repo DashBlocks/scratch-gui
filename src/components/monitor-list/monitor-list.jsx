@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import {OrderedMap} from 'immutable';
 import {stageSizeToTransform} from '../../lib/screen-utils';
 
-import styles from './monitor-list.css';
+import * as styles from './monitor-list.css';
 
 const MonitorList = props => (
     <Box

@@ -87,7 +87,7 @@ import {setFileHandle} from '../../reducers/tw.js';
 
 import collectMetadata from '../../lib/collect-metadata';
 
-import styles from './menu-bar.css';
+import * as styles from './menu-bar.css';
 
 import messagesIcon from './icon--messages.png';
 import mystuffIcon from './icon--mystuff.png';

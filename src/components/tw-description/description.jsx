@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {FormattedMessage} from 'react-intl';
 
-import styles from './description.css';
+import * as styles from './description.css';
 import decorate from '../../lib/decorate-text.jsx';
 
 const Description = ({

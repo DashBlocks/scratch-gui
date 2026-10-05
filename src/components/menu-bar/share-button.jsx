@@ -5,7 +5,7 @@ import React from 'react';
 import Button from '../button/button.jsx';
 import Spinner from '../../components/spinner/spinner.jsx';
 
-import styles from './share-button.css';
+import * as styles from './share-button.css';
 
 const ShareButton = ({
     className,

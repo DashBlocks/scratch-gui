@@ -4,7 +4,7 @@ import React from 'react';
 import {FormattedMessage} from 'react-intl';
 import {connect} from 'react-redux';
 import FeaturedProjectsView from '../dash-featured-projects/featured-projects-view.jsx';
-import styles from './featured-projects.css';
+import * as styles from './featured-projects.css';
 import {setProjectId} from '../../lib/tw-navigation-utils.js';
 import classNames from 'classnames';
 

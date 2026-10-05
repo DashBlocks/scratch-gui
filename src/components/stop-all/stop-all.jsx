@@ -5,7 +5,7 @@ import React from 'react';
 import TWRenderRecoloredImage from '../../lib/tw-recolor/render.jsx';
 
 import stopAllIcon from '!../../lib/tw-recolor/build!./icon--stop-all.svg';
-import styles from './stop-all.css';
+import * as styles from './stop-all.css';
 
 const StopAllComponent = function (props) {
     const {

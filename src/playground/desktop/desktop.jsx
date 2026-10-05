@@ -1,7 +1,7 @@
 import React from 'react';
 import render from '../app-target';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
-import styles from './desktop.css';
+import * as styles from './desktop.css';
 
 import Button from '../../components/button/button.jsx';
 

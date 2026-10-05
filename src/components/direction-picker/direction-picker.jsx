@@ -9,7 +9,7 @@ import BufferedInputHOC from '../forms/buffered-input-hoc.jsx';
 import ToggleButtons from '../toggle-buttons/toggle-buttons.jsx';
 import Dial from './dial.jsx';
 
-import styles from './direction-picker.css';
+import * as styles from './direction-picker.css';
 
 import allAroundIcon from '!../../lib/tw-recolor/build!./icon--all-around.svg';
 import leftRightIcon from '!../../lib/tw-recolor/build!./icon--left-right.svg';

@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
-import styles from './framed-avatar.css';
+import * as styles from './framed-avatar.css';
 
 import dashyFrame from './frames/dashy.svg';
 import thornyCoreFrame from './frames/thorny-core.svg';

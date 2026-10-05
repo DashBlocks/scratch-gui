@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {FormattedMessage} from 'react-intl';
 import cloudIcon from './clouddata.svg';
 import CloudServerButton from './cloud-server-button.jsx';
-import styles from './cloud-variable-badge.css';
+import * as styles from './cloud-variable-badge.css';
 import {APP_NAME} from '../../lib/brand';
 
 const hosts = [

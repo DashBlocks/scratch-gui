@@ -5,7 +5,7 @@
 // todo: we have to see if we are leaking memory when this is mounted and unmounted, esp. because of event listeners
 // todo: use react-intl for translations
 
-import styles from './featured-projects.css';
+import * as styles from './featured-projects.css';
 import classNames from 'classnames';
 
 /**

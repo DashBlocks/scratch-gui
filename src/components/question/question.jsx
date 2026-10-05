@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import styles from './question.css';
+import * as styles from './question.css';
 import Input from '../forms/input.jsx';
 import enterIcon from './icon--enter.svg';
 

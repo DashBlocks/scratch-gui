@@ -4,7 +4,7 @@ import React from 'react';
 import Box from '../box/box.jsx';
 import Modal from '../../containers/modal.jsx';
 import FileInput from './file-input.jsx';
-import styles from './custom-extension-modal.css';
+import * as styles from './custom-extension-modal.css';
 import FancyCheckbox from '../tw-fancy-checkbox/checkbox.jsx';
 import {APP_NAME} from '../../lib/brand';
 

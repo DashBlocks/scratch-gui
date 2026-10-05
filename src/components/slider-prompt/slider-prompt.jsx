@@ -5,7 +5,7 @@ import React from 'react';
 import Box from '../box/box.jsx';
 import Modal from '../../containers/modal.jsx';
 
-import styles from './slider-prompt.css';
+import * as styles from './slider-prompt.css';
 
 
 const messages = defineMessages({

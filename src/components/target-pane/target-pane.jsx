@@ -8,7 +8,7 @@ import SpriteSelectorComponent from '../sprite-selector/sprite-selector.jsx';
 import StageSelector from '../../containers/stage-selector.jsx';
 import {STAGE_DISPLAY_SIZES} from '../../lib/layout-constants';
 
-import styles from './target-pane.css';
+import * as styles from './target-pane.css';
 
 /*
  * Pane that contains the sprite selector, sprite info, stage selector,

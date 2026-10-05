@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 import Box from '../box/box.jsx';
-import styles from './audio-trimmer.css';
+import * as styles from './audio-trimmer.css';
 import SelectionHandle from './selection-handle.jsx';
 import Playhead from './playhead.jsx';
 

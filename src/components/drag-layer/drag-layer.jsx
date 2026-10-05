@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './drag-layer.css';
+import * as styles from './drag-layer.css';
 
 /* eslint no-confusing-arrow: ["error", {"allowParens": true}] */
 const DragLayer = ({dragging, img, currentOffset}) => (dragging ? (

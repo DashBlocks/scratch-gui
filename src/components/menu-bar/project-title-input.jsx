@@ -10,7 +10,7 @@ import BufferedInputHOC from '../forms/buffered-input-hoc.jsx';
 import Input from '../forms/input.jsx';
 const BufferedInput = BufferedInputHOC(Input);
 
-import styles from './project-title-input.css';
+import * as styles from './project-title-input.css';
 
 const messages = defineMessages({
     projectTitlePlaceholder: {

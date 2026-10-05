@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Box from '../box/box.jsx';
-import styles from './library-item.css';
+import * as styles from './library-item.css';
 import classNames from 'classnames';
 
 /* eslint-disable react/prefer-stateless-function */

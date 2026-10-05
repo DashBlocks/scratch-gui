@@ -15,7 +15,7 @@ import {APP_NAME} from '../../lib/brand.js';
 
 import TWRenderRecoloredImage from '../../lib/tw-recolor/render.jsx';
 import arrowIcon from '!../../lib/tw-recolor/build!./icon--arrow.svg';
-import styles from './library.css';
+import * as styles from './library.css';
 
 const messages = defineMessages({
     filterPlaceholder: {

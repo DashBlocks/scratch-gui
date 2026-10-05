@@ -3,7 +3,7 @@ import React from 'react';
 
 import Box from '../box/box.jsx';
 import PlayButton from '../../containers/play-button.jsx';
-import styles from './library-item.css';
+import * as styles from './library-item.css';
 import classNames from 'classnames';
 
 const formatTime = timeSeconds => {

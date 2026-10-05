@@ -15,7 +15,7 @@ import MenuItemContainer from '../../containers/menu-item.jsx';
 import FramedAvatar from '../../components/dash-framed-avatar/framed-avatar.jsx';
 import dropdownCaret from './dropdown-caret.svg';
 
-import styles from './account-nav.css';
+import * as styles from './account-nav.css';
 
 const AccountNavComponent = ({
     avatarSrc,

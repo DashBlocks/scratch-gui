@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import bindAll from 'lodash.bindall';
-import styles from './prehistoric-mode.css';
+import * as styles from './prehistoric-mode.css';
 import {connect} from 'react-redux';
 import {isTimeTravel220022BC} from '../../reducers/time-travel';
 import torch from './torch.gif';

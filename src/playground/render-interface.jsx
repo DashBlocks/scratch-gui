@@ -69,7 +69,7 @@ import cloudIcon from '!../lib/tw-recolor/build!./icons/icon--cloud.svg';
 import descriptionIcon from '!../lib/tw-recolor/build!./icons/icon--description.svg';
 import whatsNewIcon from '!../lib/tw-recolor/build!./icons/icon--whatsnew.svg';
 
-import styles from './interface.css';
+import * as styles from './interface.css';
 import Loader from '../components/loader/loader.jsx';
 import {NewYearMode, isNewYearMode} from '../components/dash-new-year-mode/new-year-mode.jsx';
 

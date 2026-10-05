@@ -5,7 +5,7 @@ import React from 'react';
 import Box from '../box/box.jsx';
 import Dots from './dots.jsx';
 import bluetoothIcon from './icons/bluetooth-white.svg';
-import styles from './connection-modal.css';
+import * as styles from './connection-modal.css';
 import classNames from 'classnames';
 
 const ConnectedStep = props => (

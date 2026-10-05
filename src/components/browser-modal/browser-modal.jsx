@@ -10,7 +10,7 @@ import {
 } from '../../lib/tw-environment-support-prober.js';
 import {APP_NAME} from '../../lib/brand.js';
 
-import styles from './browser-modal.css';
+import * as styles from './browser-modal.css';
 import unhappyBrowser from './unsupported-browser.svg';
 
 const messages = defineMessages({

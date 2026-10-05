@@ -12,7 +12,7 @@ import languageIcon from '../language-selector/language-icon.svg';
 import {languageMenuOpen, openLanguageMenu} from '../../reducers/menus.js';
 import {selectLocale} from '../../reducers/locales.js';
 
-import styles from './settings-menu.css';
+import * as styles from './settings-menu.css';
 
 import dropdownCaret from './dropdown-caret.svg';
 

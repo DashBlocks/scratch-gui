@@ -5,7 +5,7 @@ import bindAll from 'lodash.bindall';
 import ReactTooltip from 'react-tooltip';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 import {defaultProjectId} from '../../reducers/project-state';
-import styles from './project-input.css';
+import * as styles from './project-input.css';
 import {setProjectId} from '../../lib/tw-navigation-utils';
 
 const PROJECT_BASE = 'https://dashblocks.org/#';

@@ -5,7 +5,7 @@ import Box from '../box/box.jsx';
 import Meter from '../meter/meter.jsx';
 import Waveform from '../waveform/waveform.jsx';
 
-import styles from './record-modal.css';
+import * as styles from './record-modal.css';
 import stopIcon from './icon--stop-recording.svg';
 
 const messages = defineMessages({

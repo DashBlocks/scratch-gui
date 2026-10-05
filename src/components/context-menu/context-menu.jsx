@@ -2,7 +2,7 @@ import React from 'react';
 import {ContextMenu, MenuItem} from 'react-contextmenu';
 import classNames from 'classnames';
 
-import styles from './context-menu.css';
+import * as styles from './context-menu.css';
 
 const StyledContextMenu = props => (
     <ContextMenu

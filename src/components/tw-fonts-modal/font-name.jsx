@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import bindAll from 'lodash.bindall';
-import styles from './fonts-modal.css';
+import * as styles from './fonts-modal.css';
 import FontDropdownItem from './font-dropdown-item.jsx';
 
 class FontName extends React.Component {

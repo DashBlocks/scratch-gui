@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 
-import styles from './progress-ring.css';
+import * as styles from './progress-ring.css';
 
 const ProgressRingComponent = ({
     className,

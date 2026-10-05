@@ -13,7 +13,7 @@ import ErrorStep from './error-step.jsx';
 import UnavailableStep from './unavailable-step.jsx';
 import UpdatePeripheralStep from './update-peripheral-step.jsx';
 
-import styles from './connection-modal.css';
+import * as styles from './connection-modal.css';
 
 const PHASES = keyMirror({
     scanning: null,

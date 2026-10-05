@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './url.css';
+import * as styles from './url.css';
 
 const MAX_URL_LENGTH = 100;
 

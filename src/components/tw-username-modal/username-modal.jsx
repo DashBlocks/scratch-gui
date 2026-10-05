@@ -5,7 +5,7 @@ import Box from '../box/box.jsx';
 import Modal from '../../containers/modal.jsx';
 import classNames from 'classnames';
 
-import styles from './username-modal.css';
+import * as styles from './username-modal.css';
 import isScratchDesktop from '../../lib/isScratchDesktop.js';
 
 const messages = defineMessages({

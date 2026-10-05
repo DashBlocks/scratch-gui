@@ -4,7 +4,7 @@ import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-int
 import Modal from '../../containers/modal.jsx';
 import FramedAvatar from '../dash-framed-avatar/framed-avatar.jsx';
 import {requestDashApi} from '../../lib/dash-api.js';
-import styles from './collaborators-modal.css';
+import * as styles from './collaborators-modal.css';
 
 const messages = defineMessages({
     title: {

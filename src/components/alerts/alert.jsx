@@ -8,7 +8,7 @@ import CloseButton from '../close-button/close-button.jsx';
 import Spinner from '../spinner/spinner.jsx';
 import {AlertLevels} from '../../lib/alerts/index.jsx';
 
-import styles from './alert.css';
+import * as styles from './alert.css';
 
 const closeButtonColors = {
     [AlertLevels.SUCCESS]: CloseButton.COLOR_GREEN,

@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 
-import styles from './play-button.css';
+import * as styles from './play-button.css';
 
 import playIcon from './icon--play.svg';
 import stopIcon from './icon--stop.svg';

@@ -13,7 +13,7 @@ import AudioSelector from '../../containers/audio-selector.jsx';
 import IconButton from '../icon-button/icon-button.jsx';
 import {SOUND_BYTE_LIMIT} from '../../lib/audio/audio-util.js';
 
-import styles from './sound-editor.css';
+import * as styles from './sound-editor.css';
 
 import playIcon from './icon--play.svg';
 import stopIcon from './icon--stop.svg';

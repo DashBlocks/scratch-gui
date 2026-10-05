@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import bindAll from 'lodash.bindall';
 import {FormattedMessage} from 'react-intl';
-import styles from './file-input.css';
+import * as styles from './file-input.css';
 
 class FileInput extends React.Component {
     constructor (props) {

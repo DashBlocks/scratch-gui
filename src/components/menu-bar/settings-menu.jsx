@@ -14,7 +14,7 @@ import FontThemeMenu from './dash-theme-font.jsx';
 import TWDesktopSettings from './tw-desktop-settings.jsx';
 
 import menuBarStyles from './menu-bar.css';
-import styles from './settings-menu.css';
+import * as styles from './settings-menu.css';
 
 import dropdownCaret from './dropdown-caret.svg';
 import settingsIcon from './icon--settings.svg';

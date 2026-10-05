@@ -5,7 +5,7 @@ import React from 'react';
 import TWRenderRecoloredImage from '../../lib/tw-recolor/render.jsx';
 import filterIcon from '!../../lib/tw-recolor/build!./icon--filter.svg';
 import xIcon from '!../../lib/tw-recolor/build!./icon--x.svg';
-import styles from './filter.css';
+import * as styles from './filter.css';
 
 const FilterComponent = props => {
     const {

@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import {defineMessages, injectIntl, intlShape} from 'react-intl';
 
 import FeaturedProjects from './featured-projects';
-import styles from './featured-projects.css';
+import * as styles from './featured-projects.css';
 
 const messages = defineMessages({
     authorAttribution: {

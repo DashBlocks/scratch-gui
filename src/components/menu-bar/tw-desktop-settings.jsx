@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {FormattedMessage} from 'react-intl';
 import {MenuItem} from '../menu/menu.jsx';
 import icon from './tw-desktop-icon.svg';
-import styles from './settings-menu.css';
+import * as styles from './settings-menu.css';
 
 const TWDesktopSettings = props => (
     <MenuItem onClick={props.onClick}>

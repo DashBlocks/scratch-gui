@@ -8,7 +8,7 @@ import StopAll from '../stop-all/stop-all.jsx';
 import TurboMode from '../turbo-mode/turbo-mode.jsx';
 import FramerateIndicator from '../tw-framerate-indicator/framerate-indicator.jsx';
 
-import styles from './controls.css';
+import * as styles from './controls.css';
 
 const messages = defineMessages({
     goTitle: {

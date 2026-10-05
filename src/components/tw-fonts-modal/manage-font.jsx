@@ -4,7 +4,7 @@ import {injectIntl, intlShape, defineMessages, FormattedMessage} from 'react-int
 import bindAll from 'lodash.bindall';
 import {formatBytes} from '../../lib/tw-bytes-utils';
 import downloadBlob from '../../lib/download-blob';
-import styles from './fonts-modal.css';
+import * as styles from './fonts-modal.css';
 import deleteIcon from './delete.svg';
 import exportIcon from './export.svg';
 

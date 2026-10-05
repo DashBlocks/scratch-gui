@@ -4,7 +4,7 @@ import bindAll from 'lodash.bindall';
 import {APP_NAME} from '../../lib/brand';
 import {isScratchDesktop} from '../../lib/isScratchDesktop';
 import CloseButton from '../close-button/close-button.jsx';
-import styles from './tw-news.css';
+import * as styles from './tw-news.css';
 import {isNewYearMode} from '../dash-new-year-mode/new-year-mode.jsx';
 
 import zipprIcon from './zippr.png';

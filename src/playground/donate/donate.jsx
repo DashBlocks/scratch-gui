@@ -6,7 +6,7 @@ import bindAll from 'lodash.bindall';
 import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';
 import render from '../app-target';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
-import styles from './donate.css';
+import * as styles from './donate.css';
 
 import Button from '../../components/button/button.jsx';
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';

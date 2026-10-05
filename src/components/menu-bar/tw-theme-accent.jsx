@@ -23,7 +23,7 @@ import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
 import rainbowIcon from './tw-accent-rainbow.svg';
 import customIcon from './icon--edit.svg';
-import styles from './settings-menu.css';
+import * as styles from './settings-menu.css';
 
 const options = defineMessages({
     [ACCENT_ORANGE]: {

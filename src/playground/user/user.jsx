@@ -6,7 +6,7 @@ import {connect} from 'react-redux';
 import {FormattedMessage, FormattedDate, FormattedRelative, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import render from '../app-target';
-import styles from './user.css';
+import * as styles from './user.css';
 
 import {APP_NAME} from '../../lib/brand';
 import {Footer} from '../render-interface.jsx';

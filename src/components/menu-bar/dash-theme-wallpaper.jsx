@@ -12,7 +12,7 @@ import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
 import Prompt from '../../containers/prompt.jsx';
 import wallpaperIcon from './dash-wallpaper.svg';
-import styles from './settings-menu.css';
+import * as styles from './settings-menu.css';
 
 const messages = defineMessages({
     changeOpaquePrompt: {

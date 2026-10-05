@@ -6,7 +6,7 @@ import Modal from '../../containers/modal.jsx';
 import ManageFont from './manage-font.jsx';
 import AddSystemFont from './add-system-font.jsx';
 import AddCustomFont, {FONT_FORMATS} from './add-custom-font.jsx';
-import styles from './fonts-modal.css';
+import * as styles from './fonts-modal.css';
 
 const messages = defineMessages({
     title: {

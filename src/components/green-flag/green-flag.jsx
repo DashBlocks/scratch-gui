@@ -5,7 +5,7 @@ import React from 'react';
 import TWRenderRecoloredImage from '../../lib/tw-recolor/render.jsx';
 
 import greenFlagIcon from '!../../lib/tw-recolor/build!./icon--green-flag.svg';
-import styles from './green-flag.css';
+import * as styles from './green-flag.css';
 
 const GreenFlagComponent = function (props) {
     const {

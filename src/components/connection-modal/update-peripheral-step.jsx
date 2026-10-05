@@ -14,7 +14,7 @@ import backIcon from './icons/back.svg';
 import sendUpdateIcon from './icons/send-update.svg';
 import sendUpdateGlyph from './icons/send-update-white.svg';
 
-import styles from './connection-modal.css';
+import * as styles from './connection-modal.css';
 
 /** @enum{string} UPDATE_ACTIVITY */
 const UPDATE_ACTIVITY = keyMirror({

@@ -13,7 +13,7 @@ import arrayInputIcon from './icon--array-input.svg';
 import textInputIcon from './icon--text-input.svg';
 import labelIcon from './icon--label.svg';
 
-import styles from './custom-procedures.css';
+import * as styles from './custom-procedures.css';
 
 const messages = defineMessages({
     myblockModalTitle: {

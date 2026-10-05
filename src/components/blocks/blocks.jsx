@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import React from 'react';
 import Box from '../box/box.jsx';
-import styles from './blocks.css';
+import * as styles from './blocks.css';
 
 const BlocksComponent = props => {
     const {

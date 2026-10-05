@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactTooltip from 'react-tooltip';
 
-import styles from './coming-soon.css';
+import * as styles from './coming-soon.css';
 
 import awwCatIcon from './aww-cat.png';
 import coolCatIcon from './cool-cat.png';

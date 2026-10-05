@@ -33,7 +33,7 @@ import undoImage from './icons/undo.svg';
 import expandImageBlack from './icons/expand.svg';
 import infoImage from './icons/info.svg';
 import TWFancyCheckbox from '../../components/tw-fancy-checkbox/checkbox.jsx';
-import styles from './settings.css';
+import * as styles from './settings.css';
 import {detectTheme} from '../../lib/themes/themePersistance.js';
 import {applyGuiColors} from '../../lib/themes/guiHelpers.js';
 import {APP_NAME} from '../../lib/brand.js';

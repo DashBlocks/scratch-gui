@@ -14,7 +14,7 @@ import Spinner from '../../components/spinner/spinner.jsx';
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {Footer} from '../render-interface.jsx';
 
-import styles from './account-settings.css';
+import * as styles from './account-settings.css';
 
 import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers.js';

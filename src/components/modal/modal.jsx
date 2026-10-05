@@ -11,7 +11,7 @@ import CloseButton from '../close-button/close-button.jsx';
 import backIcon from '../../lib/assets/icon--back.svg';
 import helpIcon from '../../lib/assets/icon--help.svg';
 
-import styles from './modal.css';
+import * as styles from './modal.css';
 
 const ModalComponent = props => (
     <ReactModal

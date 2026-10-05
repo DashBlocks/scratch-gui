@@ -5,7 +5,7 @@ import React from 'react';
 import Button from '../button/button.jsx';
 
 import communityIcon from './icon--see-community.svg';
-import styles from './tw-see-inside.css';
+import * as styles from './tw-see-inside.css';
 
 const SeeInsideButton = ({
     className,

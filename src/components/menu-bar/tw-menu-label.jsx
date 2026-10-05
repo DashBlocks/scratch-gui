@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import bindAll from 'lodash.bindall';
 import classNames from 'classnames';
 
-import styles from './menu-bar.css';
+import * as styles from './menu-bar.css';
 
 class MenuLabel extends React.Component {
     constructor (props) {

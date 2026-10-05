@@ -14,7 +14,7 @@ import Spinner from '../../components/spinner/spinner.jsx';
 
 import {Footer} from '../render-interface.jsx';
 
-import styles from './register.css';
+import * as styles from './register.css';
 
 import {APP_NAME} from '../../lib/brand';
 import {requestDashApi} from '../../lib/dash-api.js';

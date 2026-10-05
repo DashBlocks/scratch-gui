@@ -2,7 +2,7 @@
 // https://github.com/ScratchAddons/ScratchAddons/blob/master/addon-api/content-script/modal.js
 
 import closeIcon from '../components/close-button/icon--close.svg';
-import styles from './modal.css';
+import * as styles from './modal.css';
 
 export const createEditorModal = (tab, title, {isOpen = false} = {}) => {
     const container = Object.assign(document.createElement('div'), {

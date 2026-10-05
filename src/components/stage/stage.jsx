@@ -13,7 +13,7 @@ import PseudoConsole from '../../containers/dash-pseudo-console.jsx';
 import MicIndicator from '../mic-indicator/mic-indicator.jsx';
 import {STAGE_DISPLAY_SIZES} from '../../lib/layout-constants.js';
 import {getStageDimensions, getMinWidth} from '../../lib/screen-utils.js';
-import styles from './stage.css';
+import * as styles from './stage.css';
 
 const StageComponent = props => {
     const {

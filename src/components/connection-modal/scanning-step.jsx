@@ -13,7 +13,7 @@ import radarIcon from './icons/searching.png';
 import refreshIcon from './icons/refresh.svg';
 import warningIcon from './icons/warning.svg';
 
-import styles from './connection-modal.css';
+import * as styles from './connection-modal.css';
 
 const ScanningStep = props => {
     const showUpdate = !!(props.onUpdatePeripheral && !props.scanning);

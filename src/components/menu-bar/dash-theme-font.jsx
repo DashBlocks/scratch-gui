@@ -12,7 +12,7 @@ import {openFontThemeMenu, fontThemeMenuOpen, closeSettingsMenu} from '../../red
 import {setTheme} from '../../reducers/theme.js';
 import {persistTheme} from '../../lib/themes/themePersistance.js';
 import customFontIcon from './dash-custom-font.svg';
-import styles from './settings-menu.css';
+import * as styles from './settings-menu.css';
 
 class FontThemeMenu extends React.Component {
     constructor (props) {

@@ -10,7 +10,7 @@ import SortableHOC from '../../lib/sortable-hoc.jsx';
 import SortableAsset from '../asset-panel/sortable-asset.jsx';
 import ThrottledPropertyHOC from '../../lib/throttled-property-hoc.jsx';
 
-import styles from './sprite-selector.css';
+import * as styles from './sprite-selector.css';
 
 const ThrottledSpriteSelectorItem = ThrottledPropertyHOC('asset', 500)(SpriteSelectorItem);
 

@@ -13,7 +13,7 @@ import {injectIntl, intlShape, defineMessages, FormattedMessage} from 'react-int
 import {STAGE_DISPLAY_SIZES} from '../../lib/layout-constants.js';
 import {isWideLocale} from '../../lib/locale-utils.js';
 
-import styles from './sprite-info.css';
+import * as styles from './sprite-info.css';
 
 import xIcon from './icon--x.svg';
 import yIcon from './icon--y.svg';

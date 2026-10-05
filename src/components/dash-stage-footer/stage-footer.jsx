@@ -15,7 +15,7 @@ import fireReactionOffIcon from './fire-reaction-off.svg';
 import viewsIcon from './views.svg';
 import forkIcon from './forks.svg';
 
-import styles from './stage-footer.css';
+import * as styles from './stage-footer.css';
 
 const messages = defineMessages({
     fire: {

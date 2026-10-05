@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import styles from './new-year-mode.css';
+import * as styles from './new-year-mode.css';
 
 const isNewYearMode = () => {
     /* const now = new Date();

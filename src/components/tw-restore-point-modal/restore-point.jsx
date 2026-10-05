@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {FormattedMessage, FormattedDate, FormattedTime, FormattedRelative} from 'react-intl';
 import bindAll from 'lodash.bindall';
-import styles from './restore-point-modal.css';
+import * as styles from './restore-point-modal.css';
 import {formatBytes} from '../../lib/tw-bytes-utils';
 import RestorePointAPI from '../../lib/tw-restore-point-api';
 import log from '../../lib/log';

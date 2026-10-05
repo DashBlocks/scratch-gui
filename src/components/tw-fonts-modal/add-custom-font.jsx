@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {injectIntl, intlShape, defineMessages, FormattedMessage} from 'react-intl';
 import bindAll from 'lodash.bindall';
-import styles from './fonts-modal.css';
+import * as styles from './fonts-modal.css';
 import LoadTemporaryFont from './load-temporary-font.jsx';
 import FontName from './font-name.jsx';
 import FontPlayground from './font-playground.jsx';

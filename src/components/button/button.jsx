@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import styles from './button.css';
+import * as styles from './button.css';
 
 const ButtonComponent = ({
     className,

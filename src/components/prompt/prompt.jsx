@@ -6,7 +6,7 @@ import React from 'react';
 import Box from '../box/box.jsx';
 import Modal from '../../containers/modal.jsx';
 
-import styles from './prompt.css';
+import * as styles from './prompt.css';
 import {SCRATCH_MAX_CLOUD_VARIABLES} from '../../lib/tw-cloud-limits.js';
 import isScratchDesktop from '../../lib/isScratchDesktop.js';
 

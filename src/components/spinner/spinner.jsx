@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react';
 import {injectIntl, intlShape} from 'react-intl';
 import lazyMessages from '../loader/lazy-messages.json';
 
-import styles from './spinner.css';
+import * as styles from './spinner.css';
 
 const SpinnerComponent = function (props) {
     const {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import render from '../app-target';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
-import styles from './credits.css';
+import * as styles from './credits.css';
 
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
 import {Footer} from '../render-interface.jsx';

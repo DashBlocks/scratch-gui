@@ -30,7 +30,7 @@ import {
     closeSettingsMenu
 } from '../../reducers/menus';
 
-import styles from './menu-bar.css';
+import * as styles from './menu-bar.css';
 
 import messagesIcon from './icon--messages.png';
 import mystuffIcon from './icon--mystuff.png';

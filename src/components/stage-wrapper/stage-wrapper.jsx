@@ -9,7 +9,7 @@ import StageHeader from '../../containers/stage-header.jsx';
 import Stage from '../../containers/stage.jsx';
 import Loader from '../loader/loader.jsx';
 
-import styles from './stage-wrapper.css';
+import * as styles from './stage-wrapper.css';
 
 const StageWrapperComponent = function (props) {
     const {

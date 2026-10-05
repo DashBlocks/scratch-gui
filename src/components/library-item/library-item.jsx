@@ -5,7 +5,7 @@ import React from 'react';
 import SpriteCostumeLibraryItem from './sprite-costume-library-item.jsx';
 import SoundLibraryItem from './sound-library-item.jsx';
 import ExtensionLibraryItem from './extension-library-item.jsx';
-import styles from './library-item.css';
+import * as styles from './library-item.css';
 import classNames from 'classnames';
 
 import favoriteInactiveIcon from './favorite-inactive.svg';

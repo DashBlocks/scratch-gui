@@ -15,7 +15,7 @@ import Spinner from '../../components/spinner/spinner.jsx';
 
 import {Footer} from '../render-interface.jsx';
 
-import styles from './login.css';
+import * as styles from './login.css';
 
 import {APP_NAME} from '../../lib/brand';
 import {applyGuiColors} from '../../lib/themes/guiHelpers';

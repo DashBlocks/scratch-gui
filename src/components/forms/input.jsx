@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import classNames from 'classnames';
 
-import styles from './input.css';
+import * as styles from './input.css';
 
 const Input = props => {
     const {small, multiline, ...componentProps} = props;

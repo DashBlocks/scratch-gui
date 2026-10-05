@@ -3,7 +3,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import Box from '../box/box.jsx';
-import styles from './connection-modal.css';
+import * as styles from './connection-modal.css';
 
 const Dots = props => (
     <Box

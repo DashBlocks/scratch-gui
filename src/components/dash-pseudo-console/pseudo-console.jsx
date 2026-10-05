@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import Box from '../box/box.jsx';
-import styles from './pseudo-console.css';
+import * as styles from './pseudo-console.css';
 
 /* eslint-disable no-control-regex */
 const escCodeMatch = /\x1B\[[0-9;]+m/g; // Partly support for "Graphic Mode" ESC codes

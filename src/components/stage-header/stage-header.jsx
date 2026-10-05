@@ -19,7 +19,7 @@ import smallStageIcon from '!../../lib/tw-recolor/build!./icon--small-stage.svg'
 import fullStageIcon from '!../../lib/tw-recolor/build!./icon--full-stage.svg';
 import settingsIcon from './icon--settings.svg';
 
-import styles from './stage-header.css';
+import * as styles from './stage-header.css';
 
 import FullscreenAPI from '../../lib/tw-fullscreen-api';
 

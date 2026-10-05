@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import styles from './nineties-mode.css';
+import * as styles from './nineties-mode.css';
 import {connect} from 'react-redux';
 import {isTimeTravel1990} from '../../reducers/time-travel';
 

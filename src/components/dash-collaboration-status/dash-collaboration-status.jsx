@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
-import styles from './dash-collaboration-status.css';
+import * as styles from './dash-collaboration-status.css';
 
 const getStatus = vm => {
     const session = vm.dashCollaboration;

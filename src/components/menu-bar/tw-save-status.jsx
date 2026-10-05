@@ -5,7 +5,7 @@ import InlineMessages from '../../containers/inline-messages.jsx';
 import SB3Downloader from '../../containers/sb3-downloader.jsx';
 import {filterInlineAlerts} from '../../reducers/alerts';
 
-import styles from './save-status.css';
+import * as styles from './save-status.css';
 import saveIcon from './dash-save.svg';
 
 const TWSaveStatus = ({

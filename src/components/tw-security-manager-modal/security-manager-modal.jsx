@@ -16,7 +16,7 @@ import Geolocate from './geolocate.jsx';
 import Embed from './embed.jsx';
 import Download from './download.jsx';
 import DelayedMountPropertyHOC from './delayed-mount-property-hoc.jsx';
-import styles from './security-manager-modal.css';
+import * as styles from './security-manager-modal.css';
 
 const messages = defineMessages({
     title: {

@@ -13,7 +13,7 @@ import ListMonitor from '../../containers/list-monitor.jsx';
 import {Theme} from '../../lib/themes/index.js';
 import Cast from 'scratch-vm/src/util/cast';
 
-import styles from './monitor.css';
+import * as styles from './monitor.css';
 
 // Map category name to color name used in scratch-blocks Blockly.Colours
 const categoryColorMap = {

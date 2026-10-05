@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {FormattedMessage} from 'react-intl';
-import styles from './monitor.css';
+import * as styles from './monitor.css';
 import ListMonitorScroller from './list-monitor-scroller.jsx';
 
 const ListMonitor = ({

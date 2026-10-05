@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import render from '../app-target.js';
-import styles from './search.css';
+import * as styles from './search.css';
 
 import Spinner from '../../components/spinner/spinner.jsx';
 import {Footer} from '../render-interface.jsx';

@@ -8,7 +8,7 @@ import Dots from './dots.jsx';
 import helpIcon from './icons/help.svg';
 import backIcon from './icons/back.svg';
 
-import styles from './connection-modal.css';
+import * as styles from './connection-modal.css';
 
 const ErrorStep = props => (
     <Box className={styles.body}>

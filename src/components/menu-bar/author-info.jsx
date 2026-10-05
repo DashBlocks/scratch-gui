@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import {FormattedMessage} from 'react-intl';
 import FramedAvatar from '../../components/dash-framed-avatar/framed-avatar.jsx';
 
-import styles from './author-info.css';
+import * as styles from './author-info.css';
 
 const ActualAuthorInfo = ({
     className,

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {FormattedMessage} from 'react-intl';
 
-import styles from './framerate-indicator.css';
+import * as styles from './framerate-indicator.css';
 
 const FramerateIndicator = ({framerate, interpolation}) => (
     <React.Fragment>

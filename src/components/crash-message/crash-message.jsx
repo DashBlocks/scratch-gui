@@ -3,7 +3,7 @@ import React from 'react';
 import Box from '../box/box.jsx';
 import {FormattedMessage} from 'react-intl';
 
-import styles from './crash-message.css';
+import * as styles from './crash-message.css';
 import reloadIcon from './reload.svg';
 
 const CrashMessage = props => (

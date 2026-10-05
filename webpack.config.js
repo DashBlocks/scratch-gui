@@ -99,11 +99,11 @@ const base = {
                 loader: 'postcss-loader',
                 options: {
                     postcssOptions: {
-                        plugins: [
-                            'postcss-import',
-                            'postcss-simple-vars',
-                            'autoprefixer'
-                        ]
+                        plugins: {
+                            'postcss-import': {},
+                            'postcss-simple-vars': {},
+                            'autoprefixer': {}
+                        }
                     }
                 }
             }]

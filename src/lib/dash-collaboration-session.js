@@ -255,6 +255,10 @@ export default class DashCollaborationSession {
     fail (error) {
         this.client.fail(error.message || String(error));
     }
+    reconnect () {
+        if (this.disposed) return;
+        this.client.connect();
+    }
     destroy () {
         this.disposed = true;
         clearTimeout(this.timer);

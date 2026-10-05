@@ -109,17 +109,26 @@ class Blocks extends React.Component {
             {
                 text: this.props.intl.formatMessage(messages.removeExtension),
                 enabled: true,
-                callback: ext => this.props.vm.extensionManager.removeExtension(ext)
+                callback: ext => {
+                    if (!this.props.vm.canEditCollaboration()) return;
+                    this.props.vm.extensionManager.removeExtension(ext);
+                }
             },
             {
                 text: this.props.intl.formatMessage(messages.removeUnusedExtensions),
                 enabled: true,
-                callback: () => this.props.vm.extensionManager.removeUnusedExtensions()
+                callback: () => {
+                    if (!this.props.vm.canEditCollaboration()) return;
+                    this.props.vm.extensionManager.removeUnusedExtensions();
+                }
             },
             {
                 text: this.props.intl.formatMessage(messages.editExtension),
                 enabled: true,
-                callback: ext => this.props.reduxOnOpenCustomExtensionModal(ext)
+                callback: ext => {
+                    if (!this.props.vm.canEditCollaboration()) return;
+                    this.props.reduxOnOpenCustomExtensionModal(ext);
+                }
             }
         ], false);
 
@@ -156,7 +165,8 @@ class Blocks extends React.Component {
             'setBlocks',
             'setLocale',
             'handleEnableProcedureReturns',
-            'handleEnableLists'
+            'handleEnableLists',
+            'updateCollaborationReadOnly'
         ]);
         this.ScratchBlocks.prompt = this.handlePromptStart;
         this.ScratchBlocks.statusButtonCallback = this.handleConnectionModalStart;
@@ -200,6 +210,7 @@ class Blocks extends React.Component {
         );
         this.workspace = this.ScratchBlocks.inject(this.blocks, workspaceConfig);
         AddonHooks.blocklyWorkspace = this.workspace;
+        this.updateCollaborationReadOnly();
 
         // Register buttons under new callback keys for creating variables,
         // lists, and procedures from extensions.
@@ -207,8 +218,12 @@ class Blocks extends React.Component {
         const toolboxWorkspace = this.workspace.getFlyout().getWorkspace();
 
         const varListButtonCallback = type =>
-            (() => this.ScratchBlocks.Variables.createVariable(this.workspace, null, type));
+            (() => {
+                if (!this.props.vm.canEditCollaboration()) return;
+                this.ScratchBlocks.Variables.createVariable(this.workspace, null, type);
+            });
         const procButtonCallback = () => {
+            if (!this.props.vm.canEditCollaboration()) return;
             this.ScratchBlocks.Procedures.createProcedureDefCallback_(this.workspace);
         };
 
@@ -216,6 +231,7 @@ class Blocks extends React.Component {
         toolboxWorkspace.registerButtonCallback('MAKE_A_LIST', varListButtonCallback('list'));
         toolboxWorkspace.registerButtonCallback('MAKE_A_PROCEDURE', procButtonCallback);
         toolboxWorkspace.registerButtonCallback('EXTENSION_CALLBACK', block => {
+            if (!this.props.vm.canEditCollaboration()) return;
             this.props.vm.handleExtensionButtonPress(block.callbackData_);
         });
         toolboxWorkspace.registerButtonCallback('OPEN_EXTENSION_DOCS', block => {
@@ -329,6 +345,12 @@ class Blocks extends React.Component {
 
         AddonHooks.blocklyWorkspace = null;
     }
+    updateCollaborationReadOnly () {
+        if (!this.workspace) return;
+        const session = this.props.vm.dashCollaboration;
+        const readOnly = Boolean(session && !session.canEdit());
+        this.workspace.options.readOnly = readOnly;
+    }
     requestToolboxUpdate () {
         clearTimeout(this.toolboxUpdateTimeout);
         this.toolboxUpdateTimeout = setTimeout(() => {
@@ -386,6 +408,7 @@ class Blocks extends React.Component {
 
     attachVM () {
         this.workspace.addChangeListener(this.props.vm.blockListener);
+        this.props.vm.addListener('DASH_COLLABORATION_STATUS', this.updateCollaborationReadOnly);
         this.flyoutWorkspace = this.workspace
             .getFlyout()
             .getWorkspace();
@@ -406,6 +429,7 @@ class Blocks extends React.Component {
         this.props.vm.addListener('PERIPHERAL_DISCONNECTED', this.handleStatusButtonUpdate);
     }
     detachVM () {
+        this.props.vm.removeListener('DASH_COLLABORATION_STATUS', this.updateCollaborationReadOnly);
         this.props.vm.removeListener('SCRIPT_GLOW_ON', this.onScriptGlowOn);
         this.props.vm.removeListener('SCRIPT_GLOW_OFF', this.onScriptGlowOff);
         this.props.vm.removeListener('BLOCK_GLOW_ON', this.onBlockGlowOn);

@@ -202,7 +202,7 @@ class CollaboratorsModal extends React.Component {
                                         >
                                             {member.username}
                                         </a>
-                                        <span>{intl.formatMessage(messages[member.role])}</span>
+                                        <span>{intl.formatMessage(messages[member.collaborationRole])}</span>
                                         <button
                                             className={styles.button}
                                             type="button"

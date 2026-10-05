@@ -6,6 +6,11 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+// PostCss
+const autoprefixer = require('autoprefixer');
+const postcssVars = require('postcss-simple-vars');
+const postcssImport = require('postcss-import');
+
 const STATIC_PATH = process.env.STATIC_PATH || '/static';
 const {APP_NAME} = require('./src/lib/brand');
 
@@ -98,12 +103,13 @@ const base = {
             }, {
                 loader: 'postcss-loader',
                 options: {
-                    postcssOptions: {
-                        plugins: {
-                            'postcss-import': {},
-                            'postcss-simple-vars': {},
-                            'autoprefixer': {}
-                        }
+                    ident: 'postcss',
+                    plugins: function () {
+                        return [
+                            postcssImport,
+                            postcssVars,
+                            autoprefixer
+                        ];
                     }
                 }
             }]

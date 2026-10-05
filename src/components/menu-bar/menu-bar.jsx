@@ -277,6 +277,7 @@ class MenuBar extends React.Component {
         this.props.onRequestCloseFile();
     }
     handleClickSave () {
+        if (this.props.vm.dashCollaboration) return;
         this.props.onClickSave();
         this.props.onRequestCloseFile();
     }
@@ -387,6 +388,7 @@ class MenuBar extends React.Component {
         }
     }
     async handleClickUpdate () {
+        if (this.props.vm.dashCollaboration) return;
         if (this.props.isShared && !this.state.isSharing) {
             if (this.props.canShare) { // save before transitioning to project page
                 const session = await getSession();
@@ -401,6 +403,7 @@ class MenuBar extends React.Component {
                     try {
                         let formData = new FormData();
                         const content = await this.props.vm.saveProjectSb3();
+                        if (this.props.vm.dashCollaboration) return;
                         const fileBlob = new Blob([content], {type: 'application/x.dash.dbp'});
                         formData.append('file', fileBlob, `${this.props.projectTitle}.dbp`);
                         formData.append('name', this.props.projectTitle);
@@ -886,7 +889,7 @@ class MenuBar extends React.Component {
                                     )}
                                     {(this.props.canSave || this.props.canCreateCopy) && (
                                         <MenuSection>
-                                            {this.props.canSave && (
+                                            {this.props.canSave && !this.props.vm.dashCollaboration && (
                                                 <MenuItem onClick={this.handleClickSave}>
                                                     {saveNowMessage}
                                                 </MenuItem>

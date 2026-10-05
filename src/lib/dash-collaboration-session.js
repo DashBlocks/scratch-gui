@@ -36,6 +36,7 @@ export default class DashCollaborationSession {
         this.dirty = false;
         this.changed = false;
         this.applying = false;
+        this.localOperation = false;
         this.disposed = false;
         this.base = null;
         this.workspace = null;
@@ -223,7 +224,8 @@ export default class DashCollaborationSession {
         this.dirty = false;
     }
     async reconcile () {
-        if (this.disposed || !this.loaded || this.applying || this.client.state !== 'connected') return;
+        if (this.disposed || !this.loaded || this.applying || this.localOperation ||
+            this.client.state !== 'connected') return;
         if (this.isBusy()) return this.scheduleReconcile();
         this.commit();
         if (!this.changed) return;
@@ -242,13 +244,13 @@ export default class DashCollaborationSession {
     async duplicateSprite () {
         if (!this.canEdit()) return;
         this.commit();
-        this.applying = true;
+        this.localOperation = true;
         this.notify();
         try {
             await this.vm.duplicateSprite(this.vm.editingTarget.id);
             this.dirty = true;
         } finally {
-            this.applying = false;
+            this.localOperation = false;
             this.scheduleReconcile();
             this.notify();
         }

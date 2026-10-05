@@ -117,7 +117,7 @@ const ProjectFetcherHOC = function (WrappedComponent) {
             // Dash: ID could start with 's' if it's a Scratch project, so actually `id` isn't real ID
             let projectId = id;
             // Dash: Check if collaboration is enabled
-            const collaboration = new URL(window.location.href).searchParams.has('collaboration');
+            const collaboration = new URL(window.location.href).searchParams.get('collaboration') === '1';
             if (collaboration && /^[1-9]\d{0,19}$/.test(String(projectId))) {
                 const session = new DashCollaborationSession(this.props.vm, projectId);
                 this.props.vm.dashCollaboration = session;

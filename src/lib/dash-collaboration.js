@@ -153,6 +153,32 @@ export default class DashCollaboration {
         if (this.state !== 'connected' || this.role === 'viewer') throw new Error('Collaboration is not writable');
         this.doc.transact(() => operation(this.doc));
     }
+    getProjectJSON () {
+        const meta = this.doc.getMap('collaboration');
+        if (meta.get('schemaVersion') !== 1 || meta.get('projectId') !== this.projectId) {
+            throw new Error('Project document is not initialized');
+        }
+        const targets = this.doc.getMap('targets');
+        const project = this.doc.getMap('project').toJSON();
+        const order = this.doc.getArray('targetOrder').toArray();
+        project.targets = order.map(id => {
+            const target = targets.get(id);
+            if (!(target instanceof Y.Map) || target.get('collaborationId') !== id) {
+                throw new Error('Invalid collaboration target');
+            }
+            return target.toJSON();
+        });
+        return JSON.parse(JSON.stringify(project));
+    }
+    async getSourceArchive (signal) {
+        const response = await requestDashApi(`/projects/${this.projectId}/collaboration-source`, {
+            credentials: 'include',
+            signal
+        });
+        if (!response.ok) throw new Error(`Could not load collaboration source (${response.status})`);
+        return response.arrayBuffer();
+    }
+
     handleUpdate (update, origin) {
         if (origin === this) return;
         if (!this.active || this.state !== 'connected' || this.role === 'viewer') {

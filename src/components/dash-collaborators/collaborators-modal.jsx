@@ -194,7 +194,7 @@ class CollaboratorsModal extends React.Component {
                                             avatarSrc={`https://api.dashblocks.org/users/avatars/${member.profile.avatarId}`}
                                             avatarClassName={styles.thumbnail}
                                             className={styles.avatar}
-                                            frameId={member.profile.frameId}
+                                            frameId={member.profile.avatarFrame}
                                         />
                                         <a
                                             href={`user#${member.id}`}

@@ -71,3 +71,13 @@
     flex: 1;
     overflow-wrap: anywhere;
 }
+
+.member .avatar {
+    width: 2rem;
+    height: 2rem;
+}
+
+.member .thumbnail {
+    border-radius: $form-radius;
+    box-shadow: 0 0 0 1px $ui-black-transparent;
+}

@@ -6,7 +6,7 @@ import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-int
 import {connect} from 'react-redux';
 import MediaQuery from 'react-responsive';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
-import tabStyles from 'react-tabs/style/react-tabs.css';
+import * as tabStyles from 'react-tabs/style/react-tabs.css';
 import VM from 'scratch-vm';
 
 import Blocks from '../../containers/blocks.jsx';

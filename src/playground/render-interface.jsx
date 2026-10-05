@@ -54,7 +54,7 @@ import runAddons from '../addons/entry';
 import InvalidEmbed from '../components/tw-invalid-embed/invalid-embed.jsx';
 import {APP_NAME} from '../lib/brand.js';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
-import tabStyles from 'react-tabs/style/react-tabs.css';
+import * as tabStyles from 'react-tabs/style/react-tabs.css';
 import TWRenderRecoloredImage from '../lib/tw-recolor/render.jsx';
 import {requestDashApi} from '../lib/dash-api.js';
 import Spinner from '../components/spinner/spinner.jsx';

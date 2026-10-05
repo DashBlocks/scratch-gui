@@ -11,7 +11,7 @@ import TWGuiThemeMenu from './tw-theme-gui.jsx';
 import FontThemeMenu from './dash-theme-font.jsx';
 import TWDesktopSettings from './tw-desktop-settings.jsx';
 
-import menuBarStyles from './menu-bar.css';
+import * as menuBarStyles from './menu-bar.css';
 import * as styles from './settings-menu.css';
 
 import dropdownCaret from './dropdown-caret.svg';

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import * as styles from './library-item.css';
-import extensionItemStyles from './extension-library-item.css';
+import * as extensionItemStyles from './extension-library-item.css';
 import classNames from 'classnames';
 
 import bluetoothIconURL from './bluetooth.svg';

@@ -91,7 +91,13 @@ class SoundTab extends React.Component {
         if (soundIndex >= this.state.selectedSoundIndex) {
             this.setState({selectedSoundIndex: Math.max(0, soundIndex - 1)});
         }
-        this.props.dispatchUpdateRestore({restoreFun, deletedItem: 'Sound'});
+        this.props.dispatchUpdateRestore({
+            restoreFun: restoreFun && (() => {
+                this.props.vm.assertCollaborationWritable();
+                return restoreFun();
+            }),
+            deletedItem: 'Sound'
+        });
     }
 
     handleExportSound (soundIndex) {

@@ -15,11 +15,10 @@ const getVariableValue = (vm, targetId, variableId) => {
 };
 
 const setVariableValue = (vm, targetId, variableId, value) => {
-    const variable = getVariable(vm, targetId, variableId);
-    variable.value = value;
-    if (variable.isCloud) {
-        vm.runtime.ioDevices.cloud.requestUpdateVariable(variable.name, variable.value);
-    }
+    const target = targetId ?
+        vm.runtime.getTargetById(targetId) :
+        vm.runtime.getTargetForStage();
+    return vm.setVariableValue(target.id, variableId, value);
 };
 
 export {

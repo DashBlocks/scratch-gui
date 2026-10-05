@@ -131,13 +131,17 @@ class CostumeTab extends React.Component {
         }
     }
     handleSelectCostume (costumeIndex) {
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.editingTarget.setCostume(costumeIndex);
         this.setState({selectedCostumeIndex: costumeIndex});
     }
     handleDeleteCostume (costumeIndex) {
         const restoreCostumeFun = this.props.vm.deleteCostume(costumeIndex);
         this.props.dispatchUpdateRestore({
-            restoreFun: restoreCostumeFun,
+            restoreFun: restoreCostumeFun && (() => {
+                this.props.vm.assertCollaborationWritable();
+                return restoreCostumeFun();
+            }),
             deletedItem: 'Costume'
         });
     }

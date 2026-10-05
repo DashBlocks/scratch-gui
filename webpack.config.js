@@ -89,12 +89,7 @@ const base = {
         {
             test: /\.css$/,
             use: [{
-                loader: 'style-loader',
-                options: {
-                    modules: {
-                        exportType: 'default'
-                    }
-                }
+                loader: 'style-loader'
             }, {
                 loader: 'css-loader',
                 options: {

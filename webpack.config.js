@@ -94,7 +94,7 @@ const base = {
             options: {
                 presets: ['@babel/preset-env']
             }
-        }
+        },
         {
             test: /\.css$/,
             use: [{

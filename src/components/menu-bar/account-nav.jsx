@@ -41,7 +41,6 @@ const AccountNavComponent = ({
         >
             {avatarSrc ? (
                 <FramedAvatar
-                    // eslint-disable-next-line max-len
                     avatarSrc={avatarSrc}
                     avatarClassName={styles.thumbnail}
                     className={styles.avatar}

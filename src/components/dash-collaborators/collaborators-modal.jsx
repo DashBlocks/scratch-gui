@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';
 import Modal from '../../containers/modal.jsx';
+import FramedAvatar from '../dash-framed-avatar/framed-avatar.jsx';
 import {requestDashApi} from '../../lib/dash-api.js';
 import styles from './collaborators-modal.css';
 
@@ -187,15 +188,26 @@ class CollaboratorsModal extends React.Component {
                                 {collaborators.map(member => (
                                     <li
                                         className={styles.member}
-                                        key={member.userId}
+                                        key={member.id}
                                     >
-                                        <span className={styles.name}>{member.username}</span>
+                                        <FramedAvatar
+                                            avatarSrc={`https://api.dashblocks.org/users/avatars/${member.profile.avatarId}`}
+                                            avatarClassName={styles.thumbnail}
+                                            className={styles.avatar}
+                                            frameId={member.profile.frameId}
+                                        />
+                                        <a
+                                            href={`user#${member.id}`}
+                                            className={styles.name}
+                                        >
+                                            {member.username}
+                                        </a>
                                         <span>{intl.formatMessage(messages[member.role])}</span>
                                         <button
                                             className={styles.button}
                                             type="button"
                                             disabled={busy}
-                                            data-user-id={member.userId}
+                                            data-user-id={member.id}
                                             onClick={this.handleRemove}
                                         >
                                             <FormattedMessage

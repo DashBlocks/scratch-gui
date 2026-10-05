@@ -72,7 +72,7 @@ const vmManagerHOC = function (WrappedComponent) {
             // tw: stop when loading new project
             this.props.vm.quit();
             return this.props.vm.loadProject(this.props.projectData)
-                .then(() => {
+                .then(async () => {
                     this.props.onLoadedProject(this.props.loadingState, this.props.canSave);
                     // Wrap in a setTimeout because skin loading in
                     // the renderer can be async.
@@ -87,6 +87,15 @@ const vmManagerHOC = function (WrappedComponent) {
                         // Wrap in a setTimeout because skin loading in
                         // the renderer can be async.
                         setTimeout(() => this.props.vm.renderer.draw());
+                    }
+
+                    if (
+                        this.props.projectId &&
+                        this.props.projectId !== '0' &&
+                        !this.props.projectId.startsWith('s') &&
+                        this.props.vm.dashCollaboration
+                    ) {
+                        await this.props.vm.dashCollaboration.attach();
                     }
                 })
                 .catch(e => {

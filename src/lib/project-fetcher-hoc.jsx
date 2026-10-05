@@ -19,6 +19,7 @@ import {
     activateTab,
     BLOCKS_TAB_INDEX
 } from '../reducers/editor-tab';
+import DashCollaborationSession from './dash-collaboration-session';
 import {requestDashApi} from './dash-api';
 
 import log from './log';
@@ -99,6 +100,12 @@ const ProjectFetcherHOC = function (WrappedComponent) {
                 this.props.onActivateTab(BLOCKS_TAB_INDEX);
             }
         }
+        componentWillUnmount () {
+            if (this.props.vm.dashCollaboration) {
+                this.props.vm.dashCollaboration.destroy();
+                this.props.vm.dashCollaboration = null;
+            }
+        }
         fetchProject (id, loadingState) {
             // tw: clear and stop the VM before fetching
             // these will also happen later after the project is fetched, but fetching may take a while and
@@ -107,8 +114,20 @@ const ProjectFetcherHOC = function (WrappedComponent) {
             this.props.vm.quit();
 
             let assetPromise;
-            // ID could start with 's' if it's a Scratch project, so actually `id` isn't real ID
+            // Dash: ID could start with 's' if it's a Scratch project, so actually `id` isn't real ID
             let projectId = id;
+            // Dash: Check if collaboration is enabled
+            const collaboration = new URL(window.location.href).searchParams.has('collaboration');
+            if (collaboration && /^[1-9]\d{0,19}$/.test(String(projectId))) {
+                const session = new DashCollaborationSession(this.props.vm, projectId);
+                this.props.vm.dashCollaboration = session;
+                return session.fetchProject()
+                    .then(data => this.props.onFetchedProjectData(data, loadingState))
+                    .catch(error => {
+                        session.destroy();
+                        this.props.onError(error);
+                    });
+            }
             // In case running in node...
             let projectUrl = typeof URLSearchParams === 'undefined' ?
                 null :

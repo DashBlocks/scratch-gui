@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 import * as Y from 'yjs';
 import JSZip from 'jszip';
 import AddonHooks from '../addons/hooks';

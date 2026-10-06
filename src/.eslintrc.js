@@ -30,7 +30,8 @@ module.exports = {
                 node: true
             },
             rules: {
-                'import/no-commonjs': 'off'
+                'import/no-commonjs': 'off',
+                'import/no-nodejs-modules': 'off'
             }
         }
     ],
@@ -39,6 +40,9 @@ module.exports = {
             version: '16.2' // Prevent 16.3 lifecycle method errors
         },
         'import/resolver': {
+            node: {
+                extensions: ['.js', '.jsx', '.json', '.mjs', '.cjs']
+            },
             webpack: {
                 config: path.resolve(__dirname, '../webpack.config.js')
             }

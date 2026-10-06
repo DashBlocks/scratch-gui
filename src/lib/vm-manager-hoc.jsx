@@ -36,6 +36,8 @@ const vmManagerHOC = function (WrappedComponent) {
             bindAll(this, [
                 'loadProject'
             ]);
+            this.loadGeneration = 0;
+            this.loadQueue = Promise.resolve();
         }
         componentDidMount () {
             if (!this.props.vm.initialized) {
@@ -69,14 +71,24 @@ const vmManagerHOC = function (WrappedComponent) {
             }
         }
         loadProject () {
-            // tw: stop when loading new project
-            this.props.vm.quit();
-            return this.props.vm.loadProject(this.props.projectData)
+            const generation = ++this.loadGeneration;
+            const projectId = this.props.projectId;
+            const projectData = this.props.projectData;
+            const task = this.loadQueue
+                .then(() => {
+                    if (generation !== this.loadGeneration) return;
+                    // tw: stop when loading new project
+                    this.props.vm.quit();
+                    return this.props.vm.loadProject(projectData);
+                })
                 .then(async () => {
+                    if (generation !== this.loadGeneration) return;
                     this.props.onLoadedProject(this.props.loadingState, this.props.canSave);
                     // Wrap in a setTimeout because skin loading in
                     // the renderer can be async.
-                    setTimeout(() => this.props.onSetProjectUnchanged());
+                    setTimeout(() => {
+                        if (generation === this.loadGeneration) this.props.onSetProjectUnchanged();
+                    });
 
                     // If the vm is not running, call draw on the renderer manually
                     // This draws the state of the loaded project with no blocks running
@@ -90,17 +102,21 @@ const vmManagerHOC = function (WrappedComponent) {
                     }
 
                     if (
-                        this.props.projectId &&
-                        this.props.projectId !== '0' &&
-                        !this.props.projectId.startsWith('s') &&
-                        this.props.vm.dashCollaboration
+                        projectId &&
+                        String(projectId) !== '0' &&
+                        !String(projectId).startsWith('s') &&
+                        this.props.vm.dashCollaboration &&
+                        this.props.vm.dashCollaboration.projectId === String(projectId)
                     ) {
-                        await this.props.vm.dashCollaboration.attach();
+                        const session = this.props.vm.dashCollaboration;
+                        await session.attach();
                     }
                 })
                 .catch(e => {
-                    this.props.onError(e);
+                    if (generation === this.loadGeneration) this.props.onError(e);
                 });
+            this.loadQueue = task;
+            return task;
         }
         render () {
             const {

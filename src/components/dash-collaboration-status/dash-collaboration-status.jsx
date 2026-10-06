@@ -32,7 +32,12 @@ class DashCollaborationStatus extends React.Component {
     }
     handleReconnect () {
         const session = this.props.vm.dashCollaboration;
-        if (session) session.reconnect();
+        if (!session) return;
+        // eslint-disable-next-line no-alert
+        const shouldDiscard = !session.hasUnsavedChanges() || window.confirm(
+            'Unsaved collaboration changes will be discarded. Reconnect and reload the latest project state?'
+        );
+        if (shouldDiscard) session.reconnect(true);
     }
     render () {
         const {status} = this.state;

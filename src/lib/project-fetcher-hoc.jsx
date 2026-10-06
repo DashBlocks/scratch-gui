@@ -62,8 +62,10 @@ const ProjectFetcherHOC = function (WrappedComponent) {
         constructor (props) {
             super(props);
             bindAll(this, [
-                'fetchProject'
+                'fetchProject',
+                'disposeCollaboration'
             ]);
+            this.fetchGeneration = 0;
             storage.setProjectHost(props.projectHost);
             storage.setProjectToken(props.projectToken);
             storage.setAssetHost(props.assetHost);
@@ -101,12 +103,18 @@ const ProjectFetcherHOC = function (WrappedComponent) {
             }
         }
         componentWillUnmount () {
-            if (this.props.vm.dashCollaboration) {
-                this.props.vm.dashCollaboration.destroy();
-                this.props.vm.dashCollaboration = null;
-            }
+            this.fetchGeneration++;
+            this.disposeCollaboration();
+        }
+        disposeCollaboration () {
+            const session = this.props.vm.dashCollaboration;
+            if (!session) return;
+            this.props.vm.dashCollaboration = null;
+            session.destroy();
         }
         fetchProject (id, loadingState) {
+            const generation = ++this.fetchGeneration;
+            this.disposeCollaboration();
             // tw: clear and stop the VM before fetching
             // these will also happen later after the project is fetched, but fetching may take a while and
             // the project shouldn't be running while fetching the new project
@@ -122,10 +130,19 @@ const ProjectFetcherHOC = function (WrappedComponent) {
                 const session = new DashCollaborationSession(this.props.vm, projectId);
                 this.props.vm.dashCollaboration = session;
                 return session.fetchProject()
-                    .then(data => this.props.onFetchedProjectData(data, loadingState))
+                    .then(data => {
+                        if (generation !== this.fetchGeneration || this.props.vm.dashCollaboration !== session) {
+                            session.destroy();
+                            return;
+                        }
+                        this.props.onFetchedProjectData(data, loadingState);
+                    })
                     .catch(error => {
                         session.destroy();
-                        this.props.onError(error);
+                        if (this.props.vm.dashCollaboration === session) {
+                            this.props.vm.dashCollaboration = null;
+                        }
+                        if (generation === this.fetchGeneration) this.props.onError(error);
                     });
             }
             // In case running in node...
@@ -170,6 +187,7 @@ const ProjectFetcherHOC = function (WrappedComponent) {
 
             return assetPromise
                 .then(projectAsset => {
+                    if (generation !== this.fetchGeneration) return;
                     if (projectAsset) {
                         this.props.onFetchedProjectData(projectAsset.data, loadingState);
                     } else {
@@ -179,6 +197,7 @@ const ProjectFetcherHOC = function (WrappedComponent) {
                     }
                 })
                 .catch(err => {
+                    if (generation !== this.fetchGeneration) return;
                     this.props.onError(err);
                     log.error(err);
                 });

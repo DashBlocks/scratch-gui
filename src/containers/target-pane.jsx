@@ -116,9 +116,9 @@ class TargetPane extends React.Component {
         }
     }
     async handleSurpriseSpriteClick () {
-        if (!this.props.vm.canEditCollaboration()) return;
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const spriteLibraryContent = await getSpriteLibrary();
-        if (!this.props.vm.canEditCollaboration()) return;
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const surpriseSprites = spriteLibraryContent.filter(sprite =>
             (sprite.tags.indexOf('letters') === -1) && (sprite.tags.indexOf('numbers') === -1)
         );
@@ -128,7 +128,7 @@ class TargetPane extends React.Component {
             .then(this.handleActivateBlocksTab);
     }
     handlePaintSpriteClick () {
-        if (!this.props.vm.canEditCollaboration()) return;
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const formatMessage = this.props.intl.formatMessage;
         const emptyItem = emptySprite(
             formatMessage(sharedMessages.sprite, {index: 1}),
@@ -145,7 +145,7 @@ class TargetPane extends React.Component {
         this.props.onActivateTab(BLOCKS_TAB_INDEX);
     }
     handleNewSprite (spriteJSONString) {
-        if (!this.props.vm.canEditCollaboration()) return Promise.resolve();
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return Promise.resolve();
         return this.props.vm.addSprite(spriteJSONString)
             .then(this.handleActivateBlocksTab)
             .catch(err => {
@@ -153,15 +153,16 @@ class TargetPane extends React.Component {
             });
     }
     handleFileUploadClick () {
-        if (!this.props.vm.canEditCollaboration()) return;
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         this.fileInput.click();
     }
     handleSpriteUpload (e) {
-        if (!this.props.vm.canEditCollaboration()) return;
+        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
         const vm = this.props.vm;
         this.props.onShowImporting();
         handleFileUpload(e.target, (buffer, fileType, fileName, fileIndex, fileCount) => {
             spriteUpload(buffer, fileType, fileName, vm, newSprite => {
+                if (!vm.canEditCollaboration() || vm.dashCollaboration) return;
                 this.handleNewSprite(newSprite)
                     .then(() => {
                         if (fileIndex === fileCount - 1) {
@@ -195,11 +196,12 @@ class TargetPane extends React.Component {
             // Add one to both new and target index because we are not counting/moving the stage
             this.props.vm.reorderTarget(dragInfo.index + 1, dragInfo.newIndex + 1);
         } else if (dragInfo.dragType === DragConstants.BACKPACK_SPRITE) {
+            if (this.props.vm.dashCollaboration) return;
             // TODO storage does not have a way of loading zips right now, and may never need it.
             // So for now just grab the zip manually.
             fetchSprite(dragInfo.payload.bodyUrl)
                 .then(sprite3Zip => {
-                    if (!this.props.vm.canEditCollaboration()) return;
+                    if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
                     return this.props.vm.addSprite(sprite3Zip);
                 });
         } else if (targetId) {

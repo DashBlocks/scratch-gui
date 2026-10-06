@@ -88,31 +88,61 @@ const base = {
         },
         {
             test: /\.css$/,
-            use: [{
-                loader: 'style-loader'
-            }, {
-                loader: 'css-loader',
-                options: {
-                    modules: {
-                        mode: 'local',
-                        namedExport: true,
-                        localIdentName: '[name]_[local]_[hash:base64:5]',
-                        exportLocalsConvention: 'camel-case'
-                    },
-                    importLoaders: 1
-                }
-            }, {
-                loader: 'postcss-loader',
-                options: {
-                    ident: 'postcss',
-                    plugins: function () {
-                        return [
-                            postcssImport,
-                            postcssVars,
-                            autoprefixer
-                        ];
+            oneOf: [{
+                include: /node_modules[\\/]scratch-paint[\\/]/,
+                use: [{
+                    loader: 'style-loader'
+                }, {
+                    loader: 'css-loader',
+                    options: {
+                        modules: {
+                            mode: 'local',
+                            namedExport: false,
+                            localIdentName: '[name]_[local]_[hash:base64:5]',
+                            exportLocalsConvention: 'camel-case'
+                        },
+                        importLoaders: 1
                     }
-                }
+                }, {
+                    loader: 'postcss-loader',
+                    options: {
+                        ident: 'postcss',
+                        plugins: function () {
+                            return [
+                                postcssImport,
+                                postcssVars,
+                                autoprefixer
+                            ];
+                        }
+                    }
+                }]
+            }, {
+                use: [{
+                    loader: 'style-loader'
+                }, {
+                    loader: 'css-loader',
+                    options: {
+                        modules: {
+                            mode: 'local',
+                            namedExport: true,
+                            localIdentName: '[name]_[local]_[hash:base64:5]',
+                            exportLocalsConvention: 'camel-case'
+                        },
+                        importLoaders: 1
+                    }
+                }, {
+                    loader: 'postcss-loader',
+                    options: {
+                        ident: 'postcss',
+                        plugins: function () {
+                            return [
+                                postcssImport,
+                                postcssVars,
+                                autoprefixer
+                            ];
+                        }
+                    }
+                }]
             }]
         }]
     },

@@ -28,6 +28,19 @@ const createBlockMap = record => {
     }
     return block;
 };
+const merge = (before, after, current) => {
+    if (equal(before, after)) return current;
+    if (!before || !after || !current || Array.isArray(before) || Array.isArray(after) ||
+        typeof before !== 'object' || typeof after !== 'object' || typeof current !== 'object') return clone(after);
+    const result = {...current};
+    for (const key of Object.keys(before)) {
+        if (!Object.prototype.hasOwnProperty.call(after, key)) delete result[key];
+    }
+    for (const key of Object.keys(after)) {
+        if (!equal(before[key], after[key])) result[key] = merge(before[key], after[key], current[key]);
+    }
+    return result;
+};
 const syncBlockMap = (map, before, after, operations) => {
     for (const id of new Set([...Object.keys(before), ...Object.keys(after)])) {
         const previous = before[id];
@@ -47,22 +60,38 @@ const syncBlockMap = (map, before, after, operations) => {
             throw new Error('Block data has not been migrated. Reopen the collaboration.');
         }
 
-        const oldStructure = {};
-        const newStructure = {};
         for (const key of blockStructureFields) {
-            if (Object.prototype.hasOwnProperty.call(previous, key)) oldStructure[key] = previous[key];
-            if (Object.prototype.hasOwnProperty.call(next, key)) newStructure[key] = next[key];
-        }
-        if (!equal(oldStructure, newStructure)) {
-            operations.push(() => {
-                for (const key of blockStructureFields) {
-                    if (Object.prototype.hasOwnProperty.call(newStructure, key)) {
-                        existing.set(key, clone(newStructure[key]));
-                    } else {
-                        existing.delete(key);
+            if (equal(previous[key], next[key])) continue;
+            if (key === 'inputs' && previous[key] && next[key] &&
+                typeof previous[key] === 'object' && typeof next[key] === 'object' &&
+                !Array.isArray(previous[key]) && !Array.isArray(next[key])) {
+                const inputs = existing.get(key);
+                if (inputs instanceof Y.Map) {
+                    for (const input of new Set([
+                        ...Object.keys(previous[key]),
+                        ...Object.keys(next[key])
+                    ])) {
+                        if (equal(previous[key][input], next[key][input])) continue;
+                        if (Object.prototype.hasOwnProperty.call(next[key], input)) {
+                            operations.push(() => inputs.set(input, clone(next[key][input])));
+                        } else {
+                            operations.push(() => inputs.delete(input));
+                        }
                     }
+                    continue;
                 }
-            });
+                operations.push(() => existing.set(key, merge(
+                    previous[key],
+                    next[key],
+                    existing.get(key)
+                )));
+                continue;
+            }
+            if (Object.prototype.hasOwnProperty.call(next, key)) {
+                operations.push(() => existing.set(key, clone(next[key])));
+            } else {
+                operations.push(() => existing.delete(key));
+            }
         }
 
         const oldFields = previous.fields || {};
@@ -100,7 +129,7 @@ const syncBlockMap = (map, before, after, operations) => {
         }
     }
 };
-const reconcileTargetMembership = (order, targets, wantedOrder) => {
+const reconcileTargetOrder = (order, targets, wantedOrder) => {
     const seen = new Set();
     for (let index = order.length - 1; index >= 0; index--) {
         const id = order.get(index);
@@ -110,29 +139,24 @@ const reconcileTargetMembership = (order, targets, wantedOrder) => {
             seen.add(id);
         }
     }
-    const present = new Set(order.toArray());
-    for (let index = 0; index < wantedOrder.length; index++) {
-        const id = wantedOrder[index];
-        if (!targets.has(id) || present.has(id)) continue;
-        const nextId = wantedOrder.slice(index + 1).find(candidate => present.has(candidate));
-        const insertionIndex = nextId ? order.toArray().indexOf(nextId) : order.length;
-        order.insert(insertionIndex, [id]);
-        present.add(id);
+    const currentOrder = order.toArray();
+    const desired = wantedOrder.filter((id, index) =>
+        targets.has(id) && wantedOrder.indexOf(id) === index);
+    const desiredIds = new Set(desired);
+    for (const id of currentOrder) {
+        if (!desiredIds.has(id)) {
+            desired.push(id);
+            desiredIds.add(id);
+        }
+    }
+    for (let index = 0; index < desired.length; index++) {
+        const currentIndex = order.toArray().indexOf(desired[index]);
+        if (currentIndex === -1 || currentIndex === index) continue;
+        order.delete(currentIndex, 1);
+        order.insert(index, [desired[index]]);
     }
 };
-const merge = (before, after, current) => {
-    if (equal(before, after)) return current;
-    if (!before || !after || !current || Array.isArray(before) || Array.isArray(after) ||
-        typeof before !== 'object' || typeof after !== 'object' || typeof current !== 'object') return clone(after);
-    const result = {...current};
-    for (const key of Object.keys(before)) {
-        if (!Object.prototype.hasOwnProperty.call(after, key)) delete result[key];
-    }
-    for (const key of Object.keys(after)) {
-        if (!equal(before[key], after[key])) result[key] = merge(before[key], after[key], current[key]);
-    }
-    return result;
-};
+export {reconcileTargetOrder, syncBlockMap};
 
 export default class DashCollaborationSession {
     constructor (vm, projectId) {
@@ -351,7 +375,7 @@ export default class DashCollaborationSession {
             }
         }
         const wantedOrder = current.targets.map(target => target.collaborationId);
-        operations.push(() => reconcileTargetMembership(order, targets, wantedOrder));
+        operations.push(() => reconcileTargetOrder(order, targets, wantedOrder));
         if (operations.length) this.client.change(() => operations.forEach(operation => operation()));
         this.base = current;
         this.dirty = false;

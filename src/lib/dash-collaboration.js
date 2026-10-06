@@ -155,12 +155,30 @@ export default class DashCollaboration {
     }
     getProjectJSON () {
         const meta = this.doc.getMap('collaboration');
-        if (meta.get('schemaVersion') !== 2 || meta.get('projectId') !== this.projectId) {
+        if (meta.get('schemaVersion') !== 3 || meta.get('projectId') !== this.projectId) {
             throw new Error('Project document is not initialized');
         }
         const targets = this.doc.getMap('targets');
         const project = this.doc.getMap('project').toJSON();
-        const order = this.doc.getArray('targetOrder').toArray();
+        const membership = this.doc.getArray('targetOrder').toArray();
+        const sequence = this.doc.getMap('targetSequence');
+        const preferred = sequence.get('ids');
+        if (!membership.length || membership.length > 1000 || membership.length !== targets.size ||
+            new Set(membership).size !== membership.length || sequence.size !== 1 ||
+            !Array.isArray(preferred) || preferred.length > 1000 ||
+            new Set(preferred).size !== preferred.length || preferred.some(id =>
+            typeof id !== 'string' || !/^[\x21-\x7e]{1,128}$/.test(id))) {
+            throw new Error('Invalid collaboration target order');
+        }
+        const members = new Set(membership);
+        const order = preferred.filter(id => members.has(id));
+        const ordered = new Set(order);
+        for (const id of membership) {
+            if (!ordered.has(id)) {
+                order.push(id);
+                ordered.add(id);
+            }
+        }
         project.targets = order.map(id => {
             const target = targets.get(id);
             if (!(target instanceof Y.Map) || target.get('collaborationId') !== id) {

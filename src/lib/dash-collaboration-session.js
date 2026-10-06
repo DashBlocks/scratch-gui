@@ -16,12 +16,12 @@ const clone = value => JSON.parse(JSON.stringify(value));
 const createBlockMap = record => {
     const block = new Y.Map();
     for (const [key, value] of Object.entries(record || {})) {
-        if (key === 'fields') {
-            const fields = new Y.Map();
-            for (const [field, fieldValue] of Object.entries(value || {})) {
-                fields.set(field, clone(fieldValue));
+        if (key === 'fields' || key === 'inputs') {
+            const entries = new Y.Map();
+            for (const [entry, entryValue] of Object.entries(value || {})) {
+                entries.set(entry, clone(entryValue));
             }
-            block.set(key, fields);
+            block.set(key, entries);
         } else {
             block.set(key, clone(value));
         }
@@ -66,25 +66,20 @@ const syncBlockMap = (map, before, after, operations) => {
                 typeof previous[key] === 'object' && typeof next[key] === 'object' &&
                 !Array.isArray(previous[key]) && !Array.isArray(next[key])) {
                 const inputs = existing.get(key);
-                if (inputs instanceof Y.Map) {
-                    for (const input of new Set([
-                        ...Object.keys(previous[key]),
-                        ...Object.keys(next[key])
-                    ])) {
-                        if (equal(previous[key][input], next[key][input])) continue;
-                        if (Object.prototype.hasOwnProperty.call(next[key], input)) {
-                            operations.push(() => inputs.set(input, clone(next[key][input])));
-                        } else {
-                            operations.push(() => inputs.delete(input));
-                        }
-                    }
-                    continue;
+                if (!(inputs instanceof Y.Map)) {
+                    throw new Error('Block inputs have not been migrated. Reopen the collaboration.');
                 }
-                operations.push(() => existing.set(key, merge(
-                    previous[key],
-                    next[key],
-                    existing.get(key)
-                )));
+                for (const input of new Set([
+                    ...Object.keys(previous[key]),
+                    ...Object.keys(next[key])
+                ])) {
+                    if (equal(previous[key][input], next[key][input])) continue;
+                    if (Object.prototype.hasOwnProperty.call(next[key], input)) {
+                        operations.push(() => inputs.set(input, clone(next[key][input])));
+                    } else {
+                        operations.push(() => inputs.delete(input));
+                    }
+                }
                 continue;
             }
             if (Object.prototype.hasOwnProperty.call(next, key)) {
@@ -129,33 +124,7 @@ const syncBlockMap = (map, before, after, operations) => {
         }
     }
 };
-const longestCommonSubsequence = (left, right) => {
-    const lengths = Array.from({length: left.length + 1}, () =>
-        Array(right.length + 1).fill(0));
-    for (let leftIndex = left.length - 1; leftIndex >= 0; leftIndex--) {
-        for (let rightIndex = right.length - 1; rightIndex >= 0; rightIndex--) {
-            lengths[leftIndex][rightIndex] = left[leftIndex] === right[rightIndex] ?
-                lengths[leftIndex + 1][rightIndex + 1] + 1 :
-                Math.max(lengths[leftIndex + 1][rightIndex], lengths[leftIndex][rightIndex + 1]);
-        }
-    }
-    const sequence = [];
-    let leftIndex = 0;
-    let rightIndex = 0;
-    while (leftIndex < left.length && rightIndex < right.length) {
-        if (left[leftIndex] === right[rightIndex]) {
-            sequence.push(left[leftIndex]);
-            leftIndex++;
-            rightIndex++;
-        } else if (lengths[leftIndex + 1][rightIndex] >= lengths[leftIndex][rightIndex + 1]) {
-            leftIndex++;
-        } else {
-            rightIndex++;
-        }
-    }
-    return sequence;
-};
-const reconcileTargetOrder = (order, targets, previousOrder, wantedOrder) => {
+const reconcileTargetOrder = (order, targets, previousOrder, wantedOrder, sequence) => {
     const seen = new Set();
     for (let index = order.length - 1; index >= 0; index--) {
         const id = order.get(index);
@@ -165,39 +134,15 @@ const reconcileTargetOrder = (order, targets, previousOrder, wantedOrder) => {
             seen.add(id);
         }
     }
-    const currentOrder = order.toArray();
-    const desired = wantedOrder.filter((id, index) =>
+    const wanted = wantedOrder.filter((id, index) =>
         targets.has(id) && wantedOrder.indexOf(id) === index);
-    const desiredIds = new Set(desired);
-    for (const id of currentOrder) {
-        if (!desiredIds.has(id)) {
-            desired.push(id);
-            desiredIds.add(id);
+    for (const id of wanted) {
+        if (!seen.has(id)) {
+            order.push([id]);
+            seen.add(id);
         }
     }
-
-    const localDesired = wantedOrder.filter((id, index) =>
-        targets.has(id) && wantedOrder.indexOf(id) === index);
-    const commonOrder = longestCommonSubsequence(
-        previousOrder.filter(id => localDesired.includes(id)),
-        localDesired.filter(id => previousOrder.includes(id))
-    );
-    const unchangedIds = new Set(commonOrder);
-    for (let index = 0; index < localDesired.length; index++) {
-        const id = localDesired[index];
-        if (unchangedIds.has(id)) continue;
-        const current = order.toArray();
-        const currentIndex = current.indexOf(id);
-        const nextId = localDesired.slice(index + 1).find(candidate => current.includes(candidate));
-        const previousId = localDesired.slice(0, index).reverse()
-            .find(candidate => current.includes(candidate));
-        let insertionIndex = nextId ? current.indexOf(nextId) :
-            previousId ? current.indexOf(previousId) + 1 : current.length;
-        if (currentIndex !== -1 && currentIndex < insertionIndex) insertionIndex--;
-        if (currentIndex === insertionIndex) continue;
-        if (currentIndex !== -1) order.delete(currentIndex, 1);
-        order.insert(insertionIndex, [id]);
-    }
+    if (!equal(previousOrder, wantedOrder)) sequence.set('ids', wanted);
 };
 export {reconcileTargetOrder, syncBlockMap};
 
@@ -348,6 +293,7 @@ export default class DashCollaborationSession {
         const newTargets = new Map(current.targets.map(target => [target.collaborationId, target]));
         const targets = this.client.doc.getMap('targets');
         const order = this.client.doc.getArray('targetOrder');
+        const sequence = this.client.doc.getMap('targetSequence');
         const operations = [];
         for (const [id] of oldTargets) {
             if (!newTargets.has(id) && targets.has(id)) {
@@ -419,7 +365,7 @@ export default class DashCollaborationSession {
         }
         const previousOrder = this.base.targets.map(target => target.collaborationId);
         const wantedOrder = current.targets.map(target => target.collaborationId);
-        operations.push(() => reconcileTargetOrder(order, targets, previousOrder, wantedOrder));
+        operations.push(() => reconcileTargetOrder(order, targets, previousOrder, wantedOrder, sequence));
         if (operations.length) this.client.change(() => operations.forEach(operation => operation()));
         this.base = current;
         this.dirty = false;

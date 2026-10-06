@@ -193,6 +193,7 @@ class TargetPane extends React.Component {
         if (!this.props.vm.canEditCollaboration()) return;
         const {sprite: targetId} = this.props.hoveredTarget;
         if (dragInfo.dragType === DragConstants.SPRITE) {
+            if (this.props.vm.dashCollaboration) return;
             // Add one to both new and target index because we are not counting/moving the stage
             this.props.vm.reorderTarget(dragInfo.index + 1, dragInfo.newIndex + 1);
         } else if (dragInfo.dragType === DragConstants.BACKPACK_SPRITE) {

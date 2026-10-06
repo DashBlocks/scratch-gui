@@ -16,6 +16,7 @@ import {
     getIsShowingProject
 } from '../reducers/project-state';
 import {setProjectTitle} from '../reducers/project-title';
+import closeCollaborationSession from './close-collaboration-session';
 import {
     openLoadingProject,
     closeLoadingProject,
@@ -203,6 +204,7 @@ const SBFileUploaderHOC = function (WrappedComponent) {
                 this.props.onLoadingStarted();
                 const filename = this.fileToUpload && this.fileToUpload.name;
                 let loadingSuccess = false;
+                closeCollaborationSession(this.props.vm);
                 // tw: stop when loading new project
                 this.props.vm.quit();
                 this.props.vm.loadProject(this.fileReader.result)

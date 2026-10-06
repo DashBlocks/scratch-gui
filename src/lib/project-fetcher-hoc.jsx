@@ -20,6 +20,7 @@ import {
     BLOCKS_TAB_INDEX
 } from '../reducers/editor-tab';
 import DashCollaborationSession from './dash-collaboration-session';
+import closeCollaborationSession from './close-collaboration-session';
 import {requestDashApi} from './dash-api';
 
 import log from './log';
@@ -107,10 +108,7 @@ const ProjectFetcherHOC = function (WrappedComponent) {
             this.disposeCollaboration();
         }
         disposeCollaboration () {
-            const session = this.props.vm.dashCollaboration;
-            if (!session) return;
-            this.props.vm.dashCollaboration = null;
-            session.destroy();
+            closeCollaborationSession(this.props.vm);
         }
         fetchProject (id, loadingState) {
             const generation = ++this.fetchGeneration;

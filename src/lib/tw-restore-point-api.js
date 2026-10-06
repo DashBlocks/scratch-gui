@@ -1,5 +1,6 @@
 import JSZip from '@turbowarp/jszip';
 import {base64ToArrayBuffer} from './tw-base64-utils';
+import closeCollaborationSession from './close-collaboration-session';
 
 const TYPE_AUTOMATIC = 0;
 const TYPE_MANUAL = 1;
@@ -591,6 +592,7 @@ const loadRestorePoint = (vm, id) => openDB().then(db => new Promise((resolvePro
         const request = projectStore.get(id);
         request.onsuccess = () => {
             if (request.result) {
+                closeCollaborationSession(vm);
                 vm.loadProject(request.result)
                     .then(() => {
                         cleanup();

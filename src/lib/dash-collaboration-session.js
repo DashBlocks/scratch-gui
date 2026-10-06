@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 import * as Y from 'yjs';
 import JSZip from 'jszip';
 import AddonHooks from '../addons/hooks';
@@ -99,29 +100,7 @@ const syncBlockMap = (map, before, after, operations) => {
         }
     }
 };
-const reconcileTargetOrder = (order, targets, wantedOrder, reorderLocally) => {
-    const current = order.toArray();
-    const live = [];
-    for (const id of current) {
-        if (targets.has(id) && !live.includes(id)) live.push(id);
-    }
-    let desired;
-    if (reorderLocally) {
-        desired = wantedOrder.filter(id => targets.has(id));
-        for (const id of live) {
-            if (!wantedOrder.includes(id)) desired.push(id);
-        }
-    } else {
-        desired = live;
-        for (let index = 0; index < wantedOrder.length; index++) {
-            const id = wantedOrder[index];
-            if (!targets.has(id) || desired.includes(id)) continue;
-            const nextId = wantedOrder.slice(index + 1).find(candidate => desired.includes(candidate));
-            const insertionIndex = nextId ? desired.indexOf(nextId) : desired.length;
-            desired.splice(insertionIndex, 0, id);
-        }
-    }
-
+const reconcileTargetMembership = (order, targets, wantedOrder) => {
     const seen = new Set();
     for (let index = order.length - 1; index >= 0; index--) {
         const id = order.get(index);
@@ -131,11 +110,14 @@ const reconcileTargetOrder = (order, targets, wantedOrder, reorderLocally) => {
             seen.add(id);
         }
     }
-    for (let index = 0; index < desired.length; index++) {
-        const existingIndex = order.toArray().indexOf(desired[index]);
-        if (existingIndex === index) continue;
-        if (existingIndex !== -1) order.delete(existingIndex, 1);
-        order.insert(index, [desired[index]]);
+    const present = new Set(order.toArray());
+    for (let index = 0; index < wantedOrder.length; index++) {
+        const id = wantedOrder[index];
+        if (!targets.has(id) || present.has(id)) continue;
+        const nextId = wantedOrder.slice(index + 1).find(candidate => present.has(candidate));
+        const insertionIndex = nextId ? order.toArray().indexOf(nextId) : order.length;
+        order.insert(insertionIndex, [id]);
+        present.add(id);
     }
 };
 const merge = (before, after, current) => {
@@ -164,6 +146,8 @@ export default class DashCollaborationSession {
         this.changed = false;
         this.applying = false;
         this.localOperation = false;
+        this.restoreOnReconnect = false;
+        this.projectListenerAttached = false;
         this.disposed = false;
         this.base = null;
         this.workspace = null;
@@ -194,8 +178,12 @@ export default class DashCollaborationSession {
                 this.error = status.error;
                 if (status.state === 'connected') {
                     if (this.resolveReady) this.resolveReady();
-                    this.changed = true;
-                    this.scheduleReconcile();
+                    if (this.restoreOnReconnect) {
+                        this.restoreAfterReconnect().catch(error => this.fail(error));
+                    } else {
+                        this.changed = true;
+                        this.scheduleReconcile();
+                    }
                 } else if (status.state === 'error' && this.rejectReady) {
                     this.rejectReady(new Error(status.error));
                 }
@@ -221,7 +209,6 @@ export default class DashCollaborationSession {
         try {
             this.client.connect();
             await ready;
-            this.migrateBlockMaps();
             const bytes = await this.client.getSourceArchive(this.controller.signal);
             if (this.disposed) throw new Error('Collaboration closed');
             this.zip = await JSZip.loadAsync(bytes);
@@ -233,34 +220,43 @@ export default class DashCollaborationSession {
             this.rejectReady = null;
         }
     }
-    migrateBlockMaps () {
-        if (this.client.role === 'viewer') return;
-        const targets = this.client.doc.getMap('targets');
-        const conversions = [];
-        for (const [, target] of targets) {
-            if (!(target instanceof Y.Map)) continue;
-            const blocks = target.get('blocks');
-            if (!(blocks instanceof Y.Map)) continue;
-            for (const [blockId, value] of blocks) {
-                if (value instanceof Y.Map || !value || typeof value !== 'object') continue;
-                conversions.push(() => blocks.set(blockId, createBlockMap(value)));
+    attach () {
+        if (this.disposed || this.projectListenerAttached) return Promise.resolve();
+        if (this.attachPromise) return this.attachPromise;
+        this.attachPromise = (async () => {
+            this.applying = true;
+            try {
+                await this.vm.applyCollaborationState(this.client.getProjectJSON(), this.zip);
+                if (this.disposed) return;
+                this.base = this.vm.getCollaborationState();
+                this.loaded = true;
+                this.vm.on('PROJECT_CHANGED', this.onLocalChange);
+                this.projectListenerAttached = true;
+            } finally {
+                this.applying = false;
+                this.attachPromise = null;
+                this.scheduleReconcile();
+                this.notify();
             }
-        }
-        if (conversions.length) this.client.change(() => conversions.forEach(convert => convert()));
+        })();
+        return this.attachPromise;
     }
-    async attach () {
-        if (this.disposed) return;
+    async restoreAfterReconnect () {
+        if (this.disposed || !this.restoreOnReconnect || this.applying) return;
+        const client = this.client;
         this.applying = true;
+        this.changed = false;
+        this.notify();
         try {
-            await this.vm.applyCollaborationState(this.client.getProjectJSON(), this.zip);
-            if (this.disposed) return;
+            await this.vm.applyCollaborationState(client.getProjectJSON(), this.zip);
+            if (this.disposed || client !== this.client) return;
             this.base = this.vm.getCollaborationState();
             this.loaded = true;
-            this.vm.on('PROJECT_CHANGED', this.onLocalChange);
+            this.restoreOnReconnect = false;
         } finally {
             this.applying = false;
-            this.scheduleReconcile();
             this.notify();
+            if (this.changed) this.scheduleReconcile();
         }
     }
     scheduleReconcile () {
@@ -276,6 +272,7 @@ export default class DashCollaborationSession {
     }
     commit () {
         if (!this.dirty) return;
+        if (!this.base) throw new Error('Collaboration state is not ready. Reopen the collaboration.');
         if (this.client.state !== 'connected' || this.client.role === 'viewer') {
             throw new Error('Local edits cannot be sent. Reopen the collaboration.');
         }
@@ -353,13 +350,8 @@ export default class DashCollaborationSession {
                 operations.push(() => target.set(key, clone(record[key])));
             }
         }
-        const baseOrder = this.base.targets.map(target => target.collaborationId);
         const wantedOrder = current.targets.map(target => target.collaborationId);
-        const commonBaseOrder = baseOrder.filter(id => newTargets.has(id));
-        const commonWantedOrder = wantedOrder.filter(id => oldTargets.has(id));
-        const reorderLocally = commonBaseOrder.length !== commonWantedOrder.length ||
-            commonBaseOrder.some((id, index) => id !== commonWantedOrder[index]);
-        operations.push(() => reconcileTargetOrder(order, targets, wantedOrder, reorderLocally));
+        operations.push(() => reconcileTargetMembership(order, targets, wantedOrder));
         if (operations.length) this.client.change(() => operations.forEach(operation => operation()));
         this.base = current;
         this.dirty = false;
@@ -403,7 +395,8 @@ export default class DashCollaborationSession {
         this.scheduleReconcile();
     }
     canEdit () {
-        return this.loaded && !this.disposed && !this.applying && this.client.state === 'connected' &&
+        return this.loaded && Boolean(this.base) && !this.restoreOnReconnect && !this.disposed &&
+            !this.applying && this.client.state === 'connected' &&
             this.client.role !== 'viewer';
     }
     fail (error) {
@@ -418,6 +411,8 @@ export default class DashCollaborationSession {
         this.dirty = false;
         this.changed = false;
         this.base = null;
+        this.loaded = false;
+        this.restoreOnReconnect = true;
         this.client.connect();
     }
     hasUnsavedChanges () {
@@ -428,7 +423,10 @@ export default class DashCollaborationSession {
         clearTimeout(this.timer);
         this.controller.abort();
         if (this.rejectReady) this.rejectReady(new Error('Collaboration closed'));
-        this.vm.removeListener('PROJECT_CHANGED', this.onLocalChange);
+        if (this.projectListenerAttached) {
+            this.vm.removeListener('PROJECT_CHANGED', this.onLocalChange);
+            this.projectListenerAttached = false;
+        }
         this.client.doc.off('update', this.onDocumentChange);
         this.client.destroy();
         window.removeEventListener('beforeunload', this.beforeUnload);

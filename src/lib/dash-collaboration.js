@@ -155,7 +155,7 @@ export default class DashCollaboration {
     }
     getProjectJSON () {
         const meta = this.doc.getMap('collaboration');
-        if (meta.get('schemaVersion') !== 1 || meta.get('projectId') !== this.projectId) {
+        if (meta.get('schemaVersion') !== 2 || meta.get('projectId') !== this.projectId) {
             throw new Error('Project document is not initialized');
         }
         const targets = this.doc.getMap('targets');

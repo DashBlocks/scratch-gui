@@ -95,6 +95,7 @@ const base = {
                 options: {
                     modules: {
                         mode: 'local',
+                        namedExport: true,
                         localIdentName: '[name]_[local]_[hash:base64:5]',
                         exportLocalsConvention: 'camel-case'
                     },

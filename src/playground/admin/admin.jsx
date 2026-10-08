@@ -122,7 +122,7 @@ const Admin = props => {
         setFeatureProjectButtonLoading(true);
 
         try {
-            const res = await requestDashApi(`/featured-projects/${Number(projectId)}`, {
+            const res = await requestDashApi(`/featured/projects/${Number(projectId)}`, {
                 method: 'POST',
                 credentials: 'include'
             });
@@ -143,7 +143,7 @@ const Admin = props => {
         setUnfeatureProjectButtonLoading(true);
 
         try {
-            const res = await requestDashApi(`/featured-projects/${Number(projectId)}`, {
+            const res = await requestDashApi(`/featured/projects/${Number(projectId)}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });
@@ -164,7 +164,7 @@ const Admin = props => {
         setFeatureStudioButtonLoading(true);
 
         try {
-            const res = await requestDashApi(`/featured-studios/${Number(studioId)}`, {
+            const res = await requestDashApi(`/featured/studios/${Number(studioId)}`, {
                 method: 'POST',
                 credentials: 'include'
             });
@@ -185,7 +185,7 @@ const Admin = props => {
         setUnfeatureStudioButtonLoading(true);
 
         try {
-            const res = await requestDashApi(`/featured-studios/${Number(studioId)}`, {
+            const res = await requestDashApi(`/featured/studios/${Number(studioId)}`, {
                 method: 'DELETE',
                 credentials: 'include'
             });

@@ -81,6 +81,12 @@ const Admin = props => {
     const [unfeatureProjectId, setUnfeatureProjectId] = useState('');
     const [unfeatureProjectButtonLoading, setUnfeatureProjectButtonLoading] = useState(false);
 
+    const [featureStudioId, setFeatureStudioId] = useState('');
+    const [featureStudioButtonLoading, setFeatureStudioButtonLoading] = useState(false);
+
+    const [unfeatureStudioId, setUnfeatureStudioId] = useState('');
+    const [unfeatureStudioButtonLoading, setUnfeatureStudioButtonLoading] = useState(false);
+
     const [deleteProjectId, setDeleteProjectId] = useState('');
     const [deleteProjectButtonLoading, setDeleteProjectButtonLoading] = useState(false);
 
@@ -149,6 +155,48 @@ const Admin = props => {
             alert(`Error unfeaturing project with ID ${projectId}: ${catchedError.message}`);
         } finally {
             setUnfeatureProjectButtonLoading(false);
+        }
+    };
+
+    const handleFeatureStudio = async studioId => {
+        if (!studioId || featureStudioButtonLoading) return;
+
+        setFeatureStudioButtonLoading(true);
+
+        try {
+            const res = await requestDashApi(`/featured-studios/${Number(studioId)}`, {
+                method: 'POST',
+                credentials: 'include'
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            setFeatureStudioId('');
+        } catch (catchedError) {
+            // eslint-disable-next-line no-alert
+            alert(`Error featuring studio with ID ${studioId}: ${catchedError.message}`);
+        } finally {
+            setFeatureStudioButtonLoading(false);
+        }
+    };
+
+    const handleUnfeatureStudio = async studioId => {
+        if (!studioId || unfeatureStudioButtonLoading) return;
+
+        setUnfeatureStudioButtonLoading(true);
+
+        try {
+            const res = await requestDashApi(`/featured-studios/${Number(studioId)}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+            const data = await res.json();
+            if (!data.ok) throw new Error(data.error);
+            setUnfeatureStudioId('');
+        } catch (catchedError) {
+            // eslint-disable-next-line no-alert
+            alert(`Error unfeaturing studio with ID ${studioId}: ${catchedError.message}`);
+        } finally {
+            setUnfeatureStudioButtonLoading(false);
         }
     };
 
@@ -330,6 +378,92 @@ const Admin = props => {
                                 onClick={() => handleUnfeatureProject(unfeatureProjectId)}
                             >
                                 {unfeatureProjectButtonLoading ? (
+                                    <Spinner
+                                        className={styles.spinner}
+                                        small
+                                    />
+                                ) : (
+                                    <FormattedMessage
+                                        defaultMessage="Unfeature"
+                                        description="Label for unfeature button"
+                                        id="dash.admin.unfeatureProject.button"
+                                    />
+                                )}
+                            </Button>
+                        </div>
+
+                        <div className={styles.section}>
+                            <h2>
+                                <FormattedMessage
+                                    defaultMessage="Feature Studio"
+                                    description="Title of the feature studio section in admin panel"
+                                    id="dash.admin.featureStudio.title"
+                                />
+                            </h2>
+                            <div className={styles.label}>
+                                <FormattedMessage
+                                    defaultMessage="Studio ID"
+                                    description="Label for the studio ID input in admin panel"
+                                    id="dash.admin.studioId"
+                                />
+                                <BufferedInput
+                                    value={featureStudioId}
+                                    onSubmit={setFeatureStudioId}
+                                    className={styles.input}
+                                    type="number"
+                                    min="1"
+                                    step="1"
+                                />
+                            </div>
+                            <Button
+                                className={styles.button}
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onClick={() => handleFeatureStudio(featureStudioId)}
+                            >
+                                {featureStudioButtonLoading ? (
+                                    <Spinner
+                                        className={styles.spinner}
+                                        small
+                                    />
+                                ) : (
+                                    <FormattedMessage
+                                        defaultMessage="Feature"
+                                        description="Label for feature button"
+                                        id="dash.admin.featureProject.button"
+                                    />
+                                )}
+                            </Button>
+                        </div>
+
+                        <div className={styles.section}>
+                            <h2>
+                                <FormattedMessage
+                                    defaultMessage="Unfeature Studio"
+                                    description="Title of the unfeature studio section in admin panel"
+                                    id="dash.admin.unfeatureStudio.title"
+                                />
+                            </h2>
+                            <div className={styles.label}>
+                                <FormattedMessage
+                                    defaultMessage="Studio ID"
+                                    description="Label for the studio ID input in admin panel"
+                                    id="dash.admin.studioId"
+                                />
+                                <BufferedInput
+                                    value={unfeatureStudioId}
+                                    onSubmit={setUnfeatureStudioId}
+                                    className={styles.input}
+                                    type="number"
+                                    min="1"
+                                    step="1"
+                                />
+                            </div>
+                            <Button
+                                className={styles.button}
+                                // eslint-disable-next-line react/jsx-no-bind
+                                onClick={() => handleUnfeatureStudio(unfeatureStudioId)}
+                            >
+                                {unfeatureStudioButtonLoading ? (
                                     <Spinner
                                         className={styles.spinner}
                                         small

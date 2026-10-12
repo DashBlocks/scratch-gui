@@ -169,7 +169,7 @@ class CollaboratorsModal extends React.Component {
                             />
                         </button>
                         <button
-                            className={styles.button}
+                            className={styles.openButton}
                             onClick={() => window.open(`./?collaboration=1#${projectId}`, '_blank')}
                         >
                             <FormattedMessage

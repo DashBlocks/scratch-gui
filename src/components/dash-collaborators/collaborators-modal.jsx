@@ -104,7 +104,7 @@ class CollaboratorsModal extends React.Component {
         });
     }
     render () {
-        const {intl, onClose, isRtl} = this.props;
+        const {intl, onClose, isRtl, projectId} = this.props;
         const {username, role, collaborators, loading, busy, error} = this.state;
         return (
             <Modal
@@ -166,6 +166,16 @@ class CollaboratorsModal extends React.Component {
                                 id="dash.collaboration.add"
                                 defaultMessage="Add / Update"
                                 description="Button to add a collaborator or update their role"
+                            />
+                        </button>
+                        <button
+                            className={styles.button}
+                            onClick={() => window.open(`./?collaboration=1#${projectId}`, '_blank')}
+                        >
+                            <FormattedMessage
+                                id="dash.collaboration.open"
+                                defaultMessage="Open Live-collaboration"
+                                description="Button to open live-collaboration page"
                             />
                         </button>
                     </form>

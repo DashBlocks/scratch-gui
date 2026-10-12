@@ -142,16 +142,25 @@ class SoundEditor extends React.Component {
         });
     }
     submitNewSamples (samples, sampleRate, skipUndo) {
-        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) {
+        const session = this.props.vm.dashCollaboration;
+        if (session && !session.canEdit()) return Promise.resolve(false);
+        const submit = () => this.submitSamplesToVM(samples, sampleRate, skipUndo);
+        return session ? session.runLocalOperation(submit) : submit();
+    }
+    submitSamplesToVM (samples, sampleRate, skipUndo) {
+        if (!this.props.vm.canEditCollaboration()) {
             return Promise.resolve(false);
         }
+        const targetId = this.props.vm.editingTarget.id;
+        const soundId = this.props.soundId;
         return downsampleIfNeeded({samples, sampleRate}, this.resampleBufferToRate)
             .then(({samples: newSamples, sampleRate: newSampleRate}) =>
                 WavEncoder.encode({
                     sampleRate: newSampleRate,
                     channelData: [newSamples]
                 }).then(wavBuffer => {
-                    if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) {
+                    if (!this.props.vm.canEditCollaboration() || this.props.vm.editingTarget.id !== targetId ||
+                        this.props.soundId !== soundId) {
                         return false;
                     }
                     if (!skipUndo) {
@@ -194,7 +203,7 @@ class SoundEditor extends React.Component {
         this.setState({playhead});
     }
     handleChangeName (name) {
-        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.renameSound(this.props.soundIndex, name);
     }
     handleDelete () {
@@ -338,7 +347,7 @@ class SoundEditor extends React.Component {
         }, callback);
     }
     handleCopyToNew () {
-        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
+        if (!this.props.vm.canEditCollaboration()) return;
         this.copy(() => {
             encodeAndAddSoundToVM(this.props.vm, this.state.copyBuffer.samples,
                 this.state.copyBuffer.sampleRate, this.props.name);
@@ -503,16 +512,16 @@ const mapStateToProps = (state, {soundIndex}) => {
     // Make sure the sound index doesn't go out of range.
     const index = soundIndex < sprite.sounds.length ? soundIndex : sprite.sounds.length - 1;
     const sound = state.scratchGui.vm.editingTarget.sprite.sounds[index];
-    const audioBuffer = state.scratchGui.vm.getSoundBuffer(index);
+    const audioBuffer = sound ? state.scratchGui.vm.getSoundBuffer(index) : null;
     return {
-        isStereo: audioBuffer.numberOfChannels !== 1,
-        duration: sound.sampleCount / sound.rate,
-        size: sound.asset ? sound.asset.data.byteLength : 0,
-        soundId: sound.soundId,
-        sampleRate: audioBuffer.sampleRate,
-        samples: audioBuffer.getChannelData(0),
+        isStereo: Boolean(audioBuffer && audioBuffer.numberOfChannels !== 1),
+        duration: sound ? sound.sampleCount / sound.rate : 0,
+        size: sound && sound.asset ? sound.asset.data.byteLength : 0,
+        soundId: sound ? sound.soundId : '',
+        sampleRate: audioBuffer ? audioBuffer.sampleRate : 44100,
+        samples: audioBuffer ? audioBuffer.getChannelData(0) : new Float32Array(1),
         isFullScreen: state.scratchGui.mode.isFullScreen,
-        name: sound.name,
+        name: sound ? sound.name : '',
         vm: state.scratchGui.vm
     };
 };

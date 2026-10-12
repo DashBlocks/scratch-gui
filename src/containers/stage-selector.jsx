@@ -68,7 +68,7 @@ class StageSelector extends React.Component {
         }
     }
     addBackdropFromLibraryItem (item, shouldActivateTab = true) {
-        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
+        if (!this.props.vm.canEditCollaboration()) return;
         const vmBackdrop = {
             name: item.name,
             md5: item.md5ext,
@@ -83,7 +83,7 @@ class StageSelector extends React.Component {
         this.props.onSelect(this.props.id);
     }
     handleNewBackdrop (backdrops_, shouldActivateTab = true) {
-        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return Promise.resolve();
+        if (!this.props.vm.canEditCollaboration()) return Promise.resolve();
         const backdrops = Array.isArray(backdrops_) ? backdrops_ : [backdrops_];
         return Promise.all(backdrops.map(backdrop =>
             this.props.vm.addBackdrop(backdrop.md5, backdrop)
@@ -94,27 +94,27 @@ class StageSelector extends React.Component {
         });
     }
     async handleSurpriseBackdrop (e) {
-        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
+        if (!this.props.vm.canEditCollaboration()) return;
         e.stopPropagation(); // Prevent click from falling through to selecting stage.
         const backdropLibraryContent = await getBackdropLibrary();
-        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
+        if (!this.props.vm.canEditCollaboration()) return;
         // @todo should this not add a backdrop you already have?
         const item = backdropLibraryContent[Math.floor(Math.random() * backdropLibraryContent.length)];
         this.addBackdropFromLibraryItem(item, false);
     }
     handleEmptyBackdrop (e) {
-        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
+        if (!this.props.vm.canEditCollaboration()) return;
         e.stopPropagation(); // Prevent click from falling through to stage selector, select it manually below
         this.props.vm.setEditingTarget(this.props.id);
         this.handleNewBackdrop(emptyCostume(this.props.intl.formatMessage(sharedMessages.backdrop, {index: 1})));
     }
     handleBackdropUpload (e) {
-        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
+        if (!this.props.vm.canEditCollaboration()) return;
         const vm = this.props.vm;
         this.props.onShowImporting();
         handleFileUpload(e.target, (buffer, fileType, fileName, fileIndex, fileCount) => {
             costumeUpload(buffer, fileType, vm, vmCostumes => {
-                if (!vm.canEditCollaboration() || vm.dashCollaboration) return;
+                if (!vm.canEditCollaboration()) return;
                 this.props.vm.setEditingTarget(this.props.id);
                 vmCostumes.forEach((costume, i) => {
                     costume.name = `${fileName}${i ? i + 1 : ''}`;
@@ -128,7 +128,7 @@ class StageSelector extends React.Component {
         }, this.props.onCloseImporting);
     }
     handleFileUploadClick (e) {
-        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
+        if (!this.props.vm.canEditCollaboration()) return;
         e.stopPropagation(); // Prevent click from selecting the stage, that is handled manually in backdrop upload
         this.fileInput.click();
     }
@@ -140,7 +140,6 @@ class StageSelector extends React.Component {
     }
     handleDrop (dragInfo) {
         if (!this.props.vm.canEditCollaboration()) return;
-        if (this.props.vm.dashCollaboration && dragInfo.dragType !== DragConstants.BACKPACK_CODE) return;
         if (dragInfo.dragType === DragConstants.COSTUME) {
             this.props.vm.shareCostumeToTarget(dragInfo.index, this.props.id);
         } else if (dragInfo.dragType === DragConstants.SOUND) {

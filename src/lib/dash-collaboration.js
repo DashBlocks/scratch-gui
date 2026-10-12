@@ -1,6 +1,33 @@
 import * as Y from 'yjs';
 import {API_ORIGIN, requestDashApi} from './dash-api.js';
 
+const projectTargetAssets = target => {
+    const value = target.toJSON();
+    for (const key of ['costumes', 'sounds']) {
+        const entries = target.get(key);
+        const order = target.get(`${key}Order`);
+        if (!(entries instanceof Y.Map) || !Array.isArray(order) ||
+            new Set(order).size !== order.length || order.length > 1000 || entries.size > 1000) {
+            throw new Error('Invalid collaboration assets');
+        }
+        const ids = order.filter(id => entries.has(id));
+        const seen = new Set(ids);
+        ids.push(...[...entries.keys()].filter(id => !seen.has(id)).sort());
+        value[key] = ids.map(id => {
+            const asset = entries.get(id);
+            if (!(asset instanceof Y.Map) || asset.get('collaborationId') !== id) {
+                throw new Error('Invalid collaboration asset ID');
+            }
+            return {...asset.get('content'), name: asset.get('name'), collaborationId: id};
+        });
+        delete value[`${key}Order`];
+    }
+    const selected = value.costumes.findIndex(asset => asset.collaborationId === value.currentCostumeId);
+    value.currentCostume = Math.max(0, selected);
+    delete value.currentCostumeId;
+    return value;
+};
+
 export default class DashCollaboration {
     constructor (projectId, {onStatus = () => {}, onMembers = () => {}} = {}) {
         if (!/^[1-9]\d{0,19}$/.test(String(projectId))) throw new Error('Invalid Dash project ID');
@@ -155,7 +182,7 @@ export default class DashCollaboration {
     }
     getProjectJSON () {
         const meta = this.doc.getMap('collaboration');
-        if (meta.get('schemaVersion') !== 3 || meta.get('projectId') !== this.projectId) {
+        if (meta.get('schemaVersion') !== 4 || meta.get('projectId') !== this.projectId) {
             throw new Error('Project document is not initialized');
         }
         const targets = this.doc.getMap('targets');
@@ -184,9 +211,31 @@ export default class DashCollaboration {
             if (!(target instanceof Y.Map) || target.get('collaborationId') !== id) {
                 throw new Error('Invalid collaboration target');
             }
-            return target.toJSON();
+            return projectTargetAssets(target);
         });
+        project.extensions = [...this.doc.getMap('extensionIds').keys()];
+        project.extensionURLs = this.doc.getMap('extensionURLs').toJSON();
         return JSON.parse(JSON.stringify(project));
+    }
+    async uploadAsset (name, bytes, signal) {
+        if (bytes.byteLength > 10 * 1024 * 1024) throw new Error('Collaboration asset exceeds 10 MiB');
+        const response = await requestDashApi(
+            `/projects/${this.projectId}/collaboration-assets/${encodeURIComponent(name)}`,
+            {method: 'POST',
+                credentials: 'include',
+                headers: {'Content-Type': 'application/octet-stream'},
+                body: bytes,
+                signal}
+        );
+        if (!response.ok) throw new Error(`Could not upload collaboration asset (${response.status})`);
+    }
+    async getAsset (name, signal) {
+        const response = await requestDashApi(
+            `/projects/${this.projectId}/collaboration-assets/${encodeURIComponent(name)}`,
+            {credentials: 'include', signal}
+        );
+        if (!response.ok) throw new Error(`Could not download collaboration asset (${response.status})`);
+        return new Uint8Array(await response.arrayBuffer());
     }
     async getSourceArchive (signal) {
         const response = await requestDashApi(`/projects/${this.projectId}/collaboration-source`, {

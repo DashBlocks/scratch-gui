@@ -1,3 +1,4 @@
+import downloadBlob from '../../lib/download-blob';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
@@ -17,6 +18,7 @@ const getStatus = vm => {
 class DashCollaborationStatus extends React.Component {
     constructor (props) {
         super(props);
+        this.handleSaveCopy = this.handleSaveCopy.bind(this);
         this.state = {status: getStatus(props.vm)};
         this.handleStatus = this.handleStatus.bind(this);
         this.handleReconnect = this.handleReconnect.bind(this);
@@ -38,6 +40,10 @@ class DashCollaborationStatus extends React.Component {
             'Unsaved collaboration changes will be discarded. Reconnect and reload the latest project state?'
         );
         if (shouldDiscard) session.reconnect(true);
+    }
+    async handleSaveCopy () {
+        const blob = await this.props.vm.saveProjectSb3();
+        downloadBlob('Dash-collaboration-local-copy.sb3', blob);
     }
     render () {
         const {status} = this.state;
@@ -100,6 +106,19 @@ class DashCollaborationStatus extends React.Component {
                             defaultMessage="Reconnect"
                             description="Button to reconnect to a collaboration session"
                             id="dash.collaboration.reconnect"
+                        />
+                    </button>
+                ) : null}
+                {status.state === 'error' ? (
+                    <button
+                        className={styles.button}
+                        type="button"
+                        onClick={this.handleSaveCopy}
+                    >
+                        <FormattedMessage
+                            defaultMessage="Save local copy"
+                            description="Download local collaboration edits before reconnecting"
+                            id="dash.collaboration.saveLocalCopy"
                         />
                     </button>
                 ) : null}

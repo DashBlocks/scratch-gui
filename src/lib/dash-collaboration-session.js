@@ -7,7 +7,7 @@ const maps = ['blocks', 'variables', 'lists', 'broadcasts', 'comments'];
 const blockStructureFields = ['opcode', 'next', 'parent', 'inputs', 'shadow', 'mutation'];
 const targetFields = [
     'name', 'x', 'y', 'size', 'direction', 'visible', 'draggable',
-    'rotationStyle', 'currentCostume', 'layerOrder', 'tempo', 'volume',
+    'rotationStyle', 'layerOrder', 'tempo', 'volume',
     'videoTransparency', 'videoState', 'textToSpeechLanguage'
 ];
 const equal = (a, b) => JSON.stringify(a) === JSON.stringify(b);
@@ -143,6 +143,66 @@ const reconcileTargetOrder = (order, targets, previousOrder, wantedOrder, sequen
     }
     if (!equal(previousOrder, wantedOrder)) sequence.set('ids', wanted);
 };
+const createAssetMap = record => {
+    const {collaborationId, name, ...content} = record;
+    const asset = new Y.Map();
+    asset.set('collaborationId', collaborationId);
+    asset.set('name', name);
+    asset.set('content', content);
+    return asset;
+};
+const syncAssets = (target, before, after, operations) => {
+    for (const key of ['costumes', 'sounds']) {
+        const map = target.get(key);
+        if (!(map instanceof Y.Map)) throw new Error('Asset data has not been migrated');
+        const previous = new Map((before[key] || []).map(asset => [asset.collaborationId, asset]));
+        const wanted = new Map(after[key].map(asset => [asset.collaborationId, asset]));
+        for (const id of new Set([...previous.keys(), ...wanted.keys()])) {
+            if (equal(previous.get(id), wanted.get(id))) continue;
+            if (wanted.has(id)) {
+                if (previous.has(id) && !map.has(id)) {
+                    throw new Error(
+                        'This asset was deleted by another participant. Save a local copy before reconnecting.'
+                    );
+                }
+                const asset = map.get(id);
+                const next = wanted.get(id);
+                const old = previous.get(id);
+                if (old) {
+                    if (!(asset instanceof Y.Map)) throw new Error('Invalid asset map');
+                    if (old.name !== next.name) operations.push(() => asset.set('name', next.name));
+                    const oldContent = {...old};
+                    const content = {...next};
+                    for (const property of ['name', 'collaborationId']) {
+                        delete oldContent[property];
+                        delete content[property];
+                    }
+                    if (!equal(oldContent, content)) operations.push(() => asset.set('content', clone(content)));
+                } else operations.push(() => map.set(id, createAssetMap(clone(next))));
+            } else operations.push(() => map.delete(id));
+        }
+        const oldOrder = [...previous.keys()];
+        const newOrder = [...wanted.keys()];
+        if (!equal(oldOrder, newOrder)) operations.push(() => target.set(`${key}Order`, newOrder));
+    }
+    const previousCostume = before.costumes && before.costumes[before.currentCostume || 0];
+    const costume = after.costumes[after.currentCostume || 0];
+    if ((!previousCostume && costume) || (previousCostume && (!costume ||
+        previousCostume.collaborationId !== costume.collaborationId))) {
+        operations.push(() => target.set('currentCostumeId', costume ? costume.collaborationId : null));
+    }
+};
+const createTargetAssets = (target, record) => {
+    for (const key of ['costumes', 'sounds']) {
+        const map = new Y.Map();
+        for (const asset of record[key]) map.set(asset.collaborationId, createAssetMap(clone(asset)));
+        target.set(key, map);
+        target.set(`${key}Order`, record[key].map(asset => asset.collaborationId));
+    }
+    const costume = record.costumes[record.currentCostume || 0];
+    target.set('currentCostumeId', costume ? costume.collaborationId : null);
+};
+
 export {reconcileTargetOrder, syncBlockMap};
 
 export default class DashCollaborationSession {
@@ -163,19 +223,26 @@ export default class DashCollaborationSession {
         this.base = null;
         this.workspace = null;
         this.controller = new AbortController();
+        this.localRevision = 0;
+        this.documentRevision = 0;
+        this.localOperations = 0;
+        this.processing = false;
+        this.uploadedAssets = new Set();
+        this.installOperationTracking();
         this.onLocalChange = () => {
             if (this.applying || !this.loaded || this.disposed) return;
+            this.localRevision++;
             this.dirty = true;
             this.scheduleReconcile();
         };
-        this.onDocumentChange = (update, origin) => {
-            if (origin !== this.client) return;
+        this.onDocumentChange = () => {
+            this.documentRevision++;
             this.changed = true;
             this.scheduleReconcile();
         };
         this.client = this.createClient();
         this.beforeUnload = event => {
-            if (this.dirty || this.client.pending || this.client.queued) {
+            if (this.dirty || this.localOperations || this.processing || this.client.pending || this.client.queued) {
                 event.preventDefault();
                 event.returnValue = '';
             }
@@ -223,6 +290,7 @@ export default class DashCollaborationSession {
             const bytes = await this.client.getSourceArchive(this.controller.signal);
             if (this.disposed) throw new Error('Collaboration closed');
             this.zip = await JSZip.loadAsync(bytes);
+            await this.fetchRemoteAssets(this.client.getProjectJSON());
             this.zip.file('project.json', JSON.stringify(this.client.getProjectJSON()));
             return await this.zip.generateAsync({type: 'uint8array', compression: 'STORE'});
         } finally {
@@ -237,6 +305,7 @@ export default class DashCollaborationSession {
         this.attachPromise = (async () => {
             this.applying = true;
             try {
+                await this.fetchRemoteAssets(this.client.getProjectJSON());
                 await this.vm.applyCollaborationState(this.client.getProjectJSON(), this.zip);
                 if (this.disposed) return;
                 this.base = this.vm.getCollaborationState();
@@ -259,6 +328,7 @@ export default class DashCollaborationSession {
         this.changed = false;
         this.notify();
         try {
+            await this.fetchRemoteAssets(client.getProjectJSON());
             await this.vm.applyCollaborationState(client.getProjectJSON(), this.zip);
             if (this.disposed || client !== this.client) return;
             this.base = this.vm.getCollaborationState();
@@ -294,6 +364,15 @@ export default class DashCollaborationSession {
         const order = this.client.doc.getArray('targetOrder');
         const sequence = this.client.doc.getMap('targetSequence');
         const operations = [];
+        const urls = this.client.doc.getMap('extensionURLs');
+        const extensionIds = this.client.doc.getMap('extensionIds');
+        for (const id of current.extensions || []) {
+            if (!extensionIds.has(id)) operations.push(() => extensionIds.set(id, true));
+        }
+        for (const [id, url] of Object.entries(current.extensionURLs || {})) {
+            if (urls.has(id) && urls.get(id) !== url) throw new Error(`Extension URL conflict: ${id}`);
+            if (!urls.has(id)) operations.push(() => urls.set(id, url));
+        }
         for (const [id] of oldTargets) {
             if (!newTargets.has(id) && targets.has(id)) {
                 operations.push(() => {
@@ -308,6 +387,7 @@ export default class DashCollaborationSession {
             if (!before) {
                 const target = new Y.Map();
                 for (const [key, value] of Object.entries(record)) {
+                    if (['costumes', 'sounds', 'currentCostume'].includes(key)) continue;
                     if (maps.includes(key)) {
                         const map = new Y.Map();
                         for (const [entry, item] of Object.entries(value || {})) {
@@ -318,6 +398,7 @@ export default class DashCollaborationSession {
                         target.set(key, clone(value));
                     }
                 }
+                createTargetAssets(target, record);
                 operations.push(() => {
                     targets.set(id, target);
                 });
@@ -327,6 +408,7 @@ export default class DashCollaborationSession {
             if (!(target instanceof Y.Map)) {
                 throw new Error('This sprite was removed by another participant.');
             }
+            syncAssets(target, before, record, operations);
             for (const key of maps) {
                 const oldValues = before[key] || {};
                 const values = clone(record[key] || {});
@@ -369,27 +451,112 @@ export default class DashCollaborationSession {
         this.base = current;
         this.dirty = false;
     }
-    async reconcile () {
-        if (this.disposed || !this.loaded || this.applying || this.localOperation ||
-            this.client.state !== 'connected') return;
-        if (this.isBusy()) return this.scheduleReconcile();
-        this.commit();
-        if (!this.changed) return;
-        this.changed = false;
-        this.applying = true;
-        this.notify();
+    async uploadLocalAssets () {
+        for (const file of this.vm.getCollaborationAssets()) {
+            if (this.zip.file(file.fileName) || this.uploadedAssets.has(file.fileName)) continue;
+            await this.client.uploadAsset(file.fileName, file.fileContent, this.controller.signal);
+            if (this.disposed) return;
+            this.uploadedAssets.add(file.fileName);
+            this.zip.file(file.fileName, file.fileContent);
+        }
+    }
+    async fetchRemoteAssets (project) {
+        for (const target of project.targets) {
+            for (const asset of [...target.costumes, ...target.sounds]) {
+                const name = `${asset.assetId}.${asset.dataFormat}`;
+                if (this.zip.file(name)) continue;
+                const sourceName = Object.keys(this.zip.files).find(entry => entry.endsWith(`/${name}`));
+                const bytes = sourceName ? await this.zip.file(sourceName).async('uint8array') :
+                    await this.client.getAsset(name, this.controller.signal);
+                if (this.disposed) return;
+                this.zip.file(name, bytes);
+            }
+        }
+    }
+    async runLocalOperation (operation) {
+        this.vm.assertCollaborationWritable();
+        this.localOperations++;
         try {
-            await this.vm.applyCollaborationState(this.client.getProjectJSON(), this.zip);
-            this.base = this.vm.getCollaborationState();
+            return await operation();
         } finally {
+            this.localOperations--;
+            this.onLocalChange();
+        }
+    }
+    installOperationTracking () {
+        this.operationMethods = new Map();
+        const methods = ['addSprite', 'addCostume', 'duplicateCostume', 'duplicateSound',
+            'renameCostume', 'deleteCostume', 'addSound', 'renameSound', 'updateSoundBuffer',
+            'deleteSound', 'updateBitmap', 'updateSvg', 'addBackdrop', 'renameSprite',
+            'deleteSprite', 'duplicateSprite', 'shareBlocksToTarget', 'shareCostumeToTarget',
+            'shareSoundToTarget', 'reorderTarget', 'reorderCostume', 'reorderSound'];
+        for (const name of methods) {
+            const original = this.vm[name];
+            if (typeof original !== 'function') continue;
+            const wrapped = (...args) => {
+                this.vm.assertCollaborationWritable();
+                this.localOperations++;
+                const finish = () => {
+                    this.localOperations--;
+                    this.onLocalChange();
+                };
+                let result;
+                try {
+                    result = original.apply(this.vm, args);
+                } catch (error) {
+                    finish();
+                    throw error;
+                }
+                if (result && typeof result.then === 'function') return Promise.resolve(result).finally(finish);
+                finish();
+                return result;
+            };
+            this.operationMethods.set(name, {original, wrapped});
+            this.vm[name] = wrapped;
+        }
+    }
+    async reconcile () {
+        if (this.disposed || !this.loaded || this.processing || this.applying ||
+            this.client.state !== 'connected') return;
+        if (this.isBusy() || this.localOperations) return this.scheduleReconcile();
+        this.processing = true;
+        let plan;
+        let again = false;
+        try {
+            const localRevision = this.localRevision;
+            if (this.dirty) await this.uploadLocalAssets();
+            if (this.disposed) return;
+            if (localRevision !== this.localRevision || this.localOperations || this.isBusy()) {
+                again = true;
+                return;
+            }
+            if (this.client.state !== 'connected') return;
+            this.commit();
+            if (!this.changed) return;
+            const documentRevision = this.documentRevision;
+            const project = this.client.getProjectJSON();
+            await this.fetchRemoteAssets(project);
+            if (this.disposed) return;
+            plan = await this.vm.prepareCollaborationState(project, this.zip);
+            if (this.disposed) return;
+            if (localRevision !== this.localRevision || documentRevision !== this.documentRevision ||
+                this.localOperations || this.isBusy() || this.client.state !== 'connected') {
+                again = true;
+                return;
+            }
+            this.applying = true;
+            this.vm.applyPreparedCollaborationState(plan);
+            this.base = this.vm.getCollaborationState();
+            this.changed = false;
+        } finally {
+            this.vm.disposeCollaborationPlan(plan);
             this.applying = false;
-            this.notify();
-            if (this.changed) this.scheduleReconcile();
+            this.processing = false;
+            if (!this.disposed && (again || this.changed || this.dirty)) this.scheduleReconcile();
         }
     }
     async duplicateSprite () {
         if (!this.canEdit()) return;
-        this.commit();
         this.localOperation = true;
         this.notify();
         try {
@@ -429,10 +596,14 @@ export default class DashCollaborationSession {
         this.client.connect();
     }
     hasUnsavedChanges () {
-        return this.dirty || Boolean(this.client.pending || this.client.queued);
+        return this.dirty || Boolean(this.localOperations || this.processing ||
+            this.client.pending || this.client.queued);
     }
     destroy () {
         this.disposed = true;
+        for (const [name, {original, wrapped}] of this.operationMethods) {
+            if (this.vm[name] === wrapped) this.vm[name] = original;
+        }
         clearTimeout(this.timer);
         this.controller.abort();
         if (this.rejectReady) this.rejectReady(new Error('Collaboration closed'));

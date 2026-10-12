@@ -8,7 +8,6 @@ import {intlShape, injectIntl, defineMessages} from 'react-intl';
 import VMScratchBlocks from '../lib/blocks';
 import VM from 'scratch-vm';
 
-import log from '../lib/log.js';
 import Prompt from './prompt.jsx';
 import BlocksComponent from '../components/blocks/blocks.jsx';
 import ExtensionLibrary from './extension-library.jsx';
@@ -374,6 +373,13 @@ class Blocks extends React.Component {
         const session = this.props.vm.dashCollaboration;
         const readOnly = Boolean(session && !session.canEdit());
         this.workspace.options.readOnly = readOnly;
+        for (const block of this.workspace.getAllBlocks(false)) {
+            if (!readOnly && !block.eventsInit_) block.initSvg();
+            block.updateMovable();
+            for (const input of block.inputList) {
+                for (const field of input.fieldRow) field.updateEditable();
+            }
+        }
     }
     requestToolboxUpdate () {
         clearTimeout(this.toolboxUpdateTimeout);
@@ -553,38 +559,39 @@ class Blocks extends React.Component {
         }
     }
     onWorkspaceUpdate (data) {
-        // When we change sprites, update the toolbox to have the new sprite's blocks
-        const toolboxXML = this.getToolboxXML();
-        if (toolboxXML) {
-            this.props.updateToolboxState(toolboxXML);
+        if (data.collaboration) {
+            this.ScratchBlocks.Xml.patchWorkspace(
+                this.ScratchBlocks.Xml.textToDom(data.xml), this.workspace,
+                data.blockIds, data.commentIds, data.moves
+            );
+            this.updateCollaborationReadOnly();
+            if (data.variablesChanged) this.requestToolboxUpdate();
+            return;
         }
-
+        const toolboxXML = this.getToolboxXML();
+        if (toolboxXML) this.props.updateToolboxState(toolboxXML);
         if (this.props.vm.editingTarget && !this.props.workspaceMetrics.targets[this.props.vm.editingTarget.id]) {
             this.onWorkspaceMetricsChange();
         }
-
-        // Remove and reattach the workspace listener (but allow flyout events)
+        const readOnly = this.workspace.options.readOnly;
+        const collaboration = Boolean(this.props.vm.dashCollaboration);
         this.workspace.removeChangeListener(this.props.vm.blockListener);
-        const dom = this.ScratchBlocks.Xml.textToDom(data.xml);
-        try {
-            this.ScratchBlocks.Xml.clearWorkspaceAndLoadFromXml(dom, this.workspace);
-        } catch (error) {
-            // The workspace is likely incomplete. What did update should be
-            // functional.
-            //
-            // Instead of throwing the error, by logging it and continuing as
-            // normal lets the other workspace update processes complete in the
-            // gui and vm, which lets the vm run even if the workspace is
-            // incomplete. Throwing the error would keep things like setting the
-            // correct editing target from happening which can interfere with
-            // some blocks and processes in the vm.
-            if (error.message) {
-                error.message = `Workspace Update Error: ${error.message}`;
-            }
-            log.error(error);
+        if (collaboration) {
+            this.ScratchBlocks.Events.disable();
+            this.workspace.options.readOnly = false;
         }
-        this.workspace.addChangeListener(this.props.vm.blockListener);
-
+        try {
+            this.ScratchBlocks.Xml.clearWorkspaceAndLoadFromXml(
+                this.ScratchBlocks.Xml.textToDom(data.xml), this.workspace
+            );
+        } finally {
+            if (collaboration) {
+                this.workspace.options.readOnly = readOnly;
+                this.ScratchBlocks.Events.enable();
+                this.updateCollaborationReadOnly();
+            }
+            this.workspace.addChangeListener(this.props.vm.blockListener);
+        }
         if (this.props.vm.editingTarget && this.props.workspaceMetrics.targets[this.props.vm.editingTarget.id]) {
             const {scrollX, scrollY, scale} = this.props.workspaceMetrics.targets[this.props.vm.editingTarget.id];
             this.workspace.scrollX = scrollX;
@@ -592,10 +599,6 @@ class Blocks extends React.Component {
             this.workspace.scale = scale;
             this.workspace.resize();
         }
-
-        // Clear the undo state of the workspace since this is a
-        // fresh workspace and we don't want any changes made to another sprites
-        // workspace to be 'undone' here.
         this.workspace.clearUndo();
     }
     handleMonitorsUpdate (monitors) {

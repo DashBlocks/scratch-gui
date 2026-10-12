@@ -43,11 +43,11 @@ class PaintEditorWrapper extends React.Component {
         });
     }
     handleUpdateName (name) {
-        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
+        if (!this.props.vm.canEditCollaboration()) return;
         this.props.vm.renameCostume(this.props.selectedCostumeIndex, name);
     }
     handleUpdateImage (isVector, image, rotationCenterX, rotationCenterY) {
-        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
+        if (!this.props.vm.canEditCollaboration()) return;
         if (isVector) {
             this.props.vm.updateSvg(
                 this.props.selectedCostumeIndex,
@@ -120,7 +120,7 @@ const mapStateToProps = (state, {selectedCostumeIndex}) => {
         rotationCenterX: costume && costume.rotationCenterX,
         rotationCenterY: costume && costume.rotationCenterY,
         imageFormat: costume && costume.dataFormat,
-        imageId: targetId && `${targetId}${costume.skinId}`,
+        imageId: targetId && costume ? `${targetId}${costume.skinId}` : '',
         rtl: state.locales.isRtl,
         selectedCostumeIndex: index,
         theme: state.scratchGui.theme.theme,

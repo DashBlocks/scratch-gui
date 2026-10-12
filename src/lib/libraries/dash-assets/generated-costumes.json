@@ -429,6 +429,132 @@
         }
     },
     {
+        "name": "Tomoko Kuroki-a",
+        "tags": [
+            "dash"
+        ],
+        "bitmapResolution": 1.0666666666666667,
+        "dataFormat": "png",
+        "rotationCenterX": 256,
+        "rotationCenterY": 251.5,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Tomoko%20Kuroki-a.png"
+        }
+    },
+    {
+        "name": "Tomoko Kuroki-b",
+        "tags": [
+            "dash"
+        ],
+        "bitmapResolution": 1.0666666666666667,
+        "dataFormat": "png",
+        "rotationCenterX": 256,
+        "rotationCenterY": 233,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Tomoko%20Kuroki-b.png"
+        }
+    },
+    {
+        "name": "Tomoko Kuroki-c",
+        "tags": [
+            "dash"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "png",
+        "rotationCenterX": 203.5,
+        "rotationCenterY": 256,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Tomoko%20Kuroki-c.png"
+        }
+    },
+    {
+        "name": "Tomoko Kuroki-d",
+        "tags": [
+            "dash"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "png",
+        "rotationCenterX": 206,
+        "rotationCenterY": 256,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Tomoko%20Kuroki-d.png"
+        }
+    },
+    {
+        "name": "Tomoko Kuroki-e",
+        "tags": [
+            "dash"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "png",
+        "rotationCenterX": 217,
+        "rotationCenterY": 256,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Tomoko%20Kuroki-e.png"
+        }
+    },
+    {
+        "name": "Tomoko Kuroki-f",
+        "tags": [
+            "dash"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "png",
+        "rotationCenterX": 218.5,
+        "rotationCenterY": 256,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Tomoko%20Kuroki-f.png"
+        }
+    },
+    {
+        "name": "Tomoko Kuroki-g",
+        "tags": [
+            "dash"
+        ],
+        "bitmapResolution": 1.0666666666666667,
+        "dataFormat": "png",
+        "rotationCenterX": 256,
+        "rotationCenterY": 239,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Tomoko%20Kuroki-g.png"
+        }
+    },
+    {
+        "name": "Tomoko Kuroki-h",
+        "tags": [
+            "dash"
+        ],
+        "bitmapResolution": 1.0666666666666667,
+        "dataFormat": "png",
+        "rotationCenterX": 256,
+        "rotationCenterY": 245,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Tomoko%20Kuroki-h.png"
+        }
+    },
+    {
+        "name": "Tomoko Kuroki-i",
+        "tags": [
+            "dash"
+        ],
+        "bitmapResolution": 1.0666666666666667,
+        "dataFormat": "png",
+        "rotationCenterX": 256,
+        "rotationCenterY": 248,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Tomoko%20Kuroki-i.png"
+        }
+    },
+    {
         "name": "Umnikis Squared",
         "tags": [
             "dash",

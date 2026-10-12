@@ -1121,10 +1121,10 @@ class MenuBar extends React.Component {
                                         </MenuItem>
                                     )}</CloudVariablesToggler>
                                     <MenuItem
-                                        // eslint-disable-next-line no-alert
                                         onClick={
                                             this.props.canManageCollaborators ?
                                             this.handleOpenCollaborators :
+                                            // eslint-disable-next-line no-alert
                                             () => alert(this.props.intl.formatMessage(sharedMessages.liveCollaborationUnavailable))
                                         }
                                         className={classNames({[styles.disabled]: !this.props.canManageCollaborators})}

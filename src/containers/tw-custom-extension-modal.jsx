@@ -157,43 +157,63 @@ class CustomExtensionModal extends React.Component {
         }
         this.handleClose();
         try {
-            const urls = await this.getExtensionURLs();
+            const collaboration = this.props.vm.dashCollaboration;
+            const load = async () => {
+                let urls = await this.getExtensionURLs();
+                if (collaboration) {
+                    if (this.props.swapId) {
+                        throw new Error('Remove the old extension before importing its replacement in collaboration.');
+                    }
+                    urls = await collaboration.prepareLocalExtensions(urls);
+                }
 
-            if (this.state.type !== 'url') {
-                setPersistedUnsandboxed(this.state.unsandboxed);
-                if (this.state.unsandboxed) {
-                    for (const url of urls) {
-                        manuallyTrustExtension(url);
+                if (this.state.type !== 'url') {
+                    setPersistedUnsandboxed(this.state.unsandboxed);
+                    if (this.state.unsandboxed) {
+                        for (const url of urls) {
+                            manuallyTrustExtension(url);
+                        }
                     }
                 }
-            }
 
-            for (const url of urls) {
-                if (this.props.swapId) {
-                    const runtime = this.props.vm.runtime;
-                    this.props.vm.extensionManager.prepareSwap(this.props.swapId);
-                    let extIdx = runtime._blockInfo.findIndex(ext => ext.id === this.props.swapId);
-                    await this.props.vm.extensionManager.loadExtensionURL(url);
-                    const loadedIds = this.props.vm.extensionManager.extensionsIDs;
-                    if (!loadedIds.includes(this.props.swapId)) {
-                        for (const ext of loadedIds) this.props.vm.extensionManager.removeExtension(ext);
-                        // eslint-disable-next-line no-alert
-                        alert(this.props.intl.formatMessage(messages.differentSwapId));
-                        return;
-                    }
-                    this.props.vm.runtime._removeExtensionPrimitive(this.props.swapId);
-                    loadedIds.forEach(extId => {
-                        const idx = runtime._blockInfo.findLastIndex(ext => ext.id === extId);
-                        const ext = runtime._blockInfo[idx];
-                        runtime._blockInfo.splice(idx, 1);
-                        runtime._blockInfo.splice(extIdx, 0, ext);
-                        extIdx++;
-                    });
-                } else {
-                    if (url.startsWith('https://extensions.turbowarp.org/')) {
-                        try {
-                            const res = await fetch(url);
-                            if (!res.ok) {
+                for (const url of urls) {
+                    if (this.props.swapId) {
+                        const runtime = this.props.vm.runtime;
+                        this.props.vm.extensionManager.prepareSwap(this.props.swapId);
+                        let extIdx = runtime._blockInfo.findIndex(ext => ext.id === this.props.swapId);
+                        await this.props.vm.extensionManager.loadExtensionURL(url);
+                        const loadedIds = this.props.vm.extensionManager.extensionsIDs;
+                        if (!loadedIds.includes(this.props.swapId)) {
+                            for (const ext of loadedIds) this.props.vm.extensionManager.removeExtension(ext);
+                            // eslint-disable-next-line no-alert
+                            alert(this.props.intl.formatMessage(messages.differentSwapId));
+                            return;
+                        }
+                        this.props.vm.runtime._removeExtensionPrimitive(this.props.swapId);
+                        loadedIds.forEach(extId => {
+                            const idx = runtime._blockInfo.findLastIndex(ext => ext.id === extId);
+                            const ext = runtime._blockInfo[idx];
+                            runtime._blockInfo.splice(idx, 1);
+                            runtime._blockInfo.splice(extIdx, 0, ext);
+                            extIdx++;
+                        });
+                    } else {
+                        if (url.startsWith('https://extensions.turbowarp.org/')) {
+                            try {
+                                const res = await fetch(url);
+                                if (!res.ok) {
+                                    this.setState({
+                                        isTwGalleryMirror: true
+                                    });
+                                    await this.props.vm.extensionManager.loadExtensionURL(
+                                        url.replace(
+                                            'https://extensions.turbowarp.org/',
+                                            'https://dashblocks.org/tw-extensions/'
+                                        )
+                                    );
+                                    return;
+                                }
+                            } catch (_) {
                                 this.setState({
                                     isTwGalleryMirror: true
                                 });
@@ -205,25 +225,16 @@ class CustomExtensionModal extends React.Component {
                                 );
                                 return;
                             }
-                        } catch (_) {
-                            this.setState({
-                                isTwGalleryMirror: true
-                            });
-                            await this.props.vm.extensionManager.loadExtensionURL(
-                                url.replace(
-                                    'https://extensions.turbowarp.org/',
-                                    'https://dashblocks.org/tw-extensions/'
-                                )
-                            );
-                            return;
                         }
+                        this.setState({
+                            isTwGalleryMirror: false
+                        });
+                        await this.props.vm.extensionManager.loadExtensionURL(url);
                     }
-                    this.setState({
-                        isTwGalleryMirror: false
-                    });
-                    await this.props.vm.extensionManager.loadExtensionURL(url);
                 }
-            }
+            };
+            if (collaboration) await collaboration.runLocalOperation(load);
+            else await load();
         } catch (err) {
             failed = true;
             log.error(err);
@@ -234,7 +245,9 @@ class CustomExtensionModal extends React.Component {
                 if (this.props.swapId) {
                     // eslint-disable-next-line no-alert
                     alert(this.props.intl.formatMessage(messages.swapFailed));
-                    this.props.vm.runtime._removeExtensionPrimitive(this.props.swapId);
+                    if (!this.props.vm.dashCollaboration) {
+                        this.props.vm.runtime._removeExtensionPrimitive(this.props.swapId);
+                    }
                 } else {
                     // eslint-disable-next-line no-alert
                     alert(this.props.intl.formatMessage(messages.extensionLoadFailed));
@@ -345,6 +358,10 @@ CustomExtensionModal.propTypes = {
     intl: intlShape,
     onClose: PropTypes.func,
     vm: PropTypes.shape({
+        dashCollaboration: PropTypes.shape({
+            prepareLocalExtensions: PropTypes.func,
+            runLocalOperation: PropTypes.func
+        }),
         extensionManager: PropTypes.shape({
             loadExtensionURL: PropTypes.func,
             getExtensionURLs: PropTypes.func,

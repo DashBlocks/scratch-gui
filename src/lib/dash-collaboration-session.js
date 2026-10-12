@@ -228,6 +228,8 @@ export default class DashCollaborationSession {
         this.localOperations = 0;
         this.processing = false;
         this.uploadedAssets = new Set();
+        this.extensionReferences = new Map();
+        this.extensionSources = new Map();
         this.installOperationTracking();
         this.onLocalChange = () => {
             if (this.applying || !this.loaded || this.disposed) return;
@@ -290,8 +292,9 @@ export default class DashCollaborationSession {
             const bytes = await this.client.getSourceArchive(this.controller.signal);
             if (this.disposed) throw new Error('Collaboration closed');
             this.zip = await JSZip.loadAsync(bytes);
-            await this.fetchRemoteAssets(this.client.getProjectJSON());
-            this.zip.file('project.json', JSON.stringify(this.client.getProjectJSON()));
+            const project = await this.getRemoteProject();
+            await this.fetchRemoteAssets(project);
+            this.zip.file('project.json', JSON.stringify(project));
             return await this.zip.generateAsync({type: 'uint8array', compression: 'STORE'});
         } finally {
             clearTimeout(timeout);
@@ -305,10 +308,11 @@ export default class DashCollaborationSession {
         this.attachPromise = (async () => {
             this.applying = true;
             try {
-                await this.fetchRemoteAssets(this.client.getProjectJSON());
-                await this.vm.applyCollaborationState(this.client.getProjectJSON(), this.zip);
+                const project = await this.getRemoteProject();
+                await this.fetchRemoteAssets(project);
+                await this.vm.applyCollaborationState(project, this.zip);
                 if (this.disposed) return;
-                this.base = this.vm.getCollaborationState();
+                this.base = this.getLocalProject();
                 this.loaded = true;
                 this.vm.on('PROJECT_CHANGED', this.onLocalChange);
                 this.projectListenerAttached = true;
@@ -328,10 +332,11 @@ export default class DashCollaborationSession {
         this.changed = false;
         this.notify();
         try {
-            await this.fetchRemoteAssets(client.getProjectJSON());
-            await this.vm.applyCollaborationState(client.getProjectJSON(), this.zip);
+            const project = await this.getRemoteProject(client);
+            await this.fetchRemoteAssets(project);
+            await this.vm.applyCollaborationState(project, this.zip);
             if (this.disposed || client !== this.client) return;
-            this.base = this.vm.getCollaborationState();
+            this.base = this.getLocalProject();
             this.loaded = true;
             this.restoreOnReconnect = false;
         } finally {
@@ -357,7 +362,7 @@ export default class DashCollaborationSession {
         if (this.client.state !== 'connected' || this.client.role === 'viewer') {
             throw new Error('Local edits cannot be sent. Reopen the collaboration.');
         }
-        const current = this.vm.getCollaborationState();
+        const current = this.getLocalProject();
         const oldTargets = new Map(this.base.targets.map(target => [target.collaborationId, target]));
         const newTargets = new Map(current.targets.map(target => [target.collaborationId, target]));
         const targets = this.client.doc.getMap('targets');
@@ -366,12 +371,44 @@ export default class DashCollaborationSession {
         const operations = [];
         const urls = this.client.doc.getMap('extensionURLs');
         const extensionIds = this.client.doc.getMap('extensionIds');
-        for (const id of current.extensions || []) {
-            if (!extensionIds.has(id)) operations.push(() => extensionIds.set(id, true));
+        const previousExtensions = new Set(this.base.extensions || []);
+        const currentExtensions = new Set(current.extensions || []);
+        const removedExtensions = new Set([...previousExtensions].filter(id => !currentExtensions.has(id)));
+        for (const id of removedExtensions) {
+            operations.push(() => {
+                extensionIds.delete(id);
+                urls.delete(id);
+            });
+        }
+        if (removedExtensions.size) {
+            const project = this.client.doc.getMap('project');
+            const monitors = project.get('monitors');
+            if (Array.isArray(monitors)) {
+                const remaining = monitors.filter(monitor =>
+                    !removedExtensions.has(monitor.opcode.split('_')[0]));
+                if (remaining.length !== monitors.length) operations.push(() => project.set('monitors', remaining));
+            }
+        }
+        for (const id of currentExtensions) {
+            if (!previousExtensions.has(id) && !extensionIds.has(id)) {
+                operations.push(() => extensionIds.set(id, true));
+            }
         }
         for (const [id, url] of Object.entries(current.extensionURLs || {})) {
+            if (!currentExtensions.has(id)) continue;
+            if (previousExtensions.has(id) && !extensionIds.has(id)) continue;
             if (urls.has(id) && urls.get(id) !== url) throw new Error(`Extension URL conflict: ${id}`);
             if (!urls.has(id)) operations.push(() => urls.set(id, url));
+        }
+        for (const [targetId, record] of newTargets) {
+            const before = oldTargets.get(targetId);
+            for (const [blockId, block] of Object.entries(record.blocks || {})) {
+                const id = block.opcode.split('_')[0];
+                if (previousExtensions.has(id) && !extensionIds.has(id) &&
+                    !equal(before && before.blocks[blockId], block)) {
+                    throw new Error(`Extension "${id}" was removed by another participant. Save a local copy.`);
+                }
+            }
         }
         for (const [id] of oldTargets) {
             if (!newTargets.has(id) && targets.has(id)) {
@@ -454,7 +491,85 @@ export default class DashCollaborationSession {
         this.base = current;
         this.dirty = false;
     }
+    async extensionFilename (bytes) {
+        if (!bytes.byteLength || bytes.byteLength > 2 * 1024 * 1024) {
+            throw new Error('Custom extension must contain between 1 byte and 2 MiB of JavaScript.');
+        }
+        new TextDecoder('utf-8', {fatal: true}).decode(bytes);
+        const hash = new Uint8Array(await crypto.subtle.digest('SHA-256', bytes));
+        return `${Array.from(hash, value => value.toString(16).padStart(2, '0')).join('')}.js`;
+    }
+    cacheExtension (name, bytes, originalURL) {
+        const reference = `dash-extension:${name}`;
+        let binary = '';
+        for (let i = 0; i < bytes.length; i += 8192) {
+            binary += String.fromCharCode(...bytes.subarray(i, i + 8192));
+        }
+        const url = `data:application/javascript;base64,${btoa(binary)}`;
+        this.extensionSources.set(reference, url);
+        this.extensionReferences.set(url, reference);
+        if (originalURL) this.extensionReferences.set(originalURL, reference);
+        return url;
+    }
+    async prepareLocalExtensions (urls) {
+        const prepared = [];
+        for (const url of new Set(urls)) {
+            if (!url.startsWith('data:')) {
+                if (url.length > 4096 || new URL(url).protocol !== 'https:') {
+                    throw new Error('Use an HTTPS extension URL, JavaScript file, or JavaScript code.');
+                }
+                prepared.push(url);
+                continue;
+            }
+            const existing = this.extensionReferences.get(url);
+            if (existing) {
+                prepared.push(this.extensionSources.get(existing));
+                continue;
+            }
+            if (url.length > 8 * 1024 * 1024) throw new Error('Custom extension data URL is too large.');
+            const response = await fetch(url, {signal: this.controller.signal});
+            const bytes = new Uint8Array(await response.arrayBuffer());
+            const name = await this.extensionFilename(bytes);
+            if (!this.uploadedAssets.has(name)) {
+                await this.client.uploadAsset(name, bytes, this.controller.signal);
+                if (this.disposed) throw new Error('Collaboration closed');
+                this.uploadedAssets.add(name);
+            }
+            prepared.push(this.cacheExtension(name, bytes, url));
+        }
+        return prepared;
+    }
+    getLocalProject () {
+        const project = this.vm.getCollaborationState();
+        for (const [id, url] of Object.entries(project.extensionURLs || {})) {
+            if (!url.startsWith('data:')) continue;
+            const reference = this.extensionReferences.get(url);
+            if (!reference) throw new Error('Custom extension has not been uploaded yet.');
+            project.extensionURLs[id] = reference;
+        }
+        return project;
+    }
+    async getRemoteProject (client = this.client) {
+        const project = client.getProjectJSON();
+        for (const [id, reference] of Object.entries(project.extensionURLs || {})) {
+            if (!reference.startsWith('dash-extension:')) continue;
+            if (!/^dash-extension:[a-f0-9]{64}\.js$/.test(reference)) {
+                throw new Error('Invalid custom extension reference.');
+            }
+            if (!this.extensionSources.has(reference)) {
+                const name = reference.slice('dash-extension:'.length);
+                const bytes = await client.getAsset(name, this.controller.signal);
+                if (this.disposed) throw new Error('Collaboration closed');
+                if (await this.extensionFilename(bytes) !== name) throw new Error('Custom extension hash mismatch.');
+                this.cacheExtension(name, bytes);
+                this.uploadedAssets.add(name);
+            }
+            project.extensionURLs[id] = this.extensionSources.get(reference);
+        }
+        return project;
+    }
     async uploadLocalAssets () {
+        await this.prepareLocalExtensions(Object.values(this.vm.getCollaborationState().extensionURLs || {}));
         for (const file of this.vm.getCollaborationAssets()) {
             if (this.zip.file(file.fileName) || this.uploadedAssets.has(file.fileName)) continue;
             await this.client.uploadAsset(file.fileName, file.fileContent, this.controller.signal);
@@ -537,7 +652,7 @@ export default class DashCollaborationSession {
             this.commit();
             if (!this.changed) return;
             const documentRevision = this.documentRevision;
-            const project = this.client.getProjectJSON();
+            const project = await this.getRemoteProject();
             await this.fetchRemoteAssets(project);
             if (this.disposed) return;
             plan = await this.vm.prepareCollaborationState(project, this.zip);
@@ -549,7 +664,7 @@ export default class DashCollaborationSession {
             }
             this.applying = true;
             this.vm.applyPreparedCollaborationState(plan);
-            this.base = this.vm.getCollaborationState();
+            this.base = this.getLocalProject();
             this.changed = false;
         } finally {
             this.vm.disposeCollaborationPlan(plan);

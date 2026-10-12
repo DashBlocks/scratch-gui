@@ -37,14 +37,14 @@ class BackdropLibrary extends React.Component {
         }
     }
     handleItemSelect (item) {
-        if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
+        if (!this.props.vm.canEditCollaboration()) return;
         if (item.src) {
             handleAssetLoad(item.src.library, item.src.path, (buffer, fileType) => {
                 costumeUpload(buffer, fileType, this.props.vm, vmBackdrops => {
-                    if (!this.props.vm.canEditCollaboration() || this.props.vm.dashCollaboration) return;
+                    if (!this.props.vm.canEditCollaboration()) return;
                     vmBackdrops.forEach((backdrop, i) => {
                         backdrop.name = `${item.name}${i ? i + 1 : ''}`;
-                        this.props.vm.addCostume(backdrop.md5, backdrop);
+                        this.props.vm.addBackdrop(backdrop.md5, backdrop);
                     });
                 });
             });

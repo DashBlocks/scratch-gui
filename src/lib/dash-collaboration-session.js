@@ -406,7 +406,10 @@ export default class DashCollaborationSession {
             }
             const target = targets.get(id);
             if (!(target instanceof Y.Map)) {
-                throw new Error('This sprite was removed by another participant.');
+                if (equal(before, record)) continue;
+                throw new Error(
+                    `The sprite "${before.name}" is missing from collaboration. Save a local copy before reconnecting.`
+                );
             }
             syncAssets(target, before, record, operations);
             for (const key of maps) {

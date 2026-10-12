@@ -552,6 +552,7 @@ export default class DashCollaborationSession {
             this.vm.disposeCollaborationPlan(plan);
             this.applying = false;
             this.processing = false;
+            if (!this.disposed) this.notify();
             if (!this.disposed && (again || this.changed || this.dirty)) this.scheduleReconcile();
         }
     }

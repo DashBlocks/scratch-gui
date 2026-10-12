@@ -1125,7 +1125,7 @@ class MenuBar extends React.Component {
                                             this.props.canManageCollaborators ?
                                             this.handleOpenCollaborators :
                                             // eslint-disable-next-line no-alert
-                                            () => alert(this.props.intl.formatMessage(sharedMessages.liveCollaborationUnavailable))
+                                            () => alert(this.props.intl.formatMessage(dashMessages.liveCollaborationUnavailable))
                                         }
                                         className={classNames({[styles.disabled]: !this.props.canManageCollaborators})}
                                     >

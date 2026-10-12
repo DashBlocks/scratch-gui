@@ -49,15 +49,8 @@
     cursor: default;
 }
 
+.open-button,
 .form button[type="submit"] {
-    margin-right: 0.5rem;
-    justify-self: end;
-    background: $looks-secondary;
-    border-color: $looks-secondary;
-    color: white;
-}
-
-.open-button {
     justify-self: end;
     background: $looks-secondary;
     border-color: $looks-secondary;

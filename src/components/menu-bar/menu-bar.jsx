@@ -134,6 +134,11 @@ const dashMessages = defineMessages({
         id: 'dash.menuBar.shareProjectWarning',
         defaultMessage: 'Are you sure you want to share project?',
         description: 'Warning message when user clicks share button'
+    },
+    liveCollaborationUnavailable: {
+        id: 'dash.menuBar.liveCollaborationUnavailableMessage',
+        defaultMessage: 'Cannot use live-collaboration, most likely because you didn\'t shared the project yet.',
+        description: 'Warning message when user clicks live-collaboration unavailable button'
     }
 });
 
@@ -1115,15 +1120,29 @@ class MenuBar extends React.Component {
                                             )}
                                         </MenuItem>
                                     )}</CloudVariablesToggler>
-                                    {this.props.canManageCollaborators && (
-                                        <MenuItem onClick={this.handleOpenCollaborators}>
+                                    <MenuItem
+                                        // eslint-disable-next-line no-alert
+                                        onClick={
+                                            this.props.canManageCollaborators ?
+                                            this.handleOpenCollaborators :
+                                            () => alert(this.props.intl.formatMessage(sharedMessages.liveCollaborationUnavailable))
+                                        }
+                                        className={classNames({[styles.disabled]: !this.props.canManageCollaborators})}
+                                    >
+                                        {this.props.canManageCollaborators ? (
                                             <FormattedMessage
                                                 id="dash.menuBar.liveCollaboration"
                                                 defaultMessage="Live-collaboration"
                                                 description="Open the project collaborators management dialog"
                                             />
-                                        </MenuItem>
-                                    )}
+                                        ) : (
+                                            <FormattedMessage
+                                                id="dash.menuBar.liveCollaborationUnavailable"
+                                                defaultMessage="Live-collaboration is not Available"
+                                                description="Menu bar item for when live-collaboration is not available"
+                                            />
+                                        )}
+                                    </MenuItem>
                                 </MenuSection>
                                 <MenuSection>
                                     <MenuItem onClick={this.props.onClickSettingsModal}>

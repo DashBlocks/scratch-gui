@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';
 import Modal from '../../containers/modal.jsx';
 import FramedAvatar from '../dash-framed-avatar/framed-avatar.jsx';
@@ -169,7 +170,7 @@ class CollaboratorsModal extends React.Component {
                             />
                         </button>
                         <button
-                            className={styles.openButton}
+                            className={classNames(styles.openButton, styles.button)}
                             onClick={() => window.open(`./?collaboration=1#${projectId}`, '_blank')}
                         >
                             <FormattedMessage

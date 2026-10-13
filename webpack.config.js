@@ -147,6 +147,9 @@ const base = {
         }]
     },
     plugins: [
+        new webpack.ProvidePlugin({
+            Buffer: [require.resolve('buffer/'), 'Buffer']
+        }),
         new CopyWebpackPlugin({
             patterns: [
                 {

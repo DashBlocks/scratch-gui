@@ -44,22 +44,22 @@ export default async function ({ addon, console, msg }) {
     const valueReportBox = document.createElement("div");
     valueReportBox.setAttribute("class", "valueReportBox");
     if (valueIsComplicated) {
-      if (typeof value.toReporterContent === 'function') {
+      if (typeof value.toReporterContent === "function") {
         valueReportBox.appendChild(value.toReporterContent());
       } else if (value instanceof Error) {
         valueReportBox.textContent = value.stack;
 
         if (options?.isUncaught) {
           const logButton = document.createElement('div');
-          logButton.setAttribute('class', 'valueReportButton');
-          logButton.setAttribute('role', 'button');
-          logButton.textContent = 'Log to DevTools console';
-          logButton.addEventListener('click', () => console.error('Logged Unexpected Error:', value));
+          logButton.setAttribute("class", "valueReportButton");
+          logButton.setAttribute("role", "button");
+          logButton.textContent = "Log to DevTools console";
+          logButton.addEventListener("click", () => console.error("Logged Unexpected Error:", value));
           valueReportBox.appendChild(logButton);
         }
       } else {
-        const placeholder = document.createElement('i');
-        placeholder.textContent = '*custom type*';
+        const placeholder = document.createElement("i");
+        placeholder.textContent = "*custom type*'";
         valueReportBox.appendChild(placeholder);
       }
     } else {

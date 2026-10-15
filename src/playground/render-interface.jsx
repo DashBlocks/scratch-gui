@@ -282,11 +282,11 @@ const Footer = () => (
                             id="tw.footer.credits"
                         />
                     </a>
-                    <a href="donate">
+                    <a href="support">
                         <FormattedMessage
-                            defaultMessage="Donate"
+                            defaultMessage="Support"
                             description="Donation link in footer"
-                            id="tw.footer.donate"
+                            id="dash.footer.support"
                         />
                     </a>
                 </div>

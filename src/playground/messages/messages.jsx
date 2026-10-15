@@ -203,7 +203,7 @@ const Messages = props => {
                             description="Displayed when user got demoted to Dasher role"
                             id="dash.messages.promotedDashSupporter"
                             values={{
-                                donationPage: <a href="donate">{props.intl.formatMessage(messages.donationPage)}</a>
+                                donationPage: <a href="support">{props.intl.formatMessage(messages.donationPage)}</a>
                             }}
                         />
                     </>

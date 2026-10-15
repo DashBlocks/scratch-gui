@@ -1469,7 +1469,7 @@ class MenuBar extends React.Component {
                 {/* <TWNews item='dash:news3' id='new-year' /> */}
                 {<TWNews
                     item="dash:news4"
-                    id="donate"
+                    id="support"
                 />}
                 {/* <TWNews
                     item="dash:news5"

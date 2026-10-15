@@ -192,7 +192,7 @@ module.exports = [
             'login': './src/playground/login/login.jsx',
             'register': './src/playground/register/register.jsx',
             'account-settings': './src/playground/account-settings/account-settings.jsx',
-            'donate': './src/playground/donate/donate.jsx',
+            'support': './src/playground/support/support.jsx',
             'mystuff': './src/playground/mystuff/mystuff.jsx',
             'messages': './src/playground/messages/messages.jsx',
             'search': './src/playground/search/search.jsx',
@@ -332,10 +332,10 @@ module.exports = [
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({
-                chunks: ['donate'],
+                chunks: ['support'],
                 template: 'src/playground/simple.ejs',
-                filename: 'donate.html',
-                title: `Donate - ${APP_NAME}`,
+                filename: 'support.html',
+                title: `Support - ${APP_NAME}`,
                 ...htmlWebpackPluginCommon
             }),
             new HtmlWebpackPlugin({

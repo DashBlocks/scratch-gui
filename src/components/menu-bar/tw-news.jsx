@@ -112,13 +112,13 @@ class TWNews extends React.Component {
                         onClick={this.handleClose}
                     />
                 </div>)}
-                {this.props.id === 'donate' && (<div className={styles.news}>
+                {this.props.id === 'support' && (<div className={styles.news}>
                     <div className={styles.content}>
                         <div className={styles.text}>
                             {/* eslint-disable-next-line max-len */}
                             {'Support development, help us host community, and get exclusive benefits by '}
                             <a
-                                href="donate"
+                                href="support"
                                 rel="noreferrer"
                             >
                                 {'donating us'}

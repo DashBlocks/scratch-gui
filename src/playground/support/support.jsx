@@ -6,7 +6,7 @@ import bindAll from 'lodash.bindall';
 import {defineMessages, FormattedMessage, injectIntl, intlShape} from 'react-intl';
 import render from '../app-target';
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
-import * as styles from './donate.css';
+import * as styles from './support.css';
 
 import Button from '../../components/button/button.jsx';
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
@@ -24,14 +24,14 @@ applyGuiColors(theme);
 
 const messages = defineMessages({
     title: {
-        defaultMessage: 'Donate',
-        description: 'Title of the donate page',
-        id: 'dash.donate.title'
+        defaultMessage: 'Support',
+        description: 'Title of the support page',
+        id: 'dash.support.title'
     },
     invoiceError: {
         defaultMessage: 'Failed to create an invoice, please try again later',
         description: 'Error message when invoice creation fails',
-        id: 'dash.donate.invoiceError'
+        id: 'dash.support.invoiceError'
     }
 });
 
@@ -59,7 +59,7 @@ const PLANS = [
     }
 ];
 
-export class Donate extends React.Component {
+export class Support extends React.Component {
     constructor (props) {
         super(props);
         bindAll(this, [
@@ -158,20 +158,20 @@ export class Donate extends React.Component {
                     className={styles.container}
                     dir={this.props.isRtl ? 'rtl' : 'ltr'}
                 >
-                    <div className={styles.donateWrapper}>
+                    <div className={styles.supportWrapper}>
                         <div className={styles.section}>
                             <h2>
                                 <FormattedMessage
-                                    defaultMessage="Donate"
-                                    description="Title of the donate page"
-                                    id="dash.donate.title"
+                                    defaultMessage="Support"
+                                    description="Title of the support page"
+                                    id="dash.support.title"
                                 />
                             </h2>
                             <p>
                                 <FormattedMessage
                                     defaultMessage="Support development and get exclusive benefits by donating to Dash!"
-                                    description="Description of the donate page"
-                                    id="dash.donate.description"
+                                    description="Description of the support page"
+                                    id="dash.support.description"
                                 />
                             </p>
                             <p>
@@ -179,7 +179,7 @@ export class Donate extends React.Component {
                                     // eslint-disable-next-line max-len
                                     defaultMessage="After donating, the following benefits will be available for you in community:"
                                     description="Description of the benefits of donating"
-                                    id="dash.donate.benefits"
+                                    id="dash.support.benefits"
                                 />
                             </p>
                             <ul>
@@ -187,37 +187,37 @@ export class Donate extends React.Component {
                                     <FormattedMessage
                                         defaultMessage="Exclusive role and badge in profile"
                                         description="Benefit of donating"
-                                        id="dash.donate.benefits.exclusiveRole"
+                                        id="dash.support.benefits.exclusiveRole"
                                     />
                                 </li>
                                 <li>
                                     <FormattedMessage
                                         defaultMessage="Increase of maximum project size limit from 75MB to 250MB"
                                         description="Benefit of donating"
-                                        id="dash.donate.benefits.biggerLimits"
+                                        id="dash.support.benefits.biggerLimits"
                                     />
                                 </li>
                                 <li>
                                     <FormattedMessage
                                         defaultMessage="Banner gradient customization for your profile"
                                         description="Benefit of donating"
-                                        id="dash.donate.benefits.betaAccess"
+                                        id="dash.support.benefits.betaAccess"
                                     />
                                 </li>
                                 <li>
                                     <FormattedMessage
                                         defaultMessage="...and more benefits in the future!"
                                         description="Benefit of donating"
-                                        id="dash.donate.benefits.more"
+                                        id="dash.support.benefits.more"
                                     />
                                 </li>
                             </ul>
                             <p>
                                 <FormattedMessage
                                     // eslint-disable-next-line max-len
-                                    defaultMessage="Choose a plan and currency, then click 'Donate Now' to proceed with payment on Lava.top platform."
+                                    defaultMessage="Choose a plan and currency, then click 'Support Now' to proceed with payment on Lava.top platform."
                                     description="Instructions for donating"
-                                    id="dash.donate.instructions"
+                                    id="dash.support.instructions"
                                 />
                             </p>
                             <p>
@@ -225,7 +225,7 @@ export class Donate extends React.Component {
                                     // eslint-disable-next-line max-len
                                     defaultMessage="Your additional privileges will be active in your account approximately until: {expirationDate}"
                                     description="Information about when the donation privileges will expire"
-                                    id="dash.donate.expiration"
+                                    id="dash.support.expiration"
                                     values={{
                                         expirationDate: (
                                             <strong>{this.state.expirationDate}</strong>
@@ -237,7 +237,7 @@ export class Donate extends React.Component {
                                 <FormattedMessage
                                     defaultMessage="If you want to refund your donation, please {contactUs}!"
                                     description="Contact information for donation refunds"
-                                    id="dash.donate.refundContact"
+                                    id="dash.support.refundContact"
                                     values={{
                                         contactUs: (
                                             <a href="mailto:contact@dashblocks.org">contact us</a>
@@ -262,7 +262,7 @@ export class Donate extends React.Component {
                                                     <FormattedMessage
                                                         defaultMessage="{days} days"
                                                         description="Label for plan duration"
-                                                        id="dash.donate.planDuration"
+                                                        id="dash.support.planDuration"
                                                         values={{days: plan.days}}
                                                     />
                                                 </span>
@@ -277,7 +277,7 @@ export class Donate extends React.Component {
                                             <FormattedMessage
                                                 defaultMessage="Currency"
                                                 description="Label for currency selection"
-                                                id="dash.donate.currency"
+                                                id="dash.support.currency"
                                             />
                                         </label>
                                         <select
@@ -300,7 +300,7 @@ export class Donate extends React.Component {
                                                 <FormattedMessage
                                                     defaultMessage="Payment Method"
                                                     description="Label for payment method selection"
-                                                    id="dash.donate.paymentMethod"
+                                                    id="dash.support.paymentMethod"
                                                 />
                                             </label>
                                             <select
@@ -324,13 +324,13 @@ export class Donate extends React.Component {
                                                 <FormattedMessage
                                                     defaultMessage="Redirecting..."
                                                     description="Button text while redirecting to payment"
-                                                    id="dash.donate.redirecting"
+                                                    id="dash.support.redirecting"
                                                 />
                                             ) : (
                                                 <FormattedMessage
-                                                    defaultMessage="Donate Now"
+                                                    defaultMessage="Support Now"
                                                     description="Button text for submitting donation"
-                                                    id="dash.donate.submit"
+                                                    id="dash.support.submit"
                                                 />
                                             )}
                                         </Button>
@@ -347,7 +347,7 @@ export class Donate extends React.Component {
     }
 }
 
-Donate.propTypes = {
+Support.propTypes = {
     intl: intlShape,
     isRtl: PropTypes.bool,
     session: PropTypes.object
@@ -358,11 +358,11 @@ const mapStateToProps = state => ({
     session: state.scratchGui.dash.session
 });
 
-const ConnectedDonate = injectIntl(connect(
+const ConnectedSupport = injectIntl(connect(
     mapStateToProps
-)(Donate));
-const WrappedDonate = AppStateHOC(ConnectedDonate);
+)(Support));
+const WrappedSupport = AppStateHOC(ConnectedSupport);
 
-render(<WrappedDonate />);
+render(<WrappedSupport />);
 
-export default WrappedDonate;
+export default WrappedSupport;

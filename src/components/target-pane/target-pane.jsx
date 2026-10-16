@@ -40,6 +40,7 @@ const TargetPane = ({
     onSelectSprite,
     onSpriteUpload,
     onSurpriseSpriteClick,
+    presenceUsers,
     raiseSprites,
     stage,
     stageSize,
@@ -55,6 +56,7 @@ const TargetPane = ({
         <SpriteSelectorComponent
             editingTarget={editingTarget}
             hoveredTarget={hoveredTarget}
+            presenceUsers={presenceUsers}
             raised={raiseSprites}
             selectedId={editingTarget}
             spriteFileInput={fileInputRef}
@@ -153,6 +155,10 @@ TargetPane.propTypes = {
     onSelectSprite: PropTypes.func,
     onSpriteUpload: PropTypes.func,
     onSurpriseSpriteClick: PropTypes.func,
+    presenceUsers: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.shape({
+        color: PropTypes.string,
+        username: PropTypes.string
+    }))),
     raiseSprites: PropTypes.bool,
     spriteLibraryVisible: PropTypes.bool,
     sprites: PropTypes.objectOf(spriteShape),

@@ -1,0 +1,41 @@
+@import "../../css/colors.css";
+@import "../../css/units.css";
+
+.avatars {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0 $space;
+}
+
+.avatar,
+.avatar-online {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-left: -0.35rem;
+    border-radius: 50%;
+    border: 2px solid $ui-black-transparent;
+    background-color: $ui-primary;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: bold;
+    user-select: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.avatar:first-child,
+.avatar-online:first-child {
+    margin-left: 0;
+}
+
+.avatar {
+    opacity: 0.55;
+    filter: grayscale(60%);
+}
+
+.avatar-online {
+    opacity: 1;
+}

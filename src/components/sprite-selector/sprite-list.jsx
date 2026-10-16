@@ -28,6 +28,7 @@ const SpriteList = function (props) {
         onAddSortable,
         onRemoveSortable,
         ordering,
+        presenceUsers,
         raised,
         selectedId,
         items
@@ -89,6 +90,7 @@ const SpriteList = function (props) {
                                 index={index}
                                 key={sprite.id}
                                 name={sprite.name}
+                                presenceUsers={presenceUsers ? presenceUsers[sprite.id] : null}
                                 selected={sprite.id === selectedId}
                                 onClick={onSelectSprite}
                                 onDeleteButtonClick={onDeleteSprite}
@@ -125,6 +127,10 @@ SpriteList.propTypes = {
         order: PropTypes.number.isRequired
     })),
     onAddSortable: PropTypes.func,
+    presenceUsers: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.shape({
+        color: PropTypes.string,
+        username: PropTypes.string
+    }))),
     onDeleteSprite: PropTypes.func,
     onDuplicateSprite: PropTypes.func,
     onExportSprite: PropTypes.func,

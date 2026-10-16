@@ -2,6 +2,7 @@ import * as Y from 'yjs';
 import JSZip from 'jszip';
 import AddonHooks from '../addons/hooks';
 import DashCollaboration from './dash-collaboration';
+import DashPresence from './dash-presence';
 
 const maps = ['blocks', 'variables', 'lists', 'broadcasts', 'comments'];
 const blockStructureFields = ['opcode', 'next', 'parent', 'inputs', 'shadow', 'mutation'];
@@ -230,6 +231,7 @@ export default class DashCollaborationSession {
         this.uploadedAssets = new Set();
         this.extensionReferences = new Map();
         this.extensionSources = new Map();
+        this.presence = new DashPresence();
         this.installOperationTracking();
         this.onLocalChange = () => {
             if (this.applying || !this.loaded || this.disposed) return;
@@ -257,6 +259,7 @@ export default class DashCollaborationSession {
                 this.state = status.state;
                 this.error = status.error;
                 if (status.state === 'connected') {
+                    this.presence.setSelf(client.connectionId, client.userId);
                     if (this.resolveReady) this.resolveReady();
                     if (this.restoreOnReconnect) {
                         this.restoreAfterReconnect().catch(error => this.fail(error));
@@ -271,10 +274,12 @@ export default class DashCollaborationSession {
             },
             onMembers: members => {
                 this.members = members;
+                this.presence.setMembers(members);
                 this.notify();
             }
         });
         client.doc.on('update', this.onDocumentChange);
+        this.presence.bind(client);
         return client;
     }
     notify () {
@@ -732,6 +737,7 @@ export default class DashCollaborationSession {
         }
         this.client.doc.off('update', this.onDocumentChange);
         this.client.destroy();
+        this.presence.destroy();
         window.removeEventListener('beforeunload', this.beforeUnload);
     }
 }

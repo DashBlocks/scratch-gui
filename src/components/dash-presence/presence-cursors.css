@@ -1,0 +1,49 @@
+@import "../../css/z-index.css";
+
+.layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: $z-index-drag-layer;
+}
+
+.cursor {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    transform: translate(-2px, -2px);
+    will-change: left, top;
+}
+
+.pointer {
+    flex: none;
+    filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35));
+}
+
+.label {
+    margin-left: -2px;
+    margin-top: 12px;
+    padding: 0.075rem 0.4rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    color: #fff;
+    font-size: 0.625rem;
+    font-weight: bold;
+    line-height: 1.35;
+    white-space: nowrap;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 8rem;
+}
+
+.dragBadge {
+    margin-left: 0.25rem;
+    font-size: 0.7rem;
+}

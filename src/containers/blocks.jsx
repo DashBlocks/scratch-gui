@@ -10,6 +10,7 @@ import VM from 'scratch-vm';
 
 import Prompt from './prompt.jsx';
 import BlocksComponent from '../components/blocks/blocks.jsx';
+import PresenceCursors from '../components/dash-presence/presence-cursors.jsx';
 import ExtensionLibrary from './extension-library.jsx';
 import extensionData from '../lib/libraries/extensions/index.jsx';
 import CustomProcedures from './custom-procedures.jsx';
@@ -188,7 +189,11 @@ class Blocks extends React.Component {
             'setLocale',
             'handleEnableProcedureReturns',
             'handleEnableLists',
-            'updateCollaborationReadOnly'
+            'updateCollaborationReadOnly',
+            'handlePresenceMouseMove',
+            'handlePresenceMouseLeave',
+            'handlePresenceBlocklyChange',
+            'presenceTransform'
         ]);
         this.ScratchBlocks.prompt = this.handlePromptStart;
         this.ScratchBlocks.statusButtonCallback = this.handleConnectionModalStart;
@@ -234,6 +239,11 @@ class Blocks extends React.Component {
         this.workspace = this.ScratchBlocks.inject(this.blocks, workspaceConfig);
         AddonHooks.blocklyWorkspace = this.workspace;
         this.updateCollaborationReadOnly();
+
+        // Live-collaboration presence: track local cursor and block drags.
+        this.blocks.addEventListener('mousemove', this.handlePresenceMouseMove);
+        this.blocks.addEventListener('mouseleave', this.handlePresenceMouseLeave);
+        this.workspace.addChangeListener(this.handlePresenceBlocklyChange);
 
         // Register buttons under new callback keys for creating variables,
         // lists, and procedures from extensions.
@@ -360,6 +370,10 @@ class Blocks extends React.Component {
     componentWillUnmount () {
         this.detachVM();
         this.unmounted = true;
+        if (this.blocks) {
+            this.blocks.removeEventListener('mousemove', this.handlePresenceMouseMove);
+            this.blocks.removeEventListener('mouseleave', this.handlePresenceMouseLeave);
+        }
         this.workspace.dispose();
         clearTimeout(this.toolboxUpdateTimeout);
 
@@ -380,6 +394,76 @@ class Blocks extends React.Component {
                 for (const field of input.fieldRow) field.updateEditable();
             }
         }
+    }
+    currentDraggingBlockId () {
+        const ws = this.workspace;
+        if (!ws || typeof ws.isDragging !== 'function' || !ws.isDragging()) return null;
+        const gesture = ws.currentGesture_;
+        const block = (gesture && gesture.targetBlock_) || (this.ScratchBlocks && this.ScratchBlocks.selected);
+        return (block && block.id) || null;
+    }
+    handlePresenceMouseMove (e) {
+        const session = this.props.vm.dashCollaboration;
+        if (!session || !session.presence) return;
+        const coords = this.presenceWorkspaceCoords(e.clientX, e.clientY);
+        if (!coords) return;
+        session.presence.update({
+            cursor: {
+                surface: 'blocks',
+                x: coords.x,
+                y: coords.y
+            },
+            dragging: this.currentDraggingBlockId()
+        });
+    }
+    handlePresenceMouseLeave () {
+        const session = this.props.vm.dashCollaboration;
+        if (!session || !session.presence) return;
+        const patch = {};
+        const current = session.presence.local.cursor;
+        if (current && current.surface === 'blocks') patch.cursor = null;
+        if (session.presence.local.dragging) patch.dragging = null;
+        if (Object.keys(patch).length) session.presence.update(patch);
+    }
+    handlePresenceBlocklyChange () {
+        const session = this.props.vm.dashCollaboration;
+        if (!session || !session.presence) return;
+        session.presence.update({dragging: this.currentDraggingBlockId()});
+    }
+    presenceWorkspaceCoords (clientX, clientY) {
+        const ws = this.workspace;
+        if (!ws || !ws.scrollbar || !ws.scrollbar.hScroll || !ws.scrollbar.vScroll) return null;
+        const scale = ws.scale || 1;
+        const hRect = ws.scrollbar.hScroll.outerSvg_.getBoundingClientRect();
+        const vRect = ws.scrollbar.vScroll.outerSvg_.getBoundingClientRect();
+        if (this.props.isRtl) {
+            return {
+                x: (ws.scrollX + hRect.right - clientX) / scale,
+                y: (clientY - vRect.top - ws.scrollY) / scale
+            };
+        }
+        return {
+            x: (clientX - hRect.left - ws.scrollX) / scale,
+            y: (clientY - vRect.top - ws.scrollY) / scale
+        };
+    }
+    presenceTransform (cursor) {
+        const ws = this.workspace;
+        const rect = this.blocks && this.blocks.getBoundingClientRect();
+        if (!ws || !rect || !ws.scrollbar || !ws.scrollbar.hScroll || !ws.scrollbar.vScroll) {
+            return {left: '-9999px', top: '-9999px'};
+        }
+        const scale = ws.scale || 1;
+        const hRect = ws.scrollbar.hScroll.outerSvg_.getBoundingClientRect();
+        const vRect = ws.scrollbar.vScroll.outerSvg_.getBoundingClientRect();
+        const clientX = this.props.isRtl ?
+            hRect.right + ws.scrollX - cursor.x * scale :
+            hRect.left + ws.scrollX + cursor.x * scale;
+        const clientY = vRect.top + ws.scrollY + cursor.y * scale;
+        return {
+            left: `${clientX - rect.left}px`,
+            top: `${clientY - rect.top}px`
+        };
     }
     requestToolboxUpdate () {
         clearTimeout(this.toolboxUpdateTimeout);
@@ -794,7 +878,15 @@ class Blocks extends React.Component {
                     componentRef={this.setBlocks}
                     onDrop={this.handleDrop}
                     {...props}
-                />
+                >
+                    <PresenceCursors
+                        highlightDragged
+                        highlightRoot={this.blocks}
+                        surface="blocks"
+                        transform={this.presenceTransform}
+                        vm={vm}
+                    />
+                </DroppableBlocks>
                 {this.state.prompt ? (
                     <Prompt
                         defaultValue={this.state.prompt.defaultValue}

@@ -23,6 +23,7 @@ import {fetchSprite, fetchCode} from '../lib/backpack-api';
 import randomizeSpritePosition from '../lib/randomize-sprite-position';
 import downloadBlob from '../lib/download-blob';
 import log from '../lib/log';
+import {listenPresence} from '../lib/dash-presence.js';
 import {placeInViewport} from '../lib/backpack/code-payload.js';
 
 class TargetPane extends React.Component {
@@ -48,14 +49,45 @@ class TargetPane extends React.Component {
             'handlePaintSpriteClick',
             'handleFileUploadClick',
             'handleSpriteUpload',
+            'handlePresenceChange',
             'setFileInput'
         ]);
     }
     componentDidMount () {
         this.props.vm.addListener('BLOCK_DRAG_END', this.handleBlockDragEnd);
+        this.detachPresence = listenPresence(this.props.vm, this.handlePresenceChange);
+        this.publishPresenceSelection();
+    }
+    componentDidUpdate (prevProps) {
+        if (prevProps.editingTarget !== this.props.editingTarget) {
+            this.publishPresenceSelection();
+        }
     }
     componentWillUnmount () {
         this.props.vm.removeListener('BLOCK_DRAG_END', this.handleBlockDragEnd);
+        if (this.detachPresence) this.detachPresence();
+    }
+    handlePresenceChange () {
+        this.forceUpdate();
+    }
+    publishPresenceSelection () {
+        const session = this.props.vm.dashCollaboration;
+        if (session && session.presence) {
+            session.presence.update({targetId: this.props.editingTarget || null});
+        }
+    }
+    getPresenceUsersByTarget () {
+        const session = this.props.vm.dashCollaboration;
+        const presence = session && session.presence;
+        const byTarget = {};
+        if (!presence) return byTarget;
+        for (const peer of presence.getPeers()) {
+            const targetId = peer.state.targetId;
+            if (!targetId) continue;
+            if (!byTarget[targetId]) byTarget[targetId] = [];
+            byTarget[targetId].push({color: peer.color, username: peer.username});
+        }
+        return byTarget;
     }
     handleChangeSpriteDirection (direction) {
         if (!this.props.vm.canEditCollaboration()) return;
@@ -254,6 +286,7 @@ class TargetPane extends React.Component {
             <TargetPaneComponent
                 {...componentProps}
                 fileInputRef={this.setFileInput}
+                presenceUsers={this.getPresenceUsersByTarget()}
                 onActivateBlocksTab={this.handleActivateBlocksTab}
                 onChangeSpriteDirection={this.handleChangeSpriteDirection}
                 onChangeSpriteName={this.handleChangeSpriteName}

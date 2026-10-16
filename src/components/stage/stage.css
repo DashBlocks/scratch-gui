@@ -157,3 +157,9 @@ stage doesn't "spill" out from under its rounded corners. instead, shift these o
     0% { opacity: 1; }
     100% { opacity: 0; }
 }
+
+/* Respect the notch/home indicator in fullscreen */
+.stage.full-screen {
+    margin-left: env(safe-area-inset-left);
+    margin-right: env(safe-area-inset-right);
+}

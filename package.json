@@ -60,6 +60,7 @@
     "es6-object-assign": "1.1.0",
     "get-float-time-domain-data": "0.1.0",
     "get-user-media-promise": "1.1.4",
+    "hammerjs": "2.0.8",
     "immutable": "3.8.2",
     "intl": "1.2.5",
     "intl-messageformat": "^2.2.0",

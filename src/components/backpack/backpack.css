@@ -99,3 +99,14 @@
     margin: 0.5rem;
     cursor: pointer;
 }
+
+@media only screen and (pointer: coarse) {
+    .backpack-header {
+        min-height: 2.75rem;
+    }
+
+    .backpack-item {
+        min-height: 3.25rem;
+        min-width: 5.5rem;
+    }
+}

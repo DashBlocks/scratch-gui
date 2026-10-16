@@ -305,3 +305,202 @@ $fade-out-distance: 15px;
     /* overridden by JS; this will be used if the browser can't understand that color */
     background-color: white;
 }
+
+/*
+    Phone / narrow-window layout: stack the stage above the editor instead of
+    the desktop two-column layout, and let the page scroll vertically.
+*/
+@media only screen and (max-width: 1023px) {
+    .body-wrapper {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .flex-wrapper {
+        flex-direction: column;
+        height: auto;
+        min-height: 100%;
+        overflow: visible;
+    }
+
+    .stage-and-target-wrapper {
+        order: -1; /* stage on top, editor below */
+        flex: none;
+        width: 100%;
+        align-items: center;
+    }
+
+    .target-wrapper {
+        flex: none;
+        min-height: 12rem;
+    }
+
+    .editor-wrapper {
+        flex: 1 1 auto;
+        width: 100%;
+        min-height: 24rem;
+    }
+}
+
+/* Larger tap targets on touch screens */
+@media only screen and (pointer: coarse) {
+    .tab {
+        min-width: 2.75rem;
+        min-height: 2.25rem;
+        padding: 0.125rem 1.5rem 0;
+        font-size: 0.85rem;
+    }
+
+    .tab img {
+        width: 1.5rem;
+    }
+}
+
+/* No double-tap zoom delay on buttons */
+.page-wrapper button,
+.page-wrapper [role="button"] {
+    touch-action: manipulation;
+}
+
+/* ------------------------------------------------------------------ */
+/* Phone layout: compact stage controls and more room for the editor  */
+/* ------------------------------------------------------------------ */
+@media only screen and (max-width: 599px) {
+    .stage-and-target-wrapper {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .editor-wrapper {
+        min-height: 20rem;
+    }
+
+    .tab-list {
+        gap: 0.15rem;
+        padding: 0.15rem;
+    }
+
+    .tab {
+        flex: 1;
+        padding: 0.125rem 0.5rem 0;
+    }
+}
+
+/*
+    Phone landscape and other short windows: keep the side-by-side layout so
+    the editor is not squeezed under the stage.
+*/
+@media only screen and (max-width: 1023px) and (max-height: 520px) {
+    .flex-wrapper {
+        flex-direction: row;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .stage-and-target-wrapper {
+        order: 0;
+        flex: 0 1 auto;
+        width: auto;
+    }
+
+    .target-wrapper {
+        min-height: 0;
+    }
+
+    .editor-wrapper {
+        min-height: 0;
+    }
+}
+
+/* Safe areas for notched phones */
+@media only screen and (max-width: 1023px) {
+    .body-wrapper {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+    }
+}
+
+/* Keep the focused input above the on-screen keyboard */
+:global(.dash-keyboard-open) .body-wrapper {
+    padding-bottom: var(--dash-keyboard-height, 0px);
+}
+
+/* iOS: do not let Safari boost text sizes on its own */
+.page-wrapper {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* On touch screens, form fields must be 16px or iOS zooms the page on focus */
+@media only screen and (pointer: coarse) {
+    .page-wrapper input,
+    .page-wrapper textarea,
+    .page-wrapper select {
+        font-size: 1rem;
+    }
+}
+
+/* Honor the system "reduce motion" preference */
+@media (prefers-reduced-motion: reduce) {
+    .page-wrapper *,
+    .page-wrapper *:before,
+    .page-wrapper *:after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
+
+/* Phone: tabs become a sticky bottom navigation bar */
+@media only screen and (max-width: 599px) {
+    .tabs {
+        justify-content: flex-end;
+    }
+
+    .tab-list {
+        order: 2;
+        position: sticky;
+        bottom: 0;
+        z-index: $z-index-menu-bar;
+        background-color: $ui-primary;
+        padding-bottom: calc(0.15rem + env(safe-area-inset-bottom));
+    }
+}
+
+/* Touch: no browser pull-to-refresh while dragging */
+@media only screen and (pointer: coarse) {
+    .page-wrapper {
+        overscroll-behavior-y: none;
+    }
+}
+
+/* --------------------------------- */
+/* Compact mode (mobile settings)   */
+/* --------------------------------- */
+:global(.dash-compact) [class*="menu-bar_menu-bar"],
+:global(.dash-compact) [class*="menu-bar_menu-bar"] * {
+    font-size: 0.78rem;
+}
+
+:global(.dash-compact) [class*="sprite-selector_sprite-selector"] {
+    max-height: 145px;
+}
+
+:global(.dash-compact) [class*="sprite-selector-item_sprite-wrapper"],
+:global(.dash-compact) [class*="sprite-selector-item_sprite-wrapper"] img {
+    width: 3.25rem;
+    height: 3.25rem;
+}
+
+:global(.dash-compact) [class*="asset-panel_wrapper"],
+:global(.dash-compact) [class*="asset-panel_wrapper"] * {
+    font-size: 0.75rem;
+}
+
+:global(.dash-compact) [class*="action-menu_button"] {
+    width: 36px;
+    height: 36px;
+}
+
+:global(.dash-compact) [class*="stage-selector_item-wrapper"] {
+    min-height: 72px;
+}

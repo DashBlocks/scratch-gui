@@ -24,6 +24,7 @@ const SpriteSelectorItem = props => (
             onTouchStart: props.onMouseDown
         }}
         disable={props.preventContextMenu}
+        holdToDisplay={400}
         id={`${props.name}-${contextMenuId}`}
         ref={props.componentRef}
     >

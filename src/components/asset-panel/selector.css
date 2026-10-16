@@ -82,3 +82,15 @@ $fade-out-distance: 100px;
     background: white;
     filter: opacity(15%) brightness(0%);
 }
+
+@media only screen and (pointer: coarse) {
+    .list-item {
+        min-height: 4.5rem;
+        min-width: 4.5rem;
+    }
+
+    .new-buttons > * {
+        min-height: 3.5rem;
+        min-width: 3.5rem;
+    }
+}

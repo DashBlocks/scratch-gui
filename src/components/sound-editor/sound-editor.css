@@ -280,3 +280,27 @@ $border-radius: 0.25rem;
     background-color: rgba(255, 119, 0, 0.3);
     border-color: rgb(255, 119, 0);
 }
+
+@media only screen and (pointer: coarse) {
+    .button,
+    .effect-button,
+    .round-button {
+        min-height: 2.75rem;
+        min-width: 2.75rem;
+    }
+
+    .name-input {
+        min-height: 2.5rem;
+    }
+}
+
+@media only screen and (max-width: 599px) {
+    .editor-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .effects {
+        flex-wrap: wrap;
+    }
+}

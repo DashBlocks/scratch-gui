@@ -361,3 +361,24 @@
 .editor-button {
     padding: 1rem;
 }
+
+/* Scrollable menu bar on narrow screens instead of squishing or overflowing */
+@media only screen and (max-width: 1023px) {
+    .menu-bar {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Larger tap targets on touch screens */
+@media only screen and (pointer: coarse) {
+    .file-group .menu-bar-item,
+    .settings-group .menu-bar-item {
+        padding: 0 0.75rem;
+    }
+
+    .menu-bar-search {
+        max-width: 12rem;
+    }
+}

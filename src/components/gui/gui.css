@@ -305,3 +305,59 @@ $fade-out-distance: 15px;
     /* overridden by JS; this will be used if the browser can't understand that color */
     background-color: white;
 }
+
+/*
+    Phone / narrow-window layout: stack the stage above the editor instead of
+    the desktop two-column layout, and let the page scroll vertically.
+*/
+@media only screen and (max-width: 1023px) {
+    .body-wrapper {
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .flex-wrapper {
+        flex-direction: column;
+        height: auto;
+        min-height: 100%;
+        overflow: visible;
+    }
+
+    .stage-and-target-wrapper {
+        order: -1; /* stage on top, editor below */
+        flex: none;
+        width: 100%;
+        align-items: center;
+    }
+
+    .target-wrapper {
+        flex: none;
+        min-height: 12rem;
+    }
+
+    .editor-wrapper {
+        flex: 1 1 auto;
+        width: 100%;
+        min-height: 24rem;
+    }
+}
+
+/* Larger tap targets on touch screens */
+@media only screen and (pointer: coarse) {
+    .tab {
+        min-width: 2.75rem;
+        min-height: 2.25rem;
+        padding: 0.125rem 1.5rem 0;
+        font-size: 0.85rem;
+    }
+
+    .tab img {
+        width: 1.5rem;
+    }
+}
+
+/* No double-tap zoom delay on buttons */
+.page-wrapper button,
+.page-wrapper [role="button"] {
+    touch-action: manipulation;
+}

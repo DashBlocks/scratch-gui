@@ -23,7 +23,11 @@ const STAGE_DIMENSION_DEFAULTS = {
     fullScreenSpacingBorderAdjustment: 8,
     // referencing css/units.css,
     // menuHeightAdjustment = $stage-menu-height
-    menuHeightAdjustment: 44
+    menuHeightAdjustment: 44,
+    // referencing css/units.css,
+    // windowFitAdjustment = 2 * $space + 2 * $stage-standard-border-width
+    // (stage column padding + stage border; keeps the stage from overflowing narrow windows)
+    windowFitAdjustment: 18
 };
 
 /**
@@ -84,6 +88,16 @@ const getStageDimensions = (stageSize, customStageSize, isFullScreen) => {
             stageDimensions.height = stageDimensions.scale * stageDimensions.heightDefault;
             stageDimensions.width = stageDimensions.scale * stageDimensions.widthDefault;
         }
+
+        // Shrink to fit narrow windows (phones, split screen) instead of overflowing.
+        const maxWidth = (maxScaleParam ?
+            Math.min(window.innerWidth, maxScaleParam * customStageSize.width) :
+            window.innerWidth) - STAGE_DIMENSION_DEFAULTS.windowFitAdjustment;
+        if (stageDimensions.width > maxWidth) {
+            stageDimensions.scale *= maxWidth / stageDimensions.width;
+            stageDimensions.width = maxWidth;
+            stageDimensions.height = stageDimensions.scale * stageDimensions.heightDefault;
+        }
     }
 
     // Round off dimensions to prevent resampling/blurriness
@@ -99,10 +113,8 @@ const getStageDimensions = (stageSize, customStageSize, isFullScreen) => {
  */
 const getMinWidth = stageSize => {
     const metadata = STAGE_DISPLAY_SCALE_METADATA[stageSize];
-    if (metadata.width) {
-        return metadata.width;
-    }
-    return FIXED_WIDTH * metadata.scale;
+    const minWidth = metadata.width ? metadata.width : FIXED_WIDTH * metadata.scale;
+    return Math.min(minWidth, window.innerWidth - STAGE_DIMENSION_DEFAULTS.windowFitAdjustment);
 };
 
 /**

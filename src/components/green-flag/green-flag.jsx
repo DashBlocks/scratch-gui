@@ -30,7 +30,7 @@ const GreenFlagComponent = function (props) {
             title={title}
             onClick={event => {
                 requestWakeLock();
-                onClick(event);
+                if (onClick) onClick(event);
             }}
             onTouchStart={() => buzz(5)}
             // tw: also fire click when opening context menu (right click on all systems and alt+click on chromebooks)

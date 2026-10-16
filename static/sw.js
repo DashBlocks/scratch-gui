@@ -9,7 +9,7 @@
 */
 
 const CACHE_NAME = 'dash-shell-v1';
-const CACHEABLE_PATHS = /^\/(static\/|[^/?]+\.(?:js|css|woff2?|ttf|png|jpg|jpeg|gif|svg|webp|mp3|wav)(?:\?|$))/i;
+const CACHEABLE_PATHS = /(?:^|\/)static\/|\/[^/?]+\.(?:js|css|woff2?|ttf|png|jpg|jpeg|gif|svg|webp|mp3|wav)(?:\?|$)/i;
 
 self.addEventListener('install', event => {
     self.skipWaiting();

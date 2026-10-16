@@ -49,9 +49,19 @@ let wakeLockRequested = false;
 let wakeLockListenersBound = false;
 
 const requestWakeLock = async () => {
+    if (!dashSettings.get('keepAwake')) return null;
     wakeLockRequested = true;
     if (typeof navigator === 'undefined' || !('wakeLock' in navigator)) return null;
     try {
+        if (wakeLock) {
+            // Drop the previous sentinel so they do not stack.
+            try {
+                await wakeLock.release();
+            } catch (e) {
+                // Already released.
+            }
+            wakeLock = null;
+        }
         wakeLock = await navigator.wakeLock.request('screen');
         wakeLock.addEventListener('release', () => {
             wakeLock = null;

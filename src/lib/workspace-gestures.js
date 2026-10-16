@@ -19,7 +19,9 @@ class WorkspaceGestures {
         this.panLast = null;
 
         this.manager = new Hammer.Manager(element, {
-            touchAction: 'auto',
+            // Blocks are handled entirely in JS (Blockly), so the browser must
+            // not steal multi-touch for native page pinch-zoom.
+            touchAction: 'none',
             inputClass: Hammer.TouchInput
         });
         const pinch = new Hammer.Pinch();

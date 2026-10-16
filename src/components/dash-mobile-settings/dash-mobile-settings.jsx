@@ -4,7 +4,7 @@ import React from 'react';
 import {FormattedMessage, injectIntl, intlShape} from 'react-intl';
 
 import dashSettings from '../../lib/dash-settings.js';
-import {buzz, onInstallPrompt, promptInstall} from '../../lib/dash-platform.js';
+import {buzz, onInstallPrompt, promptInstall, releaseWakeLock} from '../../lib/dash-platform.js';
 import * as styles from './dash-mobile-settings.css';
 
 class DashMobileSettings extends React.Component {
@@ -56,6 +56,7 @@ class DashMobileSettings extends React.Component {
         return event => {
             dashSettings.set(key, event.target.checked);
             if (key === 'haptics' && event.target.checked) buzz(10);
+            if (key === 'keepAwake' && !event.target.checked) releaseWakeLock();
         };
     }
     async handleInstall () {

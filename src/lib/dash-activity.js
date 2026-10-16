@@ -130,42 +130,53 @@ class DashActivity {
     beginLocalOperation (name, args, vm) {
         const kind = OP_KINDS[name];
         if (!kind) return null;
-        const handle = {name, kind, args, vm, before: null, targetName: null};
+        const handle = {name, kind, args, vm, before: null, targetName: null, diff: null, restore: null};
         try {
             switch (name) {
-            case 'deleteSprite':
+            case 'deleteSprite': {
                 handle.targetName = targetNameById(vm, args[0]) || editingTargetName(vm);
+                const sprite = this.targetSummary(vm, args[0]);
+                handle.diff = {before: handle.targetName, after: null, summary: sprite};
                 break;
+            }
             case 'renameSprite':
                 handle.targetName = targetNameById(vm, args[0]);
                 handle.before = {previousName: handle.targetName, id: args[0]};
+                handle.diff = {before: handle.targetName, after: String(args[1])};
                 break;
             case 'renameCostume':
                 handle.targetName = editingTargetName(vm);
                 handle.before = {previousName: this.currentCostumeName(vm, args[0]), index: args[0]};
+                handle.diff = {before: handle.before.previousName, after: String(args[1])};
                 break;
             case 'renameSound':
                 handle.targetName = editingTargetName(vm);
                 handle.before = {previousName: this.currentSoundName(vm, args[0]), index: args[0]};
+                handle.diff = {before: handle.before.previousName, after: String(args[1])};
                 break;
             case 'deleteCostume':
                 handle.targetName = editingTargetName(vm);
                 handle.before = {name: this.currentCostumeName(vm, args[0]), index: args[0]};
+                handle.diff = {before: handle.before.name, after: null};
                 break;
             case 'deleteSound':
                 handle.targetName = editingTargetName(vm);
                 handle.before = {name: this.currentSoundName(vm, args[0]), index: args[0]};
+                handle.diff = {before: handle.before.name, after: null};
                 break;
             case 'addSprite':
                 handle.targetName = this.spriteNameFromArg(args[0]);
+                handle.diff = {before: null, after: handle.targetName};
                 break;
             case 'addCostume':
                 handle.targetName = editingTargetName(vm);
                 handle.before = {name: args[0] && args[0].name};
+                handle.diff = {before: null, after: handle.before.name || null};
                 break;
             case 'addSound':
                 handle.targetName = editingTargetName(vm);
                 handle.before = {name: args[0] && args[0].name};
+                handle.diff = {before: null, after: handle.before.name || null};
                 break;
             default:
                 handle.targetName = editingTargetName(vm);
@@ -262,9 +273,15 @@ class DashActivity {
             verb: kind.verb,
             targetName,
             extraName: before && before.name,
+            diff: handle.diff || null,
             undoable: Boolean(inverse)
         });
-        if (inverse) {
+        // Restore re-applies the captured "before" state at any later point
+        // from the history (targeted restore, independent of the undo stack).
+        const restore = inverse || null;
+        if (restore) {
+            entry.restore = restore;
+            entry.hasRestore = true;
             this.undoStack.unshift({entryId: entry.id, inverse, label: entry});
             if (this.undoStack.length > MAX_UNDO) this.undoStack.pop();
         }
@@ -288,6 +305,7 @@ class DashActivity {
             verb: (kind && kind.verb) || 'changedProject',
             targetName: typeof action.targetName === 'string' ? action.targetName : null,
             extraName: typeof action.extraName === 'string' ? action.extraName : null,
+            diff: action.diff && typeof action.diff === 'object' ? action.diff : null,
             undoable: false
         });
     }
@@ -327,11 +345,17 @@ class DashActivity {
         try {
             const presence = this.vm && this.vm.dashCollaboration && this.vm.dashCollaboration.presence;
             if (!presence) return;
+            const diff = entry.diff && {
+                before: typeof entry.diff.before === 'string' ? entry.diff.before.slice(0, 80) : null,
+                after: typeof entry.diff.after === 'string' ? entry.diff.after.slice(0, 80) : null,
+                summary: typeof entry.diff.summary === 'string' ? entry.diff.summary.slice(0, 80) : undefined
+            };
             presence.update({
                 action: {
                     kind: entry.kind,
                     targetName: entry.targetName || undefined,
-                    extraName: entry.extraName || undefined
+                    extraName: entry.extraName || undefined,
+                    diff
                 }
             });
             // Actions are events, not state: clear so they do not stick.
@@ -380,6 +404,35 @@ class DashActivity {
         return true;
     }
 
+    /**
+     * Targeted restore from the history: re-applies the captured "before"
+     * state of a specific entry (bring back a deleted sprite/costume/sound,
+     * roll a name back) even long after the change happened.
+     * @param {string} entryId entry to restore from
+     * @returns {Promise} result of the restore operation
+     */
+    async restoreEntry (entryId) {
+        const entry = this.entries.find(item => item.id === entryId);
+        if (!entry) throw new Error('Entry not found');
+        if (typeof entry.restore !== 'function') throw new Error('This change cannot be restored');
+        // Restoring the before-state makes the matching undo slot redundant.
+        const index = this.undoStack.findIndex(item => item.entryId === entryId);
+        if (index >= 0) this.undoStack.splice(index, 1);
+        try {
+            await entry.restore();
+        } finally {
+            this.push({
+                source: 'local',
+                kind: 'restore',
+                icon: 'undo',
+                verb: 'restoredEntry',
+                targetName: entry.targetName || null,
+                undoable: false
+            });
+        }
+        return true;
+    }
+
     /* ------------------------------------------------------------------ */
     /* Name lookups (best-effort, before the change is applied)            */
     /* ------------------------------------------------------------------ */
@@ -411,6 +464,27 @@ class DashActivity {
             if (typeof arg !== 'string') return null;
             const parsed = JSON.parse(arg);
             return parsed && parsed.name ? parsed.name : null;
+        } catch (error) {
+            return null;
+        }
+    }
+
+    /**
+     * Short human summary of a sprite (for delete diffs).
+     * @param {VirtualMachine} vm the VM
+     * @param {string} targetId sprite id
+     * @returns {?string} e.g. "3 costumes, 2 sounds, 12 blocks"
+     */
+    targetSummary (vm, targetId) {
+        try {
+            const target = vm && vm.runtime && vm.runtime.getTargetById && vm.runtime.getTargetById(targetId);
+            if (!target) return null;
+            const costumes = target.getCostumes ? target.getCostumes().length : 0;
+            const sounds = target.getSounds ? target.getSounds().length : 0;
+            const blocks = target.blocks && target.blocks._blocks ? Object.keys(target.blocks._blocks).length : null;
+            const parts = [`${costumes} costume(s)`, `${sounds} sound(s)`];
+            if (blocks !== null) parts.push(`${blocks} block(s)`);
+            return parts.join(', ');
         } catch (error) {
             return null;
         }

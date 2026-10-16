@@ -36,6 +36,7 @@ const VERBS = {
     removedUser: {id: 'dash.activity.removedUser', defaultMessage: 'removed'},
     bannedUser: {id: 'dash.activity.bannedUser', defaultMessage: 'banned'},
     raisedHand: {id: 'dash.activity.raisedHand', defaultMessage: 'raised their hand'},
+    restoredEntry: {id: 'dash.activity.restoredEntry', defaultMessage: 'restored an earlier state of'},
     joined: {id: 'dash.activity.joined', defaultMessage: 'joined the session'},
     left: {id: 'dash.activity.left', defaultMessage: 'left the session'}
 };
@@ -58,9 +59,9 @@ const formatTime = ts => {
 class ActivityFeed extends React.Component {
     constructor (props) {
         super(props);
-        this.state = {tick: 0, busy: false, error: null};
+        this.state = {tick: 0, busy: false, error: null, expanded: null};
         this.unsubscribe = null;
-        bindAll(this, ['handleTick', 'handleUndo', 'handleUndoEntry']);
+        bindAll(this, ['handleTick', 'handleUndo', 'handleUndoEntry', 'handleRestoreEntry', 'handleToggleExpand']);
     }
     componentDidMount () {
         this.unsubscribe = activity.subscribe(this.handleTick);
@@ -70,6 +71,9 @@ class ActivityFeed extends React.Component {
     }
     handleTick () {
         this.setState({tick: this.state.tick + 1});
+    }
+    handleToggleExpand (entryId) {
+        this.setState({expanded: this.state.expanded === entryId ? null : entryId});
     }
     async handleUndo () {
         if (this.state.busy) return;
@@ -93,22 +97,74 @@ class ActivityFeed extends React.Component {
             this.setState({busy: false});
         }
     }
+    async handleRestoreEntry (entryId) {
+        if (this.state.busy) return;
+        this.setState({busy: true, error: null});
+        try {
+            await activity.restoreEntry(entryId);
+        } catch (error) {
+            this.setState({error: error.message});
+        } finally {
+            this.setState({busy: false});
+        }
+    }
+    renderDiff (entry) {
+        const diff = entry.diff;
+        if (!diff) return null;
+        return (
+            <div className={styles.diffPanel}>
+                {typeof diff.before === 'string' && typeof diff.after === 'string' ? (
+                    <div className={styles.diffLine}>
+                        <span className={styles.diffBefore}>{diff.before ? `\u2190 "${diff.before}"` : '\u2190 (new)'}</span>
+                        <span className={styles.diffArrow}>{' \u27A1 '}</span>
+                        <span className={styles.diffAfter}>{diff.after ? `"${diff.after}"` : '(deleted)'}</span>
+                    </div>
+                ) : null}
+                {typeof diff.before === 'string' && diff.after === null ? (
+                    <div className={styles.diffLine}>
+                        <span className={styles.diffBefore}>{`\u2190 "${diff.before}"`}</span>
+                        <span className={styles.diffArrow}>{' \u27A1 '}</span>
+                        <span className={styles.diffAfter}>{'(deleted)'}</span>
+                    </div>
+                ) : null}
+                {diff.before === null && typeof diff.after === 'string' ? (
+                    <div className={styles.diffLine}>
+                        <span className={styles.diffBefore}>{'\u2190 (new)'}</span>
+                        <span className={styles.diffArrow}>{' \u27A1 '}</span>
+                        <span className={styles.diffAfter}>{`"${diff.after}"`}</span>
+                    </div>
+                ) : null}
+                {diff.summary ? (
+                    <div className={styles.diffSummary}>{diff.summary}</div>
+                ) : null}
+            </div>
+        );
+    }
     renderEntry (entry) {
         const verb = VERBS[entry.verb] || VERBS.changedProject;
+        const expanded = this.state.expanded === entry.id;
+        const expandable = Boolean(entry.diff);
         return (
             <div
-                className={`${styles.feedEntry} ${entry.undoable ? styles.feedHighlight : ''}`}
+                className={`${styles.feedEntry} ${entry.undoable || entry.hasRestore ? styles.feedHighlight : ''} ${expandable ? styles.feedEntryExpandable : ''}`}
                 key={entry.id}
             >
-                <div className={styles.feedIcon}>{ICONS[entry.icon] || ICONS.edit}</div>
-                <div className={styles.feedText}>
+                <div
+                    className={styles.feedIcon}
+                    onClick={expandable ? () => this.handleToggleExpand(entry.id) : undefined}
+                >
+                    {ICONS[entry.icon] || ICONS.edit}
+                </div>
+                <div
+                    className={styles.feedText}
+                    onClick={expandable ? () => this.handleToggleExpand(entry.id) : undefined}
+                >
                     <strong>{entry.username === 'self' ? 'You' : entry.username}</strong>
                     {' '}
                     {this.props.intl.formatMessage(verb)}
                     {entry.targetName ? ` "${entry.targetName}"` : ''}
-                    {entry.extraName && entry.verb === 'renamedSprite' ? ` (${entry.extraName})` : ''}
-                    {entry.extraName && entry.verb === 'renamedCostume' ? ` (${entry.extraName})` : ''}
-                    {entry.extraName && entry.verb === 'renamedSound' ? ` (${entry.extraName})` : ''}
+                    {entry.extraName && entry.verb && entry.verb.indexOf('renamed') === 0 ? ` (${entry.extraName})` : ''}
+                    {expanded ? this.renderDiff(entry) : null}
                 </div>
                 {entry.undoable && (
                     <button
@@ -121,6 +177,20 @@ class ActivityFeed extends React.Component {
                             defaultMessage="Undo"
                             description="Button to undo this specific own action"
                             id="dash.activity.undoEntry"
+                        />
+                    </button>
+                )}
+                {entry.hasRestore && (
+                    <button
+                        className={styles.smallButton}
+                        type="button"
+                        disabled={this.state.busy}
+                        onClick={() => this.handleRestoreEntry(entry.id)}
+                    >
+                        <FormattedMessage
+                            defaultMessage="Restore"
+                            description="Button to restore the before state of this change"
+                            id="dash.activity.restoreEntry"
                         />
                     </button>
                 )}

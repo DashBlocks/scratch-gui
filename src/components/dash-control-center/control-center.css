@@ -589,3 +589,65 @@
     background: #ffd34d;
     color: #6b4d00;
 }
+
+/* ------------------------------------------------------------------ */
+/* Activity diffs                                                      */
+/* ------------------------------------------------------------------ */
+
+.feed-entry-expandable {
+    cursor: pointer;
+}
+
+.feed-entry-expandable:hover {
+    background: #eef2fb;
+}
+
+.diff-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.45rem;
+    padding: 0.55rem 0.7rem;
+    border-radius: 9px;
+    background: #fff;
+    border: 1px solid $ui-black-transparent;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    font-size: 0.72rem;
+}
+
+.diff-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    align-items: baseline;
+    word-break: break-word;
+}
+
+.diff-before {
+    color: #b4232f;
+    text-decoration: line-through;
+    text-decoration-color: rgba(180, 35, 47, 0.5);
+}
+
+.diff-arrow {
+    opacity: 0.55;
+}
+
+.diff-after {
+    color: #1a7f37;
+    font-weight: bold;
+}
+
+.diff-summary {
+    opacity: 0.72;
+    font-style: italic;
+}
+
+/* Presenter / owner accents */
+.avatar-presenter {
+    box-shadow: 0 0 0 3px #ffd34d;
+}
+
+.crown {
+    font-size: 0.85rem;
+}

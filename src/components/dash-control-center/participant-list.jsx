@@ -239,6 +239,7 @@ class ParticipantList extends React.Component {
     }
     render () {
         const rows = this.mergedRows();
+        const control = sessionControl.getState();
         return (
             <React.Fragment>
                 <div className={styles.sectionTitle}>
@@ -253,59 +254,67 @@ class ParticipantList extends React.Component {
                     <p role="alert">{this.props.error}</p>
                 ) : null}
                 <div className={styles.participantList}>
-                    {rows.map(row => (
-                        <div
-                            className={`${styles.participantRow} ${row.self ? styles.participantRowSelf : ''}`}
-                            key={row.key}
-                        >
-                            <div className={styles.avatar} style={{background: row.color}}>
-                                {initials(row.username)}
-                                <span className={`${styles.avatarDot} ${row.online ? '' : styles.avatarDotOffline}`} />
-                            </div>
-                            <div className={styles.participantInfo}>
-                                <div className={styles.participantNameRow}>
-                                    <span className={styles.participantName}>{row.username}</span>
-                                    {row.self && (
-                                        <span className={styles.youTag}>
-                                            <FormattedMessage
-                                                defaultMessage="You"
-                                                description="Badge marking the local user"
-                                                id="dash.controlCenter.you"
-                                            />
-                                        </span>
-                                    )}
-                                    {this.renderRoleBadge(row.role)}
+                    {rows.map(row => {
+                        const isPresenter = control.presentationActive &&
+                            ((control.presenterName === 'self' && row.self) ||
+                             (control.presenterName && control.presenterName === row.username));
+                        return (
+                            <div
+                                className={`${styles.participantRow} ${row.self ? styles.participantRowSelf : ''}`}
+                                key={row.key}
+                            >
+                                <div className={`${styles.avatar} ${isPresenter ? styles.avatarPresenter : ''}`} style={{background: row.color}}>
+                                    {initials(row.username)}
+                                    <span className={`${styles.avatarDot} ${row.online ? '' : styles.avatarDotOffline}`} />
                                 </div>
-                                <div className={styles.participantMeta}>
-                                    {row.online ? (
-                                        row.viewTarget ? (
-                                            <FormattedMessage
-                                                defaultMessage="Looking at: {name}"
-                                                description="Which sprite a participant currently has open"
-                                                id="dash.controlCenter.lookingAt"
-                                                values={{name: row.viewTarget}}
-                                            />
+                                <div className={styles.participantInfo}>
+                                    <div className={styles.participantNameRow}>
+                                        <span className={styles.participantName}>{row.username}</span>
+                                        {row.role === 'owner' && (
+                                            <span className={styles.crown}>{'\u{1F451}'}</span>
+                                        )}
+                                        {row.self && (
+                                            <span className={styles.youTag}>
+                                                <FormattedMessage
+                                                    defaultMessage="You"
+                                                    description="Badge marking the local user"
+                                                    id="dash.controlCenter.you"
+                                                />
+                                            </span>
+                                        )}
+                                        {this.renderRoleBadge(row.role)}
+                                    </div>
+                                    <div className={styles.participantMeta}>
+                                        {row.online ? (
+                                            row.viewTarget ? (
+                                                <FormattedMessage
+                                                    defaultMessage="Looking at: {name}"
+                                                    description="Which sprite a participant currently has open"
+                                                    id="dash.controlCenter.lookingAt"
+                                                    values={{name: row.viewTarget}}
+                                                />
+                                            ) : (
+                                                <FormattedMessage
+                                                    defaultMessage="In session"
+                                                    description="Participant is connected"
+                                                    id="dash.controlCenter.inSession"
+                                                />
+                                            )
                                         ) : (
                                             <FormattedMessage
-                                                defaultMessage="In session"
-                                                description="Participant is connected"
-                                                id="dash.controlCenter.inSession"
+                                                defaultMessage="Offline"
+                                                description="Participant is not connected"
+                                                id="dash.controlCenter.offline"
                                             />
-                                        )
-                                    ) : (
-                                        <FormattedMessage
-                                            defaultMessage="Offline"
-                                            description="Participant is not connected"
-                                            id="dash.controlCenter.offline"
-                                        />
-                                    )}
+                                        )}
+                                    </div>
+                                </div>
+                                <div className={styles.participantActions}>
+                                    {this.renderActions(row)}
                                 </div>
                             </div>
-                            <div className={styles.participantActions}>
-                                {this.renderActions(row)}
-                            </div>
-                        </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </React.Fragment>
         );

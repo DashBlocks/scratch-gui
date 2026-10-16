@@ -13,6 +13,7 @@
  */
 
 import {requestDashApi} from './dash-api.js';
+import viewState from './dash-view-state.js';
 
 const BANS_STORAGE_KEY = 'dash-session-bans';
 
@@ -54,6 +55,7 @@ class DashSessionControl {
         this.remotePresenterUserId = null;
         this.remoteHandRaises = new Map(); // userId -> timestamp
         this.bans = {}; // userId -> {username, ts}
+        this.autoFollowedPresenter = null;
 
         this.projectId = null;
     }
@@ -162,6 +164,7 @@ class DashSessionControl {
         this.presenting = true;
         this.grantedUsers.clear();
         this.pushControl(true);
+        this.autoFollowPresenter();
         this.notify();
     }
 
@@ -170,6 +173,7 @@ class DashSessionControl {
         this.presenting = false;
         this.grantedUsers.clear();
         this.pushControl(true);
+        this.autoFollowPresenter();
         this.notify();
     }
 
@@ -310,7 +314,35 @@ class DashSessionControl {
         }
         this.remotePresenterUserId = presenter;
         this.remoteHandRaises = raises;
+        this.autoFollowPresenter();
         this.notify();
+    }
+
+    /**
+     * While someone presents, the audience automatically follows the
+     * presenter's view (tab, sprite, zoom, scroll). Applied once per
+     * presenter; dismissing the follow chip keeps it off until the
+     * presenter changes.
+     */
+    autoFollowPresenter () {
+        const presenter = this.presenting ? this.selfUserId : this.remotePresenterUserId;
+        if (!presenter || presenter === this.selfUserId) {
+            if (this.autoFollowedPresenter &&
+                viewState.getFollowTarget() === this.autoFollowedPresenter) {
+                viewState.setFollowTarget(null);
+            }
+            this.autoFollowedPresenter = null;
+            return;
+        }
+        if (this.autoFollowedPresenter === presenter) return;
+        // Only take over when the user is not following someone already.
+        if (!viewState.getFollowTarget()) {
+            viewState.setFollowTarget(presenter);
+            this.autoFollowedPresenter = presenter;
+        } else if (viewState.getFollowTarget() === this.autoFollowedPresenter) {
+            viewState.setFollowTarget(presenter);
+            this.autoFollowedPresenter = presenter;
+        }
     }
 
     /* ------------------------------------------------------------------ */

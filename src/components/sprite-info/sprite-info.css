@@ -75,3 +75,36 @@
 .sprite-input {
     width: 8rem;
 }
+
+/* Phone: the x/y/size/direction row scrolls instead of squishing */
+@media only screen and (max-width: 599px) {
+    .sprite-info {
+        overflow-x: auto;
+        overflow-y: hidden;
+    }
+
+    .row-primary {
+        flex-wrap: nowrap;
+    }
+
+    .group {
+        flex: none;
+    }
+}
+
+/* Touch: roomier fields and tap targets */
+@media only screen and (pointer: coarse) {
+    .sprite-input,
+    .larger-input {
+        min-height: 2.5rem;
+    }
+
+    .icon-wrapper {
+        min-height: 2.5rem;
+        min-width: 2.5rem;
+    }
+
+    .rotation-select {
+        min-height: 2.5rem;
+    }
+}

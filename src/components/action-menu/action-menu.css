@@ -198,3 +198,20 @@ $arrow-rounding: 0.125rem;
     top: $arrow-inset !important;
     transform: rotate(-45deg) !important;
 }
+
+/* Larger add-buttons and their menus on touch screens */
+@media only screen and (pointer: coarse) {
+    .main-button {
+        min-height: 3.25rem;
+        min-width: 3.25rem;
+    }
+
+    .more-button {
+        min-height: 2.75rem;
+        min-width: 2.75rem;
+    }
+
+    .tooltip {
+        font-size: 0.75rem;
+    }
+}

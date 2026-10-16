@@ -382,3 +382,39 @@
         max-width: 12rem;
     }
 }
+
+/* Phone: show only the essentials, safe-area aware */
+@media only screen and (max-width: 599px) {
+    .menu-bar {
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+        gap: 0.25rem;
+    }
+
+    .menu-bar-search,
+    .feedback-link,
+    .title-field-growable {
+        display: none;
+    }
+
+    .dash-logo {
+        margin-right: 0.25rem;
+    }
+
+    .file-group .menu-bar-item,
+    .settings-group .menu-bar-item {
+        padding: 0 0.4rem;
+    }
+}
+
+@media only screen and (pointer: coarse) {
+    .menu-bar-button {
+        min-height: 2.5rem;
+        min-width: 2.5rem;
+    }
+
+    .menu-bar-search-input,
+    .menu-bar-search-button {
+        min-height: 2.5rem;
+    }
+}

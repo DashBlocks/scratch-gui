@@ -1,81 +1,195 @@
 /**
- * Platform helpers for touch devices and small screens.
- * Keeps <html> classes (dash-touch, dash-narrow) in sync with the device,
- * provides haptic feedback and tracks the on-screen keyboard height.
+ * @fileoverview Cross-platform touch/mobile helpers for Dash.
+ *
+ * Small, dependency-free utilities used across the GUI:
+ * - Device detection (touch, narrow screens)
+ * - Haptic feedback via the Vibration API
+ * - Wake Lock so the screen stays on while a project runs
+ * - PWA install prompt plumbing (beforeinstallprompt)
+ * - Service worker registration for the installed/offline shell
  */
 
-const NARROW_QUERY = '(max-width: 1023px)';
-const COARSE_QUERY = '(pointer: coarse)';
+import dashSettings from './dash-settings.js';
 
-let initialized = false;
-let keyboardHeight = 0;
+let dashPlatformInitialized = false;
 
-const isTouch = () => {
-    if (typeof window === 'undefined') return false;
-    if (typeof navigator !== 'undefined' && navigator.maxTouchPoints > 0) return true;
-    return typeof window.matchMedia === 'function' && window.matchMedia(COARSE_QUERY).matches;
-};
+const isTouch = () =>
+    typeof window !== 'undefined' &&
+    ('ontouchstart' in window || (navigator.maxTouchPoints || 0) > 0);
 
 const isNarrow = () =>
-    typeof window !== 'undefined' && typeof window.matchMedia === 'function' &&
-    window.matchMedia(NARROW_QUERY).matches;
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 599px)').matches;
 
-const updateClasses = () => {
-    const root = document.documentElement;
-    root.classList.toggle('dash-touch', isTouch());
-    root.classList.toggle('dash-narrow', isNarrow());
-};
+/* ------------------------------------------------------------------ */
+/* Haptics                                                             */
+/* ------------------------------------------------------------------ */
 
 /**
- * Short haptic feedback where the platform supports it (no-op elsewhere).
- * @param {number|number[]} pattern vibration pattern in milliseconds
+ * Buzz the device (if it supports vibration) and the setting allows it.
+ * Safe to call everywhere: it silently does nothing on desktop.
+ * @param {number} ms vibration duration in milliseconds
  */
-const buzz = pattern => {
-    if (!isTouch()) return;
-    if (typeof navigator === 'undefined' || typeof navigator.vibrate !== 'function') return;
-    try {
-        navigator.vibrate(pattern);
-    } catch (error) {
-        // Vibration may require a user gesture; ignore failures.
-    }
-};
-
-const handleViewportChange = () => {
-    const viewport = window.visualViewport;
-    if (!viewport) return;
-    // Space the visual viewport lost to the on-screen keyboard.
-    const overlap = Math.max(0, window.innerHeight - viewport.height - viewport.offsetTop);
-    const height = overlap > 120 ? overlap : 0;
-    if (height === keyboardHeight) return;
-    keyboardHeight = height;
-    const root = document.documentElement;
-    root.style.setProperty('--dash-keyboard-height', `${height}px`);
-    root.classList.toggle('dash-keyboard-open', height > 0);
-};
-
-/**
- * Start listening for platform changes. Safe to call more than once.
- */
-const initDashPlatform = () => {
-    if (initialized || typeof window === 'undefined') return;
-    initialized = true;
-    updateClasses();
-    if (typeof window.matchMedia === 'function') {
-        for (const query of [NARROW_QUERY, COARSE_QUERY]) {
-            const media = window.matchMedia(query);
-            if (typeof media.addEventListener === 'function') {
-                media.addEventListener('change', updateClasses);
-            }
+const buzz = ms => {
+    if (!dashSettings.get('haptics')) return;
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+        try {
+            navigator.vibrate(ms);
+        } catch (e) {
+            // Some browsers require a user gesture — ignore failures.
         }
     }
-    window.addEventListener('resize', updateClasses);
-    if (window.visualViewport) {
-        window.visualViewport.addEventListener('resize', handleViewportChange);
-        window.visualViewport.addEventListener('scroll', handleViewportChange);
-        handleViewportChange();
+};
+
+/* ------------------------------------------------------------------ */
+/* Wake Lock                                                           */
+/* ------------------------------------------------------------------ */
+
+let wakeLock = null;
+let wakeLockRequested = false;
+let wakeLockListenersBound = false;
+
+const requestWakeLock = async () => {
+    wakeLockRequested = true;
+    if (typeof navigator === 'undefined' || !('wakeLock' in navigator)) return null;
+    try {
+        wakeLock = await navigator.wakeLock.request('screen');
+        wakeLock.addEventListener('release', () => {
+            wakeLock = null;
+        });
+        return wakeLock;
+    } catch (e) {
+        // Denied or unsupported — the screen may sleep normally.
+        return null;
     }
 };
 
+const releaseWakeLock = async () => {
+    wakeLockRequested = false;
+    if (wakeLock) {
+        try {
+            await wakeLock.release();
+        } catch (e) {
+            // Already released.
+        }
+        wakeLock = null;
+    }
+};
+
+/* ------------------------------------------------------------------ */
+/* Install prompt (PWA)                                                */
+/* ------------------------------------------------------------------ */
+
+let installPrompt = null;
+const installPromptListeners = new Set();
+
+const notifyInstallPrompt = () => {
+    for (const listener of installPromptListeners) {
+        try {
+            listener(installPrompt);
+        } catch (e) {
+            // Listener errors must not break other listeners.
+        }
+    }
+};
+
+/**
+ * Subscribe to PWA install-availability changes.
+ * The listener is called immediately with the current state.
+ * @param {function(?Event): void} listener receives the prompt event or null
+ * @returns {function(): void} unsubscribe function
+ */
+const onInstallPrompt = listener => {
+    installPromptListeners.add(listener);
+    listener(installPrompt);
+    return () => installPromptListeners.delete(listener);
+};
+
+/**
+ * Trigger the PWA installation flow if a prompt is available.
+ * @returns {Promise<boolean>} true if the install prompt was shown and accepted
+ */
+const promptInstall = async () => {
+    if (!installPrompt) return false;
+    try {
+        installPrompt.prompt();
+        const choice = await installPrompt.userChoice;
+        installPrompt = null;
+        notifyInstallPrompt();
+        return Boolean(choice && choice.outcome === 'accepted');
+    } catch (e) {
+        installPrompt = null;
+        notifyInstallPrompt();
+        return false;
+    }
+};
+
+/* ------------------------------------------------------------------ */
+/* Service worker                                                      */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Registers the app service worker so the editor shell can be installed
+ * and works offline. Failures are silent (unsupported browsers / dev servers).
+ * The worker lives next to the manifest, so sub-path deploys work too.
+ */
+const registerServiceWorker = () => {
+    if (!('serviceWorker' in navigator)) return;
+    if (typeof window === 'undefined') return;
+    window.addEventListener('load', () => {
+        const manifestLink = document.querySelector('link[rel="manifest"]');
+        const swUrl = manifestLink
+            ? String(manifestLink.href).replace(/manifest\.webmanifest(\?.*)?$/, 'sw.js$1')
+            : 'sw.js';
+        navigator.serviceWorker.register(swUrl).catch(() => {
+            // Registration can fail on dev servers or unsupported origins — fine.
+        });
+    });
+};
+
+/* ------------------------------------------------------------------ */
+/* Init                                                                */
+/* ------------------------------------------------------------------ */
+
+const initDashPlatform = () => {
+    if (dashPlatformInitialized) return;
+    if (typeof window === 'undefined') return;
+    dashPlatformInitialized = true;
+
+    // PWA install prompt.
+    window.addEventListener('beforeinstallprompt', event => {
+        event.preventDefault();
+        installPrompt = event;
+        notifyInstallPrompt();
+    });
+    window.addEventListener('appinstalled', () => {
+        installPrompt = null;
+        notifyInstallPrompt();
+    });
+    registerServiceWorker();
+
+    // Re-acquire the wake lock when the tab becomes visible again.
+    if (!wakeLockListenersBound) {
+        wakeLockListenersBound = true;
+        document.addEventListener('visibilitychange', () => {
+            if (wakeLockRequested && document.visibilityState === 'visible') {
+                requestWakeLock();
+            }
+        });
+    }
+};
+
+// Install eagerly so early user interactions benefit.
 initDashPlatform();
 
-export {initDashPlatform, isTouch, isNarrow, buzz};
+export {
+    initDashPlatform,
+    isTouch,
+    isNarrow,
+    buzz,
+    requestWakeLock,
+    releaseWakeLock,
+    onInstallPrompt,
+    promptInstall,
+    registerServiceWorker
+};
+

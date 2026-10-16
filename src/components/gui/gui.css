@@ -472,3 +472,35 @@ $fade-out-distance: 15px;
         overscroll-behavior-y: none;
     }
 }
+
+/* --------------------------------- */
+/* Compact mode (mobile settings)   */
+/* --------------------------------- */
+:global(.dash-compact) [class*="menu-bar_menu-bar"],
+:global(.dash-compact) [class*="menu-bar_menu-bar"] * {
+    font-size: 0.78rem;
+}
+
+:global(.dash-compact) [class*="sprite-selector_sprite-selector"] {
+    max-height: 145px;
+}
+
+:global(.dash-compact) [class*="sprite-selector-item_sprite-wrapper"],
+:global(.dash-compact) [class*="sprite-selector-item_sprite-wrapper"] img {
+    width: 3.25rem;
+    height: 3.25rem;
+}
+
+:global(.dash-compact) [class*="asset-panel_wrapper"],
+:global(.dash-compact) [class*="asset-panel_wrapper"] * {
+    font-size: 0.75rem;
+}
+
+:global(.dash-compact) [class*="action-menu_button"] {
+    width: 36px;
+    height: 36px;
+}
+
+:global(.dash-compact) [class*="stage-selector_item-wrapper"] {
+    min-height: 72px;
+}

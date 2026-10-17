@@ -1,0 +1,299 @@
+@import "../../css/colors.css";
+@import "../../css/units.css";
+@import "../../css/z-index.css";
+
+.wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.toggle {
+    position: relative;
+    padding: 0.15rem 0.45rem;
+    border: 1px solid $ui-black-transparent;
+    border-radius: 0.25rem;
+    background: $ui-primary;
+    font-size: 0.95rem;
+    line-height: 1.25;
+    cursor: pointer;
+}
+
+.badge {
+    position: absolute;
+    top: -0.35rem;
+    right: -0.35rem;
+    min-width: 1rem;
+    height: 1rem;
+    padding: 0 0.2rem;
+    border-radius: 0.5rem;
+    background: $error-light;
+    color: #fff;
+    font-size: 0.625rem;
+    font-weight: bold;
+    line-height: 1rem;
+    text-align: center;
+}
+
+.panel {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    right: 0;
+    z-index: $z-index-drag-layer;
+    display: flex;
+    flex-direction: column;
+    width: 20rem;
+    height: 26rem;
+    border: 1px solid $ui-black-transparent;
+    border-radius: $space;
+    background: $ui-white;
+    color: $text-primary;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.8125rem;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+    overflow: hidden;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid $ui-black-transparent;
+    background: $ui-tertiary;
+    font-weight: bold;
+}
+
+.header-button,
+.header-button-active {
+    margin-left: 0.15rem;
+    padding: 0.1rem 0.35rem;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    background: transparent;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+.header-button:hover {
+    background: rgba(0, 0, 0, 0.08);
+}
+
+.header-button-active {
+    background: $looks-transparent;
+    border-color: $looks-secondary;
+}
+
+.header-button:first-of-type {
+    margin-left: auto;
+}
+
+.list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.empty {
+    margin: auto;
+    color: $text-primary-transparent;
+    text-align: center;
+}
+
+.message,
+.message-self {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    max-width: 100%;
+}
+
+.message-self .message-text {
+    background: $looks-transparent;
+    border-radius: 0.45rem;
+    padding: 0.25rem 0.45rem;
+}
+
+.message-meta {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.4rem;
+}
+
+.message-author {
+    font-weight: bold;
+    font-size: 0.75rem;
+}
+
+.message-time {
+    color: $text-primary-transparent;
+    font-size: 0.65rem;
+}
+
+.message-text {
+    word-break: break-word;
+    white-space: pre-wrap;
+    line-height: 1.35;
+}
+
+.mention {
+    color: $looks-secondary;
+    font-weight: bold;
+}
+
+.mention-me {
+    color: #fff;
+    background: $error-light;
+    border-radius: 0.3rem;
+    padding: 0 0.25rem;
+    font-weight: bold;
+}
+
+.pin-chip {
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.25rem;
+    align-self: flex-start;
+    margin-top: 0.15rem;
+    padding: 0.1rem 0.4rem;
+    border: 1px solid $ui-black-transparent;
+    border-radius: 0.5rem;
+    background: $ui-tertiary;
+    font-size: 0.65rem;
+    cursor: pointer;
+}
+
+.pin-chip:hover {
+    background: $looks-transparent;
+}
+
+.pin-name {
+    margin-left: 0.2rem;
+    font-style: italic;
+    opacity: 0.85;
+}
+
+.pending-pin {
+    padding: 0.25rem 0.6rem;
+    border-top: 1px solid $ui-black-transparent;
+    background: $looks-transparent;
+    font-size: 0.7rem;
+}
+
+.composer {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 0.3rem;
+    padding: 0.45rem;
+    border-top: 1px solid $ui-black-transparent;
+    background: $ui-tertiary;
+}
+
+.composer-button,
+.composer-button-active {
+    flex: none;
+    padding: 0.25rem 0.4rem;
+    border: 1px solid $ui-black-transparent;
+    border-radius: 0.35rem;
+    background: $ui-white;
+    font-size: 0.95rem;
+    line-height: 1.25;
+    cursor: pointer;
+}
+
+.composer-button-active {
+    background: $looks-transparent;
+    border-color: $looks-secondary;
+}
+
+.input {
+    flex: 1;
+    resize: none;
+    padding: 0.35rem 0.5rem;
+    border: 1px solid $ui-black-transparent;
+    border-radius: 0.45rem;
+    font: inherit;
+    line-height: 1.35;
+    max-height: 5.5rem;
+}
+
+.send-button {
+    flex: none;
+    padding: 0.3rem 0.55rem;
+    border: 1px solid $ui-black-transparent;
+    border-radius: 0.35rem;
+    background: $looks-secondary;
+    color: #fff;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+.send-button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+.emoji-picker {
+    position: absolute;
+    right: 0.45rem;
+    bottom: 3.6rem;
+    z-index: $z-index-drag-layer;
+    width: 17.5rem;
+    border: 1px solid $ui-black-transparent;
+    border-radius: $space;
+    background: $ui-white;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+
+.emoji-categories {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid $ui-black-transparent;
+    background: $ui-tertiary;
+}
+
+.emoji-category,
+.emoji-category-active {
+    flex: 1;
+    padding: 0.3rem 0;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.emoji-category-active {
+    background: $looks-transparent;
+    box-shadow: inset 0 -2px 0 $looks-secondary;
+}
+
+.emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 0.1rem;
+    padding: 0.35rem;
+    max-height: 11.5rem;
+    overflow-y: auto;
+}
+
+.emoji-cell {
+    padding: 0.15rem 0;
+    border: none;
+    border-radius: 0.25rem;
+    background: transparent;
+    font-size: 1.15rem;
+    line-height: 1.35;
+    cursor: pointer;
+}
+
+.emoji-cell:hover {
+    background: $looks-transparent;
+}

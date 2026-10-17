@@ -2,6 +2,8 @@ import * as Y from 'yjs';
 import JSZip from 'jszip';
 import AddonHooks from '../addons/hooks';
 import DashCollaboration from './dash-collaboration';
+import DashPresence from './dash-presence';
+import DashChat from './dash-chat';
 
 const maps = ['blocks', 'variables', 'lists', 'broadcasts', 'comments'];
 const blockStructureFields = ['opcode', 'next', 'parent', 'inputs', 'shadow', 'mutation'];
@@ -230,6 +232,8 @@ export default class DashCollaborationSession {
         this.uploadedAssets = new Set();
         this.extensionReferences = new Map();
         this.extensionSources = new Map();
+        this.presence = new DashPresence();
+        this.chat = new DashChat();
         this.installOperationTracking();
         this.onLocalChange = () => {
             if (this.applying || !this.loaded || this.disposed) return;
@@ -257,6 +261,7 @@ export default class DashCollaborationSession {
                 this.state = status.state;
                 this.error = status.error;
                 if (status.state === 'connected') {
+                    this.presence.setSelf(client.connectionId, client.userId);
                     if (this.resolveReady) this.resolveReady();
                     if (this.restoreOnReconnect) {
                         this.restoreAfterReconnect().catch(error => this.fail(error));
@@ -271,10 +276,16 @@ export default class DashCollaborationSession {
             },
             onMembers: members => {
                 this.members = members;
+                this.presence.setMembers(members);
+                const me = members.find(member => member.userId === client.userId &&
+                    (!client.connectionId || member.connectionId === client.connectionId));
+                if (me) this.chat.setSelf(me.userId, me.username);
                 this.notify();
             }
         });
         client.doc.on('update', this.onDocumentChange);
+        this.presence.bind(client);
+        this.chat.bind(client);
         return client;
     }
     notify () {
@@ -732,6 +743,8 @@ export default class DashCollaborationSession {
         }
         this.client.doc.off('update', this.onDocumentChange);
         this.client.destroy();
+        this.presence.destroy();
+        this.chat.destroy();
         window.removeEventListener('beforeunload', this.beforeUnload);
     }
 }

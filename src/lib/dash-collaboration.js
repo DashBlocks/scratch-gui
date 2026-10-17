@@ -29,12 +29,16 @@ const projectTargetAssets = target => {
 };
 
 export default class DashCollaboration {
-    constructor (projectId, {onStatus = () => {}, onMembers = () => {}} = {}) {
+    constructor (projectId, {onStatus = () => {}, onMembers = () => {}, onPresence = () => {},
+        onChat = () => {}, onChatHistory = () => {}} = {}) {
         if (!/^[1-9]\d{0,19}$/.test(String(projectId))) throw new Error('Invalid Dash project ID');
         this.projectId = String(projectId);
         this.doc = new Y.Doc();
         this.onStatus = onStatus;
         this.onMembers = onMembers;
+        this.onPresence = onPresence;
+        this.onChat = onChat;
+        this.onChatHistory = onChatHistory;
         this.active = false;
         this.generation = 0;
         this.attempts = 0;
@@ -44,6 +48,8 @@ export default class DashCollaboration {
         this.epoch = null;
         this.grantId = null;
         this.userId = null;
+        this.connectionId = null;
+        this.features = new Set();
         this.pending = null;
         this.queued = null;
         this.handleUpdate = this.handleUpdate.bind(this);
@@ -90,7 +96,7 @@ export default class DashCollaboration {
             }, 10000);
             ws.onopen = () => {
                 if (!this.active || generation !== this.generation) return ws.close();
-                ws.send(JSON.stringify({type: 'auth', token: data.token}));
+                ws.send(JSON.stringify({type: 'auth', token: data.token, features: ['presence', 'chat']}));
             };
             ws.onmessage = event => {
                 if (!this.active || generation !== this.generation) return;
@@ -140,6 +146,9 @@ export default class DashCollaboration {
                 throw new Error('Room or permissions changed. Reopen the project before reconnecting.');
             }
             this.userId = message.userId;
+            this.connectionId = typeof message.connectionId === 'string' ? message.connectionId : null;
+            this.features = new Set(Array.isArray(message.features) ?
+                message.features.filter(feature => feature === 'presence' || feature === 'chat') : []);
             this.epoch = message.epoch;
             this.grantId = message.grantId;
             this.role = message.role;
@@ -160,6 +169,24 @@ export default class DashCollaboration {
             }
         } else if (message.type === 'members') {
             this.onMembers(message.members);
+        } else if (message.type === 'presence') {
+            if (!message || typeof message.state !== 'object' || message.state === null ||
+                Array.isArray(message.state) ||
+                (typeof message.connectionId !== 'string' && typeof message.userId !== 'string')) {
+                return;
+            }
+            this.onPresence(message);
+        } else if (message.type === 'chat') {
+            if (!message.message || typeof message.message !== 'object' ||
+                typeof message.message.id !== 'string' || typeof message.message.userId !== 'string' ||
+                typeof message.message.username !== 'string' || typeof message.message.text !== 'string' ||
+                !Number.isFinite(message.message.ts)) {
+                return;
+            }
+            this.onChat(message.message);
+        } else if (message.type === 'chat-history') {
+            if (!Array.isArray(message.messages)) return;
+            this.onChatHistory(message.messages.slice(-200));
         } else {
             throw new Error('Unknown collaboration message');
         }
@@ -175,6 +202,36 @@ export default class DashCollaboration {
             binary += String.fromCharCode(...data.subarray(i, i + 8192));
         }
         return btoa(binary);
+    }
+    /**
+     * Broadcast ephemeral presence state (cursor, selection) to other
+     * participants. Best-effort: never queued, never persisted, allowed for
+     * viewers. Dropped silently when the connection is busy or closed.
+     * @param {object} state small JSON-serializable presence payload
+     */
+    sendPresence (state) {
+        if (!this.active || this.state !== 'connected' || !this.features.has('presence') || !this.socket ||
+            this.socket.readyState !== WebSocket.OPEN) return;
+        if (this.socket.bufferedAmount > 64 * 1024) return;
+        try {
+            this.socket.send(JSON.stringify({type: 'presence', state}));
+        } catch (error) {
+            // Presence is optional; ignore transport errors.
+        }
+    }
+    /**
+     * Send a chat message to the collaboration room. Delivered to all
+     * participants (including viewers) and kept as room history on the server.
+     * @param {{text: string, pin: ?object}} message chat message body
+     */
+    sendChat (message) {
+        if (!this.active || this.state !== 'connected' || !this.features.has('chat') || !this.socket ||
+            this.socket.readyState !== WebSocket.OPEN) return;
+        try {
+            this.socket.send(JSON.stringify({type: 'chat', text: message.text, pin: message.pin || null}));
+        } catch (error) {
+            // Chat is optional; ignore transport errors.
+        }
     }
     change (operation) {
         if (this.state !== 'connected' || this.role === 'viewer') throw new Error('Collaboration is not writable');
@@ -295,6 +352,7 @@ export default class DashCollaboration {
         if (this.controller) this.controller.abort();
         if (this.socket) this.socket.close();
         this.socket = null;
+        this.features = new Set();
         this.onMembers([]);
         this.setStatus('disconnected');
     }

@@ -11,6 +11,7 @@ import VideoProvider from '../lib/video/video-provider';
 import {BitmapAdapter as V2BitmapAdapter} from '@turbowarp/scratch-svg-renderer';
 
 import StageComponent from '../components/stage/stage.jsx';
+import PresenceCursors from '../components/dash-presence/presence-cursors.jsx';
 
 import {
     activateColorPicker,
@@ -36,6 +37,7 @@ class Stage extends React.Component {
             'onMouseUp',
             'onMouseMove',
             'onMouseDown',
+            'onMouseLeave',
             'onStartDrag',
             'onStopDrag',
             'onWheel',
@@ -152,6 +154,7 @@ class Stage extends React.Component {
         document.addEventListener('touchend', this.onMouseUp);
         canvas.addEventListener('mousedown', this.onMouseDown);
         canvas.addEventListener('touchstart', this.onMouseDown);
+        canvas.addEventListener('mouseleave', this.onMouseLeave);
         canvas.addEventListener('wheel', this.onWheel);
         canvas.addEventListener('contextmenu', this.onContextMenu);
     }
@@ -162,6 +165,7 @@ class Stage extends React.Component {
         document.removeEventListener('touchend', this.onMouseUp);
         canvas.removeEventListener('mousedown', this.onMouseDown);
         canvas.removeEventListener('touchstart', this.onMouseDown);
+        canvas.removeEventListener('mouseleave', this.onMouseLeave);
         canvas.removeEventListener('wheel', this.onWheel);
         canvas.removeEventListener('contextmenu', this.onContextMenu);
     }
@@ -207,6 +211,7 @@ class Stage extends React.Component {
     onMouseMove (e) {
         const {x, y} = getEventXY(e);
         const mousePosition = [x - this.rect.left, y - this.rect.top];
+        this.updatePresenceCursor(mousePosition[0], mousePosition[1]);
 
         if (this.props.isColorPicking) {
             // Set the pickX/Y for the color picker loop to pick up
@@ -245,6 +250,33 @@ class Stage extends React.Component {
             canvasHeight: this.rect.height
         };
         this.props.vm.postIOData('mouse', coordinates);
+    }
+    updatePresenceCursor (x, y) {
+        const session = this.props.vm.dashCollaboration;
+        if (!session || !session.presence) return;
+        const rect = this.rect;
+        if (!rect || !rect.width || !rect.height) return;
+        const inside = x >= 0 && y >= 0 && x <= rect.width && y <= rect.height;
+        const current = session.presence.local.cursor;
+        if (inside) {
+            session.presence.update({
+                cursor: {
+                    surface: 'stage',
+                    x: x / rect.width,
+                    y: y / rect.height
+                }
+            });
+        } else if (current && current.surface === 'stage') {
+            session.presence.update({cursor: null});
+        }
+    }
+    onMouseLeave () {
+        const session = this.props.vm.dashCollaboration;
+        if (!session || !session.presence) return;
+        const current = session.presence.local.cursor;
+        if (current && current.surface === 'stage') {
+            session.presence.update({cursor: null});
+        }
     }
     onMouseUp (e) {
         const {x, y} = getEventXY(e);
@@ -460,6 +492,10 @@ class Stage extends React.Component {
                 overlay={this.props.vm.runtime.renderer.overlayContainer}
                 colorInfo={this.state.colorInfo}
                 dragRef={this.setDragCanvas}
+                presenceCursors={<PresenceCursors
+                    surface="stage"
+                    vm={vm}
+                />}
                 question={this.state.question}
                 onDoubleClick={this.handleDoubleClick}
                 onQuestionAnswered={this.handleQuestionAnswered}

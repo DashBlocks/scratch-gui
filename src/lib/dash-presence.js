@@ -71,7 +71,6 @@ class DashPresence {
         this.send = null;
         this.sendTimer = null;
         this.notifyTimer = null;
-        this.eventListeners = new Set();
         this.pruneTimer = setInterval(() => this.prune(), 3000);
     }
     /**
@@ -129,26 +128,14 @@ class DashPresence {
         if (!this.selfId && this.selfUserId && message.userId === this.selfUserId) return;
         const state = message.state && typeof message.state === 'object' && !Array.isArray(message.state) ?
             message.state : {};
-        const peer = {
+        this.peers.set(key, {
             id: key,
             userId: typeof message.userId === 'string' ? message.userId : '',
             username: typeof message.username === 'string' && message.username ? message.username : '...',
             color: presenceColor(key),
             state,
             seen: Date.now()
-        };
-        this.peers.set(key, peer);
-        // Action events are firehose events (activity feed): dispatch per
-        // message so consecutive actions are never collapsed by state updates.
-        if (state.action && typeof state.action === 'object' && !Array.isArray(state.action)) {
-            for (const listener of [...this.eventListeners]) {
-                try {
-                    listener({peer, action: state.action});
-                } catch (error) {
-                    // Event listeners must never break presence.
-                }
-            }
-        }
+        });
         this.scheduleNotify();
     }
     prune () {
@@ -171,15 +158,6 @@ class DashPresence {
     subscribe (listener) {
         this.listeners.add(listener);
         return () => this.listeners.delete(listener);
-    }
-    /**
-     * Subscribe to remote action events (activity feed firehose).
-     * @param {function({peer: object, action: object}): void} listener called per event
-     * @returns {function} unsubscribe
-     */
-    onEvent (listener) {
-        this.eventListeners.add(listener);
-        return () => this.eventListeners.delete(listener);
     }
     scheduleNotify () {
         if (this.notifyTimer) return;

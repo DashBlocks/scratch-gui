@@ -4,8 +4,6 @@ import AddonHooks from '../addons/hooks';
 import DashCollaboration from './dash-collaboration';
 import DashPresence from './dash-presence';
 import DashChat from './dash-chat';
-import activity from './dash-activity';
-import sessionControl from './dash-session-control';
 
 const maps = ['blocks', 'variables', 'lists', 'broadcasts', 'comments'];
 const blockStructureFields = ['opcode', 'next', 'parent', 'inputs', 'shadow', 'mutation'];
@@ -626,15 +624,9 @@ export default class DashCollaborationSession {
             if (typeof original !== 'function') continue;
             const wrapped = (...args) => {
                 this.vm.assertCollaborationWritable();
-                // Presentation mode: only the presenter (or granted speakers) edit.
-                if (!sessionControl.canEdit()) {
-                    throw new Error('The presenter locked editing. Raise your hand to ask for speech.');
-                }
                 this.localOperations++;
-                const activityHandle = activity.beginLocalOperation(name, args, this.vm);
-                const finish = value => {
+                const finish = () => {
                     this.localOperations--;
-                    activity.endLocalOperation(activityHandle, value);
                     this.onLocalChange();
                 };
                 let result;
@@ -644,16 +636,8 @@ export default class DashCollaborationSession {
                     finish();
                     throw error;
                 }
-                if (result && typeof result.then === 'function') {
-                    return Promise.resolve(result).then(value => {
-                        finish(value);
-                        return value;
-                    }, error => {
-                        finish();
-                        throw error;
-                    });
-                }
-                finish(result);
+                if (result && typeof result.then === 'function') return Promise.resolve(result).finally(finish);
+                finish();
                 return result;
             };
             this.operationMethods.set(name, {original, wrapped});
@@ -723,7 +707,7 @@ export default class DashCollaborationSession {
     canEdit () {
         return this.loaded && Boolean(this.base) && !this.restoreOnReconnect && !this.disposed &&
             !this.applying && this.client.state === 'connected' &&
-            this.client.role !== 'viewer' && sessionControl.canEdit();
+            this.client.role !== 'viewer';
     }
     fail (error) {
         this.client.fail(error.message || String(error));

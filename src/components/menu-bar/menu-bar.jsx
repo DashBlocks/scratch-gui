@@ -29,7 +29,6 @@ import SettingsMenu from './settings-menu.jsx';
 import AccountNav from '../../containers/account-nav.jsx';
 import Spinner from '../spinner/spinner.jsx';
 import CollaboratorsModal from '../dash-collaborators/collaborators-modal.jsx';
-import ControlCenterModal from '../dash-control-center/control-center-modal.jsx';
 import PresenceAvatars from '../dash-presence/presence-avatars.jsx';
 
 import FramerateChanger from '../../containers/tw-framerate-changer.jsx';
@@ -1459,12 +1458,10 @@ class MenuBar extends React.Component {
                 {menuBar}
                 {this.props.canManageCollaborators &&
                     this.state.collaboratorsProjectId === this.props.projectId && (
-                    <ControlCenterModal
+                    <CollaboratorsModal
                         key={this.props.projectId}
                         projectId={this.props.projectId}
                         isRtl={this.props.isRtl}
-                        canManage
-                        vm={this.props.vm}
                         onClose={this.handleCloseCollaborators}
                     />
                 )}

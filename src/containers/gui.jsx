@@ -40,10 +40,6 @@ import GUIComponent from '../components/gui/gui.jsx';
 import {setIsScratchDesktop} from '../lib/isScratchDesktop.js';
 import TWFullScreenResizerHOC from '../lib/tw-fullscreen-resizer-hoc.jsx';
 import TWThemeManagerHOC from './tw-theme-manager-hoc.jsx';
-import AddonHooks from '../addons/hooks';
-import viewState from '../lib/dash-view-state.js';
-import sessionControl from '../lib/dash-session-control.js';
-import activity from '../lib/dash-activity.js';
 
 const {RequestMetadata, setMetadata, unsetMetadata} = storage.scratchFetch;
 
@@ -63,33 +59,6 @@ class GUI extends React.Component {
         this.props.onStorageInit(storage);
         this.props.onVmInit(this.props.vm);
         setProjectIdMetadata(this.props.projectId);
-
-        // Collaboration extras: view sharing/follow, presenter mode, activity feed.
-        const tabNames = ['code', 'costumes', 'sounds'];
-        this.detachDashCollabExtras = [
-            viewState.attach(this.props.vm, {
-                getTab: () => tabNames[this.props.activeTabIndex] || 'code',
-                setTab: name => {
-                    const index = tabNames.indexOf(name);
-                    if (index >= 0 && index !== this.props.activeTabIndex) this.props.onActivateTab(index);
-                },
-                getTargetId: () => this.props.vm.editingTarget && this.props.vm.editingTarget.id,
-                getTargetName: () => this.props.vm.editingTarget && this.props.vm.editingTarget.sprite ?
-                    this.props.vm.editingTarget.sprite.name : null,
-                setSprite: id => {
-                    if (this.props.vm.editingTarget && this.props.vm.editingTarget.id !== id) {
-                        this.props.vm.setEditingTarget(id);
-                    }
-                },
-                getWorkspace: () => AddonHooks.blocklyWorkspace,
-                getStageMode: () => null,
-                setStageMode: () => {}
-            }),
-            sessionControl.attach(this.props.vm, this.props.projectId),
-            activity.attach(this.props.vm)
-        ];
-        // Keep the published view fresh while the user works.
-        this.dashViewTimer = setInterval(() => viewState.capture(), 900);
     }
     componentDidUpdate (prevProps) {
         if (this.props.projectId !== prevProps.projectId) {
@@ -97,19 +66,11 @@ class GUI extends React.Component {
                 this.props.onUpdateProjectId(this.props.projectId);
             }
             setProjectIdMetadata(this.props.projectId);
-            sessionControl.attach(this.props.vm, this.props.projectId);
         }
         if (this.props.isShowingProject && !prevProps.isShowingProject) {
             // this only notifies container when a project changes from not yet loaded to loaded
             // At this time the project view in www doesn't need to know when a project is unloaded
             this.props.onProjectLoaded();
-        }
-    }
-    componentWillUnmount () {
-        clearInterval(this.dashViewTimer);
-        if (this.detachDashCollabExtras) {
-            for (const detach of this.detachDashCollabExtras) detach();
-            this.detachDashCollabExtras = null;
         }
     }
     render () {

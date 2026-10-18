@@ -39,7 +39,6 @@ import TWUnknownPlatformModal from '../../containers/tw-unknown-platform-modal.j
 import TWInvalidProjectModal from '../../containers/tw-invalid-project-modal.jsx';
 import DashWelcomeModal from '../../containers/dash-welcome-modal.jsx';
 import DashCollaborationStatus from '../dash-collaboration-status/dash-collaboration-status.jsx';
-import FollowBar from '../dash-control-center/follow-bar.jsx';
 
 import {STAGE_SIZE_MODES, FIXED_WIDTH, UNCONSTRAINED_NON_STAGE_WIDTH} from '../../lib/layout-constants';
 import {resolveStageSize} from '../../lib/screen-utils';
@@ -347,7 +346,6 @@ const GUIComponent = props => {
                     <Box className={styles.flexWrapper}>
                         <Box className={styles.editorWrapper}>
                             <DashCollaborationStatus vm={vm} />
-                            <FollowBar vm={vm} />
                             <Tabs
                                 forceRenderTabPanel
                                 className={tabClassNames.tabs}

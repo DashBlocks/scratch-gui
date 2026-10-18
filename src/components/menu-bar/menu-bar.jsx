@@ -29,7 +29,6 @@ import SettingsMenu from './settings-menu.jsx';
 import AccountNav from '../../containers/account-nav.jsx';
 import Spinner from '../spinner/spinner.jsx';
 import CollaboratorsModal from '../dash-collaborators/collaborators-modal.jsx';
-import PresenceAvatars from '../dash-presence/presence-avatars.jsx';
 
 import FramerateChanger from '../../containers/tw-framerate-changer.jsx';
 import ChangeUsername from '../../containers/tw-change-username.jsx';
@@ -1352,9 +1351,6 @@ class MenuBar extends React.Component {
                     </div>}
                 </div>
                 <div className={styles.accountInfoGroup}>
-                    {!this.props.isPlayerOnly && <div className={styles.menuBarItem}>
-                        <PresenceAvatars vm={this.props.vm} />
-                    </div>}
                     {!this.props.isPlayerOnly && <div className={styles.menuBarItem}>
                         <TWSaveStatus
                             showSaveFilePicker={this.props.showSaveFilePicker}

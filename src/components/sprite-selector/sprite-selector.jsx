@@ -62,7 +62,6 @@ const SpriteSelectorComponent = function (props) {
         onSelectSprite,
         onSpriteUpload,
         onSurpriseSpriteClick,
-        presenceUsers,
         raised,
         selectedId,
         spriteFileInput,
@@ -105,7 +104,6 @@ const SpriteSelectorComponent = function (props) {
                 editingTarget={editingTarget}
                 hoveredTarget={hoveredTarget}
                 items={Object.keys(sprites).map(id => sprites[id])}
-                presenceUsers={presenceUsers}
                 raised={raised}
                 selectedId={selectedId}
                 onDeleteSprite={onDeleteSprite}
@@ -172,10 +170,6 @@ SpriteSelectorComponent.propTypes = {
     onSelectSprite: PropTypes.func,
     onSpriteUpload: PropTypes.func,
     onSurpriseSpriteClick: PropTypes.func,
-    presenceUsers: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.shape({
-        color: PropTypes.string,
-        username: PropTypes.string
-    }))),
     raised: PropTypes.bool,
     selectedId: PropTypes.string,
     spriteFileInput: PropTypes.func,

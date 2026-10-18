@@ -15,8 +15,7 @@ const SpriteSelectorItem = props => (
     <ContextMenuTrigger
         attributes={{
             className: classNames(props.className, styles.spriteSelectorItem, {
-                [styles.isSelected]: props.selected,
-                [styles.hasPresence]: props.presenceUsers && props.presenceUsers.length
+                [styles.isSelected]: props.selected
             }),
             onClick: props.onClick,
             onMouseEnter: props.onMouseEnter,
@@ -31,18 +30,6 @@ const SpriteSelectorItem = props => (
         {typeof props.number === 'undefined' ? null : (
             <div className={styles.number}>{props.number}</div>
         )}
-        {props.presenceUsers && props.presenceUsers.length ? (
-            <div className={styles.presenceDots}>
-                {props.presenceUsers.map(user => (
-                    <span
-                        className={styles.presenceDot}
-                        key={user.username}
-                        style={{backgroundColor: user.color}}
-                        title={user.username}
-                    />
-                ))}
-            </div>
-        ) : null}
         {props.costumeURL ? (
             <div className={styles.spriteImageOuter}>
                 <div className={styles.spriteImageInner}>
@@ -127,10 +114,6 @@ SpriteSelectorItem.propTypes = {
     onMouseEnter: PropTypes.func,
     onMouseLeave: PropTypes.func,
     preventContextMenu: PropTypes.bool,
-    presenceUsers: PropTypes.arrayOf(PropTypes.shape({
-        color: PropTypes.string,
-        username: PropTypes.string
-    })),
     selected: PropTypes.bool.isRequired
 };
 

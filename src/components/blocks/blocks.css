@@ -4,7 +4,6 @@
 
 .blocks {
     height: 100%;
-    position: relative;
 }
 
 .drag-over:after {

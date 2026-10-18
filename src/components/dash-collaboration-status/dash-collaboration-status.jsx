@@ -2,7 +2,6 @@ import downloadBlob from '../../lib/download-blob';
 import PropTypes from 'prop-types';
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
-import DashChat from '../dash-chat/dash-chat.jsx';
 import * as styles from './dash-collaboration-status.css';
 
 const getStatus = vm => {
@@ -126,7 +125,6 @@ class DashCollaborationStatus extends React.Component {
                 {memberNames.length ? (
                     <span className={styles.members}>{memberNames.join(', ')}</span>
                 ) : null}
-                <DashChat vm={this.props.vm} />
             </div>
         );
     }

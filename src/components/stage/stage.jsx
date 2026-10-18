@@ -27,7 +27,6 @@ const StageComponent = props => {
         isRtl,
         colorInfo,
         micIndicator,
-        presenceCursors,
         question,
         stageSize,
         vm,
@@ -95,7 +94,6 @@ const StageComponent = props => {
                                 stageWidth={stageDimensions.width}
                             />
                         </Box>
-                        {presenceCursors || null}
                         {isColorPicking && colorInfo ? (
                             <Loupe colorInfo={colorInfo} />
                         ) : null}

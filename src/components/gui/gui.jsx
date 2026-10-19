@@ -9,6 +9,8 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import * as tabStyles from 'react-tabs/style/react-tabs.css';
 import VM from 'scratch-vm';
 
+import '../../lib/dash-platform.js';
+import tabSwipeHandlers from '../../lib/tab-swipe.js';
 import Blocks from '../../containers/blocks.jsx';
 import CostumeTab from '../../containers/costume-tab.jsx';
 import TargetPane from '../../containers/target-pane.jsx';
@@ -354,7 +356,13 @@ const GUIComponent = props => {
                                 selectedTabPanelClassName={tabClassNames.tabPanelSelected}
                                 onSelect={onActivateTab}
                             >
-                                <TabList className={tabClassNames.tabList}>
+                                <TabList
+                                    className={tabClassNames.tabList}
+                                    {...tabSwipeHandlers({
+                                        onSwipeLeft: () => onActivateTab((activeTabIndex + 1) % 3),
+                                        onSwipeRight: () => onActivateTab((activeTabIndex + 2) % 3)
+                                    })}
+                                >
                                     <Tab className={tabClassNames.tab}>
                                         <img
                                             draggable={false}

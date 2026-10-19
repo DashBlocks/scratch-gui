@@ -125,3 +125,29 @@
     background: black;
     filter: opacity(15%) brightness(0%);
 }
+
+/* Touch: easier to grab and tap */
+@media only screen and (pointer: coarse) {
+    .sprite {
+        min-width: 5.5rem;
+        min-height: 5.5rem;
+    }
+
+    .add-button {
+        min-width: 4.5rem;
+        min-height: 4.5rem;
+    }
+}
+
+/* Phone: sprite list gets a comfortable fixed height and scrolls */
+@media only screen and (max-width: 599px) {
+    .sprite-selector {
+        min-height: 11rem;
+    }
+
+    .scroll-wrapper {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+}

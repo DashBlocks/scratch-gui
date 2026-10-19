@@ -20,3 +20,10 @@
 .stop-all.is-active {
     opacity: 1;
 }
+
+@media only screen and (pointer: coarse) {
+    .stop-all {
+        min-height: 2.5rem;
+        min-width: 2.5rem;
+    }
+}

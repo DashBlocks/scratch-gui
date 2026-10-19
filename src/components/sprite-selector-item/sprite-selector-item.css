@@ -121,3 +121,20 @@
 [dir="rtl"] .number {
     right: 0.15rem;
 }
+
+@media only screen and (pointer: coarse) {
+    .sprite-selector-item {
+        min-width: 5.5rem;
+        min-height: 5.5rem;
+        font-size: 0.9rem;
+    }
+
+    .number {
+        font-size: 0.75rem;
+    }
+
+    .delete-button {
+        min-height: 2.25rem;
+        min-width: 2.25rem;
+    }
+}

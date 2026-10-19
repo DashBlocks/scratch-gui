@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import TWRenderRecoloredImage from '../../lib/tw-recolor/render.jsx';
+import {buzz, requestWakeLock} from '../../lib/dash-platform.js';
 
 import greenFlagIcon from '!../../lib/tw-recolor/build!./icon--green-flag.svg';
 import * as styles from './green-flag.css';
@@ -27,7 +28,11 @@ const GreenFlagComponent = function (props) {
             draggable={false}
             src={greenFlagIcon}
             title={title}
-            onClick={onClick}
+            onClick={event => {
+                requestWakeLock();
+                if (onClick) onClick(event);
+            }}
+            onTouchStart={() => buzz(5)}
             // tw: also fire click when opening context menu (right click on all systems and alt+click on chromebooks)
             onContextMenu={onClick}
             {...componentProps}

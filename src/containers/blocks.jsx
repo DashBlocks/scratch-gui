@@ -10,6 +10,8 @@ import VM from 'scratch-vm';
 
 import Prompt from './prompt.jsx';
 import BlocksComponent from '../components/blocks/blocks.jsx';
+import enableWorkspaceGestures from '../lib/workspace-gestures.js';
+import {isNarrow} from '../lib/dash-platform.js';
 import ExtensionLibrary from './extension-library.jsx';
 import extensionData from '../lib/libraries/extensions/index.jsx';
 import CustomProcedures from './custom-procedures.jsx';
@@ -231,9 +233,16 @@ class Blocks extends React.Component {
             },
             Blocks.defaultOptions
         );
+        if (isNarrow() && workspaceConfig.zoom) {
+            // Readable default zoom on phones.
+            workspaceConfig.zoom.startScale = Math.max(workspaceConfig.zoom.startScale || 0, 0.9);
+        }
         this.workspace = this.ScratchBlocks.inject(this.blocks, workspaceConfig);
         AddonHooks.blocklyWorkspace = this.workspace;
         this.updateCollaborationReadOnly();
+
+        // Touch gestures: pinch-to-zoom, two-finger pan, double-tap zoom.
+        this.workspaceGestures = enableWorkspaceGestures(this.workspace, this.blocks);
 
         // Register buttons under new callback keys for creating variables,
         // lists, and procedures from extensions.
@@ -360,6 +369,7 @@ class Blocks extends React.Component {
     componentWillUnmount () {
         this.detachVM();
         this.unmounted = true;
+        if (this.workspaceGestures) this.workspaceGestures.destroy();
         this.workspace.dispose();
         clearTimeout(this.toolboxUpdateTimeout);
 

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import TWRenderRecoloredImage from '../../lib/tw-recolor/render.jsx';
+import {buzz} from '../../lib/dash-platform.js';
 
 import stopAllIcon from '!../../lib/tw-recolor/build!./icon--stop-all.svg';
 import * as styles from './stop-all.css';
@@ -28,6 +29,7 @@ const StopAllComponent = function (props) {
             src={stopAllIcon}
             title={title}
             onClick={onClick}
+            onTouchStart={() => buzz(5)}
             {...componentProps}
         />
     );

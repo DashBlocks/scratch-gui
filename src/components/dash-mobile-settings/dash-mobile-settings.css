@@ -1,0 +1,82 @@
+@import "../../css/colors.css";
+@import "../../css/units.css";
+@import "../../css/z-index.css";
+
+.wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.toggle {
+    padding: 0.25rem 0.5rem;
+    border: 1px solid $ui-black-transparent;
+    border-radius: 0.35rem;
+    background: $ui-primary;
+    font-size: 1.1rem;
+    line-height: 1.25;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.panel {
+    position: absolute;
+    top: calc(100% + 0.4rem);
+    right: 0;
+    z-index: $z-index-menu-bar;
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    width: 15rem;
+    padding: 0.5rem;
+    border: 1px solid $ui-black-transparent;
+    border-radius: $space;
+    background: $ui-white;
+    color: $text-primary;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.8125rem;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+
+.header {
+    padding: 0.25rem 0.35rem 0.45rem;
+    font-weight: bold;
+    border-bottom: 1px solid $ui-black-transparent;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.55rem 0.35rem;
+    border-radius: 0.35rem;
+    cursor: pointer;
+}
+
+.row:hover {
+    background: $ui-tertiary;
+}
+
+.row input {
+    flex: none;
+    width: 1.15rem;
+    height: 1.15rem;
+}
+
+.install-button {
+    margin-top: 0.35rem;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid $looks-secondary;
+    border-radius: 0.45rem;
+    background: $looks-secondary;
+    color: #fff;
+    font-weight: bold;
+    font-size: 0.85rem;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+.install-button:hover {
+    filter: brightness(1.08);
+}

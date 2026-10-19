@@ -20,3 +20,15 @@
 [dir="rtl"] .stage-selector-wrapper {
     margin-right: calc($space / 2);
 }
+
+/* Phone: the sprite pane sits under the stage and keeps a usable height */
+@media only screen and (max-width: 599px) {
+    .target-pane {
+        width: 100%;
+        min-height: 12rem;
+    }
+
+    .stage-selector-wrapper {
+        flex: none;
+    }
+}

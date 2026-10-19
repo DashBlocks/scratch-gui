@@ -1,5 +1,6 @@
 import bindAll from 'lodash.bindall';
 import {getEventXY} from '../lib/touch-utils';
+import {buzz} from './dash-platform.js';
 
 class DragRecognizer {
     /* Gesture states */
@@ -98,6 +99,7 @@ class DragRecognizer {
                     this._gestureState = DragRecognizer.STATE_SCROLL;
                 } else {
                     this._gestureState = DragRecognizer.STATE_DRAG;
+                    buzz(8);
                 }
             } else {
                 // Mouse moves are always considered drags

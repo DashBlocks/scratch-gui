@@ -17,3 +17,10 @@
 .green-flag.is-active {
     background-color: $looks-transparent;
 }
+
+@media only screen and (pointer: coarse) {
+    .green-flag {
+        min-height: 2.5rem;
+        min-width: 2.5rem;
+    }
+}

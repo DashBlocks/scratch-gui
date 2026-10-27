@@ -10,6 +10,7 @@ import VM from 'scratch-vm';
 
 import Prompt from './prompt.jsx';
 import BlocksComponent from '../components/blocks/blocks.jsx';
+import CollaborationCursors from '../components/dash-collaboration-cursors/cursors.jsx';
 import ExtensionLibrary from './extension-library.jsx';
 import extensionData from '../lib/libraries/extensions/index.jsx';
 import CustomProcedures from './custom-procedures.jsx';
@@ -188,6 +189,7 @@ class Blocks extends React.Component {
             'setLocale',
             'handleEnableProcedureReturns',
             'handleEnableLists',
+            'getCollaborationWorkspace',
             'updateCollaborationReadOnly'
         ]);
         this.ScratchBlocks.prompt = this.handlePromptStart;
@@ -380,6 +382,9 @@ class Blocks extends React.Component {
                 for (const field of input.fieldRow) field.updateEditable();
             }
         }
+    }
+    getCollaborationWorkspace () {
+        return this.workspace;
     }
     requestToolboxUpdate () {
         clearTimeout(this.toolboxUpdateTimeout);
@@ -794,7 +799,14 @@ class Blocks extends React.Component {
                     componentRef={this.setBlocks}
                     onDrop={this.handleDrop}
                     {...props}
-                />
+                >
+                    <CollaborationCursors
+                        getSurface={this.getCollaborationWorkspace}
+                        surface="blocks"
+                        visible={isVisible}
+                        vm={vm}
+                    />
+                </DroppableBlocks>
                 {this.state.prompt ? (
                     <Prompt
                         defaultValue={this.state.prompt.defaultValue}

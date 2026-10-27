@@ -1,6 +1,7 @@
 import downloadBlob from '../../lib/download-blob';
 import PropTypes from 'prop-types';
 import React from 'react';
+import CollaborationChat from '../dash-collaboration-chat/chat.jsx';
 import {FormattedMessage} from 'react-intl';
 import * as styles from './dash-collaboration-status.css';
 
@@ -56,9 +57,11 @@ class DashCollaborationStatus extends React.Component {
         return (
             <div
                 className={styles.status}
-                role="status"
             >
-                <span className={status.state === 'error' ? styles.error : null}>
+                <span
+                    className={status.state === 'error' ? styles.error : null}
+                    role="status"
+                >
                     {status.state === 'connected' ? (
                         status.role === 'viewer' ? (
                             <FormattedMessage
@@ -125,6 +128,7 @@ class DashCollaborationStatus extends React.Component {
                 {memberNames.length ? (
                     <span className={styles.members}>{memberNames.join(', ')}</span>
                 ) : null}
+                <CollaborationChat vm={this.props.vm} />
             </div>
         );
     }

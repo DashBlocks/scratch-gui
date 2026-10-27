@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import CollaborationCursors from '../dash-collaboration-cursors/cursors.jsx';
 import classNames from 'classnames';
 
 import Box from '../box/box.jsx';
@@ -94,6 +95,11 @@ const StageComponent = props => {
                                 stageWidth={stageDimensions.width}
                             />
                         </Box>
+                        <CollaborationCursors
+                            canvas={canvas}
+                            surface="stage"
+                            vm={vm}
+                        />
                         {isColorPicking && colorInfo ? (
                             <Loupe colorInfo={colorInfo} />
                         ) : null}

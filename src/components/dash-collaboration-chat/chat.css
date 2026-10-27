@@ -1,0 +1,186 @@
+@import "../../css/colors.css";
+@import "../../css/units.css";
+@import "../../css/z-index.css";
+
+.wrapper {
+    position: relative;
+    flex-shrink: 0;
+}
+
+.toggle {
+    composes: button from "../dash-collaboration-status/dash-collaboration-status.css";
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.badge {
+    padding: 0 0.3rem;
+    border-radius: $form-radius;
+    background: $looks-secondary;
+    color: white;
+    font-size: 0.75rem;
+}
+
+.panel {
+    position: absolute;
+    inset-inline-end: 0;
+    top: calc(100% + 0.5rem);
+    z-index: $z-index-card;
+    display: flex;
+    flex-direction: column;
+    width: min(22rem, calc(100vw - 2rem));
+    height: min(28rem, calc(100vh - 8rem));
+    border: 1px solid $ui-black-transparent;
+    border-radius: $space;
+    overflow: hidden;
+    background: $ui-modal-background;
+    color: $ui-modal-foreground;
+    box-shadow: 0 0.25rem 1rem $shadow;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.875rem;
+    text-align: start;
+}
+
+.panel * {
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: $library-header-height;
+    padding: 0.75rem 1rem;
+    background: $ui-modal-header-background;
+    color: $ui-modal-header-foreground;
+    font-size: 1rem;
+}
+
+.close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: $ui-black-transparent;
+    cursor: pointer;
+}
+
+.close img {
+    transform: rotate(45deg);
+}
+
+.messages {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0.75rem 1rem;
+    user-select: text;
+}
+
+.message + .message {
+    margin-top: 0.875rem;
+}
+
+.meta {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.meta time {
+    flex-shrink: 0;
+    opacity: 0.65;
+    font-size: 0.75rem;
+}
+
+.username {
+    overflow-wrap: anywhere;
+    unicode-bidi: plaintext;
+}
+
+.text {
+    margin-top: 0.25rem;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    unicode-bidi: plaintext;
+    line-height: 1.4;
+}
+
+.empty {
+    opacity: 0.7;
+    text-align: center;
+}
+
+.form {
+    padding: 0.75rem 1rem;
+    border-top: 1px solid $ui-black-transparent;
+}
+
+.label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.input {
+    width: 100%;
+    min-height: 3.5rem;
+    padding: 0.5rem;
+    resize: none;
+    border: 1px solid $ui-black-transparent;
+    border-radius: $form-radius;
+    background: $input-background;
+    color: $text-primary;
+    font: inherit;
+}
+
+.input:focus {
+    outline: 2px solid $looks-secondary;
+    outline-offset: 1px;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+}
+
+.send {
+    padding: 0.5rem 1rem;
+    border: 1px solid $looks-secondary;
+    border-radius: $form-radius;
+    background: $looks-secondary;
+    color: white;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.send:disabled,
+.input:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.notice {
+    margin: 0.5rem 0;
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+}

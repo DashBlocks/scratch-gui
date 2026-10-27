@@ -3259,6 +3259,13 @@
         "tw.viewFeaturedProjects": "Vezi proiectele recomandate (dați click)."
     },
     "ru": {
+        "dash.collaboration.chat.title": "Чат",
+        "dash.collaboration.chat.heading": "Чат проекта",
+        "dash.collaboration.chat.close": "Закрыть",
+        "dash.collaboration.chat.empty": "Сообщений пока нет.",
+        "dash.collaboration.chat.message": "Сообщение",
+        "dash.collaboration.chat.unavailable": "Чат недоступен. Черновик сохранён. Отправь сообщение после подключения.",
+        "dash.collaboration.chat.send": "Отправить",
         "tw.accent.blue": "Синий",
         "dash.accent.custom": "Пользовательский",
         "tw.accent.green": "Зелёный",

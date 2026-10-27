@@ -3,6 +3,7 @@
 @import "../../css/z-index.css";
 
 .blocks {
+    position: relative;
     height: 100%;
 }
 

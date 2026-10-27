@@ -2,6 +2,7 @@ import * as Y from 'yjs';
 import JSZip from 'jszip';
 import AddonHooks from '../addons/hooks';
 import DashCollaboration from './dash-collaboration';
+import CollaborationSocial from './dash-collaboration-social';
 
 const maps = ['blocks', 'variables', 'lists', 'broadcasts', 'comments'];
 const blockStructureFields = ['opcode', 'next', 'parent', 'inputs', 'shadow', 'mutation'];
@@ -212,6 +213,7 @@ export default class DashCollaborationSession {
         this.state = 'connecting';
         this.error = '';
         this.members = [];
+        this.social = new CollaborationSocial(vm);
         this.loaded = false;
         this.dirty = false;
         this.changed = false;
@@ -256,6 +258,7 @@ export default class DashCollaborationSession {
             onStatus: status => {
                 this.state = status.state;
                 this.error = status.error;
+                if (status.state !== 'connected') this.social.resetCursors();
                 if (status.state === 'connected') {
                     if (this.resolveReady) this.resolveReady();
                     if (this.restoreOnReconnect) {
@@ -271,9 +274,14 @@ export default class DashCollaborationSession {
             },
             onMembers: members => {
                 this.members = members;
+                this.social.setMembers(members);
                 this.notify();
-            }
+            },
+            onPresence: message => this.social.receiveCursor(message),
+            onChat: message => this.social.receiveMessage(message),
+            onChatHistory: messages => this.social.setHistory(messages)
         });
+        this.social.bind(client);
         client.doc.on('update', this.onDocumentChange);
         return client;
     }
@@ -732,6 +740,7 @@ export default class DashCollaborationSession {
         }
         this.client.doc.off('update', this.onDocumentChange);
         this.client.destroy();
+        this.social.destroy();
         window.removeEventListener('beforeunload', this.beforeUnload);
     }
 }

@@ -29,12 +29,20 @@ const projectTargetAssets = target => {
 };
 
 export default class DashCollaboration {
-    constructor (projectId, {onStatus = () => {}, onMembers = () => {}} = {}) {
+    constructor (projectId, {
+        onStatus = () => {}, onMembers = () => {}, onPresence = () => {},
+        onChat = () => {}, onChatHistory = () => {}
+    } = {}) {
         if (!/^[1-9]\d{0,19}$/.test(String(projectId))) throw new Error('Invalid Dash project ID');
         this.projectId = String(projectId);
         this.doc = new Y.Doc();
         this.onStatus = onStatus;
         this.onMembers = onMembers;
+        this.onPresence = onPresence;
+        this.onChat = onChat;
+        this.onChatHistory = onChatHistory;
+        this.features = [];
+        this.connectionId = null;
         this.active = false;
         this.generation = 0;
         this.attempts = 0;
@@ -51,6 +59,7 @@ export default class DashCollaboration {
     }
     setStatus (state, error = '') {
         this.state = state;
+        if (state !== 'connected') this.features = [];
         this.onStatus({state, role: this.role, error});
     }
     connect () {
@@ -90,7 +99,7 @@ export default class DashCollaboration {
             }, 10000);
             ws.onopen = () => {
                 if (!this.active || generation !== this.generation) return ws.close();
-                ws.send(JSON.stringify({type: 'auth', token: data.token}));
+                ws.send(JSON.stringify({type: 'auth', token: data.token, features: ['presence', 'chat']}));
             };
             ws.onmessage = event => {
                 if (!this.active || generation !== this.generation) return;
@@ -139,6 +148,9 @@ export default class DashCollaboration {
                 (this.userId && this.userId !== message.userId)) {
                 throw new Error('Room or permissions changed. Reopen the project before reconnecting.');
             }
+            this.connectionId = typeof message.connectionId === 'string' ? message.connectionId : null;
+            this.features = Array.isArray(message.features) ?
+                message.features.filter(feature => ['presence', 'chat'].includes(feature)) : [];
             this.userId = message.userId;
             this.epoch = message.epoch;
             this.grantId = message.grantId;
@@ -159,10 +171,35 @@ export default class DashCollaboration {
                 this.flush();
             }
         } else if (message.type === 'members') {
-            this.onMembers(message.members);
+            this.onMembers(Array.isArray(message.members) ? message.members.filter(member =>
+                member && typeof member.connectionId === 'string' && typeof member.userId === 'string' &&
+                typeof member.username === 'string' && member.username.length <= 128) : []);
+        } else if (message.type === 'presence') {
+            if (this.features.includes('presence')) this.onPresence(message);
+        } else if (message.type === 'chat') {
+            if (this.features.includes('chat')) this.onChat(message.message);
+        } else if (message.type === 'chat-history') {
+            if (this.features.includes('chat')) this.onChatHistory(message.messages);
         } else {
             throw new Error('Unknown collaboration message');
         }
+    }
+    sendSocial (feature, message) {
+        if (!this.active || this.state !== 'connected' || !this.features.includes(feature) ||
+            !this.socket || this.socket.readyState !== WebSocket.OPEN ||
+            this.socket.bufferedAmount > 64 * 1024) return false;
+        try {
+            this.socket.send(JSON.stringify(message));
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+    sendPresence (state) {
+        return this.sendSocial('presence', {type: 'presence', state});
+    }
+    sendChat (text) {
+        return this.sendSocial('chat', {type: 'chat', text});
     }
     decode (data) {
         if (typeof data !== 'string' || data.length > 8 * 1024 * 1024) throw new Error('Invalid collaboration data');

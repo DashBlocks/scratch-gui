@@ -1,20 +1,6 @@
 @import "../../css/colors.css";
 @import "../../css/units.css";
 
-.section {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 1rem;
-    border: 1px solid $ui-black-transparent;
-    border-radius: $space;
-    background: $ui-white;
-    color: $text-primary;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 0.875rem;
-    line-height: 1.5;
-}
-
-.header,
 .metadata,
 .actions {
     display: flex;
@@ -23,14 +9,12 @@
     gap: 0.5rem;
 }
 
-.header {
-    justify-content: space-between;
-    margin-bottom: 1rem;
-}
-
-.header h2 {
-    margin: 0;
-    font-size: 1.25rem;
+.compose,
+.list {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: $text-primary;
 }
 
 .compose,
@@ -41,10 +25,14 @@
     margin-bottom: 1.5rem;
 }
 
-.avatar {
+.avatar-container {
     width: 3rem;
     height: 3rem;
     flex: 0 0 3rem;
+}
+
+.avatar {
+    box-sizing: border-box;
     border: 1px solid $ui-black-transparent;
     border-radius: 4px;
     object-fit: cover;
@@ -175,11 +163,7 @@
 }
 
 @media (max-width: 480px) {
-    .section {
-        padding: 0.75rem;
-    }
-
-    .avatar {
+    .avatar-container {
         width: 2rem;
         height: 2rem;
         flex-basis: 2rem;

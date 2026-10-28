@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {FormattedDate, FormattedMessage, FormattedTime, defineMessages, injectIntl, intlShape} from 'react-intl';
 import {API_ORIGIN, requestDashApi} from '../../lib/dash-api';
-import * as styles from './project-comments.css';
+import FramedAvatar from '../dash-framed-avatar/framed-avatar.jsx';
+import * as styles from './comments.css';
 
 const messages = defineMessages({
     placeholder: {
@@ -12,7 +13,7 @@ const messages = defineMessages({
     }
 });
 
-const ProjectComments = ({intl, projectId, session}) => {
+const Comments = ({className, headerClassName, intl, projectId, session}) => {
     const [comments, setComments] = useState([]);
     const [total, setTotal] = useState(0);
     const [nextCursor, setNextCursor] = useState(null);
@@ -134,8 +135,8 @@ const ProjectComments = ({intl, projectId, session}) => {
     const commentPlaceholder = intl.formatMessage(messages.placeholder);
 
     return (
-        <section className={styles.section}>
-            <div className={styles.header}>
+        <section className={className}>
+            <div className={headerClassName}>
                 <h2>
                     <FormattedMessage
                         id="dash.comments.title"
@@ -180,10 +181,11 @@ const ProjectComments = ({intl, projectId, session}) => {
                     className={styles.compose}
                     onSubmit={publish}
                 >
-                    <img
-                        alt=""
-                        className={styles.avatar}
-                        src={`${API_ORIGIN}/users/avatars/${session.id}`}
+                    <FramedAvatar
+                        avatarClassName={styles.avatar}
+                        avatarSrc={`${API_ORIGIN}/users/avatars/${session.profile?.avatarId || session.id}`}
+                        className={styles.avatarContainer}
+                        frameId={session.profile?.avatarFrame}
                     />
                     <div className={styles.body}>
                         <textarea
@@ -274,11 +276,11 @@ const ProjectComments = ({intl, projectId, session}) => {
                         key={comment.id}
                         className={styles.comment}
                     >
-                        <img
-                            alt=""
-                            className={styles.avatar}
-                            loading="lazy"
-                            src={`${API_ORIGIN}/users/avatars/${comment.author.avatarId}`}
+                        <FramedAvatar
+                            avatarClassName={styles.avatar}
+                            avatarSrc={`${API_ORIGIN}/users/avatars/${comment.author.avatarId}`}
+                            className={styles.avatarContainer}
+                            frameId={comment.author.avatarFrame}
                         />
                         <div className={styles.body}>
                             <div className={styles.metadata}>
@@ -341,10 +343,12 @@ const ProjectComments = ({intl, projectId, session}) => {
     );
 };
 
-ProjectComments.propTypes = {
+Comments.propTypes = {
+    className: PropTypes.string.isRequired,
+    headerClassName: PropTypes.string.isRequired,
     intl: intlShape,
     projectId: PropTypes.string.isRequired,
     session: PropTypes.object
 };
 
-export default injectIntl(ProjectComments);
+export default injectIntl(Comments);

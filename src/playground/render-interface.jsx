@@ -45,7 +45,7 @@ import Description from '../components/tw-description/description.jsx';
 import BrowserModal from '../components/browser-modal/browser-modal.jsx';
 import DashWelcomeModal from '../containers/dash-welcome-modal.jsx';
 import StageFooter from '../components/dash-stage-footer/stage-footer.jsx';
-import ProjectComments from '../components/dash-project-comments/project-comments.jsx';
+import Comments from '../components/dash-comments/comments.jsx';
 import FramedAvatar from '../components/dash-framed-avatar/framed-avatar.jsx';
 import CloudVariableBadge from '../containers/tw-cloud-variable-badge.jsx';
 import {isBrowserSupported} from '../lib/tw-environment-support-prober';
@@ -1024,8 +1024,10 @@ class Interface extends React.PureComponent {
                                 </div>
                             </div>
                             {hasProject && (
-                                <ProjectComments
+                                <Comments
                                     key={projectId}
+                                    className={classNames(styles.section, styles.projectRelatedSection)}
+                                    headerClassName={styles.projectRelatedHeader}
                                     projectId={projectId}
                                     session={session}
                                 />

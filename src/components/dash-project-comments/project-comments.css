@@ -1,0 +1,187 @@
+@import "../../css/colors.css";
+@import "../../css/units.css";
+
+.section {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid $ui-black-transparent;
+    border-radius: $space;
+    background: $ui-white;
+    color: $text-primary;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.header,
+.metadata,
+.actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.header {
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.header h2 {
+    margin: 0;
+    font-size: 1.25rem;
+}
+
+.compose,
+.comment {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.avatar {
+    width: 3rem;
+    height: 3rem;
+    flex: 0 0 3rem;
+    border: 1px solid $ui-black-transparent;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.body {
+    flex: 1;
+    min-width: 0;
+}
+
+.input {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    min-height: 5rem;
+    padding: 0.75rem;
+    border: 2px solid $ui-black-transparent;
+    border-radius: 5px;
+    resize: vertical;
+    background: $input-background;
+    color: $text-primary;
+    font: inherit;
+}
+
+.input:focus {
+    outline: none;
+    border-color: $looks-secondary;
+}
+
+.actions {
+    margin-top: 0.4rem;
+}
+
+.button,
+.secondary-button {
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 0.25rem;
+    padding: 0.6rem 1rem;
+    background: $looks-secondary;
+    color: white;
+    font: inherit;
+    font-weight: bold;
+}
+
+.secondary-button {
+    border-color: $ui-black-transparent;
+    background: $ui-tertiary;
+    color: $text-primary;
+}
+
+.button:disabled,
+.secondary-button:disabled,
+.input:disabled {
+    cursor: default;
+    opacity: 0.55;
+}
+
+.button:focus-visible,
+.secondary-button:focus-visible {
+    outline: 2px solid $looks-secondary;
+    outline-offset: 2px;
+}
+
+.counter {
+    margin-inline-start: auto;
+    font-size: 0.75rem;
+}
+
+.list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+}
+
+.metadata {
+    margin-bottom: 0.5rem;
+}
+
+.metadata a {
+    color: $link-color;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.metadata a:hover {
+    text-decoration: underline;
+}
+
+.metadata time {
+    font-size: 0.75rem;
+}
+
+.bubble {
+    position: relative;
+    border: 1px solid $ui-black-transparent;
+    border-radius: 0 0.5rem 0.5rem 0.5rem;
+    padding: 0.75rem;
+    background: $ui-white;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    unicode-bidi: plaintext;
+}
+
+.bubble::before {
+    position: absolute;
+    top: -1px;
+    left: -11px;
+    width: 10px;
+    height: 8px;
+    border: 1px solid $ui-black-transparent;
+    border-right: 0;
+    border-radius: 0 0 0 8px;
+    background: $ui-white;
+    content: "";
+}
+
+[dir="rtl"] .comment .bubble {
+    border-radius: 0.5rem 0 0.5rem 0.5rem;
+}
+
+[dir="rtl"] .comment .bubble::before {
+    left: auto;
+    right: -11px;
+    border-right: 1px solid $ui-black-transparent;
+    border-left: 0;
+    border-radius: 0 0 8px 0;
+}
+
+@media (max-width: 480px) {
+    .section {
+        padding: 0.75rem;
+    }
+
+    .avatar {
+        width: 2rem;
+        height: 2rem;
+        flex-basis: 2rem;
+    }
+}

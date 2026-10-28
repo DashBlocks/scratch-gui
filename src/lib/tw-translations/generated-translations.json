@@ -3722,7 +3722,22 @@
         "dash.wallpaper.changeOpaquePrompt": "Введите новое значение непрозрачности рабочего места:",
         "dash.wallpaper.changeOpaque": "Изменить непрозрачность",
         "dash.wallpaper.choose": "Выбрать обои...",
-        "dash.wallpaper.remove": "Убрать обои"
+        "dash.wallpaper.remove": "Убрать обои",
+        "dash.comments.title": "Комментарии ({count})",
+        "dash.comments.placeholder": "Оставьте комментарий",
+        "dash.comments.post": "Отправить",
+        "dash.comments.posting": "Отправляем...",
+        "dash.comments.cancel": "Отмена",
+        "dash.comments.refresh": "Обновить",
+        "dash.comments.more": "Загрузить ещё",
+        "dash.comments.loading": "Загрузка…",
+        "dash.comments.empty": "Комментариев пока нет.",
+        "dash.comments.login": "Войдите, чтобы оставить комментарий.",
+        "dash.comments.disabled": "Команда Dash временно отключила публикацию комментариев.",
+        "dash.comments.loadError": "Не удалось загрузить комментарии. Попробуйте обновить их.",
+        "dash.comments.postError": "Не удалось отправить комментарий.",
+        "dash.comments.wait": "Подождите {seconds} секунд перед отправкой следующего комментария.",
+        "dash.comments.count": "{count} / 500"
     },
     "sk": {
         "tw.feedbackButton": "{APP_NAME} Spätná väzba",

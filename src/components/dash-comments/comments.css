@@ -1,6 +1,13 @@
 @import "../../css/colors.css";
 @import "../../css/units.css";
 
+.content {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 0.5rem;
+}
+
 .metadata,
 .actions {
     display: flex;

@@ -176,3 +176,61 @@
         flex-basis: 2rem;
     }
 }
+
+.comment-actions {
+    margin-inline-start: auto;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.comment:hover .comment-actions,
+.comment:focus-within .comment-actions,
+.comment[data-deleting="true"] .comment-actions {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.delete-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem;
+    border: 0;
+    border-radius: 0.25rem;
+    background: transparent;
+    color: $text-primary;
+    font: inherit;
+    font-size: 0.75rem;
+    cursor: pointer;
+    opacity: 0.65;
+}
+
+.delete-button:hover,
+.delete-button:focus-visible {
+    opacity: 1;
+}
+
+.delete-button:focus-visible {
+    outline: 2px solid $looks-secondary;
+    outline-offset: 2px;
+}
+
+.delete-button:disabled {
+    cursor: default;
+    opacity: 0.5;
+}
+
+.delete-icon {
+    width: 1rem;
+    height: 1rem;
+    background-color: currentColor;
+    mask: url("../delete-button/icon--delete.svg") center / contain no-repeat;
+    -webkit-mask: url("../delete-button/icon--delete.svg") center / contain no-repeat;
+}
+
+@media (hover: none), (pointer: coarse) {
+    .comment-actions {
+        opacity: 1;
+        pointer-events: auto;
+    }
+}

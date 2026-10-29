@@ -6,6 +6,8 @@ import {FormattedMessage, FormattedDate, FormattedRelative, defineMessages, inje
 import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import render from '../app-target';
 import * as styles from './messages.css';
+import * as commentStyles from '../../components/dash-comments/comments.css';
+import FramedAvatar from '../../components/dash-framed-avatar/framed-avatar.jsx';
 
 import Spinner from '../../components/spinner/spinner.jsx';
 import {Footer} from '../render-interface.jsx';
@@ -18,6 +20,7 @@ import getSession, {requestDashApi} from '../../lib/dash-api';
 import {setSession} from '../../reducers/dash';
 
 import firedIcon from './icon--fired.svg';
+import commentedIcon from './icon--commented.svg';
 import featuredIcon from './icon--featured.svg';
 import promotedIcon from './icon--promoted.svg';
 import demotedIcon from './icon--demoted.svg';
@@ -143,6 +146,25 @@ const Messages = props => {
                         }}
                     />
                 </>
+            );
+        case 'project-commented':
+            return (
+                <div className={styles.commentHeading}>
+                    <img
+                        className={styles.messageIcon}
+                        src={commentedIcon}
+                        draggable={false}
+                    />
+                    <FormattedMessage
+                        defaultMessage="{user} commented on your project {project}"
+                        description="Notification about a new project comment"
+                        id="dash.messages.projectCommented"
+                        values={{
+                            user: <a href={`user#${message.user.id}`}>{message.user.username}</a>,
+                            project: <a href={`/#${message.project.id}`}>{message.project.name}</a>
+                        }}
+                    />
+                </div>
             );
         case 'project-forked':
             return (
@@ -381,6 +403,7 @@ const Messages = props => {
                                     key={index}
                                     className={classNames(
                                         styles.messageContent,
+                                        message.type === 'project-commented' ? styles.commentMessage : null,
                                         index < userData.profile.unreadMessages ? styles.unreadMessage : null
                                     )}
                                 >
@@ -408,6 +431,37 @@ const Messages = props => {
                                             }}
                                         />
                                     </div>
+                                    {message.type === 'project-commented' && (
+                                        <div className={classNames(commentStyles.comment, styles.commentPreview)}>
+                                            {message.comment ? (
+                                                <>
+                                                    <FramedAvatar
+                                                        avatarClassName={commentStyles.avatar}
+                                                        avatarSrc={
+                                                            `https://api.dashblocks.org/users/avatars/${
+                                                                message.comment.author.avatarId}`
+                                                        }
+                                                        className={commentStyles.avatarContainer}
+                                                        frameId={message.comment.author.avatarFrame}
+                                                    />
+                                                    <div className={commentStyles.body}>
+                                                        <div
+                                                            className={commentStyles.bubble}
+                                                            dir="auto"
+                                                        >
+                                                            {message.comment.content}
+                                                        </div>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <FormattedMessage
+                                                    id="dash.messages.commentUnavailable"
+                                                    defaultMessage="This comment or its project has been deleted."
+                                                    description="Comment notification whose content was removed"
+                                                />
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                             {hasMore && (

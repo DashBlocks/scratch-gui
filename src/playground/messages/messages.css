@@ -140,3 +140,21 @@ body {
     font-size: 0.85rem;
     width: fit-content;
 }
+
+.comment-message {
+    flex-wrap: wrap;
+}
+
+.comment-heading {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.comment-preview {
+    flex-basis: 100%;
+    min-width: 0;
+    margin-bottom: 0;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}

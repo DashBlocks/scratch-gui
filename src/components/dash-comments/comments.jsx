@@ -21,6 +21,8 @@ const Comments = ({className, headerClassName, intl, projectId, session}) => {
     const [loaded, setLoaded] = useState(false);
     const [loading, setLoading] = useState(false);
     const [sending, setSending] = useState(false);
+    const [deleting, setDeleting] = useState(null);
+    const [deleteError, setDeleteError] = useState(false);
     const [draft, setDraft] = useState('');
     const [loadError, setLoadError] = useState(false);
     const [postError, setPostError] = useState(null);
@@ -132,6 +134,38 @@ const Comments = ({className, headerClassName, intl, projectId, session}) => {
         }
     }, [enabled, loaded, session, draft, projectId]);
 
+    const removeComment = useCallback(async event => {
+        if (pending.current || session?.role !== 'dashteam') return;
+        const commentId = Number(event.currentTarget.dataset.commentId);
+        if (!Number.isSafeInteger(commentId) || commentId < 1) return;
+        pending.current = true;
+        setDeleting(commentId);
+        setDeleteError(false);
+        controller.current = new AbortController();
+        try {
+            const response = await requestDashApi(`/projects/${projectId}/comments/${commentId}`, {
+                method: 'DELETE',
+                credentials: 'include',
+                signal: controller.current.signal
+            });
+            const data = await response.json();
+            if (!active.current) return;
+            if ((!response.ok || !data.ok) && data.code !== 'COMMENT_NOT_FOUND') {
+                setDeleteError(true);
+                return;
+            }
+            setComments(previous => previous.filter(comment => comment.id !== commentId));
+            setTotal(data.total);
+        } catch (error) {
+            if (active.current && error.name !== 'AbortError') setDeleteError(true);
+        } finally {
+            if (active.current) {
+                release();
+                setDeleting(null);
+            }
+        }
+    }, [projectId, session]);
+
     const commentPlaceholder = intl.formatMessage(messages.placeholder);
 
     return (
@@ -147,7 +181,7 @@ const Comments = ({className, headerClassName, intl, projectId, session}) => {
                 </h2>
                 <button
                     className={styles.secondaryButton}
-                    disabled={loading || sending}
+                    disabled={loading || sending || deleting !== null}
                     type="button"
                     onClick={refresh}
                 >
@@ -178,7 +212,10 @@ const Comments = ({className, headerClassName, intl, projectId, session}) => {
                     </p>
                 )}
                 {enabled && session && session.id && (
-                    <form className={styles.compose} onSubmit={publish}>
+                    <form
+                        className={styles.compose}
+                        onSubmit={publish}
+                    >
                         <FramedAvatar
                             avatarClassName={styles.avatar}
                             avatarSrc={`${API_ORIGIN}/users/avatars/${session.profile?.avatarId || session.id}`}
@@ -204,6 +241,7 @@ const Comments = ({className, headerClassName, intl, projectId, session}) => {
                                         !loaded ||
                                         loading ||
                                         sending ||
+                                        deleting !== null ||
                                         !draft.trim()
                                     }
                                     type="submit"
@@ -245,7 +283,7 @@ const Comments = ({className, headerClassName, intl, projectId, session}) => {
                             </div>
                             {postError && (
                                 <p role="alert">
-                                    {postError === "wait" ? (
+                                    {postError === 'wait' ? (
                                         <FormattedMessage
                                             id="dash.comments.wait"
                                             defaultMessage="Please wait {seconds} seconds before commenting again."
@@ -273,9 +311,22 @@ const Comments = ({className, headerClassName, intl, projectId, session}) => {
                         />
                     </p>
                 )}
+                {deleteError && (
+                    <p role="alert">
+                        <FormattedMessage
+                            id="dash.comments.deleteError"
+                            defaultMessage="Could not delete the comment. Try again."
+                            description="Comment deletion error"
+                        />
+                    </p>
+                )}
                 <ul className={styles.list}>
-                    {comments.map((comment) => (
-                        <li key={comment.id} className={styles.comment}>
+                    {comments.map(comment => (
+                        <li
+                            key={comment.id}
+                            className={styles.comment}
+                            data-deleting={deleting === comment.id}
+                        >
                             <FramedAvatar
                                 avatarClassName={styles.avatar}
                                 avatarSrc={`${API_ORIGIN}/users/avatars/${comment.author.avatarId}`}
@@ -294,13 +345,45 @@ const Comments = ({className, headerClassName, intl, projectId, session}) => {
                                     <time dateTime={comment.createdAt}>
                                         <FormattedDate
                                             value={comment.createdAt}
-                                        />{" "}
+                                        />{' '}
                                         <FormattedTime
                                             value={comment.createdAt}
                                         />
                                     </time>
+                                    {session?.role === 'dashteam' && (
+                                        <div className={styles.commentActions}>
+                                            <button
+                                                className={styles.deleteButton}
+                                                data-comment-id={comment.id}
+                                                disabled={loading || sending || deleting !== null}
+                                                type="button"
+                                                onClick={removeComment}
+                                            >
+                                                <span
+                                                    aria-hidden="true"
+                                                    className={styles.deleteIcon}
+                                                />
+                                                {deleting === comment.id ? (
+                                                    <FormattedMessage
+                                                        id="dash.comments.deleting"
+                                                        defaultMessage="Deleting..."
+                                                        description="Comment deletion in progress"
+                                                    />
+                                                ) : (
+                                                    <FormattedMessage
+                                                        id="dash.comments.delete"
+                                                        defaultMessage="Delete"
+                                                        description="Delete a comment as Dash Team"
+                                                    />
+                                                )}
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
-                                <div className={styles.bubble} dir="auto">
+                                <div
+                                    className={styles.bubble}
+                                    dir="auto"
+                                >
                                     {comment.content}
                                 </div>
                             </div>
@@ -316,7 +399,7 @@ const Comments = ({className, headerClassName, intl, projectId, session}) => {
                         />
                     </p>
                 )}
-                {loaded && comments.length === 0 && !loading && (
+                {loaded && total === 0 && !loading && (
                     <p>
                         <FormattedMessage
                             id="dash.comments.empty"
@@ -328,7 +411,7 @@ const Comments = ({className, headerClassName, intl, projectId, session}) => {
                 {nextCursor !== null && (
                     <button
                         className={styles.secondaryButton}
-                        disabled={loading || sending}
+                        disabled={loading || sending || deleting !== null}
                         type="button"
                         onClick={loadMore}
                     >

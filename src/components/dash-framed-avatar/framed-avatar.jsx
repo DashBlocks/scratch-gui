@@ -3,13 +3,6 @@ import React from 'react';
 import classNames from 'classnames';
 import * as styles from './framed-avatar.css';
 
-import dashyFrame from './frames/dashy.svg';
-import thornyCoreFrame from './frames/thorny-core.svg';
-const FRAMES = Object.assign(Object.create(null), {
-    'dashy': dashyFrame,
-    'thorny-core': thornyCoreFrame
-});
-
 const FramedAvatar = ({
     avatarClassName,
     avatarSrc,
@@ -23,16 +16,16 @@ const FramedAvatar = ({
     >
         <img
             className={classNames(styles.avatar, {
-                [styles.framedAvatar]: typeof frameId === 'string' && frameId in FRAMES
+                [styles.framedAvatar]: typeof frameId === 'string'
             }, avatarClassName)}
             draggable={false}
             src={avatarSrc}
         />
-        {typeof frameId === 'string' && frameId in FRAMES && (
+        {typeof frameId === 'string' && (
             <img
                 className={styles.frame}
                 draggable={false}
-                src={FRAMES[frameId]}
+                src={`https://api.dashblocks.org/avatar-frames/${frameId}`}
             />
         )}
     </div>

@@ -10,8 +10,8 @@
     height: 100%;
 }
 .framed-avatar {
-    width: 90%;
-    height: 90%;
+    width: calc(100% * 9 / 11);
+    height: calc(100% * 9 / 11);
 }
 .frame {
     position: absolute;

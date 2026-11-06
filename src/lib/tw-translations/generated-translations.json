@@ -3508,7 +3508,7 @@
         "dash.messages.promotedDashSupporter": "Спасибо за вашу поддержку, теперь вы являетесь Dash Supporter! Теперь у вас есть эксклюзивные преимущества, прочитайте {donationPage}, чтобы узнать больше об этой роли",
         "dash.messages.promotedDashSupporter.donationPage": "страницу пожертвований",
         "dash.messages.projectForked": "{user} сделал форк вашего проекта {project}, {checkItOut}",
-        "dash.messages.projectForked.checkItOut": "проверить",
+        "dash.messages.projectForked.checkItOut": "посмотрите",
         "dash.messages.loadMore": "Загрузить ещё",
         "tw.notify.permission": "Если разрешить, ваш браузер может предложить вам включить уведомления, и дальнейшие уведомления будут разрешены автоматически.",
         "tw.notify.title": "Проект хочет отображать уведомления.",

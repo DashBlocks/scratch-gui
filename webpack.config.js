@@ -32,7 +32,7 @@ const base = {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     devtool: process.env.SOURCEMAP || (process.env.NODE_ENV === 'production' ? false : 'cheap-module-source-map'),
     devServer: {
-        static: { directory: path.resolve(__dirname, 'build') },
+        static: {directory: path.resolve(__dirname, 'build')},
         host: '0.0.0.0',
         
         allowedHosts: 'all',

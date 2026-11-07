@@ -142,8 +142,19 @@ const reducer = function (state, action) {
         }
         return state;
     case DONE_LOADING_VM_WITHOUT_ID:
-        if (state.loadingState === LoadingState.LOADING_VM_FILE_UPLOAD ||
-            state.loadingState === LoadingState.LOADING_VM_NEW_DEFAULT) {
+        if (state.loadingState === LoadingState.LOADING_VM_FILE_UPLOAD) {
+            if (state.projectId !== null && state.projectId !== defaultProjectId &&
+                !(typeof state.projectId === 'string' && state.projectId.startsWith('s'))) {
+                return Object.assign({}, state, {
+                    loadingState: LoadingState.SHOWING_WITH_ID
+                });
+            }
+            return Object.assign({}, state, {
+                loadingState: LoadingState.SHOWING_WITHOUT_ID,
+                projectId: defaultProjectId
+            });
+        }
+        if (state.loadingState === LoadingState.LOADING_VM_NEW_DEFAULT) {
             return Object.assign({}, state, {
                 loadingState: LoadingState.SHOWING_WITHOUT_ID,
                 projectId: defaultProjectId

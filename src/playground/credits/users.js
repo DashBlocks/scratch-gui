@@ -67,6 +67,11 @@ const contributors = [
         username: 'DDen4ik-12'
     },
     {
+        link: 'github',
+        userID: '113053126',
+        username: 'BlockMaster777',
+    },
+    {
         userID: '127142246',
         username: 'AnonimKing24'
     },

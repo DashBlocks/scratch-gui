@@ -3756,7 +3756,7 @@
         "dash.comments.deleteError": "Не удалось удалить комментарий. Попробуйте ещё раз.",
         "dash.messages.projectCommented": "{user} прокомментировал ваш проект {project}",
         "dash.messages.commentUnavailable": "Этот комментарий или его проект удалён.",
-        "dash.project.description.inputPlaceholder": "Что это за проект?"
+        "dash.project.description.inputPlaceholder": "О чём этот проект?"
     },
     "sk": {
         "tw.feedbackButton": "{APP_NAME} Spätná väzba",

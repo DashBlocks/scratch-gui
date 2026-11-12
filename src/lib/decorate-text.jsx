@@ -5,6 +5,10 @@ import React, {useCallback, useState} from 'react';
 import * as styles from './decorate-text.css';
 import reactStringReplace from 'react-string-replace';
 
+import dashyEmoji from './images/emojis/dashy.png';
+import fireEmoji from './images/emojis/fire.png';
+import dEmoji from './images/emojis/d.png';
+
 const Emoji = ({code}) => {
     const [missing, setMissing] = useState(false);
     const token = `:${code}:`;
@@ -14,7 +18,13 @@ const Emoji = ({code}) => {
             alt={token}
             className={styles.emoji}
             draggable={false}
-            src={`/images/emojis/${code}.png`}
+            src={
+                    code === "dashy" ? dashyEmoji : (
+                        code === "fire" ? fireEmoji : (
+                            code === "d" ? dEmoji : "e"
+                        )
+                    )
+            }
             onError={showCode}
         />
     );

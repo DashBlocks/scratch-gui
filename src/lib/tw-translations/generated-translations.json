@@ -3660,6 +3660,10 @@
         "dash.studio.removingProject": "Удаление проекта...",
         "dash.studio.projects.placeholder": "Студия не имеет проектов",
         "dash.studio.changeThumbnail": "Изменить обложку",
+        "dash.studio.allowProjects": "Любой может добавлять проекты?",
+        "dash.studio.saving": "Сохранение...",
+        "dash.studio.saveChanges": "Сохранить изменения",
+        "dash.studio.cancel": "Отмена",
         "tw.tooLarge": "Этот звук может быть слишком большим для загрузки в Scratch.",
         "dash.tos": "Условия пользования",
         "tw.twExtension.description": "Новые странные блоки.",
@@ -3751,7 +3755,8 @@
         "dash.comments.deleting": "Удаление...",
         "dash.comments.deleteError": "Не удалось удалить комментарий. Попробуйте ещё раз.",
         "dash.messages.projectCommented": "{user} прокомментировал ваш проект {project}",
-        "dash.messages.commentUnavailable": "Этот комментарий или его проект удалён."
+        "dash.messages.commentUnavailable": "Этот комментарий или его проект удалён.",
+        "dash.project.description.inputPlaceholder": "Что это за проект?"
     },
     "sk": {
         "tw.feedbackButton": "{APP_NAME} Spätná väzba",

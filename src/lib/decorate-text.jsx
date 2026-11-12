@@ -5,9 +5,9 @@ import React, {useCallback, useState} from 'react';
 import * as styles from './decorate-text.css';
 import reactStringReplace from 'react-string-replace';
 
-import dashyEmoji from './images/emojis/dashy.png';
-import fireEmoji from './images/emojis/fire.png';
-import dEmoji from './images/emojis/d.png';
+import dashyEmoji from '../../static/images/emojis/dashy.png';
+import fireEmoji from '../../static/images/emojis/fire.png';
+import dEmoji from '../../static/images/emojis/d.png';
 
 const Emoji = ({code}) => {
     const [missing, setMissing] = useState(false);

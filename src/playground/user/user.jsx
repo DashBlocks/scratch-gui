@@ -9,6 +9,7 @@ import render from '../app-target';
 import * as styles from './user.css';
 
 import {APP_NAME} from '../../lib/brand';
+import Comments from '../../components/dash-comments/comments.jsx';
 import {Footer} from '../render-interface.jsx';
 import decorate from '../../lib/decorate-text.jsx';
 import LazyMenuBar from '../../components/menu-bar/lazy-menu-bar.jsx';
@@ -1308,6 +1309,14 @@ const User = props => {
                                 )}
                             </div>
                         </div>
+                        <Comments
+                            key={userData.id}
+                            className={styles.section}
+                            headerClassName={styles.sectionHeader}
+                            scope="users"
+                            session={session}
+                            targetId={String(userData.id)}
+                        />
                     </div>
                 </div>
                 <Footer />

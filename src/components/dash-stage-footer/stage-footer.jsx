@@ -13,7 +13,6 @@ import {setSession} from '../../reducers/dash';
 import fireReactionOnIcon from './fire-reaction-on.svg';
 import fireReactionOffIcon from './fire-reaction-off.svg';
 import viewsIcon from './views.svg';
-import forkIcon from './forks.svg';
 
 import * as styles from './stage-footer.css';
 
@@ -32,11 +31,6 @@ const messages = defineMessages({
         defaultMessage: 'Views Count',
         description: 'Count of project\'s views',
         id: 'dash.project.viewsCount'
-    },
-    forks: {
-        defaultMessage: 'Forks',
-        description: 'Button to open project\'s forks page',
-        id: 'dash.project.forks'
     }
 });
 
@@ -157,20 +151,6 @@ const StageFooter = props => {
         </div>
     );
 
-    const forksButton = (
-        <Button
-            className={styles.forksButton}
-            iconAlt={props.intl.formatMessage(messages.forks)}
-            iconClassName={styles.forkIcon}
-            iconSrc={forkIcon}
-            // eslint-disable-next-line react/jsx-no-bind
-            onClick={() => window.open(`project-forks#${props.projectId}`)}
-            title={props.intl.formatMessage(messages.forks)}
-        >
-            {projectMetadata?.stats?.forks || 0}
-        </Button>
-    );
-
     const uploadDate = projectMetadata?.uploadedAt ? new Date(projectMetadata?.uploadedAt) : null;
     const uploadDateNode = uploadDate ? (
         <>
@@ -185,7 +165,6 @@ const StageFooter = props => {
             <div className={styles.footerButtonsRow}>
                 {fireButton}
                 {viewsCount}
-                {forksButton}
             </div>
             <div className={styles.footerButtonsRow}>
                 {uploadDateNode}

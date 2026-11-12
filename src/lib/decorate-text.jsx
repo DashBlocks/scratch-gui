@@ -1,7 +1,28 @@
 // https://github.com/LLK/scratch-www/blob/25232a06bcceeaddec8fcb24fb63a44d870cf1cf/src/lib/decorate-text.jsx
 
-import React from 'react';
+import PropTypes from 'prop-types';
+import React, {useCallback, useState} from 'react';
+import * as styles from './decorate-text.css';
 import reactStringReplace from 'react-string-replace';
+
+const Emoji = ({code}) => {
+    const [missing, setMissing] = useState(false);
+    const token = `:${code}:`;
+    const showCode = useCallback(() => setMissing(true), []);
+    return missing ? token : (
+        <img
+            alt={token}
+            className={styles.emoji}
+            draggable={false}
+            src={`/images/emojis/${code}.png`}
+            onError={showCode}
+        />
+    );
+};
+
+Emoji.propTypes = {
+    code: PropTypes.string.isRequired
+};
 
 const decorate = (text, isDashProject) => {
     // Make links clickable
@@ -35,7 +56,14 @@ const decorate = (text, isDashProject) => {
         >{`#${match}`}</a>
     ));
 
-    return text;
+    // Make :emojis: appear
+    let emojiIndex = 0;
+    return reactStringReplace(text, /:(dashy|fire|d):/g, code => (
+        <Emoji
+            code={code}
+            key={`emoji-${code}-${emojiIndex++}`}
+        />
+    ));
 };
 
 export default decorate;

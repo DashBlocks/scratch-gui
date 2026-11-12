@@ -1028,7 +1028,8 @@ class Interface extends React.PureComponent {
                                     key={projectId}
                                     className={classNames(styles.section, styles.projectRelatedSection)}
                                     headerClassName={styles.projectRelatedHeader}
-                                    projectId={projectId}
+                                    scope="projects"
+                                    targetId={String(projectId)}
                                     session={session}
                                 />
                             )}

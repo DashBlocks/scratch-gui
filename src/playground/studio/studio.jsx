@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useCallback, useState, useEffect, useRef} from 'react';
 import useHashId from '../user/use-hash-id.jsx';
 import {connect} from 'react-redux';
 import {FormattedDate, FormattedMessage, defineMessages, injectIntl, intlShape} from 'react-intl';
@@ -8,6 +8,7 @@ import render from '../app-target';
 import * as styles from './studio.css';
 
 import Spinner from '../../components/spinner/spinner.jsx';
+import Comments from '../../components/dash-comments/comments.jsx';
 import {Footer} from '../render-interface.jsx';
 import Button from '../../components/button/button.jsx';
 import Input from '../../components/forms/input.jsx';
@@ -57,6 +58,10 @@ const messages = defineMessages({
 
 const Studio = props => {
     const id = useHashId();
+    const [showComments, setShowComments] = useState(false);
+    const [commentsCount, setCommentsCount] = useState(0);
+    const openProjects = useCallback(() => setShowComments(false), []);
+    const openComments = useCallback(() => setShowComments(true), []);
     const [studioData, setStudioData] = useState(null);
     const [projects, setProjects] = useState([]);
     const [session, setSession] = useState(null);
@@ -223,6 +228,7 @@ const Studio = props => {
     };
 
     useEffect(() => {
+        setShowComments(new URLSearchParams(window.location.search).get('tab') === 'comments');
         setProjects([]);
         setHasMore(true);
         setOffset(0);
@@ -253,6 +259,7 @@ const Studio = props => {
                 projectsCount: studio.studio.projectsCount
             })} - ${APP_NAME}`;
             setStudioData(studio.studio);
+            setCommentsCount(studio.studio.commentsCount || 0);
             setEditName(studio.studio.name);
             setEditDescription(studio.studio.description || '');
             setEditAllowProjects(!!studio.studio.allowProjects);
@@ -513,151 +520,183 @@ const Studio = props => {
                         </div>
                         <main className={styles.studioMain}>
                             {actionError && <p className={styles.actionError}>{actionError}</p>}
-                            <div className={styles.projectsTab}>
-                                <h2>
+                            <div className={styles.tabs}>
+                                <button
+                                    aria-pressed={!showComments}
+                                    className={styles.projectsTab}
+                                    type="button"
+                                    onClick={openProjects}
+                                >
                                     <FormattedMessage
                                         defaultMessage="Projects ({count})"
                                         description="Heading for projects in this studio"
                                         id="dash.studio.tabs.projects"
                                         values={{count: studioData.projectsCount}}
                                     />
-                                </h2>
+                                </button>
+                                <button
+                                    aria-pressed={showComments}
+                                    className={styles.projectsTab}
+                                    type="button"
+                                    onClick={openComments}
+                                >
+                                    <FormattedMessage
+                                        id="dash.comments.title"
+                                        defaultMessage="Comments ({count})"
+                                        description="Comments heading"
+                                        values={{count: commentsCount}}
+                                    />
+                                </button>
                             </div>
                             <Divider className={styles.divider} />
-                            {(isOwner || studioData.allowProjects) && (
-                                <form
-                                    className={styles.addProjectForm}
-                                    // eslint-disable-next-line react/jsx-no-bind
-                                    onSubmit={handleAddProject}
-                                >
-                                    <Input
-                                        className={styles.addProjectInput}
-                                        type="text"
-                                        required
-                                        value={projectUrl}
-                                        // Do not translate
-                                        placeholder="https://dashblocks.org/#xxxx"
-                                        disabled={addingProject}
-                                        // eslint-disable-next-line react/jsx-no-bind
-                                        onChange={event => setProjectUrl(event.target.value)}
-                                    />
-                                    <Button
-                                        className={styles.button}
-                                        // eslint-disable-next-line react/jsx-no-bind
-                                        onClick={handleAddProject}
-                                        disabled={addingProject}
-                                    >
-                                        {addingProject ? (
-                                            <FormattedMessage
-                                                defaultMessage="Adding project..."
-                                                description="Project is being added to the studio"
-                                                id="dash.studio.addingProject"
-                                            />
-                                        ) : (
-                                            <FormattedMessage
-                                                defaultMessage="Add project"
-                                                description="Add a project to the studio by URL"
-                                                id="dash.studio.addProject"
-                                            />
-                                        )}
-                                    </Button>
-                                </form>
-                            )}
-                            <div className={styles.projectGrid}>
-                                {projects.length > 0 ? projects.map(project => (
-                                    <div
-                                        key={project.id}
-                                        className={styles.projectCard}
-                                        title={props.intl.formatMessage(messages.hoverText, {
-                                            author: project.author.username,
-                                            title: project.name
-                                        })}
-                                    >
-                                        <div className={styles.thumbWrapper}>
-                                            <img
-                                                draggable={false}
-                                                src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
-                                                alt={project.id}
-                                                // eslint-disable-next-line react/jsx-no-bind
-                                                onClick={() => window.open(`./#${project.id}`, '_blank')}
-                                            />
-                                        </div>
-                                        <div className={styles.projectInfo}>
-                                            <h4
+                            {showComments ? (
+                                <Comments
+                                    key={studioData.id}
+                                    className={styles.studioMain}
+                                    headerClassName={styles.commentsHeader}
+                                    scope="studios"
+                                    session={session}
+                                    targetId={String(studioData.id)}
+                                    onTotalChange={setCommentsCount}
+                                />
+                            ) : (
+                                <>
+                                    {(isOwner || studioData.allowProjects) && (
+                                        <form
+                                            className={styles.addProjectForm}
                                             // eslint-disable-next-line react/jsx-no-bind
-                                                onClick={() => window.open(`./#${project.id}`, '_blank')}
-                                            >{project.name}</h4>
-                                            <p>
-                                                <FormattedMessage
-                                                    defaultMessage="by {author}"
-                                                    description="Displayed under project title to credit creator"
-                                                    id="tw.studioview.authorAttribution"
-                                                    values={{
-                                                        author: <a
-                                                            href={`user#${project.author.id}`}
-                                                            target="_blank"
-                                                            rel="noreferrer"
-                                                        >{project.author.username}</a>
-                                                    }}
-                                                />
-                                            </p>
-                                            {(isOwner || String(session?.id) === String(project.author.id)) && (
-                                                <Button
-                                                    className={styles.removeProjectButton}
-                                                    disabled={removingProjectIds.includes(project.id)}
-                                                    // eslint-disable-next-line react/jsx-no-bind
-                                                    onClick={() => handleRemoveProject(project)}
-                                                >
-                                                    {removingProjectIds.includes(project.id) ? (
-                                                        <FormattedMessage
-                                                            defaultMessage="Removing..."
-                                                            description="Project is being removed from the studio"
-                                                            id="dash.studio.removingProject"
-                                                        />
-                                                    ) : (
-                                                        <FormattedMessage
-                                                            defaultMessage="Remove"
-                                                            description="Remove a project from the studio"
-                                                            id="dash.studio.removeProject"
-                                                        />
-                                                    )}
-                                                </Button>
-                                            )}
-                                        </div>
-                                    </div>
-                                )) : (
-                                    <FormattedMessage
-                                        defaultMessage="This studio has no projects"
-                                        description="Placeholder text when the studio has no projects"
-                                        id="dash.studio.projects.placeholder"
-                                    />
-                                )}
-                                {hasMore && (
-                                    <Button
-                                        className={styles.loadMoreButton}
-                                        disabled={loadMoreButtonDisabled}
-                                        // eslint-disable-next-line react/jsx-no-bind
-                                        onClick={() => {
-                                            const newOffset = offset + limit;
-                                            setOffset(newOffset);
-                                            fetchProjects(newOffset);
-                                        }}
-                                    >
-                                        {loadMoreButtonDisabled ? (
-                                            <Spinner
-                                                className={styles.spinner}
-                                                small
+                                            onSubmit={handleAddProject}
+                                        >
+                                            <Input
+                                                className={styles.addProjectInput}
+                                                type="text"
+                                                required
+                                                value={projectUrl}
+                                                // Do not translate
+                                                placeholder="https://dashblocks.org/#xxxx"
+                                                disabled={addingProject}
+                                                // eslint-disable-next-line react/jsx-no-bind
+                                                onChange={event => setProjectUrl(event.target.value)}
                                             />
-                                        ) : (
+                                            <Button
+                                                className={styles.button}
+                                                // eslint-disable-next-line react/jsx-no-bind
+                                                onClick={handleAddProject}
+                                                disabled={addingProject}
+                                            >
+                                                {addingProject ? (
+                                                    <FormattedMessage
+                                                        defaultMessage="Adding project..."
+                                                        description="Project is being added to the studio"
+                                                        id="dash.studio.addingProject"
+                                                    />
+                                                ) : (
+                                                    <FormattedMessage
+                                                        defaultMessage="Add project"
+                                                        description="Add a project to the studio by URL"
+                                                        id="dash.studio.addProject"
+                                                    />
+                                                )}
+                                            </Button>
+                                        </form>
+                                    )}
+                                    <div className={styles.projectGrid}>
+                                        {projects.length > 0 ? projects.map(project => (
+                                            <div
+                                                key={project.id}
+                                                className={styles.projectCard}
+                                                title={props.intl.formatMessage(messages.hoverText, {
+                                                    author: project.author.username,
+                                                    title: project.name
+                                                })}
+                                            >
+                                                <div className={styles.thumbWrapper}>
+                                                    <img
+                                                        draggable={false}
+                                                        src={`https://api.dashblocks.org/projects/thumbnails/${project.thumbnailId || 1}`}
+                                                        alt={project.id}
+                                                        // eslint-disable-next-line react/jsx-no-bind
+                                                        onClick={() => window.open(`./#${project.id}`, '_blank')}
+                                                    />
+                                                </div>
+                                                <div className={styles.projectInfo}>
+                                                    <h4
+                                                    // eslint-disable-next-line react/jsx-no-bind
+                                                        onClick={() => window.open(`./#${project.id}`, '_blank')}
+                                                    >{project.name}</h4>
+                                                    <p>
+                                                        <FormattedMessage
+                                                            defaultMessage="by {author}"
+                                                            description="Credit the project author"
+                                                            id="tw.studioview.authorAttribution"
+                                                            values={{
+                                                                author: <a
+                                                                    href={`user#${project.author.id}`}
+                                                                    target="_blank"
+                                                                    rel="noreferrer"
+                                                                >{project.author.username}</a>
+                                                            }}
+                                                        />
+                                                    </p>
+                                                    {(isOwner || String(session?.id) === String(project.author.id)) && (
+                                                        <Button
+                                                            className={styles.removeProjectButton}
+                                                            disabled={removingProjectIds.includes(project.id)}
+                                                            // eslint-disable-next-line react/jsx-no-bind
+                                                            onClick={() => handleRemoveProject(project)}
+                                                        >
+                                                            {removingProjectIds.includes(project.id) ? (
+                                                                <FormattedMessage
+                                                                    defaultMessage="Removing..."
+                                                                    description="Removing a studio project"
+                                                                    id="dash.studio.removingProject"
+                                                                />
+                                                            ) : (
+                                                                <FormattedMessage
+                                                                    defaultMessage="Remove"
+                                                                    description="Remove a project from the studio"
+                                                                    id="dash.studio.removeProject"
+                                                                />
+                                                            )}
+                                                        </Button>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )) : (
                                             <FormattedMessage
-                                                defaultMessage="Load more"
-                                                description="Button text for loading more messages"
-                                                id="dash.messages.loadMore"
+                                                defaultMessage="This studio has no projects"
+                                                description="Placeholder text when the studio has no projects"
+                                                id="dash.studio.projects.placeholder"
                                             />
                                         )}
-                                    </Button>
-                                )}
-                            </div>
+                                        {hasMore && (
+                                            <Button
+                                                className={styles.loadMoreButton}
+                                                disabled={loadMoreButtonDisabled}
+                                                // eslint-disable-next-line react/jsx-no-bind
+                                                onClick={() => {
+                                                    const newOffset = offset + limit;
+                                                    setOffset(newOffset);
+                                                    fetchProjects(newOffset);
+                                                }}
+                                            >
+                                                {loadMoreButtonDisabled ? (
+                                                    <Spinner
+                                                        className={styles.spinner}
+                                                        small
+                                                    />
+                                                ) : (
+                                                    <FormattedMessage
+                                                        defaultMessage="Load more"
+                                                        description="Button text for loading more messages"
+                                                        id="dash.messages.loadMore"
+                                                    />
+                                                )}
+                                            </Button>
+                                        )}
+                                    </div>
+                                </>
+                            )}
                         </main>
                     </div>
                 </div>

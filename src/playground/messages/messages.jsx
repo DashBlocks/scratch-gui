@@ -7,6 +7,7 @@ import AppStateHOC from '../../lib/app-state-hoc.jsx';
 import render from '../app-target';
 import * as styles from './messages.css';
 import * as commentStyles from '../../components/dash-comments/comments.css';
+import decorate from '../../lib/decorate-text.jsx';
 import FramedAvatar from '../../components/dash-framed-avatar/framed-avatar.jsx';
 
 import Spinner from '../../components/spinner/spinner.jsx';
@@ -32,6 +33,10 @@ const theme = detectTheme();
 applyGuiColors(theme);
 
 // Browser support is not perfect yet
+const isCommentMessage = message => [
+    'project-commented', 'profile-commented', 'studio-commented', 'comment-replied'
+].includes(message.type);
+
 const relativeTimeSupported = () => typeof Intl !== 'undefined' && typeof Intl.RelativeTimeFormat !== 'undefined';
 
 const messages = defineMessages({
@@ -148,24 +153,56 @@ const Messages = props => {
                 </>
             );
         case 'project-commented':
+        case 'profile-commented':
+        case 'studio-commented':
+        case 'comment-replied': {
+            const page = message.target || message.project;
+            const path = {projects: '/', users: 'user', studios: 'studio?tab=comments'}[message.scope || 'projects'];
+            const user = <a href={`user#${message.user.id}`}>{message.user.username}</a>;
+            const place = <a href={`${path}#${page.id}`}>{page.name}</a>;
             return (
                 <div className={styles.commentHeading}>
                     <img
+                        alt=""
                         className={styles.messageIcon}
                         src={commentedIcon}
                         draggable={false}
                     />
-                    <FormattedMessage
-                        defaultMessage="{user} commented on your project {project}"
-                        description="Notification about a new project comment"
-                        id="dash.messages.projectCommented"
-                        values={{
-                            user: <a href={`user#${message.user.id}`}>{message.user.username}</a>,
-                            project: <a href={`/#${message.project.id}`}>{message.project.name}</a>
-                        }}
-                    />
+                    {message.type === 'comment-replied' && (
+                        <FormattedMessage
+                            id="dash.messages.commentReplied"
+                            defaultMessage="{user} replied to your comment on {place}"
+                            description="Notification sent to the author of the comment being answered"
+                            values={{user, place}}
+                        />
+                    )}
+                    {message.type === 'profile-commented' && (
+                        <FormattedMessage
+                            id="dash.messages.profileCommented"
+                            defaultMessage="{user} commented on your profile {place}"
+                            description="Notification about a new profile comment"
+                            values={{user, place}}
+                        />
+                    )}
+                    {message.type === 'studio-commented' && (
+                        <FormattedMessage
+                            id="dash.messages.studioCommented"
+                            defaultMessage="{user} commented on your studio {place}"
+                            description="Notification about a new studio comment"
+                            values={{user, place}}
+                        />
+                    )}
+                    {message.type === 'project-commented' && (
+                        <FormattedMessage
+                            defaultMessage="{user} commented on your project {project}"
+                            description="Notification about a new project comment"
+                            id="dash.messages.projectCommented"
+                            values={{user, project: place}}
+                        />
+                    )}
                 </div>
             );
+        }
         case 'project-forked':
             return (
                 <>
@@ -403,7 +440,7 @@ const Messages = props => {
                                     key={index}
                                     className={classNames(
                                         styles.messageContent,
-                                        message.type === 'project-commented' ? styles.commentMessage : null,
+                                        isCommentMessage(message) ? styles.commentMessage : null,
                                         index < userData.profile.unreadMessages ? styles.unreadMessage : null
                                     )}
                                 >
@@ -431,7 +468,7 @@ const Messages = props => {
                                             }}
                                         />
                                     </div>
-                                    {message.type === 'project-commented' && (
+                                    {isCommentMessage(message) && (
                                         <div className={classNames(commentStyles.comment, styles.commentPreview)}>
                                             {message.comment ? (
                                                 <>
@@ -449,7 +486,7 @@ const Messages = props => {
                                                             className={commentStyles.bubble}
                                                             dir="auto"
                                                         >
-                                                            {message.comment.content}
+                                                            {decorate(message.comment.content, true)}
                                                         </div>
                                                     </div>
                                                 </>

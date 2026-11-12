@@ -186,6 +186,66 @@
         }
     },
     {
+        "name": "Dashy-a",
+        "tags": [
+            "dash",
+            "character"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 60,
+        "rotationCenterY": 54.5,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Dashy-a.svg"
+        }
+    },
+    {
+        "name": "Dashy-b",
+        "tags": [
+            "dash",
+            "character"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 60,
+        "rotationCenterY": 54.5,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Dashy-b.svg"
+        }
+    },
+    {
+        "name": "Dashy-c",
+        "tags": [
+            "dash",
+            "character"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 60,
+        "rotationCenterY": 54.5,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Dashy-c.svg"
+        }
+    },
+    {
+        "name": "Dashy-d",
+        "tags": [
+            "dash",
+            "character"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 60,
+        "rotationCenterY": 49.5,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Dashy-d.svg"
+        }
+    },
+    {
         "name": "Exclamation Mark",
         "tags": [
             "dash",

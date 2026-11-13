@@ -1,0 +1,188 @@
+@import "../../css/colors.css";
+@import "../../css/units.css";
+
+.modal.modal {
+    width: min(36rem, calc(100vw - 1.5rem));
+    margin: min(8vh, 4rem) auto;
+}
+
+.body {
+    padding: clamp(0.875rem, 4vw, 2rem);
+    max-height: calc(84vh - 3.5rem);
+    overflow: auto;
+    background: $ui-modal-background;
+    color: $ui-modal-foreground;
+}
+
+.preview, .row, .toggle, .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.preview {
+    padding: 1rem 1.25rem;
+    overflow-wrap: anywhere;
+    background-color: $ui-tertiary;
+    border: 1px solid $ui-black-transparent;
+    border-radius: $space;
+    font-size: 1.125rem;
+}
+
+.large-avatar, .small-avatar {
+    flex-shrink: 0;
+    width: 4.5rem;
+    height: 4.5rem;
+}
+
+.small-avatar {
+    width: 3rem;
+    height: 3rem;
+}
+
+.avatar {
+    border-radius: $space;
+    object-fit: cover;
+}
+
+.body fieldset {
+    min-width: 0;
+    margin: 1.25rem 0 0;
+    padding: 0;
+    border: 0;
+}
+
+.body legend {
+    margin-bottom: 0.65rem;
+    padding: 0;
+    font-weight: bold;
+}
+
+.toggle, .row label, .tile {
+    font-size: 0.875rem;
+}
+
+.editor {
+    padding: 0.75rem;
+    margin-top: 0.5rem;
+    border: 1px solid $ui-black-transparent;
+    border-radius: $space;
+}
+
+.rail {
+    position: relative;
+    height: 2.25rem;
+    margin: 0.35rem 0.65rem 1.2rem;
+    border-radius: 0.25rem;
+}
+
+.body button,
+.support-button {
+    padding: 0.5rem 0.75rem;
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: bold;
+    border: 1px solid $ui-black-transparent;
+    border-radius: 0.25rem;
+    background: $ui-tertiary;
+    color: $text-primary;
+    cursor: pointer;
+}
+
+.body button.handle {
+    position: absolute;
+    bottom: -0.55rem;
+    width: 1.35rem;
+    height: 1.35rem;
+    padding: 0;
+    transform: translateX(-50%);
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px $ui-black-transparent;
+    touch-action: none;
+    cursor: ew-resize;
+}
+
+.handle[aria-pressed="true"] {
+    z-index: 1;
+    outline: 2px solid $looks-secondary;
+}
+
+.row {
+    flex-wrap: wrap;
+    margin-top: 0.65rem;
+}
+
+.row label {
+    display: grid;
+    flex: 1 1 5.5rem;
+    min-width: 0;
+    gap: 0.25rem;
+}
+
+.row input {
+    width: 100%;
+    accent-color: $looks-secondary;
+}
+
+.frames {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr));
+    gap: 0.5rem;
+}
+
+.frame-card {
+    position: relative;
+    cursor: pointer;
+}
+
+.frame-card input {
+    position: absolute;
+    opacity: 0;
+}
+
+.tile {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 0.25rem;
+    text-align: center;
+    overflow-wrap: anywhere;
+    border: 2px solid $ui-black-transparent;
+    border-radius: $space;
+}
+
+.frame-card input:checked + .tile {
+    border-color: $looks-secondary;
+    background: $ui-tertiary;
+}
+
+.frame-card input:focus-visible + .tile,
+.body button:focus-visible,
+.support-button:focus-visible {
+    outline: 2px solid $looks-secondary;
+    outline-offset: 2px;
+}
+
+.actions {
+    justify-content: flex-end;
+    margin-top: 1.25rem;
+}
+
+.actions button:last-child,
+.actions .support-button {
+    background: $looks-secondary;
+    color: white;
+}
+
+.support-button {
+    text-align: center;
+    text-decoration: none;
+}
+
+.body button:disabled {
+    cursor: default;
+    opacity: 0.55;
+}

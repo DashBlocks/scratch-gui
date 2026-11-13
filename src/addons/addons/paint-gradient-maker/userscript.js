@@ -1,3 +1,5 @@
+import {encodeGradHTML, pointerPercent} from "../../../lib/gradient-maker";
+
 // Gradient Maker Addon
 // Original by: SharkPool
 export default async function ({ addon, console, msg }) {
@@ -33,15 +35,6 @@ export default async function ({ addon, console, msg }) {
             if (count) selectedClassName = cls;
             else unselectedClassName = cls
         }
-    }
-
-    function encodeGradHTML(settings) {
-        const sortedParts = [...settings.parts].sort((a, b) => a.p - b.p);
-
-        let gradString = settings.type === "Linear" ? "linear-gradient(" : "radial-gradient(";
-        if (settings.type === "Linear") gradString += `${settings.dir}deg, `;
-        for (const part of sortedParts) gradString += `${part.c} ${part.p}%, `;
-        return gradString.substring(0, gradString.length - 2) + ")";
     }
 
     function genLinearGradPoints(bounds, angleDeg) {
@@ -395,8 +388,7 @@ export default async function ({ addon, console, msg }) {
             const containerRect = container.getBoundingClientRect();
 
             const onMouseMove = (moveEvent) => {
-                const x = moveEvent.clientX - containerRect.left;
-                const percent = Math.min(100, Math.max(0, (x / container.offsetWidth) * 100));
+                const percent = pointerPercent(moveEvent.clientX, containerRect.left, container.offsetWidth);
                 draggable.style.left = `${percent}%`;
                 if (percent > 50) {
                     opacityInput.style.removeProperty("left");

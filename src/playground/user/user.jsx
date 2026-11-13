@@ -24,6 +24,9 @@ import BufferedInputHOC from '../../components/forms/buffered-input-hoc.jsx';
 import Input from '../../components/forms/input.jsx';
 const BufferedInput = BufferedInputHOC(Input);
 
+import Appearance from '../../components/dash-appearance/appearance.jsx';
+import {profileBackground} from '../../lib/gradient-maker';
+import {setSession as setDashSession} from '../../reducers/dash';
 import FramedAvatar from '../../components/dash-framed-avatar/framed-avatar.jsx';
 
 import linkIcon from './icon--link.svg';
@@ -102,7 +105,8 @@ const User = props => {
     const [actionsOffset, setActionsOffset] = useState(0);
     const [actionsLoading, setActionsLoading] = useState(false);
 
-    const [gradient, setGradient] = useState({});
+    const [avatarBackground, setAvatarBackground] = useState(null);
+    const [appearanceOpen, setAppearanceOpen] = useState(false);
     const [isMyProfile, setIsMyProfile] = useState(false);
     const [session, setSession] = useState(null);
 
@@ -112,6 +116,7 @@ const User = props => {
     const fileInputRef = useRef(null);
 
     useEffect(() => {
+        setAppearanceOpen(false);
         const fetchFullProfile = async () => {
             setLoading(true);
             setError(null);
@@ -229,26 +234,26 @@ const User = props => {
             };
         };
 
-        try {
-            if (userData?.profile?.gradient) {
-                setGradient({
-                    ...userData.profile.gradient,
-                    stops: userData.profile.gradient.stops.map(stop => ({
-                        color: `color-mix(in srgb, ${stop.color}, var(--ui-white) 60%)`,
-                        position: stop.position
-                    }))
-                });
-            } else {
-                avgGradientByImgSections(
-                    `https://api.dashblocks.org/users/avatars/${userData?.profile?.avatarId}?t=${avatarCacheBuster}`,
-                    5,
-                    2
-                ).then(avgGradient => setGradient(avgGradient));
-            }
-        } catch (_) {
-            // Ignore errors
+        let active = true;
+        setAvatarBackground(null);
+        if (userData?.profile?.avatarId) {
+            avgGradientByImgSections(
+                `https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}?t=${avatarCacheBuster}`,
+                5,
+                2
+            ).then(result => {
+                if (active) {
+                    setAvatarBackground(`linear-gradient(${result.angle}deg, ${result.stops.map(stop =>
+                        `${stop.color} ${stop.position}`
+                    ).join(', ')})`);
+                }
+            })
+                .catch(() => {});
         }
-    }, [userData?.profile?.avatarId, userData?.profile?.gradient, avatarCacheBuster]);
+        return () => {
+            active = false;
+        };
+    }, [userData?.profile?.avatarId, avatarCacheBuster]);
 
     const getAchievement = achievement => {
         switch (achievement.type) {
@@ -680,6 +685,16 @@ const User = props => {
         );
     }
 
+    const canOpenAppearance = isMyProfile && Boolean(session?.id) && String(session.id) === String(userData.id);
+    const applyAppearance = updated => {
+        if (String(updated.id) !== String(userData.id)) return;
+        const changes = {gradient: updated.profile.gradient, avatarFrame: updated.profile.avatarFrame};
+        setUserData(previous => ({...previous, profile: {...previous.profile, ...changes}}));
+        const nextSession = {...session, profile: {...session.profile, ...changes}};
+        setSession(nextSession);
+        props.updateSession(nextSession);
+    };
+
     const joinDate = userData.joinedAt ? new Date(userData.joinedAt) : null;
     const lastActiveDate = userData.lastActive ? new Date(userData.lastActive) : null;
 
@@ -696,9 +711,7 @@ const User = props => {
                         <div className={styles.userAbout}>
                             <div
                                 className={classNames(styles.section, styles.userHeader)}
-                                style={gradient.stops?.length ? {
-                                    backgroundImage: `linear-gradient(${gradient.angle}deg, ${gradient.stops.map(stop => `${stop.color} ${stop.position}`).join(', ')})`
-                                } : {}}
+                                style={{backgroundImage: profileBackground(userData.profile.gradient) || avatarBackground}}
                             >
                                 <input
                                     type="file"
@@ -736,6 +749,30 @@ const User = props => {
                                                         props.intl.formatMessage(messages.dasherRole)}
                                         </span>
                                     </div>
+                                    {canOpenAppearance && (
+                                        <button
+                                            className={classNames(styles.followButton, styles.appearanceButton)}
+                                            type="button"
+                                            onClick={() => setAppearanceOpen(true)}
+                                        >
+                                            <FormattedMessage
+                                                id="dash.appearance.title"
+                                                defaultMessage="Appearance"
+                                                description="Profile appearance"
+                                            />
+                                        </button>
+                                    )}
+                                    {canOpenAppearance && appearanceOpen && (
+                                        <Appearance
+                                            key={userData.id}
+                                            avatarBackground={avatarBackground}
+                                            avatarSrc={`https://api.dashblocks.org/users/avatars/${userData.profile.avatarId}?t=${avatarCacheBuster}`}
+                                            canSave={['dash-supporter', 'dashteam'].includes(session.role)}
+                                            user={userData}
+                                            onClose={() => setAppearanceOpen(false)}
+                                            onSaved={applyAppearance}
+                                        />
+                                    )}
                                     {!isMyProfile && <Button
                                         className={styles.followButton}
                                         disabled={followButtonDisabled}
@@ -1328,14 +1365,17 @@ const User = props => {
 
 User.propTypes = {
     intl: intlShape,
-    isRtl: PropTypes.bool
+    isRtl: PropTypes.bool,
+    updateSession: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
     isRtl: state.locales.isRtl
 });
 
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = dispatch => ({
+    updateSession: session => dispatch(setDashSession(session))
+});
 
 const ConnectedUser = injectIntl(connect(
     mapStateToProps,

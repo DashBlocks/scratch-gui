@@ -3,7 +3,7 @@ import {sanitizeSvg} from '@turbowarp/scratch-svg-renderer';
 export default async function ({ addon, console, msg }) {
   const paper = await addon.tab.traps.getPaper();
 
-  const paintEditorCanvasContainer = await addon.tab.waitForElement("[class^='paint-editor_canvas-container']");
+  const paintEditorCanvasContainer = await addon.tab.waitForElement("[class*='paint-editor_canvas-container_']");
   try {
     if (!("colorIndex" in addon.tab.redux.state.scratchPaint.fillMode)) {
       console.error("Detected new paint editor; this will be supported in future versions.");
@@ -13,8 +13,26 @@ export default async function ({ addon, console, msg }) {
     // The check can technically fail when Redux isn't supported (rare cases)
     // Just ignore in this case
   }
-  const paperCanvas =
-    paintEditorCanvasContainer[addon.tab.traps.getInternalKey(paintEditorCanvasContainer)].child.child.child.stateNode;
+  const findPaperCanvas = (instance) => {
+    while (instance) {
+      if (typeof instance.stateNode?.recalibrateSize === "function") {
+        return instance.stateNode;
+      }
+      const childCanvas = findPaperCanvas(instance.child);
+      if (childCanvas) {
+        return childCanvas;
+      }
+      instance = instance.sibling;
+    }
+    return null;
+  };
+  const reactInternalKey = addon.tab.traps.getInternalKey(paintEditorCanvasContainer);
+  const paperCanvas = reactInternalKey
+    ? findPaperCanvas(paintEditorCanvasContainer[reactInternalKey])
+    : null;
+  if (!paperCanvas) {
+    throw new Error("Unable to find the paint editor canvas instance");
+  }
 
   const storedOnionLayers = [];
 

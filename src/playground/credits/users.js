@@ -69,7 +69,7 @@ const contributors = [
     {
         link: 'github',
         userID: '113053126',
-        username: 'BlockMaster777',
+        username: 'BlockMaster777'
     },
     {
         userID: '127142246',

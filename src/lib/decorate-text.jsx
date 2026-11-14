@@ -19,11 +19,11 @@ const Emoji = ({code}) => {
             className={styles.emoji}
             draggable={false}
             src={
-                    code === "dashy" ? dashyEmoji : (
-                        code === "fire" ? fireEmoji : (
-                            code === "d" ? dEmoji : "e"
-                        )
+                code === 'dashy' ? dashyEmoji : (
+                    code === 'fire' ? fireEmoji : (
+                        code === 'd' ? dEmoji : 'e'
                     )
+                )
             }
             onError={showCode}
         />

@@ -211,31 +211,13 @@ class Tab extends EventTargetShim {
             },
             getWorkspace: () => AddonHooks.blocklyWorkspace,
             getPaper: async () => {
-                const modeSelector = await this.waitForElement("[class*='paint-editor_mode-selector']", {
+                await this.waitForElement("[class*='paint-editor_mode-selector']", {
                     reduxCondition: state => (
                         state.scratchGui.editorTab.activeTabIndex === 1 && !state.scratchGui.mode.isPlayerOnly
                     )
                 });
-                const reactInternalKey = Object.keys(modeSelector)
-                    .find(key => key.startsWith('__reactInternalInstance$'));
-                const internalState = modeSelector[reactInternalKey].child;
-                // .tool or .blob.tool only exists on the selected tool
-                let toolState = internalState;
-                let tool;
-                while (toolState) {
-                    const toolInstance = toolState.child.stateNode;
-                    if (toolInstance.tool) {
-                        tool = toolInstance.tool;
-                        break;
-                    }
-                    if (toolInstance.blob && toolInstance.blob.tool) {
-                        tool = toolInstance.blob.tool;
-                        break;
-                    }
-                    toolState = toolState.sibling;
-                }
-                if (tool) {
-                    const paperScope = tool._scope;
+                const paperScope = window.paper;
+                if (paperScope && paperScope.project) {
                     return paperScope;
                 }
                 throw new Error('cannot find paper :(');

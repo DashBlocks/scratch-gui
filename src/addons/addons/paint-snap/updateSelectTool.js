@@ -3,11 +3,16 @@ import { loadModules, Modes, BitmapModes } from "./helpers.js";
 
 import { snapOn, threshold, guideColor } from "./state.js";
 
+const updatedMoveTools = new WeakSet();
+
 const getMoveTool = (tool) => {
   return tool.boundingBoxTool._modeMap.MOVE;
 };
 
 export const updateSelectTool = (paper, tool, vm) => {
+  const moveTool = getMoveTool(tool);
+  if (updatedMoveTools.has(moveTool.constructor)) return;
+
   const lib = loadModules(paper, vm);
   const {
     math: { checkPointsClose, snapDeltaToAngle },
@@ -15,8 +20,6 @@ export const updateSelectTool = (paper, tool, vm) => {
     layer: { getDragCrosshairLayer, CROSSHAIR_FULL_OPACITY, getLayer },
     guide: { hoverBounds },
   } = lib;
-
-  const moveTool = getMoveTool(tool);
 
   // https://github.com/scratchfoundation/scratch-paint/blob/2a9fb2356d961200dc849b5b0a090d33f473c0b5/src/helper/selection-tools/move-tool.js
 
@@ -104,7 +107,19 @@ export const updateSelectTool = (paper, tool, vm) => {
     if (this.selectedItems.length === 0) {
       return;
     }
-    const selectionBounds = this.selectionCenter._owner;
+    let selectionBounds;
+    for (const item of this.selectedItems) {
+      if (item.data.isHelperItem) continue;
+
+      const offset = item.data.origPos
+        ? item.data.origPos.subtract(item.position)
+        : new paper.Point(0, 0);
+      const itemBounds = item.bounds;
+      const originalBounds = new paper.Rectangle(itemBounds.topLeft.add(offset), itemBounds.bottomRight.add(offset));
+      selectionBounds = selectionBounds ? selectionBounds.unite(originalBounds) : originalBounds;
+    }
+    if (!selectionBounds) return;
+
     const newCenter = this.selectionCenter.add(dragVector);
     const getDist = (p1, p2) => {
       return p1.getDistance(p2);
@@ -267,6 +282,12 @@ export const updateSelectTool = (paper, tool, vm) => {
       }
     }
 
+    if (this.anchorPosition) {
+      const resultingMovement =
+        snapVector || (event.modifiers.shift ? snapDeltaToAngle(dragVector, Math.PI / 4) : dragVector);
+      this.anchorPosition.set(this.selectionCenter.add(resultingMovement));
+    }
+
     if (this.firstDrag) {
       // Show the center crosshair above the selected item while dragging.
       getDragCrosshairLayer().visible = true;
@@ -319,8 +340,9 @@ export const updateSelectTool = (paper, tool, vm) => {
     removeGuides?.();
     oldMouseUp.apply(this, a);
   };
+  updatedMoveTools.add(moveTool.constructor);
 };
 
 export const isSelectTool = (tool) => {
-  return "selectionBoxTool" in tool && "boundingBoxTool" in tool;
+  return Boolean(tool && "selectionBoxTool" in tool && "boundingBoxTool" in tool);
 };

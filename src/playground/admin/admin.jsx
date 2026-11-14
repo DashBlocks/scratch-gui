@@ -254,6 +254,7 @@ const Admin = props => {
                 <div className={styles.spinner}>
                     <Spinner
                         level={'primary'}
+                        showLazyMessages
                         large
                     />
                 </div>

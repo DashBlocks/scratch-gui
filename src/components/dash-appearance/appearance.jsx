@@ -36,26 +36,98 @@ const makeGradient = ({custom, dir, parts}) => (custom ? {
 } : null);
 
 const frameName = frame => {
-    switch (frame.id) {
-    case 'blocks':
+    switch (frame) {
+    case frame.id === 'blocks':
         return (<FormattedMessage
             id="dash.appearance.blocks"
             defaultMessage="Blocks"
             description="Avatar frame"
         />);
-    case 'dashy':
+    case frame.id === 'dashy':
         return (<FormattedMessage
             id="dash.appearance.dashy"
             defaultMessage="Dashy"
             description="Avatar frame"
         />);
-    case 'thorny-core':
+    case frame.id === 'thorny-core':
         return (
             <FormattedMessage
                 id="dash.appearance.thorny"
                 defaultMessage="Thorny Core"
                 description="Avatar frame"
             />
+        );
+    case frame.id === 'costume-editor':
+        return (
+            <>
+                <FormattedMessage
+                    id="dash.appearance.costumeEditor"
+                    defaultMessage="Costume Editor"
+                    description="Avatar frame"
+                />
+                {' ('}
+                <FormattedMessage
+                    defaultMessage="by {author}"
+                    description="Displayed under project title to credit creator"
+                    id="tw.studioview.authorAttribution"
+                    values={{
+                        author: <a
+                            href={`user#${frame.author.id}`}
+                            target="_blank"
+                            rel="noreferrer"
+                        >{frame.author.username}</a>
+                    }}
+                />
+                {')'}
+            </>
+        );
+    case frame.id === 'googly-eyes':
+        return (
+            <>
+                <FormattedMessage
+                    id="dash.appearance.googlyEyes"
+                    defaultMessage="Googly Eyes"
+                    description="Avatar frame"
+                />
+                {' ('}
+                <FormattedMessage
+                    defaultMessage="by {author}"
+                    description="Displayed under project title to credit creator"
+                    id="tw.studioview.authorAttribution"
+                    values={{
+                        author: <a
+                            href={`user#${frame.author.id}`}
+                            target="_blank"
+                            rel="noreferrer"
+                        >{frame.author.username}</a>
+                    }}
+                />
+                {')'}
+            </>
+        );
+    case frame.id === 'card':
+        return (
+            <>
+                <FormattedMessage
+                    id="dash.appearance.card"
+                    defaultMessage="Card"
+                    description="Avatar frame"
+                />
+                {' ('}
+                <FormattedMessage
+                    defaultMessage="by {author}"
+                    description="Displayed under project title to credit creator"
+                    id="tw.studioview.authorAttribution"
+                    values={{
+                        author: <a
+                            href={`user#${frame.author.id}`}
+                            target="_blank"
+                            rel="noreferrer"
+                        >{frame.author.username}</a>
+                    }}
+                />
+                {')'}
+            </>
         );
     default:
         return frame.name || frame.id.replace(/[-_]+/g, ' ').replace(/\b\w/g, char => char.toUpperCase());

@@ -184,7 +184,6 @@ class Appearance extends React.Component {
             const frames = [];
             let total;
             do {
-                // I know there isnt that much frames
                 const response = await requestDashApi(`/avatar-frames?limit=40&offset=${frames.length}`, {
                     signal: this.catalog.signal
                 });
@@ -205,6 +204,10 @@ class Appearance extends React.Component {
     }
     handleSelectFrame (event) {
         this.setState({frame: event.currentTarget.value || null});
+    }
+    isFrameAuthor (frameId) {
+        const frame = this.state.frames.find(option => String(option.id) === String(frameId));
+        return Boolean(frame && frame.author && frame.author.id === this.props.user.id);
     }
     handleSelectPoint (event) {
         this.setState({selected: Number(event.currentTarget.dataset.index)});
@@ -259,14 +262,17 @@ class Appearance extends React.Component {
         if (!this.inFlight) this.props.onClose();
     }
     async handleSave () {
-        if (!this.props.canSave || this.inFlight) return;
+        const frame = this.state.frame;
+        const canSaveFrame = this.props.canSave || this.isFrameAuthor(frame);
+        const frameChanged = frame !== this.savedFrame;
+        const gradient = makeGradient(this.state);
+        const gradientChanged = JSON.stringify(gradient) !== this.savedGradient;
+        if (this.inFlight || (!this.props.canSave && (!canSaveFrame || !frameChanged))) return;
         this.inFlight = true;
         this.setState({saving: true, error: null});
-        const gradient = makeGradient(this.state);
-        const frame = this.state.frame;
         const changes = [];
-        if (JSON.stringify(gradient) !== this.savedGradient) changes.push(['set-gradient', {gradient}]);
-        if (frame !== this.savedFrame) changes.push(['set-avatar-frame', {avatarFrame: frame}]);
+        if (this.props.canSave && gradientChanged) changes.push(['set-gradient', {gradient}]);
+        if (canSaveFrame && frameChanged) changes.push(['set-avatar-frame', {avatarFrame: frame}]);
         let applied = 0;
         try {
             for (const [endpoint, body] of changes) {
@@ -284,7 +290,13 @@ class Appearance extends React.Component {
                 this.props.onSaved(data.user);
                 applied++;
             }
-            if (this.mounted) this.props.onClose();
+            if (this.mounted) {
+                if (!this.props.canSave && gradientChanged) {
+                    this.setState({error: 'frame-saved-gradient-requires-support'});
+                } else {
+                    this.props.onClose();
+                }
+            }
         } catch {
             if (this.mounted) this.setState({error: applied ? 'partial' : 'failed'});
         } finally {
@@ -295,7 +307,10 @@ class Appearance extends React.Component {
     render () {
         const {avatarBackground, avatarSrc, intl, user} = this.props;
         const {custom, dir, error, frame, frames, listStatus, parts, saving, selected} = this.state;
-        const dirty = this.savedFrame !== frame || this.savedGradient !== JSON.stringify(makeGradient(this.state));
+        const frameChanged = this.savedFrame !== frame;
+        const gradientChanged = this.savedGradient !== JSON.stringify(makeGradient(this.state));
+        const canSaveFrame = this.props.canSave || this.isFrameAuthor(frame);
+        const canSaveChanges = (this.props.canSave && gradientChanged) || (canSaveFrame && frameChanged);
         const background = custom ? profileBackground(makeGradient(this.state)) : avatarBackground;
         const options = [{id: ''}, ...frames];
         if (this.savedFrame && !options.some(option => option.id === this.savedFrame)) {
@@ -497,7 +512,13 @@ class Appearance extends React.Component {
                     </fieldset>
                     {error && (
                         <p role="alert">
-                            {error === 'partial' ? (
+                            {error === 'frame-saved-gradient-requires-support' ? (
+                                <FormattedMessage
+                                    id="dash.appearance.frameSavedGradientRequiresSupport"
+                                    defaultMessage="Your frame was saved. Support Dash to save your gradient."
+                                    description="The frame was saved, but the gradient requires Dash Support"
+                                />
+                            ) : error === 'partial' ? (
                                 <FormattedMessage
                                     id="dash.appearance.partial"
                                     defaultMessage="Gradient saved. The frame could not be saved. Try again."
@@ -524,9 +545,9 @@ class Appearance extends React.Component {
                                 description="Close appearance settings"
                             />
                         </button>
-                        {this.props.canSave ? (
+                        {this.props.canSave || (canSaveFrame && frameChanged) ? (
                             <button
-                                disabled={saving || !dirty}
+                                disabled={saving || !canSaveChanges}
                                 type="button"
                                 onClick={this.handleSave}
                             >

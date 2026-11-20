@@ -464,3 +464,8 @@ body {
     text-overflow: ellipsis;
     display: block;
 }
+
+.appearance-button {
+    border-radius: 0.25rem;
+    cursor: pointer;
+}

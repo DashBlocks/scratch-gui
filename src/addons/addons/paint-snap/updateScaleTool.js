@@ -4,18 +4,21 @@ import { addons, initialize } from "./compatibility.js";
 
 import { snapOn, threshold, guideColor } from "./state.js";
 
+const updatedScaleTools = new WeakSet();
+
 const getScaleTool = (tool) => {
   return tool.boundingBoxTool._modeMap.SCALE;
 };
 
 export const updateScaleTool = (paper, tool, vm) => {
+  const scaleTool = getScaleTool(tool);
+  if (updatedScaleTools.has(scaleTool.constructor)) return;
+
   const lib = loadModules(paper, vm);
   const {
     view: { getActionBounds },
     layer: { getLayer },
   } = lib;
-
-  const scaleTool = getScaleTool(tool);
 
   // https://github.com/scratchfoundation/scratch-paint/blob/develop/src/helper/selection-tools/scale-tool.js
   const MIN_SCALE_FACTOR = 0.0001;
@@ -509,4 +512,5 @@ export const updateScaleTool = (paper, tool, vm) => {
     removeGuides();
     oldMouseUp.call(this);
   };
+  updatedScaleTools.add(scaleTool.constructor);
 };

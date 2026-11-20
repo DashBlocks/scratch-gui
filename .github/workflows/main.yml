@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: "npm"
       
       - name: Install Dependencies
@@ -26,6 +26,10 @@ jobs:
 
       - name: Update Dependencies
         run: npm update --legacy-peer-deps
+        if: ${{ inputs.update_deps }}
+
+      - name: Pull Assets
+        run: npm run pull-assets
         if: ${{ inputs.update_deps }}
 
       - name: Build Scratch

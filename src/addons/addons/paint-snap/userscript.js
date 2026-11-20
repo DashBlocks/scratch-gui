@@ -10,15 +10,23 @@ export default async function (api) {
   addon.self.addEventListener("reenabled", enable);
   loadSettings(addon);
   const paper = await addon.tab.traps.getPaper();
-  const [tool] = paper.tools;
 
   toggle(addon.settings.get("enable-default"));
   setGuideColor(addon.settings.get("guide-color"));
   addon.settings.addEventListener("change", () => setGuideColor(addon.settings.get("guide-color")));
 
-  if (isSelectTool(tool)) {
+  const updateTool = () => {
+    const tool = paper.tool;
+    if (!isSelectTool(tool)) return;
     updateSelectTool(paper, tool, addon.tab.traps.vm);
     updateScaleTool(paper, tool, addon.tab.traps.vm);
-  }
+  };
+  addon.tab.redux.initialize();
+  addon.tab.redux.addEventListener("statechanged", (event) => {
+    if (event.detail.action.type === "scratch-paint/modes/CHANGE_MODE") {
+      setTimeout(updateTool);
+    }
+  });
+  updateTool();
   initUI(api);
 }

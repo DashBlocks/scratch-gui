@@ -171,6 +171,7 @@ class CollaboratorsModal extends React.Component {
                         </button>
                         <button
                             className={classNames(styles.openButton, styles.button)}
+                            // eslint-disable-next-line react/jsx-no-bind
                             onClick={() => window.open(`./?collaboration=1#${projectId}`, '_blank')}
                         >
                             <FormattedMessage

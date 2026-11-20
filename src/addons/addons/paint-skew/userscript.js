@@ -13,10 +13,12 @@ export default async function ({ addon }) {
     ST.hasSkew = true;
 
     const ogMouseDown = ST.prototype.onMouseDown;
-    ST.prototype.onMouseDown = function (hitResult, boundsPath, selectedItems) {
+    ST.prototype.onMouseDown = function (...args) {
+      const [hitResult] = args;
       if (this.active) return;
       this.index = hitResult.item.data.index;
-      ogMouseDown.call(this, hitResult, boundsPath, selectedItems);
+      const result = ogMouseDown.apply(this, args);
+      if (!this.active || !this.itemGroup) return result;
       this.skewCenter = false;
       this.lastSkx = 0;
       this.lastSky = 0;
@@ -26,6 +28,7 @@ export default async function ({ addon }) {
     addons.paintSkew = function (event, original) {
       if (!this.active) return;
       if (addon.self.disabled) return original();
+      if (!this.itemGroup || !this.skewBounds) return original();
 
       const bounds = this.skewBounds;
       const doShear = (skx, sky) => {
@@ -53,8 +56,8 @@ export default async function ({ addon }) {
         // swap width and height because apparently
         // shearing is based on the dimension perpendicular
         // to the one that is being skewed
-        const shearX = (skx / bounds.height) * shearMult;
-        const shearY = (sky / bounds.width) * shearMult;
+        const shearX = bounds.height ? (skx / bounds.height) * shearMult : 0;
+        const shearY = bounds.width ? (sky / bounds.width) * shearMult : 0;
 
         this.itemGroup.shear(shearX, shearY, position);
         if (this.selectionAnchor) {

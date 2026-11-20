@@ -19,6 +19,7 @@ import DropAreaHOC from '../lib/drop-area-hoc.jsx';
 
 import {connect} from 'react-redux';
 import storage from '../lib/storage';
+import expandBackpackDrop, {confirmBackpackFolder} from '../lib/backpack/expand-drop';
 import VM from 'scratch-vm';
 
 const dragTypes = [DragConstants.COSTUME, DragConstants.SOUND, DragConstants.SPRITE];
@@ -102,6 +103,32 @@ class Backpack extends React.Component {
         throw error;
     }
     handleDrop (dragInfo) {
+        let drops;
+        try {
+            drops = expandBackpackDrop(dragInfo);
+        } catch (error) {
+            this.setState({error: String(error), loading: false});
+            return Promise.resolve();
+        }
+        const folder = Array.isArray(dragInfo.payload && dragInfo.payload.sa_folder_items);
+        const run = async () => {
+            try {
+                if (folder && !await confirmBackpackFolder()) return;
+                this.setState({loading: true, error: false});
+                for (const drop of drops) {
+                    const item = await this.saveDrop(drop);
+                    if (item) this.setState(previous => ({contents: [item, ...previous.contents]}));
+                }
+            } catch (error) {
+                this.setState({error: String(error)});
+            } finally {
+                this.setState({loading: false});
+            }
+        };
+        this.dropQueue = (this.dropQueue || Promise.resolve()).then(run);
+        return this.dropQueue;
+    }
+    async saveDrop (dragInfo) {
         let payloader = null;
         let presaveAsset = null;
         switch (dragInfo.dragType) {
@@ -120,39 +147,23 @@ class Backpack extends React.Component {
             payloader = codePayload;
             break;
         }
-        if (!payloader) return;
-
-        // Creating the payload is async, so set loading before starting
-        this.setState({loading: true}, () => {
-            payloader(dragInfo.payload, this.props.vm)
-                .then(payload => {
-                    // Force the asset to save to the asset server before storing in backpack
-                    // Ensures any asset present in the backpack is also on the asset server
-                    if (presaveAsset && !presaveAsset.clean && !this.props.host === LOCAL_API) {
-                        return storage.store(
-                            presaveAsset.assetType,
-                            presaveAsset.dataFormat,
-                            presaveAsset.data,
-                            presaveAsset.assetId
-                        ).then(() => payload);
-                    }
-                    return payload;
-                })
-                .then(payload => saveBackpackObject({
-                    host: this.props.host,
-                    token: this.props.token,
-                    username: this.props.username,
-                    ...payload
-                }))
-                .then(item => {
-                    this.setState({
-                        loading: false,
-                        contents: [item].concat(this.state.contents)
-                    });
-                })
-                .catch(error => {
-                    this.handleError(error);
-                });
+        if (!payloader) return null;
+        const payload = await payloader(dragInfo.payload, this.props.vm);
+        if (!payload) throw new Error('Could not export backpack item');
+        if (typeof payload.name !== 'string') {
+            if (typeof payload.name?.realName !== 'string') throw new Error('Invalid backpack item name');
+            payload.name = payload.name.realName;
+        }
+        if (presaveAsset && !presaveAsset.clean && this.props.host !== LOCAL_API) {
+            await storage.store(
+                presaveAsset.assetType, presaveAsset.dataFormat, presaveAsset.data, presaveAsset.assetId
+            );
+        }
+        return saveBackpackObject({
+            host: this.props.host,
+            token: this.props.token,
+            username: this.props.username,
+            ...payload
         });
     }
     handleDelete (id) {

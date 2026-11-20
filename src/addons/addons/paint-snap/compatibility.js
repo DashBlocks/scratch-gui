@@ -1,4 +1,4 @@
-let overridden = false;
+const overridden = new WeakSet();
 
 export const addons = {
   paintSkew: null,
@@ -6,9 +6,9 @@ export const addons = {
 };
 
 export function initialize(paper, ScaleTool) {
-  if (overridden) return;
+  if (overridden.has(ScaleTool)) return;
 
-  overridden = true;
+  overridden.add(ScaleTool);
   const ogMouseDrag = ScaleTool.prototype.onMouseDrag;
   ScaleTool.prototype.onMouseDrag = function (event) {
     if (!this.active) return;

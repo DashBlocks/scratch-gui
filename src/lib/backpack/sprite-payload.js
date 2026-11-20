@@ -2,7 +2,7 @@ import createThumbnail from './thumbnail';
 
 const spritePayload = (id, vm) => {
     const target = vm.runtime.getTargetById(id);
-    if (!target) return null;
+    if (!target) return Promise.reject(new Error('Sprite no longer exists'));
 
     return vm.exportSprite(
         id,
@@ -17,7 +17,9 @@ const spritePayload = (id, vm) => {
             thumbnail: ''
         };
 
-        const costumeDataUrl = target.sprite.costumes[target.currentCostume].asset.encodeDataURI();
+        const costume = target.sprite.costumes[target.currentCostume] || target.sprite.costumes[0];
+        if (!costume?.asset) throw new Error('Sprite has no exportable costume');
+        const costumeDataUrl = costume.asset.encodeDataURI();
 
         return createThumbnail(costumeDataUrl).then(thumbnail => {
             payload.thumbnail = thumbnail;

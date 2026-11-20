@@ -1,3 +1,5 @@
+import {setBackpackFolderConfirmation} from "../../../lib/backpack/expand-drop";
+
 const DIVIDER = "//";
 
 /**
@@ -68,6 +70,7 @@ export const addDefaultAssetFolderIfMissing = (asset) => {
 };
 
 export default async function ({ addon, console, msg }) {
+  setBackpackFolderConfirmation(() => addon.tab.confirm("", msg("confirm-backpack-folder"), { useEditorClasses: true }));
   // The basic premise of how this addon works is relative simple.
   // scratch-gui renders the sprite selectors and asset selectors in a hierarchy like this:
   // <SelectorHOC>
@@ -107,12 +110,6 @@ export default async function ({ addon, console, msg }) {
       return nearestAssetPanelWrapper[reactInternalKey].child.child.stateNode;
     }
     throw new Error("cannot find SortableHOC");
-  };
-
-  const getBackpackFromElement = (el) => {
-    const gui = el.closest('[class*="gui_editor-wrapper"]');
-    if (!gui) throw new Error("cannot find Backpack");
-    return gui[reactInternalKey].child.sibling.child.child.stateNode;
   };
 
   const clamp = (n, min, max) => {
@@ -302,17 +299,6 @@ export default async function ({ addon, console, msg }) {
     )
       return;
     throw new Error("Can not comprehend VM");
-  };
-
-  const verifyBackpack = (backpackInstance) => {
-    const Backpack = backpackInstance.constructor;
-    if (
-      typeof Backpack.prototype.handleDrop === "function" &&
-      typeof Backpack.prototype.componentDidUpdate === "undefined"
-    ) {
-      return;
-    }
-    throw new Error("Can not comprehend Backpack");
   };
 
   class Cache {
@@ -1231,78 +1217,6 @@ export default async function ({ addon, console, msg }) {
       return originalShareSoundToTarget.call(this, ...args);
     };
   };
-
-  const patchBackpack = (backpackInstance) => {
-    const Backpack = backpackInstance.constructor;
-    Backpack.prototype.sa_loadNextItem = function () {
-      if (!this.sa_queuedItems) return;
-      const item = this.sa_queuedItems.pop();
-      if (item) {
-        let payload;
-        let type;
-        if (item.dragPayload) {
-          if (item.url) {
-            type = "SOUND";
-          } else {
-            type = "COSTUME";
-          }
-          payload = item.dragPayload;
-        } else if (item.id) {
-          type = "SPRITE";
-          payload = item.id;
-        }
-        if (type && payload) {
-          originalHandleDrop.call(this, {
-            dragType: type,
-            payload: payload,
-          });
-        }
-      }
-    };
-
-    Backpack.prototype.componentDidUpdate = function (prevProps, prevState) {
-      if (!this.state.loading && prevState.loading && !this.state.error) {
-        this.sa_loadNextItem();
-      }
-    };
-
-    const originalHandleDrop = Backpack.prototype.handleDrop;
-    Backpack.prototype.handleDrop = function (...args) {
-      // When a folder is dropped into the backpack, upload all the items in the folder.
-      const dragInfo = args[0];
-      const folderItems = dragInfo && dragInfo.payload && dragInfo.payload.sa_folder_items;
-      if (Array.isArray(folderItems)) {
-        addon.tab.confirm("", msg("confirm-backpack-folder"), { useEditorClasses: true }).then((result) => {
-          if (!result) return;
-          this.sa_queuedItems = folderItems;
-          this.sa_loadNextItem();
-        });
-        return;
-      }
-      return originalHandleDrop.call(this, ...args);
-    };
-    backpackInstance.handleDrop = Backpack.prototype.handleDrop.bind(backpackInstance);
-  };
-
-  // Backpack
-  {
-    const clickListener = (e) => {
-      if (!e.target.closest('[class*="backpack_backpack-header_"]')) {
-        return;
-      }
-      setTimeout(() => {
-        const backpackContainer = document.querySelector("[class^='backpack_backpack-list_']");
-        if (!backpackContainer) {
-          return;
-        }
-        document.removeEventListener("click", clickListener);
-        const backpackInstance = getBackpackFromElement(backpackContainer);
-        verifyBackpack(backpackInstance);
-        patchBackpack(backpackInstance);
-      });
-    };
-    document.addEventListener("click", clickListener, true);
-  }
 
   // Sprite list
   {

@@ -889,9 +889,13 @@ export default async function ({ addon, console, msg }) {
             const currentOffset = addon.tab.redux.state.scratchGui.assetDrag.currentOffset;
             const sortableHOCInstance = getSortableHOCFromElement(this.ref);
             if (currentOffset && sortableHOCInstance && sortableHOCInstance.getMouseOverIndex() === null) {
-              this.props.index = realIndex;
-              this.handleDrag(currentOffset);
-              this.props.index = originalIndex;
+              const originalProps = this.props;
+              try {
+                this.props = { ...originalProps, index: realIndex };
+                this.handleDrag(currentOffset);
+              } finally {
+                this.props = originalProps;
+              }
             }
           }
         }

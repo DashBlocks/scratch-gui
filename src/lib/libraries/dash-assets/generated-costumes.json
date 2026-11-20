@@ -186,6 +186,66 @@
         }
     },
     {
+        "name": "Dashy-a",
+        "tags": [
+            "dash",
+            "character"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 60,
+        "rotationCenterY": 54.5,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Dashy-a.svg"
+        }
+    },
+    {
+        "name": "Dashy-b",
+        "tags": [
+            "dash",
+            "character"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 60,
+        "rotationCenterY": 54.5,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Dashy-b.svg"
+        }
+    },
+    {
+        "name": "Dashy-c",
+        "tags": [
+            "dash",
+            "character"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 60,
+        "rotationCenterY": 54.5,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Dashy-c.svg"
+        }
+    },
+    {
+        "name": "Dashy-d",
+        "tags": [
+            "dash",
+            "character"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 60,
+        "rotationCenterY": 49.5,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/Dashy-d.svg"
+        }
+    },
+    {
         "name": "Exclamation Mark",
         "tags": [
             "dash",
@@ -397,6 +457,21 @@
         }
     },
     {
+        "name": "RAM",
+        "tags": [
+            "dash",
+            "pc"
+        ],
+        "bitmapResolution": 1,
+        "dataFormat": "svg",
+        "rotationCenterX": 174,
+        "rotationCenterY": 131.5,
+        "src": {
+            "library": "dash",
+            "path": "/costumes/RAM.svg"
+        }
+    },
+    {
         "name": "Reload",
         "tags": [
             "dash",
@@ -429,129 +504,21 @@
         }
     },
     {
-        "name": "Tomoko Kuroki-a",
+        "name": "Shield",
         "tags": [
-            "dash"
-        ],
-        "bitmapResolution": 1.0666666666666667,
-        "dataFormat": "png",
-        "rotationCenterX": 256,
-        "rotationCenterY": 251.5,
-        "src": {
-            "library": "dash",
-            "path": "/costumes/Tomoko%20Kuroki-a.png"
-        }
-    },
-    {
-        "name": "Tomoko Kuroki-b",
-        "tags": [
-            "dash"
-        ],
-        "bitmapResolution": 1.0666666666666667,
-        "dataFormat": "png",
-        "rotationCenterX": 256,
-        "rotationCenterY": 233,
-        "src": {
-            "library": "dash",
-            "path": "/costumes/Tomoko%20Kuroki-b.png"
-        }
-    },
-    {
-        "name": "Tomoko Kuroki-c",
-        "tags": [
-            "dash"
+            "dash",
+            "icons",
+            "symbols",
+            "blue",
+            "games"
         ],
         "bitmapResolution": 1,
-        "dataFormat": "png",
-        "rotationCenterX": 203.5,
-        "rotationCenterY": 256,
+        "dataFormat": "svg",
+        "rotationCenterX": 46,
+        "rotationCenterY": 46,
         "src": {
             "library": "dash",
-            "path": "/costumes/Tomoko%20Kuroki-c.png"
-        }
-    },
-    {
-        "name": "Tomoko Kuroki-d",
-        "tags": [
-            "dash"
-        ],
-        "bitmapResolution": 1,
-        "dataFormat": "png",
-        "rotationCenterX": 206,
-        "rotationCenterY": 256,
-        "src": {
-            "library": "dash",
-            "path": "/costumes/Tomoko%20Kuroki-d.png"
-        }
-    },
-    {
-        "name": "Tomoko Kuroki-e",
-        "tags": [
-            "dash"
-        ],
-        "bitmapResolution": 1,
-        "dataFormat": "png",
-        "rotationCenterX": 217,
-        "rotationCenterY": 256,
-        "src": {
-            "library": "dash",
-            "path": "/costumes/Tomoko%20Kuroki-e.png"
-        }
-    },
-    {
-        "name": "Tomoko Kuroki-f",
-        "tags": [
-            "dash"
-        ],
-        "bitmapResolution": 1,
-        "dataFormat": "png",
-        "rotationCenterX": 218.5,
-        "rotationCenterY": 256,
-        "src": {
-            "library": "dash",
-            "path": "/costumes/Tomoko%20Kuroki-f.png"
-        }
-    },
-    {
-        "name": "Tomoko Kuroki-g",
-        "tags": [
-            "dash"
-        ],
-        "bitmapResolution": 1.0666666666666667,
-        "dataFormat": "png",
-        "rotationCenterX": 256,
-        "rotationCenterY": 239,
-        "src": {
-            "library": "dash",
-            "path": "/costumes/Tomoko%20Kuroki-g.png"
-        }
-    },
-    {
-        "name": "Tomoko Kuroki-h",
-        "tags": [
-            "dash"
-        ],
-        "bitmapResolution": 1.0666666666666667,
-        "dataFormat": "png",
-        "rotationCenterX": 256,
-        "rotationCenterY": 245,
-        "src": {
-            "library": "dash",
-            "path": "/costumes/Tomoko%20Kuroki-h.png"
-        }
-    },
-    {
-        "name": "Tomoko Kuroki-i",
-        "tags": [
-            "dash"
-        ],
-        "bitmapResolution": 1.0666666666666667,
-        "dataFormat": "png",
-        "rotationCenterX": 256,
-        "rotationCenterY": 248,
-        "src": {
-            "library": "dash",
-            "path": "/costumes/Tomoko%20Kuroki-i.png"
+            "path": "/costumes/Shield.svg"
         }
     },
     {

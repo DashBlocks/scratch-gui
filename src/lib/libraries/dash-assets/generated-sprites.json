@@ -15,7 +15,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 27.5,
-                "rotationCenterY": 27.5
+                "rotationCenterY": 27.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Arrow2.svg"
+                }
             }
         ],
         "sounds": [
@@ -47,7 +51,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 72,
-                "rotationCenterY": 27.5
+                "rotationCenterY": 27.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Button6.svg"
+                }
             }
         ],
         "sounds": [
@@ -80,7 +88,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 46,
-                "rotationCenterY": 46
+                "rotationCenterY": 46,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Button7.svg"
+                }
             }
         ],
         "sounds": [
@@ -115,7 +127,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 69.5,
-                "rotationCenterY": 58.5
+                "rotationCenterY": 58.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Cake2.svg"
+                }
             }
         ],
         "sounds": [
@@ -146,28 +162,44 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 13,
-                "rotationCenterY": 14
+                "rotationCenterY": 14,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Campfire-a.svg"
+                }
             },
             {
                 "name": "Campfire-b",
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 13,
-                "rotationCenterY": 16
+                "rotationCenterY": 16,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Campfire-b.svg"
+                }
             },
             {
                 "name": "Campfire-c",
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 13.5,
-                "rotationCenterY": 14
+                "rotationCenterY": 14,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Campfire-c.svg"
+                }
             },
             {
                 "name": "Campfire-d",
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 13,
-                "rotationCenterY": 16
+                "rotationCenterY": 16,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Campfire-d.svg"
+                }
             }
         ],
         "sounds": [
@@ -201,7 +233,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 34,
-                "rotationCenterY": 30.5
+                "rotationCenterY": 30.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Cookie.svg"
+                }
             }
         ],
         "sounds": [
@@ -230,7 +266,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 60.5,
-                "rotationCenterY": 66
+                "rotationCenterY": 66,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Cursor.svg"
+                }
             }
         ],
         "sounds": [
@@ -262,7 +302,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 126,
-                "rotationCenterY": 126
+                "rotationCenterY": 126,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Dash%20Puzzle.svg"
+                }
             }
         ],
         "sounds": [
@@ -292,28 +336,44 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 60,
-                "rotationCenterY": 54.5
+                "rotationCenterY": 54.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Dashy-a.svg"
+                }
             },
             {
                 "name": "Dashy-b",
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 60,
-                "rotationCenterY": 54.5
+                "rotationCenterY": 54.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Dashy-b.svg"
+                }
             },
             {
                 "name": "Dashy-c",
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 60,
-                "rotationCenterY": 54.5
+                "rotationCenterY": 54.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Dashy-c.svg"
+                }
             },
             {
                 "name": "Dashy-d",
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 60,
-                "rotationCenterY": 49.5
+                "rotationCenterY": 49.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Dashy-d.svg"
+                }
             }
         ],
         "sounds": [
@@ -345,7 +405,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 12,
-                "rotationCenterY": 33
+                "rotationCenterY": 33,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Exclamation%20Mark.svg"
+                }
             }
         ],
         "sounds": [
@@ -376,14 +440,22 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 191.5,
-                "rotationCenterY": 149
+                "rotationCenterY": 149,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/House-a.svg"
+                }
             },
             {
                 "name": "House-b",
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 191.5,
-                "rotationCenterY": 151.5
+                "rotationCenterY": 151.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/House-b.svg"
+                }
             }
         ],
         "sounds": [
@@ -415,7 +487,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 24,
-                "rotationCenterY": 24.5
+                "rotationCenterY": 24.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Locked.svg"
+                }
             }
         ],
         "sounds": [
@@ -445,7 +521,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 8.5,
-                "rotationCenterY": 9
+                "rotationCenterY": 9,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Log.svg"
+                }
             }
         ],
         "sounds": [
@@ -476,14 +556,22 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 22,
-                "rotationCenterY": 15.5
+                "rotationCenterY": 15.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Mark-a.svg"
+                }
             },
             {
                 "name": "Mark-b",
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 21.5,
-                "rotationCenterY": 22.5
+                "rotationCenterY": 22.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Mark-b.svg"
+                }
             }
         ],
         "sounds": [
@@ -513,21 +601,33 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 13.5,
-                "rotationCenterY": 11.5
+                "rotationCenterY": 11.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Mushroom-a.svg"
+                }
             },
             {
                 "name": "Mushroom-b",
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 15.5,
-                "rotationCenterY": 11.5
+                "rotationCenterY": 11.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Mushroom-b.svg"
+                }
             },
             {
                 "name": "Mushroom-c",
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 19.5,
-                "rotationCenterY": 16.5
+                "rotationCenterY": 16.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Mushroom-c.svg"
+                }
             }
         ],
         "sounds": [
@@ -557,7 +657,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 45.5,
-                "rotationCenterY": 44
+                "rotationCenterY": 44,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Pizza.svg"
+                }
             }
         ],
         "sounds": [
@@ -587,7 +691,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 174,
-                "rotationCenterY": 131.5
+                "rotationCenterY": 131.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/RAM.svg"
+                }
             }
         ],
         "sounds": [
@@ -620,7 +728,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 23.5,
-                "rotationCenterY": 21
+                "rotationCenterY": 21,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Reload.svg"
+                }
             }
         ],
         "sounds": [
@@ -649,7 +761,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 40.5,
-                "rotationCenterY": 62.5
+                "rotationCenterY": 62.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Scissors.svg"
+                }
             }
         ],
         "sounds": [
@@ -683,21 +799,33 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 141.5,
-                "rotationCenterY": 150.5
+                "rotationCenterY": 150.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Happy%20Umnikis.svg"
+                }
             },
             {
                 "name": "Just Umnikis",
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 141.5,
-                "rotationCenterY": 150.5
+                "rotationCenterY": 150.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Just%20Umnikis.svg"
+                }
             },
             {
                 "name": "Umnikis Squared",
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 81.5,
-                "rotationCenterY": 77.5
+                "rotationCenterY": 77.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Umnikis%20Squared.svg"
+                }
             }
         ],
         "sounds": [
@@ -729,7 +857,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 72,
-                "rotationCenterY": 100.5
+                "rotationCenterY": 100.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Voxel%20Icon-a.svg"
+                }
             },
             {
                 "name": "Voxel Icon-b",
@@ -737,7 +869,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 66.5,
-                "rotationCenterY": 71.5
+                "rotationCenterY": 71.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Voxel%20Icon-b.svg"
+                }
             },
             {
                 "name": "Voxel Icon-c",
@@ -745,7 +881,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 94.5,
-                "rotationCenterY": 115
+                "rotationCenterY": 115,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Voxel%20Icon-c.svg"
+                }
             },
             {
                 "name": "Voxel Icon-d",
@@ -753,7 +893,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 100,
-                "rotationCenterY": 107.5
+                "rotationCenterY": 107.5,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Voxel%20Icon-d.svg"
+                }
             }
         ],
         "sounds": [
@@ -785,7 +929,11 @@
                 "bitmapResolution": 1,
                 "dataFormat": "svg",
                 "rotationCenterX": 40.5,
-                "rotationCenterY": 40
+                "rotationCenterY": 40,
+                "src": {
+                    "library": "dash",
+                    "path": "/costumes/Warning.svg"
+                }
             }
         ],
         "sounds": [

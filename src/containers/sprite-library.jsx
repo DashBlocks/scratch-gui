@@ -4,7 +4,9 @@ import React from 'react';
 import {injectIntl, intlShape, defineMessages} from 'react-intl';
 import VM from 'scratch-vm';
 
+import {costumeUpload, soundUpload} from '../lib/file-uploader.js';
 import {getSpriteLibrary} from '../lib/libraries/tw-async-libraries';
+import {handleAssetLoad} from '../lib/libraries/dash-web-libraries';
 import randomizeSpritePosition from '../lib/randomize-sprite-position';
 import spriteTags from '../lib/libraries/sprite-tags';
 
@@ -35,10 +37,64 @@ class SpriteLibrary extends React.PureComponent {
             }));
         }
     }
-    handleItemSelect (item) {
+    async handleItemSelect (item) {
         if (!this.props.vm.canEditCollaboration()) return;
+        // Create clone of library item
+        item = {...item};
         // Randomize position of library sprite
         randomizeSpritePosition(item);
+        const costumes = [];
+        for (let costume of item.costumes) {
+            if (costume.src) {
+                const generatedCostumes = await handleAssetLoad(
+                    costume.src.library,
+                    costume.src.path,
+                    (buffer, fileType) => new Promise(resolve => {
+                        costumeUpload(buffer, fileType, this.props.vm, vmCostumes => {
+                            resolve(vmCostumes.map((vmCostume, i) => ({
+                                assetId: vmCostume.assetId,
+                                name: `${costume.name}${i ? i + 1 : ''}`,
+                                bitmapResolution: costume.bitmapResolution,
+                                md5ext: vmCostume.md5,
+                                dataFormat: vmCostume.dataFormat,
+                                rotationCenterX: costume.rotationCenterX,
+                                rotationCenterY: costume.rotationCenterY
+                            })));
+                        });
+                    })
+                );
+                costumes.push(...generatedCostumes);
+            } else {
+                costumes.push(costume);
+            }
+        }
+        item.costumes = costumes;
+        const sounds = [];
+        for (let sound of item.sounds) {
+            if (sound.src) {
+                const generatedSounds = await handleAssetLoad(
+                    sound.src.library,
+                    sound.src.path,
+                    (buffer, fileType) => new Promise(resolve => {
+                        soundUpload(buffer, fileType, this.props.vm.runtime.storage, vmSound => {
+                            resolve({
+                                assetId: vmSound.assetId,
+                                name: sound.name,
+                                dataFormat: vmSound.dataFormat,
+                                format: sound.format,
+                                rate: sound.rate,
+                                sampleCount: sound.sampleCount,
+                                md5ext: vmSound.md5
+                            });
+                        });
+                    })
+                );
+                sounds.push(...generatedSounds);
+            } else {
+                sounds.push(sound);
+            }
+        }
+        item.sounds = sounds;
         this.props.vm.addSprite(JSON.stringify(item)).then(() => {
             this.props.onActivateBlocksTab();
         });

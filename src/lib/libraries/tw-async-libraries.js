@@ -30,5 +30,6 @@ export const getSoundLibrary = asyncLibrary(
     () => import(/* webpackChunkName: "dash-library-sounds" */ './dash-assets/generated-sounds.json')
 );
 export const getSpriteLibrary = asyncLibrary(
-    () => import(/* webpackChunkName: "library-sprites" */ './sprites.json')
+    () => import(/* webpackChunkName: "library-sprites" */ './sprites.json'),
+    () => import(/* webpackChunkName: "dash-library-sprites" */ './dash-assets/generated-sprites.json')
 );

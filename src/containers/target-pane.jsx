@@ -15,7 +15,8 @@ import {setRestore} from '../reducers/restore-deletion';
 import DragConstants from '../lib/drag-constants';
 import TargetPaneComponent from '../components/target-pane/target-pane.jsx';
 import {getSpriteLibrary} from '../lib/libraries/tw-async-libraries';
-import {handleFileUpload, spriteUpload} from '../lib/file-uploader.js';
+import {handleAssetLoad} from '../lib/libraries/dash-web-libraries';
+import {handleFileUpload, costumeUpload, soundUpload, spriteUpload} from '../lib/file-uploader.js';
 import sharedMessages from '../lib/shared-messages';
 import {emptySprite} from '../lib/empty-assets';
 import {highlightTarget} from '../reducers/targets';
@@ -122,8 +123,60 @@ class TargetPane extends React.Component {
         const surpriseSprites = spriteLibraryContent.filter(sprite =>
             (sprite.tags.indexOf('letters') === -1) && (sprite.tags.indexOf('numbers') === -1)
         );
-        const item = surpriseSprites[Math.floor(Math.random() * surpriseSprites.length)];
+        const item = {...surpriseSprites[Math.floor(Math.random() * surpriseSprites.length)]};
         randomizeSpritePosition(item);
+        const costumes = [];
+        for (let costume of item.costumes) {
+            if (costume.src) {
+                const generatedCostumes = await handleAssetLoad(
+                    costume.src.library,
+                    costume.src.path,
+                    (buffer, fileType) => new Promise(resolve => {
+                        costumeUpload(buffer, fileType, this.props.vm, vmCostumes => {
+                            resolve(vmCostumes.map((vmCostume, i) => ({
+                                assetId: vmCostume.assetId,
+                                name: `${costume.name}${i ? i + 1 : ''}`,
+                                bitmapResolution: costume.bitmapResolution,
+                                md5ext: vmCostume.md5,
+                                dataFormat: vmCostume.dataFormat,
+                                rotationCenterX: costume.rotationCenterX,
+                                rotationCenterY: costume.rotationCenterY
+                            })));
+                        });
+                    })
+                );
+                costumes.push(...generatedCostumes);
+            } else {
+                costumes.push(costume);
+            }
+        }
+        item.costumes = costumes;
+        const sounds = [];
+        for (let sound of item.sounds) {
+            if (sound.src) {
+                const generatedSounds = await handleAssetLoad(
+                    sound.src.library,
+                    sound.src.path,
+                    (buffer, fileType) => new Promise(resolve => {
+                        soundUpload(buffer, fileType, this.props.vm.runtime.storage, vmSound => {
+                            resolve({
+                                assetId: vmSound.assetId,
+                                name: sound.name,
+                                dataFormat: vmSound.dataFormat,
+                                format: sound.format,
+                                rate: sound.rate,
+                                sampleCount: sound.sampleCount,
+                                md5ext: vmSound.md5
+                            });
+                        });
+                    })
+                );
+                sounds.push(...generatedSounds);
+            } else {
+                sounds.push(sound);
+            }
+        }
+        item.sounds = sounds;
         this.props.vm.addSprite(JSON.stringify(item))
             .then(this.handleActivateBlocksTab);
     }

@@ -486,8 +486,7 @@ const control = function (isInitialSetup, isStage, targetId, colors) {
         <block type="control_if"/>
         <block type="control_if_else"/>
         <block type="control_if_else_expandable">
-            <mutation branches="2" ends-in-else="true"></mutation>
-            <value name="BOOL1"/>
+            <field name="EXPANDABLE">2</field>
         </block>
         <block type="control_if_then_else">
             <value name="THEN">
@@ -724,7 +723,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         <block type="operator_math_expandable">
-            <mutation inputcount="2" menuvalues="+"/>
+            <field name="EXPANDABLE">2</field>
             <value name="NUM1">
                 <shadow type="math_number">
                     <field name="NUM"/>
@@ -828,7 +827,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         <block type="operator_numbers_comparator_expandable">
-            <mutation inputcount="2" menuvalues="="/>
+            <field name="EXPANDABLE">2</field>
             <value name="STRING1">
                 <shadow type="text">
                     <field name="TEXT"/>
@@ -844,7 +843,7 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
         <block type="operator_and"/>
         <block type="operator_or"/>
         <block type="operator_conditions_comparator_expandable">
-            <mutation inputcount="2" menuvalues="="/>
+            <field name="EXPANDABLE">2</field>
         </block>
         <block type="operator_not"/>
         ${blockSeparator}
@@ -868,15 +867,15 @@ const operators = function (isInitialSetup, isStage, targetId, colors) {
         <label text="${strings}"></label>
         ${isInitialSetup ? '' : `
             <block type="operator_joinexpandable">
-                <mutation inputcount="2"></mutation>
+                <field name="EXPANDABLE">2</field>
                 <value name="INPUT1">
                     <shadow type="text">
-                        <field name="TEXT">${apple} </field>
+                        <field name="TEXT">${apple}</field>
                     </shadow>
                 </value>
                 <value name="INPUT2">
                     <shadow type="text">
-                        <field name="TEXT">${banana} </field>
+                        <field name="TEXT">${banana}</field>
                     </shadow>
                 </value>
             </block>
@@ -1000,7 +999,7 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
             </value>
         </block>
         <block type="json_assign">
-            <mutation inputcount="1"></mutation>
+            <field name="EXPANDABLE">1</field>
         </block>
         ${blockSeparator}
         <block type="json_get_by_path" />
@@ -1014,7 +1013,7 @@ const json = function (isInitialSetup, isStage, targetId, colors) {
         <label text="${arrays}"></label>
         <block type="json_array_empty"/>
         <block type="json_array_expandable">
-            <mutation inputcount="2"></mutation>
+            <field name="EXPANDABLE">2</field>
             <value name="INPUT1">
                 <shadow type="text">
                     <field name="TEXT">${apple}</field>

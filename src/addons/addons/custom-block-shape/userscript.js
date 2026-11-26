@@ -4,61 +4,11 @@ export default async function ({ addon, console }) {
   var BlocklyInstance = await addon.tab.traps.getBlockly();
 
   (function (Blockly) {
-    const BlockSvg = BlocklyInstance.BlockSvg;
+    const { BlockSvg, pathUtils } = BlocklyInstance;
     var originalDropdownObject = BlocklyInstance.FieldDropdown.prototype.positionArrow;
     var vm = addon.tab.traps.vm;
 
     const { GRID_UNIT } = BlockSvg;
-
-    function path2SegmentList(path) {
-      const cmds = structuredClone(BlockSvg.CUSTOM_NOTCH_UTIL.supportedCommands);
-      cmds.z = 0;
-      const segment = /([astvzqmhlc])([^astvzqmhlc]*)/ig;
-    	const data = [];
-    	path.replace(segment, (_, command, args) => {
-    		let type = command.toLowerCase();
-    		const numbers = args.match(/-?[0-9]*\.?[0-9]+(?:e[-+]?\d+)?/ig);
-    		args = numbers ? numbers.map(Number) : [];
-		    if (type == "m" && args.length > 2) {
-		    	data.push([command].concat(args.splice(0, 2)));
-		    	type = "l";
-		    	command = command == "m" ? "l" : "L";
-		    }
-
-        while (true) {
-          if (args.length == cmds[type]) {
-            args.unshift(command);
-            return data.push(args);
-          }
-          if (args.length < cmds[type]) throw new Error("Malformed path data");
-          data.push([command].concat(args.splice(0, cmds[type])));
-        }
-      });
-      return data;
-    }
-
-    function scalePathXY(path, scaleX, scaleY) {
-      const segments = path2SegmentList(path);
-      return segments.map((segment) => {
-        const name = segment[0].toLowerCase();
-        if (name === "v") {
-          segment[1] *= scaleY;
-          return segment;
-        }
-        if (name === "a") {
-          segment[1] *= scaleX;
-          segment[2] *= scaleY;
-          segment[6] *= scaleX;
-          segment[7] *= scaleY;
-          return segment;
-        }
-
-        return segment.map((val, i) => {
-          if (!i) return val;
-          return val *= i % 2 ? scaleX : scaleY;
-        });
-      }).flat().join(" ");
-    }
       
     function applyChanges(
       paddingSize = addon.settings.get("paddingSize"),
@@ -68,6 +18,8 @@ export default async function ({ addon, console }) {
       let multiplier = paddingSize / 100;
       cornerSize = cornerSize / 100;
       notchSize = notchSize / 100;
+
+      BlockSvg.GRID_UNIT = GRID_UNIT * multiplier;
       BlockSvg.SEP_SPACE_Y = 2 * GRID_UNIT * multiplier;
       BlockSvg.MIN_BLOCK_X = 16 * GRID_UNIT * multiplier;
       BlockSvg.MIN_BLOCK_X_OUTPUT = 12 * GRID_UNIT * multiplier;
@@ -155,6 +107,8 @@ export default async function ({ addon, console }) {
       BlockSvg.FIELD_WIDTH_MIN_EDIT = 8 * GRID_UNIT * multiplier;
       BlockSvg.INPUT_AND_FIELD_MIN_X = 12 * GRID_UNIT * multiplier;
       BlockSvg.INLINE_PADDING_Y = 1 * GRID_UNIT * multiplier; // For when reporters are inside reporters
+      BlockSvg.MIN_BLOCK_X_DUAL = BlockSvg.MIN_BLOCK_X_OUTPUT + BlockSvg.NOTCH_START_PADDING + BlockSvg.NOTCH_WIDTH;
+      BlockSvg.HEXAGONAL_SHAPE_ROUNDNESS = 1 * GRID_UNIT * multiplier;
       BlockSvg.SHAPE_IN_SHAPE_PADDING[1][0] = 5 * GRID_UNIT * multiplier;
       BlockSvg.SHAPE_IN_SHAPE_PADDING[1][2] = 5 * GRID_UNIT * multiplier;
       BlockSvg.SHAPE_IN_SHAPE_PADDING[1][3] = 5 * GRID_UNIT * multiplier;
@@ -239,14 +193,13 @@ export default async function ({ addon, console }) {
 
       // Custom Block Shape API Support
       BlockSvg.CUSTOM_SHAPES.forEach((shape) => {
-        if (!shape.ogEmptySize) {
-          shape.ogEmptySize = shape.emptyInputWidth;
-          shape.ogEmptyPath = shape.emptyInputPath;
+        if ("emptyInputWidth" in shape) {
+          if (!("ogEmptySize" in shape)) shape.ogEmptySize = shape.emptyInputWidth;
+          shape.emptyInputWidth = shape.ogEmptySize * multiplier;
         }
-        shape.emptyInputWidth = shape.ogEmptySize * multiplier;
-        shape.emptyInputPath = scalePathXY(shape.ogEmptyPath, multiplier, multiplier);
-        if (shape.emptyInputPath[0] !== "M" && shape.emptyInputPath[0] !== "m") {
-            shape.emptyInputPath = "M" + shape.emptyInputPath;
+        if ("emptyInputPath" in shape) {
+          if (!("ogEmptyPath" in shape)) shape.ogEmptyPath = shape.emptyInputPath;
+          shape.emptyInputPath = pathUtils.scale(shape.ogEmptyPath, multiplier, multiplier); 
         }
       });
 
@@ -292,32 +245,6 @@ export default async function ({ addon, console }) {
         BlockSvg.BOTTOM_LEFT_CORNER +
         ' z';
       BlockSvg.INPUT_SHAPE_SQUARE_WIDTH = 12 * GRID_UNIT * multiplier;
-        
-      BlockSvg.INPUT_SHAPE_PLUS =
-        `
-        M ${9 * GRID_UNIT * multiplier} 0
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
-        l 0 2
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
-        l 0 ${4 * (multiplier * multiplier)}
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${-GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${-GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
-        l 0 2
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${-GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
-        h ${-6 * GRID_UNIT * multiplier}
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${-GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
-        l 0 -2
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${-GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${-GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
-        l 0 ${-4 * (multiplier * multiplier)}
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
-        l 0 -2
-        a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier} 
-        z
-        `;
-      BlockSvg.INPUT_SHAPE_PLUS_WIDTH = 12 * GRID_UNIT * multiplier;
         
       BlockSvg.INPUT_SHAPE_ROUND =
         "M " +

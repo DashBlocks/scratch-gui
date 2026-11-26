@@ -8,6 +8,55 @@ export default async function ({ addon, console }) {
     var originalDropdownObject = BlocklyInstance.FieldDropdown.prototype.positionArrow;
     var vm = addon.tab.traps.vm;
 
+    function path2SegmentList(path) {
+      const cmds = {...pathUtils.supportedCommands, z: 0};
+      const segment = /([astvzqmhlc])([^astvzqmhlc]*)/ig;
+      const data = [];
+      path.replace(segment, (_, command, args) => {
+    		let type = command.toLowerCase();
+    		const numbers = args.match(/-?[0-9]*\.?[0-9]+(?:e[-+]?\d+)?/ig);
+    		args = numbers ? numbers.map(Number) : [];
+		    if (type == "m" && args.length > 2) {
+		    	data.push([command].concat(args.splice(0, 2)));
+		    	type = "l";
+		    	command = command == "m" ? "l" : "L";
+		    }
+
+        while (true) {
+          if (args.length == cmds[type]) {
+            args.unshift(command);
+            return data.push(args);
+          }
+          if (args.length < cmds[type]) throw new Error("Malformed path data");
+          data.push([command].concat(args.splice(0, cmds[type])));
+        }
+      });
+      return data;
+    }
+
+    function scalePathXY(path, scaleX, scaleY) {
+      const segments = path2SegmentList(path);
+      return segments.map((segment) => {
+        const name = segment[0].toLowerCase();
+        if (name === "v") {
+          segment[1] *= scaleY;
+          return segment;
+        }
+        if (name === "a") {
+          segment[1] *= scaleX;
+          segment[2] *= scaleY;
+          segment[6] *= scaleX;
+          segment[7] *= scaleY;
+          return segment;
+        }
+
+        return segment.map((val, i) => {
+          if (!i) return val;
+          return val *= i % 2 ? scaleX : scaleY;
+        });
+      }).flat().join(" ");
+    }
+
     const { GRID_UNIT } = BlockSvg;
       
     function applyChanges(
@@ -199,7 +248,7 @@ export default async function ({ addon, console }) {
         }
         if ("emptyInputPath" in shape) {
           if (!("ogEmptyPath" in shape)) shape.ogEmptyPath = shape.emptyInputPath;
-          shape.emptyInputPath = pathUtils.scale(shape.ogEmptyPath, multiplier, multiplier); 
+          shape.emptyInputPath = scalePathXY(shape.ogEmptyPath, multiplier, multiplier); 
         }
       });
 

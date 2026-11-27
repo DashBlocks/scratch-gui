@@ -4,7 +4,7 @@ export default async function ({ addon, console }) {
   var BlocklyInstance = await addon.tab.traps.getBlockly();
 
   (function (Blockly) {
-    const { BlockSvg, pathUtils } = BlocklyInstance;
+    const { BlockSvg, pathUtils, OUTPUT_SHAPE_PLUS } = BlocklyInstance;
     var originalDropdownObject = BlocklyInstance.FieldDropdown.prototype.positionArrow;
     var vm = addon.tab.traps.vm;
 
@@ -248,7 +248,33 @@ export default async function ({ addon, console }) {
         }
         if ("emptyInputPath" in shape) {
           if (!("ogEmptyPath" in shape)) shape.ogEmptyPath = shape.emptyInputPath;
-          shape.emptyInputPath = scalePathXY(shape.ogEmptyPath, multiplier, multiplier); 
+          if (shape === OUTPUT_SHAPE_PLUS && multiplier < 1) { // Fix for "plus" output shape
+            shape.emptyInputPath = `
+            M ${9 * GRID_UNIT * multiplier} 0
+            a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+            l 0 2
+            a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+            a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+            l 0 ${4 * (multiplier ^ 2)}
+            a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${-GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+            a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${-GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+            l 0 2
+            a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${-GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
+            h ${-6 * GRID_UNIT * multiplier}
+            a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${-GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
+            l 0 -2
+            a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${-GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
+            a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${-GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
+            l 0 ${-4 * (multiplier ^ 2)}
+            a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
+            a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 0 ${GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier}
+            l 0 -2
+            a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${-GRID_UNIT * multiplier} 
+            z
+            `;
+          } else {
+            shape.emptyInputPath = scalePathXY(shape.ogEmptyPath, multiplier, multiplier);
+          }
         }
       });
 

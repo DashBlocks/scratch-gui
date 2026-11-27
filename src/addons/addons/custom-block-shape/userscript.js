@@ -241,15 +241,15 @@ export default async function ({ addon, console }) {
       BlockSvg.STATEMENT_INPUT_INNER_SPACE = 2.8 * GRID_UNIT - 0.9 * GRID_UNIT * cornerSize;
 
       // Custom Block Shape API Support
-      BlockSvg.CUSTOM_SHAPES.forEach((shape) => {
-        if ("emptyInputWidth" in shape) {
-          if (!("ogEmptySize" in shape)) shape.ogEmptySize = shape.emptyInputWidth;
-          shape.emptyInputWidth = shape.ogEmptySize * multiplier;
+      BlockSvg.CUSTOM_SHAPES.forEach((shapeInfo, shape) => {
+        if ("emptyInputWidth" in shapeInfo) {
+          if (!("ogEmptySize" in shapeInfo)) shapeInfo.ogEmptySize = shapeInfo.emptyInputWidth;
+          shapeInfo.emptyInputWidth = shapeInfo.ogEmptySize * multiplier;
         }
-        if ("emptyInputPath" in shape) {
-          if (!("ogEmptyPath" in shape)) shape.ogEmptyPath = shape.emptyInputPath;
+        if ("emptyInputPath" in shapeInfo) {
+          if (!("ogEmptyPath" in shapeInfo)) shapeInfo.ogEmptyPath = shapeInfo.emptyInputPath;
           if (shape === OUTPUT_SHAPE_PLUS && multiplier < 1) { // Fix for "plus" output shape
-            shape.emptyInputPath = `
+            shapeInfo.emptyInputPath = `
             M ${9 * GRID_UNIT * multiplier} 0
             a ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier} 0 0 1 ${GRID_UNIT * multiplier} ${GRID_UNIT * multiplier}
             l 0 2
@@ -273,7 +273,7 @@ export default async function ({ addon, console }) {
             z
             `;
           } else {
-            shape.emptyInputPath = scalePathXY(shape.ogEmptyPath, multiplier, multiplier);
+            shapeInfo.emptyInputPath = scalePathXY(shapeInfo.ogEmptyPath, multiplier, multiplier);
           }
         }
       });
